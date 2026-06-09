@@ -1,0 +1,21 @@
+{
+  "round_idx": 0,
+  "failed_visible_pairs": [
+    { "scorer_id": "S_r0_001", "pair_id": "R0_P06", "pair_type": "subtle_quality_gap", "margin": 0.0 },
+    { "scorer_id": "S_r0_001", "pair_id": "R0_P05", "pair_type": "subtle_quality_gap", "margin": 0.0 },
+    { "scorer_id": "S_r0_001", "pair_id": "R0_P04", "pair_type": "specificity_trap", "margin": 0.0 }
+  ],
+  "failed_pair_type_counts": {
+    "subtle_quality_gap": 2,
+    "specificity_trap": 1
+  },
+  "scorer_weakness_summary": "Top scorers struggle with: ['subtle_quality_gap', 'specificity_trap'].",
+  "mutation_instructions": [
+    "Add argument_progression × real_mechanism_quality product scorer.",
+    "Recombine best scorer structures: try argument_progression * real_mechanism_quality as primary signal."
+  ],
+  "adversarial_pair_instructions": [
+    "Generate fake_mechanism pairs where BOTH use 'by' but only positive names a concrete object/step.",
+    "Generate subtle_quality_gap pairs where both have before/after framing but only positive has a result clause."
+  ]
+}

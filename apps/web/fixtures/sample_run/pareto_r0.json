@@ -1,0 +1,92 @@
+[
+  {
+    "scorer_id": "S_r0_001",
+    "hypothesis": "Argument progression (problem->mechanism->result) is the primary driver.",
+    "lineage": "initial",
+    "generation_round": 0,
+    "test_accuracy": 0.75,
+    "test_margin": 0.256,
+    "score_spread": 0.674,
+    "pareto_eligible": true,
+    "survived_because": "best test margin (0.256)",
+    "pair_type_accuracy": {
+      "fake_mechanism": 0.833,
+      "subtle_quality_gap": 0.5,
+      "specificity_trap": 0.5,
+      "source_drift": 1.0,
+      "hype_trap": 1.0
+    }
+  },
+  {
+    "scorer_id": "S_r0_002",
+    "hypothesis": "Audience relevance amplifies causal grounding.",
+    "lineage": "initial",
+    "generation_round": 0,
+    "test_accuracy": 1.0,
+    "test_margin": 0.196,
+    "score_spread": 0.602,
+    "pareto_eligible": true,
+    "survived_because": "best test acc (100%)",
+    "pair_type_accuracy": {
+      "fake_mechanism": 1.0,
+      "subtle_quality_gap": 1.0,
+      "specificity_trap": 0.5,
+      "source_drift": 1.0,
+      "hype_trap": 1.0
+    }
+  },
+  {
+    "scorer_id": "S_r0_003",
+    "hypothesis": "Fake mechanism is the primary disqualifier.",
+    "lineage": "initial",
+    "generation_round": 0,
+    "test_accuracy": 0.875,
+    "test_margin": 0.228,
+    "score_spread": 0.422,
+    "pareto_eligible": true,
+    "survived_because": "non-dominated",
+    "pair_type_accuracy": {
+      "fake_mechanism": 1.0,
+      "subtle_quality_gap": 0.833,
+      "specificity_trap": 1.0,
+      "source_drift": 1.0,
+      "hype_trap": 1.0
+    }
+  },
+  {
+    "scorer_id": "S_r0_004",
+    "hypothesis": "Full chain: argument progression gates concrete specificity.",
+    "lineage": "initial",
+    "generation_round": 0,
+    "test_accuracy": 0.875,
+    "test_margin": 0.205,
+    "score_spread": 0.438,
+    "pareto_eligible": true,
+    "survived_because": "non-dominated",
+    "pair_type_accuracy": {
+      "fake_mechanism": 1.0,
+      "subtle_quality_gap": 0.833,
+      "specificity_trap": 1.0,
+      "source_drift": 1.0,
+      "hype_trap": 1.0
+    }
+  },
+  {
+    "scorer_id": "S_r0_006",
+    "hypothesis": "Source continuity combined with causal density.",
+    "lineage": "initial",
+    "generation_round": 0,
+    "test_accuracy": 0.75,
+    "test_margin": 0.182,
+    "score_spread": 0.722,
+    "pareto_eligible": true,
+    "survived_because": "non-dominated",
+    "pair_type_accuracy": {
+      "fake_mechanism": 0.667,
+      "subtle_quality_gap": 0.667,
+      "specificity_trap": 0.5,
+      "source_drift": 1.0,
+      "hype_trap": 1.0
+    }
+  }
+]

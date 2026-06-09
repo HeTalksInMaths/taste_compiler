@@ -1,0 +1,49 @@
+{
+  "goal": "concise",
+  "rewards": [
+    {
+      "concept": "causal_grounding",
+      "description": "Text explains WHY via mechanism + causal connectives.",
+      "research_basis": "Langer 1978; ELM central route",
+      "measurable_proxy_ideas": ["causal connective density", "real_mechanism_quality probe"]
+    },
+    {
+      "concept": "argument_progression",
+      "description": "Problem->mechanism->result structure.",
+      "research_basis": "Narrative argument structure; ELM elaboration",
+      "measurable_proxy_ideas": ["argument_progression probe"]
+    },
+    {
+      "concept": "concrete_specificity",
+      "description": "Named outcomes, action verbs, domain nouns.",
+      "research_basis": "Kahneman 2011 System 1",
+      "measurable_proxy_ideas": ["specificity_without_invention probe"]
+    }
+  ],
+  "punishes": [
+    {
+      "concept": "persuasion_knowledge_trigger",
+      "description": "Dense superlatives activate scepticism.",
+      "research_basis": "Friestad & Wright 1994",
+      "measurable_proxy_ideas": ["persuasion_risk probe"]
+    },
+    {
+      "concept": "fake_mechanism",
+      "description": "Mechanism-sounding language with no concrete content.",
+      "research_basis": "Abstract jargon study; reactance theory",
+      "measurable_proxy_ideas": ["real_mechanism_quality probe", "abstract_jargon_density probe"]
+    }
+  ],
+  "preserves": [
+    {
+      "concept": "source_continuity",
+      "description": "Core claim and domain preserved; rephrasing allowed.",
+      "research_basis": "Credibility transfer",
+      "measurable_proxy_ideas": ["probe_source_continuity (soft, not gate)"]
+    }
+  ],
+  "key_tensions": [
+    "Specificity vs source drift: concrete details risk inventing claims",
+    "Causal depth vs fake mechanism: both use 'by' -- need real_mechanism_quality to distinguish"
+  ]
+}
