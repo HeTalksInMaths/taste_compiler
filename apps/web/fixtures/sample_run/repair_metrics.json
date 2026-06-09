@@ -1,0 +1,18 @@
+{
+  "subset_results": {
+    "final_heldout": {
+      "best_old_by_margin": "S_r0_001",
+      "best_old_margin_value": 0.2924,
+      "best_new_by_margin": "S_r1_001",
+      "best_new_margin_value": 0.2273,
+      "margin_delta": -0.0651,
+      "accuracy_delta": -0.0667
+    }
+  },
+  "new_scorer_enters_pareto": true,
+  "beats_old_best_margin": false,
+  "beats_old_best_accuracy": false,
+  "share_of_eligible_ensemble": 0.2857,
+  "overall_improvement_claim_supported": false,
+  "honest_repair_summary": "Repair did NOT demonstrably improve results. Reasons: new scorers did not beat old best on heldout."
+}

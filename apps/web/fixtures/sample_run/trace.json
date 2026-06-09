@@ -1,0 +1,15 @@
+[
+  { "ts": "20:16:45", "stage": "boot", "status": "ok", "msg": "All helper probes loaded (v5 full set)" },
+  { "ts": "20:16:45", "stage": "step1", "status": "ok", "msg": "Research: 1896 chars" },
+  { "ts": "20:16:45", "stage": "step2", "status": "ok", "msg": "Taste map: 5 rewards, 3 punishes" },
+  { "ts": "20:16:45", "stage": "step3", "status": "ok", "msg": "NLP theory: 10 probes mapped" },
+  { "ts": "20:16:45", "stage": "step4", "status": "ok", "msg": "Valid scorers R0: 8/8" },
+  { "ts": "20:16:45", "stage": "step5", "status": "ok", "msg": "Suite: 13 train, 8 heldout (frozen)" },
+  { "ts": "20:16:45", "stage": "step6", "status": "ok", "msg": "R0 Pareto: 5 eligible scorers" },
+  { "ts": "20:16:45", "stage": "step7", "status": "ok", "msg": "Failed visible pairs: 3" },
+  { "ts": "20:16:45", "stage": "step8", "status": "ok", "msg": "Step A: 6 evolved hypotheses" },
+  { "ts": "20:16:45", "stage": "step9", "status": "ok", "msg": "Growing heldout: 8 -> 15 pairs" },
+  { "ts": "20:16:46", "stage": "step10", "status": "ok", "msg": "R1 Pareto: 7 eligible scorers" },
+  { "ts": "20:16:46", "stage": "step11", "status": "ok", "msg": "Selected: C001 (mechanism_first)" },
+  { "ts": "20:16:46", "stage": "step12", "status": "ok", "msg": "PASS=19 WARN=1 FAIL=0" }
+]
