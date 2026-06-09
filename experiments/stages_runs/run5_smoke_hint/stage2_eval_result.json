@@ -1,0 +1,16 @@
+{
+  "signals": {
+    "num_nodes": 30,
+    "num_edges": 63,
+    "node_mechanism_rate": 1.0,
+    "node_evidence_rate": 1.0,
+    "edge_validity_rate": 1.0,
+    "edge_explanation_rate": 1.0,
+    "graph_connectedness_score": 1.0,
+    "role_diversity_score": 4,
+    "tension_count": 8,
+    "summary_uses_graph_terms": true
+  },
+  "passed": true,
+  "failures": []
+}

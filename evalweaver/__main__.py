@@ -101,6 +101,39 @@ def main():
     batch_parser.add_argument("--configs", type=str, nargs="+", required=True)
     batch_parser.add_argument("--seeds", type=int, default=1)
 
+    # ── stages subcommand (Stages 1–4 reasoning pipeline) ──
+    stages_parser = subparsers.add_parser(
+        "stages", help="Run Stages 1–4 reasoning pipeline (live Bedrock)"
+    )
+    stages_parser.add_argument(
+        "--config", "-c", type=str, default="configs/trustworthy.yaml",
+        help="Path to YAML config file (default: configs/trustworthy.yaml)",
+    )
+    stages_parser.add_argument(
+        "--model-id", type=str, default="us.anthropic.claude-sonnet-4-6",
+        help="Model ID for Bedrock (default: us.anthropic.claude-sonnet-4-6)",
+    )
+    stages_parser.add_argument(
+        "--target-variable", type=str, default=None,
+        help="Override target variable from config",
+    )
+    stages_parser.add_argument(
+        "--temperature", type=float, default=1.0,
+        help="Temperature for LLM calls (default: 1.0)",
+    )
+    stages_parser.add_argument(
+        "--max-tokens", type=int, default=16384,
+        help="Max tokens for LLM responses (default: 16384)",
+    )
+    stages_parser.add_argument(
+        "--resume-from", type=int, default=None, choices=[2, 3, 4],
+        help="Resume from a specific stage (uses existing artifacts for previous stages)",
+    )
+    stages_parser.add_argument(
+        "--run-label", type=str, default=None,
+        help="Label for this run (used in output subdirectory)",
+    )
+
     args = parser.parse_args()
 
     if args.command == "run":
@@ -201,6 +234,47 @@ def main():
         passed = sum(1 for r in batch_summary["per_topic_results"] if r["success"])
         print(f"\nBatch complete. {passed}/{total} topics succeeded.")
         sys.exit(0 if passed == total else 1)
+
+    elif args.command == "stages":
+        config = load_config(args.config)
+        region = os.environ.get("AWS_REGION", "us-east-1")
+        model_id = args.model_id
+
+        # Override target variable if provided
+        if args.target_variable:
+            config["goal"] = args.target_variable
+
+        # Validate Bedrock credentials
+        validation = _validate_bedrock(model_id, region)
+        if not validation["passed"]:
+            print(f"ERROR: Bedrock credential validation failed: {validation['error']}")
+            sys.exit(1)
+        print(f"Bedrock credentials valid: account={validation['account']} region={region}")
+        print(f"Model: {model_id}")
+        print(f"Target variable: {config.get('goal', 'trustworthy')}")
+
+        # Run Stages 1–4
+        from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+        from evalweaver.stages import StageOrchestrator
+        from evalweaver.artifacts import resolve_output_directory
+
+        provider = BedrockClaudeProvider(
+            model_id=model_id,
+            aws_region=region,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+        )
+        out_dir = resolve_output_directory()
+        orchestrator = StageOrchestrator(provider=provider, config=config, out_dir=out_dir)
+
+        result = orchestrator.run(resume_from=args.resume_from)
+
+        if result.get("success"):
+            print(f"\nStages 1–4 PASSED. Output: {out_dir}")
+            sys.exit(0)
+        else:
+            print(f"\nStages pipeline FAILED at Stage {result.get('failed_stage', '?')}. Output: {out_dir}")
+            sys.exit(1)
 
     else:
         parser.print_help()

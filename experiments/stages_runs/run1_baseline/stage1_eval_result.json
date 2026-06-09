@@ -1,0 +1,19 @@
+{
+  "signals": {
+    "num_research_items": 30,
+    "num_unique_causal_variables": 30,
+    "mechanism_completeness_rate": 1.0,
+    "source_trace_rate": 1.0,
+    "effect_direction_coverage": {
+      "increases": 14,
+      "decreases": 5,
+      "mediates": 1,
+      "moderates": 10
+    },
+    "causal_specificity_score": 0.8333333333333334,
+    "generic_advice_penalty": 0.0,
+    "tension_count": 8
+  },
+  "passed": true,
+  "failures": []
+}
