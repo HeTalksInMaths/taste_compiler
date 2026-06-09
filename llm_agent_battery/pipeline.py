@@ -128,6 +128,18 @@ async def run_pipeline(config: PipelineConfig) -> PipelineResult:
             config=config,
             console=console,
         )
+
+        # --- Step 5b: Agent Dimension Analysis ---
+        # If agent artifacts are detected (prompts, tools, orchestration),
+        # run the 6-dimension agent-specific analyzers against aggregated context
+        agent_dimension_findings = await _run_agent_dimension_analysis(
+            classified_files=classified_files,
+            client=client,
+            config=config,
+            console=console,
+        )
+        llm_findings.extend(agent_dimension_findings)
+
         token_usage = client.total_usage
         console.print(
             f"  LLM findings: {len(llm_findings)} "
@@ -266,3 +278,84 @@ class _status:
     def __exit__(self, *args):
         if self._status is not None:
             self._status.__exit__(*args)
+
+
+async def _run_agent_dimension_analysis(
+    classified_files: list,
+    client,
+    config: PipelineConfig,
+    console: Console,
+) -> list[Finding]:
+    """Run the 6 agent-specific dimension analyzers.
+
+    Instead of chunk-by-chunk, these analyzers get aggregated context:
+    all prompts, tool definitions, and orchestration code concatenated together
+    so they can reason about the agent system holistically.
+    """
+    from llm_agent_battery.analyzers.agent_dimensions_analyzer import ALL_DIMENSION_ANALYZERS
+    from llm_agent_battery.models import FileCategory
+
+    # Collect agent-relevant files by category
+    prompts = [f for f in classified_files if f.primary_category == FileCategory.PROMPT_TEMPLATE]
+    tools = [f for f in classified_files if f.primary_category == FileCategory.TOOL_DEFINITION]
+    orchestration = [f for f in classified_files if f.primary_category == FileCategory.ORCHESTRATION]
+    agent_logic = [f for f in classified_files if f.primary_category == FileCategory.AGENT_LOGIC]
+
+    # Only run dimension analysis if we have agent-relevant artifacts
+    agent_files = prompts + tools + orchestration + agent_logic
+    if not agent_files:
+        console.print("  No agent artifacts detected, skipping dimension analysis")
+        return []
+
+    console.print(
+        f"  Agent artifacts: {len(prompts)} prompts, {len(tools)} tools, "
+        f"{len(orchestration)} orchestration, {len(agent_logic)} agent logic"
+    )
+
+    # Build aggregated context for dimension analyzers
+    context_parts = []
+    for f in agent_files:
+        try:
+            content = f.path.read_text(encoding="utf-8", errors="ignore")[:20000]
+            context_parts.append(f"--- {f.relative_path} [{f.primary_category.value}] ---\n{content}")
+        except OSError:
+            continue
+
+    aggregated_context = "\n\n".join(context_parts)
+
+    # Truncate to ~40K chars to fit in context window
+    if len(aggregated_context) > 40000:
+        aggregated_context = aggregated_context[:40000] + "\n\n[... truncated ...]"
+
+    # Create a synthetic chunk representing the whole agent system
+    agent_chunk = CodeChunk(
+        file_path="[agent-system-aggregate]",
+        chunk_name="full-agent-context",
+        content=aggregated_context,
+        functions=[],
+        preamble="",
+        start_line=0,
+        end_line=0,
+    )
+
+    # Run each dimension analyzer sequentially (they're independent but
+    # each gets the full context, so we space them out)
+    findings: list[Finding] = []
+    for i, AnalyzerClass in enumerate(ALL_DIMENSION_ANALYZERS):
+        analyzer = AnalyzerClass()
+        dimension_name = analyzer.focus_areas()[0] if analyzer.focus_areas() else "unknown"
+        if not config.ci_mode:
+            console.print(f"  [{i+1}/6] Dimension: {dimension_name}...", highlight=False)
+
+        result = await analyzer.analyze_chunk(
+            chunk=agent_chunk,
+            context="Full agent system context including all prompts, tools, and orchestration code.",
+            client=client,
+        )
+        findings.extend(result)
+
+        # Delay between dimension calls
+        await asyncio.sleep(config.concurrency_config.min_delay_seconds)
+
+    console.print(f"  Agent dimension findings: {len(findings)}")
+    return findings
