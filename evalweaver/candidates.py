@@ -3,7 +3,11 @@
 import statistics
 
 from evalweaver.runner import py_run_scorer
-from evalweaver.policy import extract_numbers
+from evalweaver.policy import (
+    extract_numbers,
+    source_policy_violations,
+    hard_source_policy_violated,
+)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -44,6 +48,12 @@ def score_candidates(candidates, ensemble, scorer_code, raw_text):
     """
     Score candidates using the eligible ensemble.
     Returns list of scored candidate dicts, sorted by (policy_ok, ensemble_score) descending.
+
+    Each candidate stores:
+    - policy_violations: from source_policy_violations(text, anchor, role="candidate")
+    - policy_ok: not hard_source_policy_violated(text, anchor, role="candidate")
+    - raw_mean_score: unnormalized mean across scorers
+    - normalized_ensemble_score: same as ensemble_score (explicit naming)
     """
     if not ensemble:
         return []
@@ -73,15 +83,23 @@ def score_candidates(candidates, ensemble, scorer_code, raw_text):
         norm_mean = statistics.mean(
             norm_scores[s["scorer_id"]][c["candidate_id"]] for s in ensemble
         )
-        nums_orig = extract_numbers(raw_text)
-        nums_new = extract_numbers(c["text"])
-        policy_ok = all(n in nums_orig for n in nums_new)
+        raw_mean = statistics.mean(
+            raw_scores[c["candidate_id"]][s["scorer_id"]] for s in ensemble
+        )
+
+        # Use unified policy functions (same as scorer veto path)
+        violations = source_policy_violations(c["text"], raw_text, role="candidate")
+        policy_ok = not hard_source_policy_violated(c["text"], raw_text, role="candidate")
+
         scored_candidates.append({
             **c,
             "raw_scores": raw_scores[c["candidate_id"]],
             "norm_scores": {s["scorer_id"]: norm_scores[s["scorer_id"]][c["candidate_id"]] for s in ensemble},
             "ensemble_score": round(norm_mean, 4),
+            "normalized_ensemble_score": round(norm_mean, 4),
+            "raw_mean_score": round(raw_mean, 4),
             "policy_ok": policy_ok,
+            "policy_violations": violations,
         })
 
     scored_candidates.sort(key=lambda x: (x["policy_ok"], x["ensemble_score"]), reverse=True)

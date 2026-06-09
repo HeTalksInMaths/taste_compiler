@@ -5,22 +5,31 @@ def is_eligible_for_pareto(s):
     """
     F5 FIX: Pareto eligibility filter.
     Returns (eligible: bool, reason: str).
+    Also sets pareto_eligible and pareto_ineligible_reason on the summary dict.
     """
+    reason = ""
+    eligible = True
+
     if s.get("valid") is not True:
-        return False, "not valid"
-    if s.get("exec_error_rate", 1) > 0:
-        return False, "exec errors"
-    if s.get("score_spread", 0) < 0.02:
-        return False, "score spread too low"
-    if s.get("train_margin", 0) <= 0:
-        return False, "train margin <= 0"
-    if s.get("test_margin", 0) <= 0:
-        return False, "test margin <= 0"
-    if s.get("train_accuracy", 0) < 0.50:
-        return False, "train accuracy < 0.5"
-    if s.get("test_accuracy", 0) < 0.50:
-        return False, "test accuracy < 0.5"
-    return True, "ok"
+        eligible, reason = False, "not valid (execution_valid=False)"
+    elif s.get("exec_error_rate", 1) > 0:
+        eligible, reason = False, "exec errors"
+    elif s.get("score_spread", 0) < 0.02:
+        eligible, reason = False, "score spread too low (<0.02)"
+    elif s.get("train_margin", 0) <= 0:
+        eligible, reason = False, "train margin <= 0"
+    elif s.get("test_margin", 0) <= 0:
+        eligible, reason = False, "test margin <= 0"
+    elif s.get("train_accuracy", 0) < 0.50:
+        eligible, reason = False, "train accuracy < 0.5"
+    elif s.get("test_accuracy", 0) < 0.50:
+        eligible, reason = False, "test accuracy < 0.5"
+
+    # Set fields on the summary dict for three-tier reporting
+    s["pareto_eligible"] = eligible
+    s["pareto_ineligible_reason"] = reason if not eligible else ""
+
+    return eligible, reason
 
 
 def compute_pareto(summaries):
@@ -28,8 +37,14 @@ def compute_pareto(summaries):
     Compute Pareto frontier over eligible scorers.
     Dimensions: test_accuracy, test_margin, train_accuracy, train_margin, score_spread.
     Returns sorted list (best test_margin first).
+
+    Also sets pareto_eligible and pareto_ineligible_reason on all summaries.
     """
-    elig_list = [s for s in summaries if is_eligible_for_pareto(s)[0]]
+    # Evaluate eligibility for all summaries (sets fields on each)
+    for s in summaries:
+        is_eligible_for_pareto(s)
+
+    elig_list = [s for s in summaries if s.get("pareto_eligible")]
 
     front = []
     for a in elig_list:

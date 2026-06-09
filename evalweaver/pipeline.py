@@ -18,7 +18,7 @@ from evalweaver.pairs import ALL_PAIRS_R0, validate_and_split_pairs, merge_adver
 from evalweaver.evaluation import eval_scorer, compute_summary
 from evalweaver.pareto import is_eligible_for_pareto, compute_pareto
 from evalweaver.failure_packet import build_failure_packet
-from evalweaver.repair import SCORER_HYPOTHESES_R1, SCORER_CODE_R1, ADV_PAIRS_R1
+from evalweaver.repair import SCORER_HYPOTHESES_R1, SCORER_CODE_R1, ADV_PAIRS_R1, compute_repair_improvement_metrics
 from evalweaver.candidates import (
     CANDIDATES, build_candidate_ensemble, score_candidates, select_candidate
 )
@@ -527,6 +527,15 @@ def run_pipeline(config):
     log("step10", f"R1 Pareto: {len(pareto_r1)} eligible scorers", "ok")
     for s in pareto_r1:
         log("step10", f"  * {s['scorer_id']} [{s['lineage']}] te_acc={s['test_accuracy']:.0%} te_mrg={s['test_margin']:.3f} -- {s['survived_because']}")
+
+    # Repair improvement metrics
+    repair_metrics = compute_repair_improvement_metrics(
+        summaries_r0, summaries_r1, pareto_r0, pareto_r1,
+        eval_r0, eval_r1, pair_suite_r1,
+    )
+    save("step10_repair_improvement_metrics", repair_metrics, out_dir)
+    log("step10", f"Repair claim supported: {repair_metrics['overall_improvement_claim_supported']}")
+    log("step10", f"Repair summary: {repair_metrics['honest_repair_summary']}")
 
     # ════════════════════════════════════════════════════════════════
     # STEP 11: CANDIDATE SELECTION

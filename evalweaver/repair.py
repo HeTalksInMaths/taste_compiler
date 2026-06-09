@@ -235,3 +235,158 @@ ADV_PAIRS_R1 = [
      "label_contract": "Concrete steps (pull, generate, no copy-paste) vs fake mechanism.",
      "intended_trap": "'Revolutionises your reporting' sounds transformative."},
 ]
+
+
+# ─────────────────────────────────────────────────────────────────────
+# REPAIR IMPROVEMENT METRICS (Task 22)
+# ─────────────────────────────────────────────────────────────────────
+
+def compute_repair_improvement_metrics(
+    summaries_r0,
+    summaries_r1,
+    pareto_r0,
+    pareto_r1,
+    eval_r0,
+    eval_r1,
+    pair_suite_r1,
+):
+    """
+    Compare old (R0) vs new (R1-lineage) scorers across subsets.
+
+    Subsets: common_heldout, new_heldout, adversarial_train, final_heldout.
+    Each subset reports: best_old_by_margin, best_new_by_margin,
+    best_old_by_accuracy, best_new_by_accuracy, margin_delta, accuracy_delta.
+
+    Flags:
+    - new_scorer_enters_pareto: True if any R1-lineage scorer is in pareto_r1
+    - beats_old_best: True if new best margin/accuracy exceeds old best
+    - share_of_eligible_ensemble: fraction of pareto that is R1-lineage
+
+    overall_improvement_claim_supported: True only if metrics support it.
+    honest_repair_summary: human-readable, never claims improvement unless supported.
+    """
+    # Identify old vs new scorers
+    old_sids = {s["scorer_id"] for s in summaries_r0}
+    new_sids = {s["scorer_id"] for s in summaries_r1 if s["scorer_id"] not in old_sids}
+
+    # Build lookup
+    summary_lookup = {s["scorer_id"]: s for s in summaries_r1}
+
+    # Define subsets from pair_suite_r1
+    all_pairs = pair_suite_r1.get("all", [])
+    test_pairs = pair_suite_r1.get("test", [])
+    adv_pairs = [p for p in all_pairs if p.get("split") == "adversarial"]
+
+    # Common heldout = test pairs that existed in R0 (pair_ids from R0 test)
+    # We'll use pairs with split=="test" as the heldout
+    # New heldout = test pairs added in R1 that weren't in R0 test
+    # For simplicity, we use the test split directly
+    # adversarial_train = adversarial pairs used in training
+    # final_heldout = entire test split
+
+    subset_definitions = {
+        "common_heldout": [p for p in test_pairs if not p["pair_id"].startswith("R1_")],
+        "new_heldout": [p for p in test_pairs if p["pair_id"].startswith("R1_")],
+        "adversarial_train": adv_pairs,
+        "final_heldout": test_pairs,
+    }
+
+    def _best_by_metric(sids, eval_data, pairs, metric="margin"):
+        """Find best scorer among sids for given pairs by metric."""
+        best_sid = None
+        best_val = float("-inf")
+        for sid in sids:
+            if sid not in eval_data:
+                continue
+            rows = eval_data[sid]
+            pair_ids = {p["pair_id"] for p in pairs}
+            relevant = [r for r in rows if r["pair_id"] in pair_ids]
+            if not relevant:
+                continue
+            if metric == "margin":
+                val = sum(r["margin"] for r in relevant) / len(relevant)
+            else:  # accuracy
+                val = sum(r["correct"] for r in relevant) / len(relevant)
+            if val > best_val:
+                best_val = val
+                best_sid = sid
+        return best_sid, best_val if best_sid else 0.0
+
+    subset_results = {}
+    for subset_name, pairs in subset_definitions.items():
+        if not pairs:
+            subset_results[subset_name] = {
+                "best_old_by_margin": None, "best_new_by_margin": None,
+                "best_old_by_accuracy": None, "best_new_by_accuracy": None,
+                "margin_delta": 0.0, "accuracy_delta": 0.0,
+            }
+            continue
+
+        old_best_margin_sid, old_best_margin = _best_by_metric(old_sids, eval_r1, pairs, "margin")
+        new_best_margin_sid, new_best_margin = _best_by_metric(new_sids, eval_r1, pairs, "margin")
+        old_best_acc_sid, old_best_acc = _best_by_metric(old_sids, eval_r1, pairs, "accuracy")
+        new_best_acc_sid, new_best_acc = _best_by_metric(new_sids, eval_r1, pairs, "accuracy")
+
+        subset_results[subset_name] = {
+            "best_old_by_margin": old_best_margin_sid,
+            "best_old_margin_value": round(old_best_margin, 4),
+            "best_new_by_margin": new_best_margin_sid,
+            "best_new_margin_value": round(new_best_margin, 4),
+            "best_old_by_accuracy": old_best_acc_sid,
+            "best_old_accuracy_value": round(old_best_acc, 4),
+            "best_new_by_accuracy": new_best_acc_sid,
+            "best_new_accuracy_value": round(new_best_acc, 4),
+            "margin_delta": round(new_best_margin - old_best_margin, 4),
+            "accuracy_delta": round(new_best_acc - old_best_acc, 4),
+        }
+
+    # Compute flags
+    pareto_r1_sids = {s["scorer_id"] for s in pareto_r1}
+    new_scorer_enters_pareto = bool(new_sids & pareto_r1_sids)
+    share_of_eligible_ensemble = (
+        len(new_sids & pareto_r1_sids) / max(1, len(pareto_r1_sids))
+    )
+
+    # beats_old_best: check final_heldout
+    final_res = subset_results.get("final_heldout", {})
+    beats_old_best_margin = final_res.get("margin_delta", 0) > 0
+    beats_old_best_accuracy = final_res.get("accuracy_delta", 0) > 0
+
+    # overall_improvement_claim_supported: True only if new scorer enters pareto
+    # AND beats old best on at least one dimension on final heldout
+    overall_improvement_claim_supported = (
+        new_scorer_enters_pareto
+        and (beats_old_best_margin or beats_old_best_accuracy)
+    )
+
+    # Honest repair summary
+    if overall_improvement_claim_supported:
+        dims = []
+        if beats_old_best_margin:
+            dims.append(f"margin (+{final_res.get('margin_delta', 0):.3f})")
+        if beats_old_best_accuracy:
+            dims.append(f"accuracy (+{final_res.get('accuracy_delta', 0):.3f})")
+        honest_repair_summary = (
+            f"Repair improved on: {', '.join(dims)}. "
+            f"{len(new_sids & pareto_r1_sids)}/{len(pareto_r1_sids)} Pareto members are new."
+        )
+    else:
+        reasons = []
+        if not new_scorer_enters_pareto:
+            reasons.append("no new scorer entered Pareto frontier")
+        if not beats_old_best_margin and not beats_old_best_accuracy:
+            reasons.append("new scorers did not beat old best on heldout")
+        honest_repair_summary = (
+            f"Repair did NOT demonstrably improve results. "
+            f"Reasons: {'; '.join(reasons)}."
+        )
+
+    return {
+        "subset_results": subset_results,
+        "new_scorer_enters_pareto": new_scorer_enters_pareto,
+        "beats_old_best_margin": beats_old_best_margin,
+        "beats_old_best_accuracy": beats_old_best_accuracy,
+        "share_of_eligible_ensemble": round(share_of_eligible_ensemble, 4),
+        "overall_improvement_claim_supported": overall_improvement_claim_supported,
+        "honest_repair_summary": honest_repair_summary,
+    }

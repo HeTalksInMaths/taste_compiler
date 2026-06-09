@@ -33,7 +33,15 @@ def eval_scorer(sid, code, pairs):
 def compute_summary(sid, rows, validation, hyps, round_idx):
     """
     Compute summary statistics for a scorer's evaluation results.
-    Returns a dict with accuracy, margins, spread, pair-type breakdowns, etc.
+    Returns a dict with accuracy, margins, spread, pair-type breakdowns,
+    and three-tier validity fields.
+
+    Three tiers:
+    - execution_valid: loads, runs, bounded, nonconstant
+    - pair_quality_valid: execution_valid AND pair_validation_accuracy >= 0.50
+                          AND pair_validation_margin > 0
+    - pareto_eligible: passes full eligibility filter (set by pareto module)
+    - valid: deprecated alias for execution_valid
     """
     # Split into train / heldout / adversarial
     tr = [r for r in rows if r["split"] == "train"]
@@ -60,15 +68,36 @@ def compute_summary(sid, rows, validation, hyps, round_idx):
     # Robustness warning
     rob_warns = [t for t, a in type_acc.items() if a < 0.45]
 
+    # Three-tier validity
+    # Tier 1: execution_valid — loads, runs, bounded output, nonconstant spread
+    execution_valid = validation.get("valid") is True
+
+    # Tier 2: pair_quality_valid
+    pair_val_acc = validation.get("pair_validation_accuracy", 0)
+    pair_val_margin = validation.get("pair_validation_margin", 0)
+    pair_quality_valid = (
+        execution_valid
+        and pair_val_acc >= 0.50
+        and pair_val_margin > 0
+    )
+
+    # Tier 3: pareto_eligible — set later by pareto module, default False
+    # pareto_ineligible_reason set by pareto module
+
     return {
         "scorer_id": sid,
         "hypothesis": hyp.get("hypothesis", ""),
         "lineage": hyp.get("lineage", "initial"),
         "generation_round": round_idx,
-        "valid": validation.get("valid") is True,
+        # Three-tier validity
+        "execution_valid": execution_valid,
+        "pair_quality_valid": pair_quality_valid,
+        "pareto_eligible": False,  # Set by pareto module
+        "pareto_ineligible_reason": "",  # Set by pareto module
+        "valid": execution_valid,  # Deprecated alias
         "validation_reason": validation.get("reason", ""),
-        "pair_validation_accuracy": validation.get("pair_validation_accuracy", 0),
-        "pair_validation_margin": validation.get("pair_validation_margin", 0),
+        "pair_validation_accuracy": pair_val_acc,
+        "pair_validation_margin": pair_val_margin,
         "pair_validation_spread": validation.get("pair_validation_spread", 0),
         "train_accuracy": acc(tr),
         "train_margin": mrg(tr),

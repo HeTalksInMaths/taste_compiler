@@ -10,6 +10,8 @@ import re
 import math
 import statistics
 
+from evalweaver.policy import hard_source_policy_violated
+
 
 # ─────────────────────────────────────────────────────────────────────
 # WORD SETS
@@ -76,15 +78,9 @@ def _domain_nouns(s):
 # ─────────────────────────────────────────────────────────────────────
 
 def violates_hard_source_policy(text, anchor):
-    """Hard source policy check — invented numerics or guarantee words."""
-    nums_a = set(re.findall(r'\b\d+(?:\.\d+)?%?\b', anchor or ''))
-    nums_t = set(re.findall(r'\b\d+(?:\.\d+)?%?\b', text or ''))
-    if nums_t - nums_a:
-        return True
-    low = (text or '').lower()
-    if any(g in low for g in ["guaranteed", "100%", "never fails", "zero errors"]):
-        return True
-    return False
+    """Hard source policy check — delegates to policy module's unified function.
+    Kept here for backward compatibility with scorer code that calls this directly."""
+    return hard_source_policy_violated(text, anchor)
 
 
 def probe_source_continuity(text, anchor):
@@ -168,7 +164,7 @@ def probe_abstract_jargon_density(text):
 
 def probe_specificity_without_invention(text, anchor):
     """Specificity that zeros if hard source policy is violated."""
-    if violates_hard_source_policy(text, anchor):
+    if hard_source_policy_violated(text, anchor):
         return 0.0
     toks = re.findall(r'[a-zA-Z]{3,}', (text or '').lower())
     caps = len(re.findall(r'\b[A-Z][a-z]{2,}\b', text or ''))
@@ -176,6 +172,131 @@ def probe_specificity_without_invention(text, anchor):
     av_hits = sum(1 for t in toks if t in avs)
     jargon = sum(1 for t in toks if t in JARGON_WORDS)
     return _clamp(caps * 0.08 + av_hits * 0.15 - jargon * 0.06)
+
+
+# ─────────────────────────────────────────────────────────────────────
+# F6: MECHANISM-RESULT ALIGNMENT (Task 23)
+# ─────────────────────────────────────────────────────────────────────
+
+def probe_mechanism_result_alignment(text):
+    """
+    Score alignment between mechanism clauses and result clauses.
+
+    Extract mechanism clauses (after "by ", "through ", "using ")
+    Extract result clauses (after "so ", "which means", "enabling", "letting")
+    Score: concrete action verb in mechanism, concrete object noun in mechanism,
+           concrete consequence verb in result, concrete operational noun in result.
+    Penalty for jargon-only mechanism/result, penalty for missing mechanism/result.
+    Does NOT require shared verbs between mechanism and result.
+    """
+    low = (text or '').lower()
+
+    # Extract mechanism clauses
+    mechanism_markers = ["by ", "through ", "using "]
+    mechanism_clauses = []
+    for marker in mechanism_markers:
+        idx = low.find(marker)
+        while idx >= 0:
+            end = min(idx + len(marker) + 80, len(low))
+            clause = low[idx + len(marker):end]
+            # Truncate at sentence boundary
+            sent_end = re.search(r'[.!?]', clause)
+            if sent_end:
+                clause = clause[:sent_end.start()]
+            mechanism_clauses.append(clause.strip())
+            idx = low.find(marker, idx + 1)
+
+    # Extract result clauses
+    result_markers = ["so ", "which means", "enabling", "letting"]
+    result_clauses = []
+    for marker in result_markers:
+        idx = low.find(marker)
+        while idx >= 0:
+            end = min(idx + len(marker) + 80, len(low))
+            clause = low[idx + len(marker):end]
+            sent_end = re.search(r'[.!?]', clause)
+            if sent_end:
+                clause = clause[:sent_end.start()]
+            result_clauses.append(clause.strip())
+            idx = low.find(marker, idx + 1)
+
+    # Concrete action verbs for mechanism
+    action_verbs = {
+        "flag", "detect", "track", "filter", "parse", "rank", "score",
+        "surface", "identify", "measure", "map", "trace", "pull", "push",
+        "check", "validate", "run", "test", "scan", "block", "alert",
+        "connect", "generate", "extract", "classify", "match", "compare",
+        "automate", "schedule", "trigger", "log", "monitor", "tag",
+    }
+
+    # Concrete object nouns for mechanism
+    object_nouns = {
+        "account", "ticket", "lead", "pipeline", "backlog", "query", "report",
+        "metric", "sprint", "deal", "customer", "threshold", "pattern",
+        "signal", "record", "item", "step", "rule", "variant", "page",
+        "email", "conversion", "engagement", "response", "request", "deploy",
+        "review", "change", "code", "test", "error", "alert", "log",
+    }
+
+    # Concrete consequence verbs for result
+    consequence_verbs = {
+        "save", "reduce", "increase", "improve", "eliminate", "avoid",
+        "prevent", "unblock", "close", "convert", "retain", "accelerate",
+        "simplify", "prioritise", "prioritize", "focus", "spend", "start",
+        "intervene", "prepare", "answer", "resolve", "ship", "deploy",
+    }
+
+    # Concrete operational nouns for result
+    operational_nouns = {
+        "time", "cost", "revenue", "churn", "conversion", "retention",
+        "approval", "deployment", "session", "meeting", "review", "sprint",
+        "week", "day", "hour", "minute", "production", "evidence", "decision",
+        "conversation", "account", "team", "work", "reply", "response",
+    }
+
+    # Jargon words (same as JARGON_WORDS in this module)
+    jargon_words = {
+        "advanced", "seamless", "intelligent", "robust", "scalable", "innovative",
+        "optimised", "optimized", "synergistic", "synergistically",
+        "platform", "solution", "engine", "experience", "world-class",
+        "next-generation", "transformative", "revolutionary", "leveraging",
+    }
+
+    score = 0.0
+
+    # Score mechanism clauses
+    if not mechanism_clauses:
+        score -= 0.3  # Penalty for missing mechanism
+    else:
+        for clause in mechanism_clauses:
+            tokens = re.findall(r'[a-z]{3,}', clause)
+            has_action = any(t in action_verbs for t in tokens)
+            has_object = any(t in object_nouns for t in tokens)
+            jargon_count = sum(1 for t in tokens if t in jargon_words)
+            if has_action:
+                score += 0.2
+            if has_object:
+                score += 0.2
+            if jargon_count > 2 and not has_action and not has_object:
+                score -= 0.25  # Jargon-only mechanism
+
+    # Score result clauses
+    if not result_clauses:
+        score -= 0.2  # Penalty for missing result (less than mechanism)
+    else:
+        for clause in result_clauses:
+            tokens = re.findall(r'[a-z]{3,}', clause)
+            has_consequence = any(t in consequence_verbs for t in tokens)
+            has_operational = any(t in operational_nouns for t in tokens)
+            jargon_count = sum(1 for t in tokens if t in jargon_words)
+            if has_consequence:
+                score += 0.15
+            if has_operational:
+                score += 0.15
+            if jargon_count > 2 and not has_consequence and not has_operational:
+                score -= 0.2  # Jargon-only result
+
+    return _clamp(score)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -262,6 +383,7 @@ def load_probes(py_ns):
     py_ns["probe_real_mechanism_quality"] = probe_real_mechanism_quality
     py_ns["probe_abstract_jargon_density"] = probe_abstract_jargon_density
     py_ns["probe_specificity_without_invention"] = probe_specificity_without_invention
+    py_ns["probe_mechanism_result_alignment"] = probe_mechanism_result_alignment
     py_ns["probe_causal_density"] = probe_causal_density
     py_ns["probe_specificity"] = probe_specificity
     py_ns["probe_audience_relevance"] = probe_audience_relevance

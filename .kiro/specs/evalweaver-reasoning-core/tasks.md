@@ -103,80 +103,80 @@ Priority order: modularize → push GitHub → run larger experiments → debug 
 
 ## Phase B: P0 v5.1 Fixes
 
-- [ ] 18. Unified source_policy_violations
-  - [ ] 18.1 Rewrite `source_policy_violations(text, anchor, policy=None, *, role="candidate", pair_type=None)` in `evalweaver/policy.py`
+- [x] 18. Unified source_policy_violations
+  - [x] 18.1 Rewrite `source_policy_violations(text, anchor, policy=None, *, role="candidate", pair_type=None)` in `evalweaver/policy.py`
     - Detect all canonical taxonomy types: invented_numeric_digit, invented_numeric_word, invented_time_or_quantity_claim, invented_named_entity, invented_customer_or_company_claim, invented_award_or_certification_claim, guarantee_claim
     - Return `[{violation_type, evidence, severity}]`
     - role supports: "positive_pair", "negative_pair", "candidate"
     - pair_type allows nuance for source_drift, specificity_trap
     - IMPORTANT: Always compute violations for negatives too (record but do not drop pair based on negative violations alone). Positive hard violations drop the pair. Candidate hard violations set policy_ok=false.
-  - [ ] 18.2 Implement named entity detection guardrails
+  - [x] 18.2 Implement named entity detection guardrails
     - Avoid false positives: sentence-initial words, allowed abbreviations (AI, SQL, API, BI, HR, VC, P&L), anchor-present names, generic role nouns
     - Strictly flag: new customer/company names, Fortune 500 claims, award/certification/compliance claims, SOC2/ISO/HIPAA unless in anchor
-  - [ ] 18.3 Rewrite `hard_source_policy_violated(text, anchor, policy=None, *, role="candidate", pair_type=None)`
+  - [x] 18.3 Rewrite `hard_source_policy_violated(text, anchor, policy=None, *, role="candidate", pair_type=None)`
     - Implementation: `any(v.get("severity") == "hard" for v in source_policy_violations(...))`
     - Filters by severity field, NOT list non-emptiness
-  - [ ] 18.4 Update `validate_pair_source_policy(pair)` to use unified function
+  - [x] 18.4 Update `validate_pair_source_policy(pair)` to use unified function
     - Always compute violations for both positive and negative
     - Record `negative_policy_violations` on the pair (do not drop based on these)
     - Drop pair only if positive has hard violations
-  - [ ] 18.5 Update `probe_specificity_without_invention(text, anchor)` to call `hard_source_policy_violated()`, NOT `source_policy_violations()` directly
+  - [x] 18.5 Update `probe_specificity_without_invention(text, anchor)` to call `hard_source_policy_violated()`, NOT `source_policy_violations()` directly
 
-- [ ] 19. Fix candidate policy_ok consistency
-  - [ ] 19.1 Update `score_candidates()` in `evalweaver/candidates.py`
+- [x] 19. Fix candidate policy_ok consistency
+  - [x] 19.1 Update `score_candidates()` in `evalweaver/candidates.py`
     - Each candidate stores `policy_violations` from `source_policy_violations(text, anchor, role="candidate")`
     - `policy_ok = not hard_source_policy_violated(text, anchor, role="candidate")`
     - Uses the SAME function as scorer veto path
-  - [ ] 19.2 Add `raw_mean_score` field (unnormalized mean across scorers)
-  - [ ] 19.3 Verify C004 gets: policy_ok=false, ≥1 hard violation, raw_mean_score ≈ 0
-  - [ ] 19.4 Verify C002 gets: score > 0.05 normalized (soft continuity works)
+  - [x] 19.2 Add `raw_mean_score` field (unnormalized mean across scorers)
+  - [x] 19.3 Verify C004 gets: policy_ok=false, ≥1 hard violation, raw_mean_score ≈ 0
+  - [x] 19.4 Verify C002 gets: score > 0.05 normalized (soft continuity works)
 
-- [ ] 20. Three-tier scorer validity
-  - [ ] 20.1 Update `ScorerSummary` in `evalweaver/evaluation.py` to use explicit booleans:
+- [x] 20. Three-tier scorer validity
+  - [x] 20.1 Update `ScorerSummary` in `evalweaver/evaluation.py` to use explicit booleans:
     - `execution_valid`: loads, runs, bounded, nonconstant spread
     - `pair_quality_valid`: execution_valid AND pair_validation_accuracy >= 0.50 AND pair_validation_margin > 0
     - `pareto_eligible`: passes full eligibility filter
     - `pareto_ineligible_reason`: str
     - `valid`: deprecated alias for execution_valid
-  - [ ] 20.2 Update `is_eligible_for_pareto()` to set `pareto_ineligible_reason`
-  - [ ] 20.3 Update reporting to show tier counts: "N execution_valid, M pair_quality_valid, K pareto_eligible"
+  - [x] 20.2 Update `is_eligible_for_pareto()` to set `pareto_ineligible_reason`
+  - [x] 20.3 Update reporting to show tier counts: "N execution_valid, M pair_quality_valid, K pareto_eligible"
 
-- [ ] 21. Fix py_run_scorer to expose raw value
-  - [ ] 21.1 Change `py_run_scorer` return to: `{ok, raw_value, value, out_of_range, error}`
+- [x] 21. Fix py_run_scorer to expose raw value
+  - [x] 21.1 Change `py_run_scorer` return to: `{ok, raw_value, value, out_of_range, error}`
     - `raw_value`: the actual float before clamping (None on exception)
     - `value`: clamped to [0.0, 1.0] (0.5 on exception)
     - `out_of_range`: True if raw_value < -0.01 or raw_value > 1.01
     - Validation uses raw_value/out_of_range. Evaluation uses clamped value.
-  - [ ] 21.2 Update `validate_scorer_on_pairs` to check `out_of_range` field from runner
+  - [x] 21.2 Update `validate_scorer_on_pairs` to check `out_of_range` field from runner
 
-- [ ] 22. Repair-improvement metrics
-  - [ ] 22.1 Implement `compute_repair_improvement_metrics()` in `evalweaver/repair.py`
+- [x] 22. Repair-improvement metrics
+  - [x] 22.1 Implement `compute_repair_improvement_metrics()` in `evalweaver/repair.py`
     - Compare old vs new scorers across subsets: common_heldout, new_heldout, adversarial_train, final_heldout
     - Each subset: best_old_by_margin, best_new_by_margin, best_old_by_accuracy, best_new_by_accuracy, margin_delta, accuracy_delta
     - Compute flags: new_scorer_enters_pareto, beats_old_best_on_* subsets, share_of_eligible_ensemble
     - `overall_improvement_claim_supported`: True only if metrics support it
     - `honest_repair_summary`: human-readable, never claims improvement unless supported
-  - [ ] 22.2 Persist as `step10_repair_improvement_metrics.json`
+  - [x] 22.2 Persist as `step10_repair_improvement_metrics.json`
 
-- [ ] 23. mechanism_result_alignment probe
-  - [ ] 23.1 Implement `probe_mechanism_result_alignment(text)` in `evalweaver/probes.py`
+- [x] 23. mechanism_result_alignment probe
+  - [x] 23.1 Implement `probe_mechanism_result_alignment(text)` in `evalweaver/probes.py`
     - Extract mechanism clauses (after "by ", "through ", "using ")
     - Extract result clauses (after "so ", "which means", "enabling", "letting")
     - Score: concrete action verb in mechanism, concrete object noun in mechanism, concrete consequence verb in result, concrete operational noun in result
     - Penalty for jargon-only mechanism/result clause, penalty for missing mechanism/result
     - Does NOT require shared verbs between mechanism and result
-  - [ ] 23.2 Add to probe loading in `load_probes()`
+  - [x] 23.2 Add to probe loading in `load_probes()`
 
-- [ ] 24. Artifact output path robustness
-  - [ ] 24.1 Verify `resolve_output_directory()` handles all cases:
+- [x] 24. Artifact output path robustness
+  - [x] 24.1 Verify `resolve_output_directory()` handles all cases:
     - EVALWEAVER_OUTPUT_DIR env var (primary)
     - ./ew_v51_outputs fallback
     - tempfile.mkdtemp() final fallback
     - Never assume /mnt/user-data
     - ZIP includes source only when __file__ exists
-  - [ ] 24.2 Remove hardcoded `/mnt/user-data` references from pipeline
+  - [x] 24.2 Remove hardcoded `/mnt/user-data` references from pipeline
 
-- [ ] 25. Phase B checkpoint
+- [x] 25. Phase B checkpoint
   - Run all tests, fix non-ambiguous failures, ask user only if genuinely blocked on a product decision.
 
 ## Phase C: Minimal P0 Tests
