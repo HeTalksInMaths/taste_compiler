@@ -5,13 +5,15 @@ import type { AuthAdapter } from '@/adapters/auth.js';
 import { InMemoryAdapter } from '@/adapters/in-memory-adapter.js';
 import { LocalJsonArtifactAdapter } from '@/adapters/local-artifact-adapter.js';
 import { MockAuthAdapter } from '@/adapters/auth.js';
+import { DynamoDBAdapter } from '@/adapters/dynamodb-adapter.js';
+import { S3ArtifactAdapter } from '@/adapters/s3-artifact-adapter.js';
 
 export function createStorageAdapter(config: AppConfig): StorageAdapter {
   switch (config.storageAdapter) {
     case 'memory':
       return new InMemoryAdapter();
     case 'dynamodb':
-      throw new Error('DynamoDB adapter not yet implemented. Set STORAGE_ADAPTER=memory for dev.');
+      return new DynamoDBAdapter();
     case 'postgres':
       throw new Error('Postgres adapter not yet implemented. Set STORAGE_ADAPTER=memory for dev.');
     default:
@@ -24,7 +26,7 @@ export function createArtifactAdapter(config: AppConfig): ArtifactAdapter {
     case 'local':
       return new LocalJsonArtifactAdapter();
     case 's3':
-      throw new Error('S3 artifact adapter not yet implemented. Set ARTIFACT_ADAPTER=local for dev.');
+      return new S3ArtifactAdapter();
     case 'vercel-blob':
       throw new Error('Vercel Blob adapter not yet implemented. Set ARTIFACT_ADAPTER=local for dev.');
     default:

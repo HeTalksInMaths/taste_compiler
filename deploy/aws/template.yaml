@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: EvalWeaver Marketplace Stripe - AWS Deployment
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs20.x
+    Environment:
+      Variables:
+        STORAGE_ADAPTER: dynamodb
+        ARTIFACT_ADAPTER: s3
+        AUTH_ADAPTER: mock
+        DYNAMODB_TABLE_NAME: !Ref EvalWeaverTable
+        ARTIFACT_S3_BUCKET: !Ref ArtifactsBucket
+        MARKET_SIM_MODE: mock_only
+        STRIPE_TEST_SESSION_CAP: '50'
+        PLATFORM_FEE_PERCENT: '25'
+
+Resources:
+  EvalWeaverTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: evalweaver-marketplace
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: GSI1PK
+          AttributeType: S
+        - AttributeName: GSI1SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: GSI1
+          KeySchema:
+            - AttributeName: GSI1PK
+              KeyType: HASH
+            - AttributeName: GSI1SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'evalweaver-artifacts-${AWS::AccountId}'
+
+  MarketplaceApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+
+  MarketplaceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: ../../dist/lambda/
+      Events:
+        ApiCatchAll:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MarketplaceApi
+            Path: /{proxy+}
+            Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EvalWeaverTable
+        - S3CrudPolicy:
+            BucketName: !Ref ArtifactsBucket
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway URL
+    Value: !Sub 'https://${MarketplaceApi}.execute-api.${AWS::Region}.amazonaws.com/prod'
+  TableName:
+    Description: DynamoDB Table
+    Value: !Ref EvalWeaverTable
+  BucketName:
+    Description: Artifacts S3 Bucket
+    Value: !Ref ArtifactsBucket
