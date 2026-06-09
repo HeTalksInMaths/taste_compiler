@@ -36,3 +36,11 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Secrets — NEVER commit
+.env
+.env.*
+.aws/
+aws/credentials
+*.pem
+*.key

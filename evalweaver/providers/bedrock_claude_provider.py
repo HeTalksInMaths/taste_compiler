@@ -5,7 +5,7 @@ candidates, and mutations. It is NOT required for local testing —
 MockProvider is the default.
 
 Requirements:
-    pip install boto3
+    pip install 'evalweaver[aws]'
     AWS credentials configured (env vars, profile, or IAM role)
 """
 
@@ -31,11 +31,13 @@ class BedrockClaudeProvider:
         aws_region: Optional[str] = None,
         max_tokens: int = 4096,
         temperature: float = 0.7,
+        profile_name: Optional[str] = None,
     ):
         self._model_id = model_id
         self._aws_region = aws_region or os.environ.get("AWS_REGION", "us-east-1")
         self._max_tokens = max_tokens
         self._temperature = temperature
+        self._profile_name = profile_name
         self._client = None
 
     @property
@@ -50,6 +52,44 @@ class BedrockClaudeProvider:
     def aws_region(self) -> str:
         return self._aws_region
 
+    def validate_credentials(self):
+        """Validate AWS credentials are configured. Returns caller identity dict."""
+        try:
+            import boto3
+        except ImportError:
+            raise ImportError(
+                "boto3 is required for BedrockClaudeProvider.\n"
+                "Install with: pip install 'evalweaver[aws]'\n"
+                "Then configure credentials:\n"
+                "  aws configure sso\n"
+                "  export AWS_PROFILE=next-sandbox\n"
+                "  export AWS_REGION=us-east-1"
+            )
+        try:
+            session = boto3.Session(
+                profile_name=self._profile_name,
+                region_name=self._aws_region,
+            )
+            sts = session.client("sts")
+            identity = sts.get_caller_identity()
+            return {
+                "account": identity["Account"],
+                "arn": identity["Arn"],
+                "user_id": identity["UserId"],
+            }
+        except Exception as e:
+            raise RuntimeError(
+                f"AWS credentials not configured or invalid.\n"
+                f"Error: {e}\n\n"
+                f"Setup instructions:\n"
+                f"  aws configure sso\n"
+                f"  # or\n"
+                f"  aws configure --profile next-sandbox\n"
+                f"  export AWS_PROFILE=next-sandbox\n"
+                f"  export AWS_REGION=us-east-1\n"
+                f"  aws sts get-caller-identity\n"
+            ) from e
+
     def _get_client(self):
         """Lazy-init the Bedrock Runtime client."""
         if self._client is None:
@@ -57,13 +97,18 @@ class BedrockClaudeProvider:
                 import boto3
             except ImportError:
                 raise ImportError(
-                    "boto3 is required for BedrockClaudeProvider. "
-                    "Install with: pip install boto3"
+                    "boto3 is required for BedrockClaudeProvider.\n"
+                    "Install with: pip install 'evalweaver[aws]'\n"
+                    "Then configure credentials:\n"
+                    "  aws configure sso\n"
+                    "  export AWS_PROFILE=next-sandbox\n"
+                    "  export AWS_REGION=us-east-1"
                 )
-            self._client = boto3.client(
-                "bedrock-runtime",
+            session = boto3.Session(
+                profile_name=self._profile_name,
                 region_name=self._aws_region,
             )
+            self._client = session.client("bedrock-runtime")
         return self._client
 
     def _converse(self, system_prompt: str, user_message: str) -> str:

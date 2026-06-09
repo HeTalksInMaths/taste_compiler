@@ -11,7 +11,7 @@ from evalweaver.pipeline import run_pipeline
 from evalweaver.artifacts import reset_trace
 
 
-def run_experiment(config_path, seeds=5, scorers=None, pairs=None):
+def run_experiment(config_path, seeds=5, scorers=None, pairs=None, provider_name=None, model_id=None):
     """
     Run multiple seeds of the pipeline with optional larger scorer/pair counts.
 
@@ -20,6 +20,8 @@ def run_experiment(config_path, seeds=5, scorers=None, pairs=None):
         seeds: Number of seeds to run (0 to seeds-1).
         scorers: Override n_init_scorers if provided.
         pairs: Override n_init_pairs if provided.
+        provider_name: LLM provider name (e.g., 'mock', 'bedrock').
+        model_id: Model ID for the provider.
 
     Returns:
         dict with per-seed results and summary statistics.
@@ -31,6 +33,10 @@ def run_experiment(config_path, seeds=5, scorers=None, pairs=None):
         base_config["n_init_scorers"] = scorers
     if pairs is not None:
         base_config["n_init_pairs"] = pairs
+    if provider_name is not None:
+        base_config["provider_name"] = provider_name
+    if model_id is not None:
+        base_config["model_id"] = model_id
 
     # Create experiment output directory
     exp_dir = os.path.join("experiments", f"{goal}_experiment")
