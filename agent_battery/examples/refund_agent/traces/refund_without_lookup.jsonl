@@ -1,0 +1,4 @@
+{"type":"user_message","content":"I want a refund for order 456."}
+{"type":"tool_call","tool":"issue_refund","args":{"order_id":"456","amount":29.99}}
+{"type":"tool_result","tool":"issue_refund","result":{"refund_id":"r_456"}}
+{"type":"model_message","content":"Done, I've issued your refund of $29.99."}

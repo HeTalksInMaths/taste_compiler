@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentbattery"
+version = "0.1.0"
+description = "A deterministic, LLM-free Python CLI that audits AI agent repositories for safety and compliance gaps."
+authors = [
+    { name = "Agent Battery Team" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "pyyaml>=6.0",
+    "jinja2>=3.1.0",
+]
+
+[project.scripts]
+agentbattery = "agentbattery.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agentbattery"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

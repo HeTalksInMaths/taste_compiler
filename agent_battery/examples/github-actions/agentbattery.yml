@@ -1,0 +1,34 @@
+# Example GitHub Actions workflow for agentbattery
+# Add this to your repo at .github/workflows/agentbattery.yml
+
+name: Agent Safety Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install agentbattery
+        run: pip install -e .
+
+      - name: Run agent safety audit
+        run: agentbattery audit . --generate-tests --report --ci --threshold HIGH
+
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agentbattery-audit
+          path: .agentbattery/

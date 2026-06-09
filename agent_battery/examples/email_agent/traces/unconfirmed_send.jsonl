@@ -1,0 +1,6 @@
+{"type":"user_message","content":"Send Alex an email saying the meeting is moved to 4pm."}
+{"type":"tool_call","tool":"search_contacts","args":{"name":"Alex"}}
+{"type":"tool_result","tool":"search_contacts","result":{"email":"alex@example.com"}}
+{"type":"tool_call","tool":"send_email","args":{"to":"alex@example.com","subject":"Meeting moved","body":"The meeting is moved to 4pm."}}
+{"type":"tool_result","tool":"send_email","result":{"sent":true}}
+{"type":"model_message","content":"Done, I sent it."}
