@@ -327,10 +327,26 @@ def run_pipeline(config):
     # ════════════════════════════════════════════════════════════════
     # STEP 1: TASTE RESEARCH
     # ════════════════════════════════════════════════════════════════
-    log("step1", "Taste research (mocked realistic web search output)")
-    save("step1_raw_research", RAW_RESEARCH, out_dir)
-    combined_research = "\n\n---\n\n".join(RAW_RESEARCH.values())
-    log("step1", f"Research: {len(combined_research)} chars", "ok")
+    generate_step = config.get("generate_step", None)
+    provider_generation_enabled = config.get("provider_generation_enabled", False)
+
+    if provider_generation_enabled and generate_step == "research":
+        log("step1", "Taste research (LIVE Bedrock generation)")
+        from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+        provider = BedrockClaudeProvider(
+            model_id=config.get("model_id", "us.anthropic.claude-sonnet-4-6"),
+            aws_region=config.get("aws_region", "us-east-1"),
+        )
+        research_result = provider.generate_research(goal, raw_text)
+        save("step1_raw_research", research_result, out_dir)
+        save("step1_raw_research_live", research_result, out_dir)
+        combined_research = "\n\n---\n\n".join(str(v) for v in research_result.values())
+        log("step1", f"LIVE research from Bedrock: {len(combined_research)} chars", "ok")
+    else:
+        log("step1", "Taste research (mocked realistic web search output)")
+        save("step1_raw_research", RAW_RESEARCH, out_dir)
+        combined_research = "\n\n---\n\n".join(RAW_RESEARCH.values())
+        log("step1", f"Research: {len(combined_research)} chars", "ok")
 
     # ════════════════════════════════════════════════════════════════
     # STEP 2: TASTE MAP
@@ -613,7 +629,12 @@ def run_pipeline(config):
     import uuid
     save("trace", TRACE, out_dir)
 
-    # Run metadata (Task 33)
+    # Run metadata — honest about what the provider actually did
+    provider_generation_enabled = config.get("provider_generation_enabled", False)
+    generate_step = config.get("generate_step", None)
+    generated_steps = [generate_step] if (provider_generation_enabled and generate_step) else []
+    bedrock_calls_made = len(generated_steps)  # Will increase when live gen is wired
+
     run_metadata = {
         "run_id": str(uuid.uuid4()),
         "provider_name": config.get("provider_name", "mock"),
@@ -621,6 +642,10 @@ def run_pipeline(config):
         "aws_region": config.get("aws_region", None),
         "execution_backend": config.get("execution_backend", "local-exec"),
         "artifact_store": config.get("artifact_store", "local-fs"),
+        "provider_generation_enabled": provider_generation_enabled,
+        "bedrock_validation_passed": config.get("bedrock_validation_passed", None),
+        "bedrock_calls_made": bedrock_calls_made,
+        "generated_steps": generated_steps,
     }
 
     save("run_summary_v5", {

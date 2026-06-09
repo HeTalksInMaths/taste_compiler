@@ -1,10 +1,33 @@
 """CLI entry point: python -m evalweaver run --config configs/persuasive.yaml"""
 
 import argparse
+import os
 import sys
 
 from evalweaver.config import load_config
 from evalweaver.pipeline import run_pipeline
+
+
+def _validate_bedrock(model_id, region):
+    """Validate Bedrock credentials before run. Returns validation dict."""
+    try:
+        import boto3
+    except ImportError:
+        return {"passed": False, "error": "boto3 not installed. Run: python3 -m pip install boto3"}
+
+    try:
+        session = boto3.Session(region_name=region)
+        sts = session.client("sts")
+        identity = sts.get_caller_identity()
+        return {
+            "passed": True,
+            "account": identity["Account"],
+            "arn": identity["Arn"],
+            "region": region,
+            "model_id": model_id,
+        }
+    except Exception as e:
+        return {"passed": False, "error": str(e)}
 
 
 def main():
@@ -27,74 +50,37 @@ def main():
         type=str,
         choices=["mock", "bedrock"],
         default="mock",
-        help="LLM provider to use (default: mock)",
+        help="LLM provider (default: mock). Bedrock validates credentials but uses static artifacts unless --generate-step is specified.",
     )
     run_parser.add_argument(
         "--model-id",
         type=str,
-        default="anthropic.claude-3-sonnet-20240229-v1:0",
-        help="Model ID for the provider (default: anthropic.claude-3-sonnet-20240229-v1:0)",
+        default="us.anthropic.claude-sonnet-4-6",
+        help="Model ID for the provider (default: us.anthropic.claude-sonnet-4-6)",
+    )
+    run_parser.add_argument(
+        "--generate-step",
+        type=str,
+        choices=["research", "taste_map", "scorer_hypotheses", "pairs", "candidates"],
+        default=None,
+        help="Run ONE real Bedrock generation for the specified step (requires --provider bedrock)",
     )
 
     # ── experiment subcommand ──
     exp_parser = subparsers.add_parser(
         "experiment", help="Run multi-seed experiment for a single topic"
     )
-    exp_parser.add_argument(
-        "--config", "-c",
-        type=str,
-        required=True,
-        help="Path to YAML config file",
-    )
-    exp_parser.add_argument(
-        "--seeds",
-        type=int,
-        default=5,
-        help="Number of seeds to run (default: 5)",
-    )
-    exp_parser.add_argument(
-        "--scorers",
-        type=int,
-        default=None,
-        help="Override n_init_scorers (optional)",
-    )
-    exp_parser.add_argument(
-        "--pairs",
-        type=int,
-        default=None,
-        help="Override n_init_pairs (optional)",
-    )
-    exp_parser.add_argument(
-        "--provider",
-        type=str,
-        choices=["mock", "bedrock"],
-        default="mock",
-        help="LLM provider to use (default: mock)",
-    )
-    exp_parser.add_argument(
-        "--model-id",
-        type=str,
-        default="anthropic.claude-3-sonnet-20240229-v1:0",
-        help="Model ID for the provider (default: anthropic.claude-3-sonnet-20240229-v1:0)",
-    )
+    exp_parser.add_argument("--config", "-c", type=str, required=True)
+    exp_parser.add_argument("--seeds", type=int, default=5)
+    exp_parser.add_argument("--scorers", type=int, default=None)
+    exp_parser.add_argument("--pairs", type=int, default=None)
+    exp_parser.add_argument("--provider", type=str, choices=["mock", "bedrock"], default="mock")
+    exp_parser.add_argument("--model-id", type=str, default="us.anthropic.claude-sonnet-4-6")
 
     # ── batch subcommand ──
-    batch_parser = subparsers.add_parser(
-        "batch", help="Run experiments across multiple topics"
-    )
-    batch_parser.add_argument(
-        "--configs",
-        type=str,
-        nargs="+",
-        required=True,
-        help="Paths to YAML config files",
-    )
-    batch_parser.add_argument(
-        "--seeds",
-        type=int,
-        default=1,
-        help="Number of seeds per topic (default: 1)",
-    )
+    batch_parser = subparsers.add_parser("batch", help="Run experiments across multiple topics")
+    batch_parser.add_argument("--configs", type=str, nargs="+", required=True)
+    batch_parser.add_argument("--seeds", type=int, default=1)
 
     args = parser.parse_args()
 
@@ -102,6 +88,37 @@ def main():
         config = load_config(args.config)
         config["provider_name"] = args.provider
         config["model_id"] = args.model_id
+        config["aws_region"] = os.environ.get("AWS_REGION", "us-east-1")
+        config["generate_step"] = args.generate_step
+
+        # Bedrock provider: validate credentials and print honest status
+        if args.provider == "bedrock":
+            region = config["aws_region"]
+            validation = _validate_bedrock(args.model_id, region)
+            config["bedrock_validation_passed"] = validation["passed"]
+
+            if validation["passed"]:
+                print(f"Bedrock credentials valid: account={validation['account']} region={region}")
+            else:
+                print(f"WARNING: Bedrock validation failed: {validation['error']}")
+
+            if args.generate_step:
+                if not validation["passed"]:
+                    print("ERROR: Cannot use --generate-step without valid credentials.")
+                    sys.exit(1)
+                config["provider_generation_enabled"] = True
+                print(f"Live generation enabled for step: {args.generate_step}")
+            else:
+                config["provider_generation_enabled"] = False
+                print(
+                    "Bedrock provider selected as metadata only; "
+                    "provider_generation_enabled=false; static artifacts are still used."
+                )
+                print("Use --generate-step <step> to make a real Bedrock call.")
+        else:
+            config["provider_generation_enabled"] = False
+            config["bedrock_validation_passed"] = None
+
         result = run_pipeline(config)
         if result.get("success"):
             print(f"\nPipeline complete. Output: {result.get('output_dir', 'unknown')}")
@@ -130,10 +147,7 @@ def main():
 
     elif args.command == "batch":
         from evalweaver.experiment import run_batch
-        batch_summary = run_batch(
-            config_paths=args.configs,
-            seeds=args.seeds,
-        )
+        batch_summary = run_batch(config_paths=args.configs, seeds=args.seeds)
         total = batch_summary["topics"]
         passed = sum(1 for r in batch_summary["per_topic_results"] if r["success"])
         print(f"\nBatch complete. {passed}/{total} topics succeeded.")
