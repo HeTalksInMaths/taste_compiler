@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getAppContext } from '@/config/context.js';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const ctx = getAppContext();
   try {
