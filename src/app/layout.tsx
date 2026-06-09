@@ -46,6 +46,9 @@ function Nav() {
           <a href="/simulations" className="text-sm text-white/60 transition hover:text-white">
             Simulations
           </a>
+          <a href="/live-sim" className="text-sm text-amber-400/80 transition hover:text-amber-300">
+            Live Sim ⚡
+          </a>
           <a href="/dashboard" className="text-sm text-white/60 transition hover:text-white">
             Dashboard
           </a>
