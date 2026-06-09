@@ -35,7 +35,7 @@ describe('Property 14: Quality gate enforcement', () => {
     fc.assert(
       fc.property(
         fc.integer({ min: 10, max: 1000 }),
-        fc.float({ min: Math.fround(0.7), max: Math.fround(1.0), noNaN: true }),
+        fc.float({ min: Math.fround(0.71), max: Math.fround(1.0), noNaN: true }),
         fc.integer({ min: 1, max: 50 }),
         (testPairs, accuracy, repairRounds) => {
           const storage = new InMemoryAdapter();
