@@ -66,6 +66,12 @@ def main():
         help="Run ONE real Bedrock generation for the specified step (requires --provider bedrock)",
     )
     run_parser.add_argument(
+        "--live-canary",
+        action="store_true",
+        default=False,
+        help="Run all reasoning steps live via Bedrock (research, taste_map, pairs, candidates). Scorer code remains static.",
+    )
+    run_parser.add_argument(
         "--artifact-store",
         type=str,
         choices=["local", "s3"],
@@ -99,12 +105,29 @@ def main():
 
     if args.command == "run":
         config = load_config(args.config)
+
+        # --live-canary implies --provider bedrock
+        if args.live_canary:
+            if args.provider == "mock":
+                # If user explicitly passed --provider mock with --live-canary, error
+                # But if it's just the default, override to bedrock
+                if "--provider" in sys.argv and "mock" in sys.argv:
+                    print("ERROR: --live-canary cannot be used with --provider mock")
+                    sys.exit(1)
+            args.provider = "bedrock"
+
         config["provider_name"] = args.provider
         config["model_id"] = args.model_id
         config["aws_region"] = os.environ.get("AWS_REGION", "us-east-1")
         config["generate_step"] = args.generate_step
         config["artifact_store"] = args.artifact_store
         config["s3_bucket"] = args.s3_bucket or os.environ.get("TASTE_COMPILER_ARTIFACT_BUCKET")
+        config["live_canary"] = args.live_canary
+
+        # --live-canary: enable multi-step live generation
+        if args.live_canary:
+            config["provider_generation_enabled"] = True
+            config["generate_steps"] = ["research", "taste_map", "pairs", "candidates"]
 
         # Bedrock provider: validate credentials and print honest status
         if args.provider == "bedrock":
@@ -117,7 +140,12 @@ def main():
             else:
                 print(f"WARNING: Bedrock validation failed: {validation['error']}")
 
-            if args.generate_step:
+            if args.live_canary:
+                if not validation["passed"]:
+                    print("ERROR: --live-canary requires valid Bedrock credentials.")
+                    sys.exit(1)
+                print(f"Live canary mode: steps={config['generate_steps']}")
+            elif args.generate_step:
                 if not validation["passed"]:
                     print("ERROR: Cannot use --generate-step without valid credentials.")
                     sys.exit(1)
@@ -134,7 +162,13 @@ def main():
             config["provider_generation_enabled"] = False
             config["bedrock_validation_passed"] = None
 
-        result = run_pipeline(config)
+        try:
+            result = run_pipeline(config)
+        except RuntimeError as e:
+            print(f"\nPipeline failed (live step error): {e}")
+            # In canary mode, failure_points.md is already written by the pipeline
+            sys.exit(1)
+
         if result.get("success"):
             print(f"\nPipeline complete. Output: {result.get('output_dir', 'unknown')}")
             sys.exit(0)

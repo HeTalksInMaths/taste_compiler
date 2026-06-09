@@ -41,6 +41,8 @@ class BedrockClaudeProvider:
         self._profile_name = profile_name
         self._client = None
         self._last_call_meta = None
+        self._last_prompt = None
+        self._last_raw_response = None
 
     @property
     def provider_name(self) -> str:
@@ -58,6 +60,16 @@ class BedrockClaudeProvider:
     def last_call_meta(self) -> Optional[dict]:
         """Return metadata from the last _converse call."""
         return self._last_call_meta
+
+    @property
+    def last_prompt(self) -> Optional[dict]:
+        """Return the prompt from the last _converse call."""
+        return self._last_prompt
+
+    @property
+    def last_raw_response(self) -> Optional[str]:
+        """Return the raw text response from the last _converse call."""
+        return self._last_raw_response
 
     def validate_credentials(self):
         """Validate AWS credentials are configured. Returns caller identity dict."""
@@ -119,7 +131,7 @@ class BedrockClaudeProvider:
             boto_config = Config(
                 retries={"mode": "standard", "max_attempts": 5},
                 connect_timeout=10,
-                read_timeout=120,
+                read_timeout=300,
             )
             self._client = session.client("bedrock-runtime", config=boto_config)
         return self._client
@@ -130,9 +142,11 @@ class BedrockClaudeProvider:
 
         Uses the Converse API (not InvokeModel) for cross-model compatibility.
         Records call metadata (latency, retries) on self._last_call_meta.
+        Stores prompt and raw response for artifact capture.
         """
         client = self._get_client()
         error_str = None
+        self._last_prompt = {"system": system_prompt, "user": user_message}
         start_time = time.time()
         try:
             response = client.converse(
@@ -159,6 +173,7 @@ class BedrockClaudeProvider:
                 "max_attempts": 5,
                 "error": error_str,
             }
+            self._last_raw_response = None
             raise
         end_time = time.time()
         latency_ms = round((end_time - start_time) * 1000, 1)
@@ -173,8 +188,11 @@ class BedrockClaudeProvider:
         message = output.get("message", {})
         content = message.get("content", [])
         if content and content[0].get("text"):
-            return content[0]["text"]
-        return ""
+            response_text = content[0]["text"]
+        else:
+            response_text = ""
+        self._last_raw_response = response_text
+        return response_text
 
     def _parse_json_response(self, response_text: str) -> dict:
         """Extract JSON from a model response (handles markdown code blocks)."""
@@ -185,11 +203,16 @@ class BedrockClaudeProvider:
             end = text.find("```", start)
             if end > start:
                 text = text[start:end].strip()
+            else:
+                # No closing backticks (response may be truncated) - take everything after ```json
+                text = text[start:].strip()
         elif "```" in text:
             start = text.find("```") + 3
             end = text.find("```", start)
             if end > start:
                 text = text[start:end].strip()
+            else:
+                text = text[start:].strip()
         return json.loads(text)
 
     def generate_research(self, goal: str, raw_text: str) -> dict:
@@ -289,7 +312,13 @@ class BedrockClaudeProvider:
             f"Scorer weaknesses:\n{json.dumps(scorer_weaknesses, indent=2)}\n\n"
             f"Generate {count} diverse evaluation pairs as a JSON array."
         )
-        response = self._converse(system, user)
+        # Pairs need more tokens due to verbose text content
+        old_max = self._max_tokens
+        self._max_tokens = max(old_max, 16384)
+        try:
+            response = self._converse(system, user)
+        finally:
+            self._max_tokens = old_max
         return self._parse_json_response(response)
 
     def generate_mutations(self, failure_packet: dict, count: int) -> list:
