@@ -65,6 +65,19 @@ def main():
         default=None,
         help="Run ONE real Bedrock generation for the specified step (requires --provider bedrock)",
     )
+    run_parser.add_argument(
+        "--artifact-store",
+        type=str,
+        choices=["local", "s3"],
+        default="local",
+        help="Where to store output artifacts (default: local)",
+    )
+    run_parser.add_argument(
+        "--s3-bucket",
+        type=str,
+        default=os.environ.get("TASTE_COMPILER_ARTIFACT_BUCKET"),
+        help="S3 bucket for artifact upload (default: TASTE_COMPILER_ARTIFACT_BUCKET env)",
+    )
 
     # ── experiment subcommand ──
     exp_parser = subparsers.add_parser(
@@ -90,6 +103,8 @@ def main():
         config["model_id"] = args.model_id
         config["aws_region"] = os.environ.get("AWS_REGION", "us-east-1")
         config["generate_step"] = args.generate_step
+        config["artifact_store"] = args.artifact_store
+        config["s3_bucket"] = args.s3_bucket or os.environ.get("TASTE_COMPILER_ARTIFACT_BUCKET")
 
         # Bedrock provider: validate credentials and print honest status
         if args.provider == "bedrock":

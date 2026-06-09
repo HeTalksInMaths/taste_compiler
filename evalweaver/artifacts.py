@@ -79,3 +79,33 @@ def build_zip_archive(out_dir: str):
 def reset_trace():
     """Clear the trace log (for testing)."""
     TRACE.clear()
+
+
+def upload_to_s3(out_dir, bucket, run_id, region=None):
+    """Upload output directory to s3://<bucket>/runs/<run_id>/. Returns metadata dict."""
+    import boto3
+    session = boto3.Session(region_name=region)
+    s3 = session.client("s3")
+    prefix = f"runs/{run_id}"
+    uploaded_keys = []
+
+    for fname in sorted(os.listdir(out_dir)):
+        fpath = os.path.join(out_dir, fname)
+        if os.path.isfile(fpath):
+            key = f"{prefix}/{fname}"
+            s3.upload_file(fpath, bucket, key)
+            uploaded_keys.append(key)
+
+    # Upload zip
+    zip_key = f"{prefix}/evalweaver_outputs.zip"
+    zip_path = os.path.join(out_dir, "evalweaver_v51_outputs.zip")
+    if os.path.exists(zip_path):
+        s3.upload_file(zip_path, bucket, zip_key)
+        uploaded_keys.append(zip_key)
+
+    return {
+        "bucket": bucket,
+        "prefix": prefix,
+        "zip_s3_key": zip_key if os.path.exists(zip_path) else None,
+        "uploaded_count": len(uploaded_keys),
+    }

@@ -11,6 +11,7 @@ Requirements:
 
 import json
 import os
+import time
 from typing import Optional
 
 
@@ -39,6 +40,7 @@ class BedrockClaudeProvider:
         self._temperature = temperature
         self._profile_name = profile_name
         self._client = None
+        self._last_call_meta = None
 
     @property
     def provider_name(self) -> str:
@@ -51,6 +53,11 @@ class BedrockClaudeProvider:
     @property
     def aws_region(self) -> str:
         return self._aws_region
+
+    @property
+    def last_call_meta(self) -> Optional[dict]:
+        """Return metadata from the last _converse call."""
+        return self._last_call_meta
 
     def validate_credentials(self):
         """Validate AWS credentials are configured. Returns caller identity dict."""
@@ -91,10 +98,11 @@ class BedrockClaudeProvider:
             ) from e
 
     def _get_client(self):
-        """Lazy-init the Bedrock Runtime client."""
+        """Lazy-init the Bedrock Runtime client with standard retry config."""
         if self._client is None:
             try:
                 import boto3
+                from botocore.config import Config
             except ImportError:
                 raise ImportError(
                     "boto3 is required for BedrockClaudeProvider.\n"
@@ -108,7 +116,12 @@ class BedrockClaudeProvider:
                 profile_name=self._profile_name,
                 region_name=self._aws_region,
             )
-            self._client = session.client("bedrock-runtime")
+            boto_config = Config(
+                retries={"mode": "standard", "max_attempts": 5},
+                connect_timeout=10,
+                read_timeout=120,
+            )
+            self._client = session.client("bedrock-runtime", config=boto_config)
         return self._client
 
     def _converse(self, system_prompt: str, user_message: str) -> str:
@@ -116,22 +129,45 @@ class BedrockClaudeProvider:
         Call Bedrock Runtime Converse API and return the text response.
 
         Uses the Converse API (not InvokeModel) for cross-model compatibility.
+        Records call metadata (latency, retries) on self._last_call_meta.
         """
         client = self._get_client()
-        response = client.converse(
-            modelId=self._model_id,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [{"text": user_message}],
-                }
-            ],
-            system=[{"text": system_prompt}],
-            inferenceConfig={
-                "maxTokens": self._max_tokens,
-                "temperature": self._temperature,
-            },
-        )
+        error_str = None
+        start_time = time.time()
+        try:
+            response = client.converse(
+                modelId=self._model_id,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [{"text": user_message}],
+                    }
+                ],
+                system=[{"text": system_prompt}],
+                inferenceConfig={
+                    "maxTokens": self._max_tokens,
+                    "temperature": self._temperature,
+                },
+            )
+        except Exception as e:
+            end_time = time.time()
+            latency_ms = round((end_time - start_time) * 1000, 1)
+            error_str = str(e)
+            self._last_call_meta = {
+                "latency_ms": latency_ms,
+                "retry_mode": "standard",
+                "max_attempts": 5,
+                "error": error_str,
+            }
+            raise
+        end_time = time.time()
+        latency_ms = round((end_time - start_time) * 1000, 1)
+        self._last_call_meta = {
+            "latency_ms": latency_ms,
+            "retry_mode": "standard",
+            "max_attempts": 5,
+            "error": None,
+        }
         # Extract text from response
         output = response.get("output", {})
         message = output.get("message", {})

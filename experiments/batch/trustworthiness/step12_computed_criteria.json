@@ -1,0 +1,122 @@
+[
+  {
+    "criterion": "taste_research_present",
+    "status": "pass",
+    "computed_value": 3,
+    "threshold": "3"
+  },
+  {
+    "criterion": "taste_map_rewards_present",
+    "status": "pass",
+    "computed_value": 5,
+    "threshold": "3"
+  },
+  {
+    "criterion": "taste_map_punishes_present",
+    "status": "pass",
+    "computed_value": 3,
+    "threshold": "1"
+  },
+  {
+    "criterion": "scorer_hypotheses_r0",
+    "status": "pass",
+    "computed_value": 8,
+    "threshold": "8"
+  },
+  {
+    "criterion": "scorer_code_valid_r0",
+    "status": "pass",
+    "computed_value": 8,
+    "threshold": "2"
+  },
+  {
+    "criterion": "pair_policy_violations",
+    "status": "pass",
+    "computed_value": 0,
+    "threshold": "0"
+  },
+  {
+    "criterion": "initial_heldout_count",
+    "status": "pass",
+    "computed_value": 8,
+    "threshold": "8"
+  },
+  {
+    "criterion": "pareto_r0_nonempty",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "failure_packet_has_instructions",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "repair_hypotheses_generated",
+    "status": "pass",
+    "computed_value": 6,
+    "threshold": "6"
+  },
+  {
+    "criterion": "adversarial_pairs_generated",
+    "status": "pass",
+    "computed_value": 12,
+    "threshold": "12"
+  },
+  {
+    "criterion": "fake_mechanism_pairs",
+    "status": "pass",
+    "computed_value": 12,
+    "threshold": "3"
+  },
+  {
+    "criterion": "heldout_grew",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "final_heldout_count",
+    "status": "pass",
+    "computed_value": 15,
+    "threshold": "15"
+  },
+  {
+    "criterion": "pareto_r1_nonempty",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "eligible_ensemble_exists",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "candidate_selected",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "hype_baseline_zeroed",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "c002_not_zeroed",
+    "status": "pass",
+    "computed_value": true,
+    "threshold": "True"
+  },
+  {
+    "criterion": "mutation_instructions_not_all_repeated",
+    "status": "warning",
+    "computed_value": false,
+    "threshold": "True"
+  }
+]

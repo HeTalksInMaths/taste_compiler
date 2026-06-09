@@ -1,0 +1,235 @@
+[
+  {
+    "pair_id": "R1_A01",
+    "anchor": "We help marketing teams measure campaign performance.",
+    "positive": "We help marketing teams see which campaign elements drove conversions \u2014 by tracing each sign-up back to the specific ad variant, email, and landing page that touched it.",
+    "negative": "We help marketing teams measure campaign performance by leveraging our advanced AI engine which synergistically optimises your entire marketing funnel through intelligent automation.",
+    "pair_type": "fake_mechanism",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "attacks_scorer_ids": [
+      "S_r0_001",
+      "S_r0_004"
+    ],
+    "attacked_shortcut": "causal_density rewards 'by' regardless of what follows",
+    "label_contract": "Both use 'by' \u2014 positive names concrete steps, negative uses jargon.",
+    "intended_trap": "'By leveraging our advanced AI engine' has high causal_density score.",
+    "split": "adversarial"
+  },
+  {
+    "pair_id": "R1_A02",
+    "anchor": "Our tool saves engineers time on code reviews.",
+    "positive": "Our tool saves engineers time on code reviews by flagging only changes that touch security or performance boundaries \u2014 so they spend review time on code that actually matters.",
+    "negative": "Our tool saves engineers time on code reviews through our next-generation intelligent analysis engine powered by advanced machine learning technology.",
+    "pair_type": "fake_mechanism",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "attacks_scorer_ids": [
+      "S_r0_006"
+    ],
+    "attacked_shortcut": "source_continuity + causal_density doesn't penalise abstract mechanism",
+    "label_contract": "Positive: concrete what-is-flagged. Negative: abstract engine.",
+    "intended_trap": "'Through our intelligent analysis engine' passes causal_density.",
+    "split": "adversarial"
+  },
+  {
+    "pair_id": "R1_A03",
+    "anchor": "Our software helps teams collaborate better.",
+    "positive": "Instead of chasing updates across five Slack threads, our software shows the three decisions stuck in review \u2014 so one async session unblocks a week of work.",
+    "negative": "Instead of the old way of working, our software helps teams collaborate better through a seamless, advanced platform that makes everything more efficient.",
+    "pair_type": "subtle_quality_gap",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "attacks_scorer_ids": [
+      "S_r0_002"
+    ],
+    "attacked_shortcut": "audience_relevance probe fires on 'Instead of' in both",
+    "label_contract": "Both have before-state. Only positive has concrete mechanism + result.",
+    "intended_trap": "Negative mimics before/after but collapses into jargon.",
+    "split": "adversarial"
+  },
+  {
+    "pair_id": "R1_A04",
+    "anchor": "Turn customer feedback into product decisions.",
+    "positive": "Instead of debating priorities in planning, rank your product decisions by the weight of customer signal behind each \u2014 so the meeting starts with evidence, not opinion.",
+    "negative": "Instead of struggling with product prioritisation, our advanced AI transforms your customer feedback into optimised decision-making solutions seamlessly.",
+    "pair_type": "subtle_quality_gap",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "attacks_scorer_ids": [
+      "S_r0_002",
+      "S_r0_001"
+    ],
+    "attacked_shortcut": "Both have 'Instead of' + problem-state language",
+    "label_contract": "Positive completes problem\u2192mechanism\u2192result. Negative has fake mechanism.",
+    "intended_trap": "'Instead of struggling' + 'advanced AI transforms' looks like full argument.",
+    "split": "adversarial"
+  },
+  {
+    "pair_id": "R1_A05",
+    "anchor": "We help companies reduce customer churn.",
+    "positive": "We help CS teams flag accounts before they churn \u2014 by detecting drops in feature usage and surfacing them to the right rep automatically.",
+    "negative": "We help companies reduce customer churn through our world-class intelligent customer success platform that guarantees retention improvement.",
+    "pair_type": "source_drift",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "attacks_scorer_ids": [
+      "S_r0_006"
+    ],
+    "attacked_shortcut": "source_continuity doesn't catch guarantee words",
+    "label_contract": "Positive: concrete detection + action. Negative: hype + guarantee word.",
+    "intended_trap": "'Guarantee' should trigger hard source policy veto.",
+    "split": "adversarial"
+  },
+  {
+    "pair_id": "R1_T01",
+    "anchor": "We help engineering teams deploy faster.",
+    "positive": "We help engineering teams deploy faster by running automated smoke tests against your staging environment and blocking deploys that fail \u2014 before they reach production.",
+    "negative": "We help engineering teams deploy faster through our revolutionary DevOps intelligence platform powered by advanced AI for seamless deployment automation.",
+    "pair_type": "fake_mechanism",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Concrete gate mechanism vs fake mechanism.",
+    "intended_trap": "'DevOps intelligence platform' sounds technical.",
+    "split": "test",
+    "frozen": true
+  },
+  {
+    "pair_id": "R1_T02",
+    "anchor": "Our platform helps companies reduce churn.",
+    "positive": "Our platform alerts CS managers when at-risk accounts drop below their engagement threshold \u2014 so the team intervenes before the cancellation window closes.",
+    "negative": "Our innovative retention platform helps companies reduce churn through our seamless intelligent customer success optimisation suite.",
+    "pair_type": "subtle_quality_gap",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Alert + threshold + intervention vs jargon chain.",
+    "intended_trap": "'Customer success optimisation suite' sounds professional.",
+    "split": "test",
+    "frozen": true
+  },
+  {
+    "pair_id": "R1_T03",
+    "anchor": "We help startups raise their seed round.",
+    "positive": "We help startups raise their seed round by running their pitch through the objections their target investors raise most often \u2014 so they walk in prepared for the actual conversation.",
+    "negative": "We help startups raise their seed round leveraging our groundbreaking pitch optimisation platform that maximises your investor readiness through advanced AI.",
+    "pair_type": "fake_mechanism",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Concrete test (objections) vs fake mechanism + hype.",
+    "intended_trap": "'Maximises investor readiness' sounds outcome-focused.",
+    "split": "test",
+    "frozen": true
+  },
+  {
+    "pair_id": "R1_T04",
+    "anchor": "Our analytics tool makes data easier to understand.",
+    "positive": "Instead of a BI request and a three-day wait, our tool lets anyone on the team answer their own data questions in minutes \u2014 by pulling from connected sources and letting them filter without SQL.",
+    "negative": "Our advanced analytics solution makes data insights easier through our intelligent self-service platform that optimises your entire data workflow seamlessly.",
+    "pair_type": "subtle_quality_gap",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Full argument progression vs abstract platform claim.",
+    "intended_trap": "'Self-service platform' + 'intelligent' sounds concrete.",
+    "split": "test",
+    "frozen": true
+  },
+  {
+    "pair_id": "R1_T05",
+    "anchor": "Automate your customer support with AI.",
+    "positive": "Automate your customer support with AI that drafts responses from your best-resolved tickets \u2014 so quality improves each week without anyone reviewing every reply.",
+    "negative": "Automate your customer support with our world-class AI that delivers guaranteed effortless support automation through our advanced intelligent platform.",
+    "pair_type": "hype_trap",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Mechanism + improvement loop vs hype density.",
+    "intended_trap": "'Guaranteed effortless' should hard-veto.",
+    "split": "test",
+    "frozen": true
+  },
+  {
+    "pair_id": "R1_T06",
+    "anchor": "We built an AI tool that helps product teams ship faster.",
+    "positive": "We built an AI tool that helps product teams ship faster by ranking each backlog item by customer-signal weight \u2014 so sprint planning starts with evidence rather than opinion.",
+    "negative": "We built an amazing AI tool that helps product teams ship faster through our synergistic product intelligence engine that seamlessly optimises your entire delivery pipeline.",
+    "pair_type": "fake_mechanism",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Ranking mechanism (concrete) vs synergistic engine (fake).",
+    "intended_trap": "'Optimises your entire delivery pipeline' sounds comprehensive.",
+    "split": "test",
+    "frozen": true
+  },
+  {
+    "pair_id": "R1_T07",
+    "anchor": "We make financial reporting faster for accountants.",
+    "positive": "We make financial reporting faster for accountants by pulling from connected accounts and generating consolidated P&Ls automatically \u2014 no copy-paste, no manual reconciliation.",
+    "negative": "We make financial reporting faster for accountants through our world-class intelligent financial automation platform that revolutionises your reporting workflow.",
+    "pair_type": "fake_mechanism",
+    "source_policy": {
+      "numeric_claims_must_be_in_anchor": true,
+      "new_named_entities_must_be_in_anchor": true,
+      "allowed_mechanism_expansion": true,
+      "allowed_domain_specificity": true,
+      "allowed_reasonable_rephrasing": true
+    },
+    "label_contract": "Concrete steps (pull, generate, no copy-paste) vs fake mechanism.",
+    "intended_trap": "'Revolutionises your reporting' sounds transformative.",
+    "split": "test",
+    "frozen": true
+  }
+]

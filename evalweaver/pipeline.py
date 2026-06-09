@@ -5,7 +5,9 @@ This module replicates the end-to-end flow of the v5 script using
 all the extracted modules.
 """
 
+import hashlib
 import statistics
+import time
 from collections import defaultdict
 
 from evalweaver.artifacts import log, save, resolve_output_directory, build_zip_archive
@@ -329,6 +331,7 @@ def run_pipeline(config):
     # ════════════════════════════════════════════════════════════════
     generate_step = config.get("generate_step", None)
     provider_generation_enabled = config.get("provider_generation_enabled", False)
+    bedrock_call_meta = None
 
     if provider_generation_enabled and generate_step == "research":
         log("step1", "Taste research (LIVE Bedrock generation)")
@@ -337,7 +340,15 @@ def run_pipeline(config):
             model_id=config.get("model_id", "us.anthropic.claude-sonnet-4-6"),
             aws_region=config.get("aws_region", "us-east-1"),
         )
-        research_result = provider.generate_research(goal, raw_text)
+        try:
+            research_result = provider.generate_research(goal, raw_text)
+            bedrock_call_meta = provider.last_call_meta
+        except Exception as e:
+            bedrock_call_meta = getattr(provider, '_last_call_meta', None) or {
+                "latency_ms": 0, "retry_mode": "standard", "max_attempts": 5, "error": str(e),
+            }
+            log("step1", f"Bedrock generation failed: {e}", "error")
+            raise RuntimeError(f"Bedrock generation failed for step 'research': {e}") from e
         save("step1_raw_research", research_result, out_dir)
         save("step1_raw_research_live", research_result, out_dir)
         combined_research = "\n\n---\n\n".join(str(v) for v in research_result.values())
@@ -626,7 +637,6 @@ def run_pipeline(config):
     # SAVE ALL ARTIFACTS + ZIP
     # ════════════════════════════════════════════════════════════════
     from evalweaver.artifacts import TRACE
-    import uuid
     save("trace", TRACE, out_dir)
 
     # Run metadata — honest about what the provider actually did
@@ -635,17 +645,28 @@ def run_pipeline(config):
     generated_steps = [generate_step] if (provider_generation_enabled and generate_step) else []
     bedrock_calls_made = len(generated_steps)  # Will increase when live gen is wired
 
+    # run_id: <goal>-<timestamp>-<short_hash>
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    short_hash = hashlib.sha256(f"{goal}{ts}{seed}".encode()).hexdigest()[:8]
+    run_id = f"{goal}-{ts}-{short_hash}"
+
     run_metadata = {
-        "run_id": str(uuid.uuid4()),
+        "run_id": run_id,
         "provider_name": config.get("provider_name", "mock"),
         "model_id": config.get("model_id", "mock-v1-seeded"),
         "aws_region": config.get("aws_region", None),
         "execution_backend": config.get("execution_backend", "local-exec"),
-        "artifact_store": config.get("artifact_store", "local-fs"),
+        "artifact_store": config.get("artifact_store", "local"),
         "provider_generation_enabled": provider_generation_enabled,
         "bedrock_validation_passed": config.get("bedrock_validation_passed", None),
         "bedrock_calls_made": bedrock_calls_made,
         "generated_steps": generated_steps,
+        "bedrock_call_meta": {
+            "latency_ms": bedrock_call_meta.get("latency_ms", 0),
+            "retry_mode": "standard",
+            "max_attempts": 5,
+            "error": bedrock_call_meta.get("error", None),
+        } if bedrock_calls_made > 0 and bedrock_call_meta else None,
     }
 
     save("run_summary_v5", {
@@ -679,6 +700,24 @@ def run_pipeline(config):
     }, out_dir)
 
     zip_path = build_zip_archive(out_dir)
+
+    # S3 upload if configured
+    s3_meta = None
+    if config.get("artifact_store") == "s3":
+        bucket = config.get("s3_bucket")
+        if not bucket:
+            log("artifacts", "ERROR: --artifact-store s3 requires --s3-bucket or TASTE_COMPILER_ARTIFACT_BUCKET env", "error")
+        else:
+            from evalweaver.artifacts import upload_to_s3
+            s3_meta = upload_to_s3(out_dir, bucket, run_id, config.get("aws_region"))
+            log("artifacts", f"Uploaded to s3://{bucket}/runs/{run_id}/ ({s3_meta['uploaded_count']} files)", "ok")
+
+    # Update run_metadata with S3 info
+    run_metadata["artifact_store"] = config.get("artifact_store", "local")
+    run_metadata["s3_bucket"] = config.get("s3_bucket") if config.get("artifact_store") == "s3" else None
+    run_metadata["s3_prefix"] = f"runs/{run_id}" if s3_meta else None
+    run_metadata["zip_s3_key"] = s3_meta["zip_s3_key"] if s3_meta else None
+
     log("done", f"Artifacts saved to {out_dir}", "ok")
 
     return {

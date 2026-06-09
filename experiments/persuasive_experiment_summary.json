@@ -1,7 +1,7 @@
 {
   "goal": "persuasive",
   "config_path": "configs/persuasive.yaml",
-  "seeds": 2,
+  "seeds": 3,
   "per_seed_results": [
     {
       "seed": 0,
@@ -20,6 +20,15 @@
       "selected_candidate": "C001",
       "criteria_pass": true,
       "output_dir": "experiments/persuasive_experiment/seed_1"
+    },
+    {
+      "seed": 2,
+      "success": true,
+      "pareto_size": 7,
+      "best_test_margin": 0.29241666666666666,
+      "selected_candidate": "C001",
+      "criteria_pass": true,
+      "output_dir": "experiments/persuasive_experiment/seed_2"
     }
   ],
   "summary": {
@@ -27,7 +36,7 @@
     "std_test_margin": 0.0,
     "most_frequent_winner": "C001",
     "candidate_win_counts": {
-      "C001": 2
+      "C001": 3
     },
     "all_criteria_pass": true,
     "success_rate": 1.0

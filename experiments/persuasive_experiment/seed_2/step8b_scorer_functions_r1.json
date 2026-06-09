@@ -1,0 +1,260 @@
+{
+  "S_r1_001": {
+    "hypothesis": "Mutation of S_r0_001: adds explicit fake-mechanism detection. Argument progression x real_mechanism_quality product \u2014 if real mechanism is negative (fake), score collapses. Addresses fake_mechanism trap failures.",
+    "lineage": "mutation",
+    "code": "\ndef scorer(text, anchor, params):\n    FAKE_VETO = 0.25\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > FAKE_VETO:\n        return _clamp(probe_argument_progression(text) * 0.1)\n    prog = probe_argument_progression(text)\n    rmq  = _clamp(probe_real_mechanism_quality(text))\n    continuity = probe_source_continuity(text, anchor)\n    base = prog * 0.55 + rmq * 0.45\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.2275,
+      "pair_validation_spread": 0.573125,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.573125,
+          "neg_score": 0.0,
+          "margin": 0.573125,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.0,
+          "neg_score": 0.04000000000000001,
+          "margin": -0.04000000000000001,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.33687500000000004,
+          "neg_score": 0.0,
+          "margin": 0.33687500000000004,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.04000000000000001,
+          "neg_score": 0.0,
+          "margin": 0.04000000000000001,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r1_002": {
+    "hypothesis": "Mutation of S_r0_002: adds real_mechanism_quality gate on audience relevance amplification. Relevance only amplifies if mechanism is genuine. Addresses subtle_quality_gap where both have before/after but differ in mechanism quality.",
+    "lineage": "mutation",
+    "code": "\ndef scorer(text, anchor, params):\n    REL_BOOST_CAP = 1.3\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    rel    = probe_audience_relevance(text)\n    mech   = probe_causal_density(text)\n    rmq    = _clamp(probe_real_mechanism_quality(text))\n    continuity = probe_source_continuity(text, anchor)\n    # Real mechanism quality gates the relevance amplifier\n    amp_factor = 1 + rel * (REL_BOOST_CAP - 1) * rmq\n    base = mech * amp_factor * 0.6 + rel * 0.4\n    return _clamp(base * (0.6 + 0.4 * continuity) * (1 - jargon * 0.6))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 1.0,
+      "pair_validation_margin": 0.2331474120082816,
+      "pair_validation_spread": 0.6053142857142858,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.6053142857142858,
+          "neg_score": 0.072,
+          "margin": 0.5333142857142859,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.09199999999999998,
+          "neg_score": 0.06666666666666665,
+          "margin": 0.025333333333333333,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.2426086956521739,
+          "neg_score": 0.05,
+          "margin": 0.19260869565217392,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.18133333333333332,
+          "neg_score": 0.0,
+          "margin": 0.18133333333333332,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r1_003": {
+    "hypothesis": "Targets subtle_quality_gap blind spot: argument_progression x specificity_without_invention. Both must be above threshold. Abstract jargon density vetoes. Source continuity is soft floor only.",
+    "lineage": "blind_node_repair",
+    "code": "\ndef scorer(text, anchor, params):\n    PROG_THRESHOLD = 0.4\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > 0.3:\n        return 0.0\n    prog = probe_argument_progression(text)\n    spec = probe_specificity_without_invention(text, anchor)\n    continuity = probe_source_continuity(text, anchor)\n    if prog < PROG_THRESHOLD:\n        base = prog * spec * 0.5\n    else:\n        base = (prog * 0.5 + spec * 0.5)\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.5,
+      "pair_validation_margin": 0.15312499999999998,
+      "pair_validation_spread": 0.30624999999999997,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.30624999999999997,
+          "neg_score": 0.0,
+          "margin": 0.30624999999999997,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.30624999999999997,
+          "neg_score": 0.0,
+          "margin": 0.30624999999999997,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        }
+      ]
+    }
+  },
+  "S_r1_004": {
+    "hypothesis": "Recombination of S_r0_001 and S_r0_003: argument_progression x real_mechanism_quality (from S_r0_001) gated by jargon check (from S_r0_003). Hard policy only veto. Soft continuity weights the total.",
+    "lineage": "recombination",
+    "code": "\ndef scorer(text, anchor, params):\n    JARGON_THRESHOLD = 0.2\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > JARGON_THRESHOLD:\n        return _clamp(probe_argument_progression(text) * 0.15)\n    prog = probe_argument_progression(text)\n    rmq  = _clamp(probe_real_mechanism_quality(text))\n    spec = probe_specificity_without_invention(text, anchor)\n    continuity = probe_source_continuity(text, anchor)\n    base = prog * 0.4 + rmq * 0.4 + spec * 0.2\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.17783333333333334,
+      "pair_validation_spread": 0.455,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.455,
+          "neg_score": 0.0,
+          "margin": 0.455,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.011333333333333332,
+          "neg_score": 0.06,
+          "margin": -0.048666666666666664,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.24499999999999997,
+          "neg_score": 0.0,
+          "margin": 0.24499999999999997,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.06,
+          "neg_score": 0.0,
+          "margin": 0.06,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r1_005": {
+    "hypothesis": "Novel: full argument quality score = progression + real mechanism quality + specificity_without_invention \u2014 abstract_jargon. Epistemic calibration multiplies the total. Hard policy is the only gate.",
+    "lineage": "novel_composition",
+    "code": "\ndef scorer(text, anchor, params):\n    EP_BOOST = 1.15\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    prog   = probe_argument_progression(text)\n    rmq    = _clamp(probe_real_mechanism_quality(text))\n    spec   = probe_specificity_without_invention(text, anchor)\n    ep     = probe_epistemic_calibration(text)\n    continuity = probe_source_continuity(text, anchor)\n    quality = prog * 0.35 + rmq * 0.35 + spec * 0.3 - jargon * 0.5\n    ep_factor = _clamp(1.0 + (ep - 0.5) * (EP_BOOST - 1.0) * 2)\n    return _clamp(quality * ep_factor * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 1.0,
+      "pair_validation_margin": 0.16010833333333332,
+      "pair_validation_spread": 0.39812499999999995,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.39812499999999995,
+          "neg_score": 0.0,
+          "margin": 0.39812499999999995,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.016999999999999998,
+          "neg_score": 0.0,
+          "margin": 0.016999999999999998,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.21437499999999998,
+          "neg_score": 0.0,
+          "margin": 0.21437499999999998,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.010933333333333317,
+          "neg_score": 0.0,
+          "margin": 0.010933333333333317,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r1_006": {
+    "hypothesis": "Novel: treats source continuity as the primary signal, amplified by argument quality. A text that preserves the intent AND adds a real mechanism is maximally persuasive. No soft gate zeros.",
+    "lineage": "novel_composition",
+    "code": "\ndef scorer(text, anchor, params):\n    CONTINUITY_WEIGHT = 0.4\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    continuity = probe_source_continuity(text, anchor)\n    prog = probe_argument_progression(text)\n    rmq  = _clamp(probe_real_mechanism_quality(text))\n    jargon = probe_abstract_jargon_density(text)\n    quality = prog * 0.5 + rmq * 0.5 - jargon * 0.4\n    return _clamp(CONTINUITY_WEIGHT * continuity + (1 - CONTINUITY_WEIGHT) * _clamp(quality))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.1725,
+      "pair_validation_spread": 0.69,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.69,
+          "neg_score": 0.30000000000000004,
+          "margin": 0.3899999999999999,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.16666666666666666,
+          "neg_score": 0.2333333333333333,
+          "margin": -0.06666666666666665,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.51,
+          "neg_score": 0.30000000000000004,
+          "margin": 0.20999999999999996,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.15666666666666668,
+          "neg_score": 0.0,
+          "margin": 0.15666666666666668,
+          "correct": true
+        }
+      ]
+    }
+  }
+}
