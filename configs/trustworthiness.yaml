@@ -1,0 +1,12 @@
+goal: trustworthiness
+raw_text: "EvalWeaver measures whether content builds reader trust through accurate claims, proper sourcing, epistemic humility, and absence of misleading rhetoric."
+seed: 7
+n_rounds: 2
+n_init_scorers: 8
+n_repair_scorers: 6
+n_init_pairs: 24
+n_repair_pairs: 12
+test_fraction: 0.33
+n_candidates: 4
+min_init_heldout: 8
+min_r1_heldout: 15

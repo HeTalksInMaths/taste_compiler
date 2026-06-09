@@ -1,0 +1,404 @@
+[
+  {
+    "ts": "20:16:43",
+    "stage": "boot",
+    "status": "ok",
+    "msg": "All helper probes loaded (v5 full set)"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step1",
+    "status": "info",
+    "msg": "Taste research (mocked realistic web search output)"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step1",
+    "status": "ok",
+    "msg": "Research: 1896 chars"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step2",
+    "status": "info",
+    "msg": "Building taste map"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step2",
+    "status": "ok",
+    "msg": "Taste map: 5 rewards, 3 punishes"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step3",
+    "status": "info",
+    "msg": "NLP theory -> probe implementation mapping"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step3",
+    "status": "ok",
+    "msg": "NLP theory: 10 probes mapped"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "info",
+    "msg": "Generating scorer hypotheses (Step A)..."
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "Step A: 8 scorer hypotheses"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "info",
+    "msg": "Step B: Writing scorer functions..."
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_001: valid=True acc=50% margin=0.267 spread=0.674"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_002: valid=True acc=100% margin=0.249 spread=0.611"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_003: valid=True acc=75% margin=0.190 spread=0.315"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_004: valid=True acc=75% margin=0.186 spread=0.420"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_005: valid=True acc=75% margin=0.233 spread=0.495"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_006: valid=True acc=75% margin=0.288 spread=0.722"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_007: valid=True acc=75% margin=0.253 spread=0.650"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "  S_r0_008: valid=True acc=25% margin=0.007 spread=0.028"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step4",
+    "status": "ok",
+    "msg": "Valid scorers R0: 8/8"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step5",
+    "status": "info",
+    "msg": "Generating pair suite with source policy validation..."
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step5",
+    "status": "ok",
+    "msg": "Policy check: 21 valid, 0 invalid (dropped)"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step5",
+    "status": "ok",
+    "msg": "Suite: 13 train, 8 heldout (frozen)"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step5",
+    "status": "info",
+    "msg": "Heldout >= 8: YES (8)"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step5",
+    "status": "info",
+    "msg": "Pair types: {'hype_trap': 5, 'fake_mechanism': 6, 'specificity_trap': 2, 'subtle_quality_gap': 6, 'source_drift': 2}"
+  },
+  {
+    "ts": "20:16:43",
+    "stage": "step6",
+    "status": "info",
+    "msg": "Evaluating scorers (R0)..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step6",
+    "status": "ok",
+    "msg": "R0 Pareto: 5 eligible scorers"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step6",
+    "status": "info",
+    "msg": "  * S_r0_001 -- best test margin (0.256)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step6",
+    "status": "info",
+    "msg": "  * S_r0_003 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step6",
+    "status": "info",
+    "msg": "  * S_r0_004 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step6",
+    "status": "info",
+    "msg": "  * S_r0_002 -- best test acc (100%)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step6",
+    "status": "info",
+    "msg": "  * S_r0_006 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step7",
+    "status": "info",
+    "msg": "Building failure packet R0..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step7",
+    "status": "ok",
+    "msg": "Failed visible pairs: 3"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step7",
+    "status": "info",
+    "msg": "Trap failures: {'subtle_quality_gap': 2, 'specificity_trap': 1}"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step7",
+    "status": "info",
+    "msg": "Mutation instructions: 2"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "info",
+    "msg": "Repair: scorer hypothesis generation R1..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "Step A: 6 evolved hypotheses"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "  S_r1_001 [mutation]: valid=True acc=75% margin=0.228"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "  S_r1_002 [mutation]: valid=True acc=100% margin=0.233"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "  S_r1_003 [blind_node_repair]: valid=True acc=50% margin=0.153"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "  S_r1_004 [recombination]: valid=True acc=75% margin=0.178"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "  S_r1_005 [novel_composition]: valid=True acc=100% margin=0.160"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step8",
+    "status": "ok",
+    "msg": "  S_r1_006 [novel_composition]: valid=True acc=75% margin=0.172"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step9",
+    "status": "info",
+    "msg": "Generating adversarial pairs targeting top scorer weaknesses..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step9",
+    "status": "ok",
+    "msg": "Adversarial policy check: 12 valid, 0 invalid"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step9",
+    "status": "ok",
+    "msg": "Adv train: 5, new heldout: 7"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step9",
+    "status": "info",
+    "msg": "Growing heldout: 8 -> 15 pairs"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step9",
+    "status": "info",
+    "msg": "Heldout >= 15: YES (15)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step9",
+    "status": "info",
+    "msg": "Adversarial pair types: {'subtle_quality_gap': 4, 'fake_mechanism': 6, 'source_drift': 1, 'hype_trap': 1}"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "Round 1 full evaluation (all scorers x full pair suite)..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "ok",
+    "msg": "R1 Pareto: 7 eligible scorers"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r0_001 [initial] te_acc=80% te_mrg=0.292 -- best test margin (0.292)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r0_007 [initial] te_acc=80% te_mrg=0.278 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r0_003 [initial] te_acc=87% te_mrg=0.236 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r1_001 [mutation] te_acc=87% te_mrg=0.227 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r0_004 [initial] te_acc=87% te_mrg=0.227 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r0_002 [initial] te_acc=93% te_mrg=0.214 -- best test acc (93%)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "  * S_r1_005 [novel_composition] te_acc=87% te_mrg=0.174 -- non-dominated"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "Repair claim supported: False"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step10",
+    "status": "info",
+    "msg": "Repair summary: Repair did NOT demonstrably improve results. Reasons: new scorers did not beat old best on heldout."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step11",
+    "status": "info",
+    "msg": "Candidate generation and scoring..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step11",
+    "status": "ok",
+    "msg": "Eligible ensemble: ['S_r0_001', 'S_r0_007', 'S_r0_003', 'S_r1_001', 'S_r0_004', 'S_r0_002', 'S_r1_005']"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step11",
+    "status": "ok",
+    "msg": "Selected: C001 (mechanism_first)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step11",
+    "status": "info",
+    "msg": "Hype baseline score: 0.000 (should be 0)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step11",
+    "status": "info",
+    "msg": "C002 audience_pain score: 0.200 (should be > 0 -- F4 fix check)"
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step12",
+    "status": "info",
+    "msg": "Computing spec criteria from artifacts..."
+  },
+  {
+    "ts": "20:16:44",
+    "stage": "step12",
+    "status": "ok",
+    "msg": "PASS=19 WARN=1 FAIL=0"
+  }
+]

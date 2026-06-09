@@ -1,0 +1,58 @@
+{
+  "subset_results": {
+    "common_heldout": {
+      "best_old_by_margin": "S_r0_001",
+      "best_old_margin_value": 0.2561,
+      "best_new_by_margin": "S_r1_003",
+      "best_new_margin_value": 0.1902,
+      "best_old_by_accuracy": "S_r0_002",
+      "best_old_accuracy_value": 1.0,
+      "best_new_by_accuracy": "S_r1_005",
+      "best_new_accuracy_value": 0.875,
+      "margin_delta": -0.0659,
+      "accuracy_delta": -0.125
+    },
+    "new_heldout": {
+      "best_old_by_margin": "S_r0_007",
+      "best_old_margin_value": 0.334,
+      "best_new_by_margin": "S_r1_001",
+      "best_new_margin_value": 0.2753,
+      "best_old_by_accuracy": "S_r0_005",
+      "best_old_accuracy_value": 0.8571,
+      "best_new_by_accuracy": "S_r1_004",
+      "best_new_accuracy_value": 1.0,
+      "margin_delta": -0.0587,
+      "accuracy_delta": 0.1429
+    },
+    "adversarial_train": {
+      "best_old_by_margin": "S_r0_007",
+      "best_old_margin_value": 0.3288,
+      "best_new_by_margin": "S_r1_003",
+      "best_new_margin_value": 0.2783,
+      "best_old_by_accuracy": "S_r0_002",
+      "best_old_accuracy_value": 1.0,
+      "best_new_by_accuracy": "S_r1_005",
+      "best_new_accuracy_value": 1.0,
+      "margin_delta": -0.0505,
+      "accuracy_delta": 0.0
+    },
+    "final_heldout": {
+      "best_old_by_margin": "S_r0_001",
+      "best_old_margin_value": 0.2924,
+      "best_new_by_margin": "S_r1_001",
+      "best_new_margin_value": 0.2273,
+      "best_old_by_accuracy": "S_r0_002",
+      "best_old_accuracy_value": 0.9333,
+      "best_new_by_accuracy": "S_r1_005",
+      "best_new_accuracy_value": 0.8667,
+      "margin_delta": -0.0651,
+      "accuracy_delta": -0.0667
+    }
+  },
+  "new_scorer_enters_pareto": true,
+  "beats_old_best_margin": false,
+  "beats_old_best_accuracy": false,
+  "share_of_eligible_ensemble": 0.2857,
+  "overall_improvement_claim_supported": false,
+  "honest_repair_summary": "Repair did NOT demonstrably improve results. Reasons: new scorers did not beat old best on heldout."
+}

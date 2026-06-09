@@ -191,22 +191,22 @@ Priority order: modularize → push GitHub → run larger experiments → debug 
   - [x] 26.7 Repair metrics honesty — overall_improvement_claim_supported matches actual data
   - [x] 26.8 End-to-end smoke test — full pipeline produces expected artifacts
 
-- [ ] 27. Phase C checkpoint
+- [x] 27. Phase C checkpoint
   - Run all tests, fix non-ambiguous failures, ask user only if genuinely blocked on a product decision.
 
 ## Phase D: Larger Experiments
 
-- [ ] 28. Single-topic experiment runner
-  - [ ] 28.1 Add experiment CLI: `python -m evalweaver experiment --config configs/persuasive.yaml --seeds 5 --scorers 12 --pairs 36`
-  - [ ] 28.2 Run multiple seeds, larger scorer/pair counts for goal=persuasive
-  - [ ] 28.3 Export summary comparison report (JSON + console table)
+- [x] 28. Single-topic experiment runner
+  - [x] 28.1 Add experiment CLI: `python -m evalweaver experiment --config configs/persuasive.yaml --seeds 5 --scorers 12 --pairs 36`
+  - [x] 28.2 Run multiple seeds, larger scorer/pair counts for goal=persuasive
+  - [x] 28.3 Export summary comparison report (JSON + console table)
 
-- [ ] 29. Multi-topic configuration
-  - [ ] 29.1 Create configs for: persuasive, concise, narrative_cohesion, technical_clarity, trustworthiness
-  - [ ] 29.2 Add batch runner: `python -m evalweaver batch --configs configs/*.yaml`
-  - [ ] 29.3 Generate cross-topic comparison report
+- [x] 29. Multi-topic configuration
+  - [x] 29.1 Create configs for: persuasive, concise, narrative_cohesion, technical_clarity, trustworthiness
+  - [x] 29.2 Add batch runner: `python -m evalweaver batch --configs configs/*.yaml`
+  - [x] 29.3 Generate cross-topic comparison report
 
-- [ ] 30. Phase D checkpoint
+- [x] 30. Phase D checkpoint
   - Run all tests, fix non-ambiguous failures, ask user only if genuinely blocked on a product decision.
 
 ## Phase E: AWS Readiness

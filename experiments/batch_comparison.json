@@ -1,0 +1,26 @@
+{
+  "topics": 2,
+  "seeds_per_topic": 1,
+  "per_topic_results": [
+    {
+      "topic": "persuasive",
+      "config_path": "configs/persuasive.yaml",
+      "success": true,
+      "pareto_size": 7,
+      "best_margin": 0.29241666666666666,
+      "selected": "C001",
+      "criteria_pass": true,
+      "output_dir": "experiments/batch/persuasive"
+    },
+    {
+      "topic": "concise",
+      "config_path": "configs/concise.yaml",
+      "success": true,
+      "pareto_size": 7,
+      "best_margin": 0.29241666666666666,
+      "selected": "C001",
+      "criteria_pass": true,
+      "output_dir": "experiments/batch/concise"
+    }
+  ]
+}

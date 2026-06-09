@@ -1,0 +1,338 @@
+{
+  "S_r0_001": {
+    "hypothesis": "Argument progression (problem->mechanism->result) is the primary driver. Real mechanism quality distinguishes genuine from fake. Hard source policy is the only veto -- no soft gate.",
+    "code": "\ndef scorer(text, anchor, params):\n    FAKE_MECH_CANCEL = 0.3\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    fake = probe_real_mechanism_quality(text)\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > FAKE_MECH_CANCEL:\n        return 0.0\n    prog = probe_argument_progression(text)\n    mech = probe_causal_density(text)\n    continuity = probe_source_continuity(text, anchor)\n    base = prog * 0.5 + mech * 0.3 + max(0, fake) * 0.2\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.5,
+      "pair_validation_margin": 0.266875,
+      "pair_validation_spread": 0.67375,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.67375,
+          "neg_score": 0.0,
+          "margin": 0.67375,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.39374999999999993,
+          "neg_score": 0.0,
+          "margin": 0.39374999999999993,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        }
+      ]
+    }
+  },
+  "S_r0_002": {
+    "hypothesis": "Audience relevance amplifies causal grounding. Before/after contrast + second-person is the primary relevance signal. Soft source continuity reduces but doesn't zero the score.",
+    "code": "\ndef scorer(text, anchor, params):\n    REL_BOOST_CAP = 1.25\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    rel    = probe_audience_relevance(text)\n    mech   = probe_causal_density(text)\n    rmq    = probe_real_mechanism_quality(text)\n    continuity = probe_source_continuity(text, anchor)\n    amp_mech = min(mech * (1 + rel * (REL_BOOST_CAP - 1)), mech * REL_BOOST_CAP)\n    base = max(rel * 0.4 + amp_mech * 0.6, 0)\n    jargon_penalty = max(0, jargon - 0.1) * 0.5\n    return _clamp(base * (0.6 + 0.4 * continuity) - jargon_penalty)\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 1.0,
+      "pair_validation_margin": 0.2493428226363009,
+      "pair_validation_spread": 0.6107142857142858,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.6107142857142858,
+          "neg_score": 0.0,
+          "margin": 0.6107142857142858,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.09199999999999998,
+          "neg_score": 0.0,
+          "margin": 0.09199999999999998,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.25043478260869567,
+          "neg_score": 0.0,
+          "margin": 0.25043478260869567,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.04422222222222216,
+          "neg_score": 0.0,
+          "margin": 0.04422222222222216,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r0_003": {
+    "hypothesis": "Fake mechanism is the primary disqualifier. Abstract jargon density penalises marketing-speak. Specificity without invention is the primary positive signal.",
+    "code": "\ndef scorer(text, anchor, params):\n    JARGON_VETO = 0.25\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > JARGON_VETO:\n        return _clamp(0.1 - jargon)\n    spec   = probe_specificity_without_invention(text, anchor)\n    ep     = probe_epistemic_calibration(text)\n    prog   = probe_argument_progression(text)\n    continuity = probe_source_continuity(text, anchor)\n    base = spec * 0.4 + ep * 0.3 + prog * 0.3\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.18972916666666667,
+      "pair_validation_spread": 0.315,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.315,
+          "neg_score": 0.0,
+          "margin": 0.315,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.12891666666666665,
+          "neg_score": 0.0,
+          "margin": 0.12891666666666665,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.315,
+          "neg_score": 0.0,
+          "margin": 0.315,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        }
+      ]
+    }
+  },
+  "S_r0_004": {
+    "hypothesis": "Full chain: argument progression gates concrete specificity. Specificity only counts when argument has a real mechanism. Source continuity is soft. Fake mechanism vetoes.",
+    "code": "\ndef scorer(text, anchor, params):\n    PROG_GATE      = 0.4\n    FAKE_MECH_VETO = 0.35\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > FAKE_MECH_VETO:\n        return 0.0\n    prog   = probe_argument_progression(text)\n    spec   = probe_specificity_without_invention(text, anchor)\n    mech   = probe_causal_density(text)\n    continuity = probe_source_continuity(text, anchor)\n    prog_gate = prog if prog >= PROG_GATE else prog * 0.4\n    base = prog_gate * 0.4 + spec * 0.4 + mech * 0.2\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.1865,
+      "pair_validation_spread": 0.42,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.42,
+          "neg_score": 0.0,
+          "margin": 0.42,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.022666666666666665,
+          "neg_score": 0.0,
+          "margin": 0.022666666666666665,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.3033333333333333,
+          "neg_score": 0.0,
+          "margin": 0.3033333333333333,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        }
+      ]
+    }
+  },
+  "S_r0_005": {
+    "hypothesis": "Epistemic calibration amplifies the base score. Well-calibrated text (hedges present, superlatives absent, no jargon) is more persuasive. Persuasion risk cancels.",
+    "code": "\ndef scorer(text, anchor, params):\n    EP_BOOST_MAX = 1.2\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    risk   = probe_persuasion_risk(text)\n    jargon = probe_abstract_jargon_density(text)\n    ep     = probe_epistemic_calibration(text)\n    mech   = probe_causal_density(text)\n    spec   = probe_specificity(text)\n    prog   = probe_argument_progression(text)\n    continuity = probe_source_continuity(text, anchor)\n    base = mech * 0.3 + spec * 0.3 + prog * 0.25 + ep * 0.15\n    ep_factor = _clamp(1.0 + (ep - 0.5) * (EP_BOOST_MAX - 1.0) * 2)\n    risk_pen = max(risk, jargon * 0.6)\n    return _clamp(base * ep_factor * (0.6 + 0.4 * continuity) * (1 - risk_pen * 0.5))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.2331458333333333,
+      "pair_validation_spread": 0.49499999999999994,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.49499999999999994,
+          "neg_score": 0.036000000000000004,
+          "margin": 0.45899999999999996,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.0759,
+          "neg_score": 0.16041666666666665,
+          "margin": -0.08451666666666666,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.315,
+          "neg_score": 0.0,
+          "margin": 0.315,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.24309999999999998,
+          "neg_score": 0.0,
+          "margin": 0.24309999999999998,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r0_006": {
+    "hypothesis": "Source continuity (soft) combined with causal density -- a text is more persuasive when it preserves the anchor's intent AND adds mechanism. Hard policy is the only veto.",
+    "code": "\ndef scorer(text, anchor, params):\n    CONTINUITY_FLOOR = 0.2\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    continuity = probe_source_continuity(text, anchor)\n    floor_cont = max(CONTINUITY_FLOOR, continuity)\n    mech = probe_causal_density(text)\n    prog = probe_argument_progression(text)\n    jargon = probe_abstract_jargon_density(text)\n    base = mech * 0.5 + prog * 0.5\n    return _clamp(base * (0.4 + 0.6 * floor_cont) * (1 - jargon * 0.5))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.2884074074074074,
+      "pair_validation_spread": 0.7224999999999999,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.7224999999999999,
+          "neg_score": 0.07083333333333333,
+          "margin": 0.6516666666666666,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.0,
+          "neg_score": 0.1375,
+          "margin": -0.1375,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.4391666666666666,
+          "neg_score": 0.0,
+          "margin": 0.4391666666666666,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.20029629629629628,
+          "neg_score": 0.0,
+          "margin": 0.20029629629629628,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r0_007": {
+    "hypothesis": "Argument progression x real mechanism quality is the product score. Both must be present. Fake mechanism vetoes regardless of other signals. No soft source gate.",
+    "code": "\ndef scorer(text, anchor, params):\n    FAKE_MECH_CANCEL = 0.25\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    prog   = probe_argument_progression(text)\n    rmq    = probe_real_mechanism_quality(text)\n    if jargon > FAKE_MECH_CANCEL:\n        return _clamp(prog * rmq * 0.1)\n    base = prog * 0.5 + _clamp(rmq) * 0.5\n    return _clamp(base)\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.25299999999999995,
+      "pair_validation_spread": 0.6499999999999999,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.6499999999999999,
+          "neg_score": 0.0,
+          "margin": 0.6499999999999999,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.35,
+          "neg_score": 0.0,
+          "margin": 0.35,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.012,
+          "neg_score": 0.0,
+          "margin": 0.012,
+          "correct": true
+        }
+      ]
+    }
+  },
+  "S_r0_008": {
+    "hypothesis": "Contrast scorer: specificity_without_invention minus abstract_jargon_density minus persuasion_risk. High-quality = specific, no jargon, no hype. Source continuity weights the total.",
+    "code": "\ndef scorer(text, anchor, params):\n    SPEC_WEIGHT   = 0.5\n    JARGON_WEIGHT = 0.3\n    HYPE_WEIGHT   = 0.2\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    spec   = probe_specificity_without_invention(text, anchor)\n    jargon = probe_abstract_jargon_density(text)\n    risk   = probe_persuasion_risk(text)\n    continuity = probe_source_continuity(text, anchor)\n    contrast = SPEC_WEIGHT * spec - JARGON_WEIGHT * jargon - HYPE_WEIGHT * risk\n    return _clamp(contrast * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.25,
+      "pair_validation_margin": 0.007083333333333333,
+      "pair_validation_spread": 0.028333333333333332,
+      "validation_rows": [
+        {
+          "pair_id": "VAL_01",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_02",
+          "pos_score": 0.028333333333333332,
+          "neg_score": 0.0,
+          "margin": 0.028333333333333332,
+          "correct": true
+        },
+        {
+          "pair_id": "VAL_03",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        },
+        {
+          "pair_id": "VAL_04",
+          "pos_score": 0.0,
+          "neg_score": 0.0,
+          "margin": 0.0,
+          "correct": false
+        }
+      ]
+    }
+  }
+}

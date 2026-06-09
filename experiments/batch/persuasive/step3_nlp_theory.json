@@ -1,0 +1,52 @@
+{
+  "argument_progression": {
+    "taste_concept": "argument_progression",
+    "method": "Detect problem/mechanism/result markers in sequence",
+    "research_ref": "Argument structure in persuasion"
+  },
+  "real_mechanism_quality": {
+    "taste_concept": "causal_grounding+fake_mechanism",
+    "method": "Causal marker -> concrete domain noun (reward) vs jargon (penalise)",
+    "research_ref": "ELM elaboration likelihood"
+  },
+  "abstract_jargon_density": {
+    "taste_concept": "fake_mechanism",
+    "method": "JARGON_WORDS density in content tokens",
+    "research_ref": "Marketing-speak credibility inversion"
+  },
+  "specificity_without_invention": {
+    "taste_concept": "concrete_specificity",
+    "method": "Named entities + action verbs, zero if hard policy violated",
+    "research_ref": "Kahneman System 1"
+  },
+  "probe_source_continuity": {
+    "taste_concept": "source_continuity",
+    "method": "Soft overlap: 0.5*token + 0.25*action + 0.25*domain -- no hard gate",
+    "research_ref": "Credibility transfer (soft)"
+  },
+  "violates_hard_source_policy": {
+    "taste_concept": "source_violation",
+    "method": "Invented numeric tokens or guarantee words -> hard veto",
+    "research_ref": "Source drift inversion"
+  },
+  "probe_causal_density": {
+    "taste_concept": "causal_grounding",
+    "method": "Causal connective count / sentence count",
+    "research_ref": "Langer 1978"
+  },
+  "probe_audience_relevance": {
+    "taste_concept": "audience_relevance",
+    "method": "Before-state markers + second-person density",
+    "research_ref": "Burnkrant & Unnava 1989"
+  },
+  "probe_persuasion_risk": {
+    "taste_concept": "persuasion_knowledge_trigger",
+    "method": "HYPE_WORDS density",
+    "research_ref": "Friestad & Wright 1994"
+  },
+  "probe_epistemic_calibration": {
+    "taste_concept": "epistemic_honesty",
+    "method": "Hedge density vs superlative density",
+    "research_ref": "Boush 2009"
+  }
+}
