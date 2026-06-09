@@ -100,7 +100,7 @@ class TestPipelineSmoke:
         assert os.path.exists(summary_path)
         with open(summary_path) as f:
             summary = json.load(f)
-        assert summary["version"] == "v5"
+        assert summary["version"] == "v5.1"
         assert summary["goal"] == "persuasive"
         assert "counts" in summary
         assert "r1_best" in summary

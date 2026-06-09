@@ -22,6 +22,19 @@ def main():
         default="configs/persuasive.yaml",
         help="Path to YAML config file (default: configs/persuasive.yaml)",
     )
+    run_parser.add_argument(
+        "--provider",
+        type=str,
+        choices=["mock", "bedrock"],
+        default="mock",
+        help="LLM provider to use (default: mock)",
+    )
+    run_parser.add_argument(
+        "--model-id",
+        type=str,
+        default="anthropic.claude-3-sonnet-20240229-v1:0",
+        help="Model ID for the provider (default: anthropic.claude-3-sonnet-20240229-v1:0)",
+    )
 
     # ── experiment subcommand ──
     exp_parser = subparsers.add_parser(
@@ -51,6 +64,19 @@ def main():
         default=None,
         help="Override n_init_pairs (optional)",
     )
+    exp_parser.add_argument(
+        "--provider",
+        type=str,
+        choices=["mock", "bedrock"],
+        default="mock",
+        help="LLM provider to use (default: mock)",
+    )
+    exp_parser.add_argument(
+        "--model-id",
+        type=str,
+        default="anthropic.claude-3-sonnet-20240229-v1:0",
+        help="Model ID for the provider (default: anthropic.claude-3-sonnet-20240229-v1:0)",
+    )
 
     # ── batch subcommand ──
     batch_parser = subparsers.add_parser(
@@ -74,6 +100,8 @@ def main():
 
     if args.command == "run":
         config = load_config(args.config)
+        config["provider_name"] = args.provider
+        config["model_id"] = args.model_id
         result = run_pipeline(config)
         if result.get("success"):
             print(f"\nPipeline complete. Output: {result.get('output_dir', 'unknown')}")
@@ -89,6 +117,8 @@ def main():
             seeds=args.seeds,
             scorers=args.scorers,
             pairs=args.pairs,
+            provider_name=args.provider,
+            model_id=args.model_id,
         )
         success_rate = summary["summary"]["success_rate"]
         if success_rate == 1.0:

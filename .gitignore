@@ -47,3 +47,9 @@ artifacts/
 *.tsbuildinfo
 .vercel
 package-lock.json
+
+# Secrets — NEVER commit
+.aws/
+aws/credentials
+*.pem
+*.key

@@ -53,6 +53,28 @@ n_init_pairs: 24
 n_repair_pairs: 12
 ```
 
+## AWS Setup (optional)
+
+For using Bedrock Claude instead of mocked outputs:
+
+```bash
+# Install AWS dependencies
+pip install -e ".[aws]"
+
+# Configure credentials
+aws configure sso  # or: aws configure --profile next-sandbox
+export AWS_PROFILE=next-sandbox
+export AWS_REGION=us-east-1
+
+# Validate
+python scripts/check_aws.py
+
+# Run with Bedrock
+python -m evalweaver run --config configs/persuasive.yaml --provider bedrock
+```
+
+See [docs/aws-setup.md](docs/aws-setup.md) for full setup instructions.
+
 ## Project Structure
 
 ```
