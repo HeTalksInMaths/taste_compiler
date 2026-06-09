@@ -45,9 +45,8 @@ let personaService: PersonaService;
 let artifactAdapter: LocalJsonArtifactAdapter;
 
 beforeEach(() => {
-  try { rmSync('./artifacts/demo', { recursive: true, force: true }); } catch {}
   storage = new InMemoryAdapter();
-  artifactAdapter = new LocalJsonArtifactAdapter('./artifacts/demo');
+  artifactAdapter = new LocalJsonArtifactAdapter(`./artifacts/demo_${Date.now()}`);
   revealService = new RevealService(storage);
   stripeService = new StripeService(testConfig, storage);
   webhookHandler = new WebhookHandler(storage, testConfig, revealService, stripeService, new MockVerifier());
@@ -94,7 +93,7 @@ describe('Full Loop: Neomtron → Preview → Simulation → Checkout → Webhoo
 
     // Verify deterministic replay
     const storage2 = new InMemoryAdapter();
-    const artifact2 = new LocalJsonArtifactAdapter('./artifacts/demo2');
+    const artifact2 = new LocalJsonArtifactAdapter(`./artifacts/demo2_${Date.now()}`);
     await new PersonaService(storage2).seedNeomtronPersona();
     const sim2 = new SimulationService(storage2, artifact2, 5);
     const replay = await sim2.runMarketSimulation({
@@ -197,7 +196,6 @@ describe('Full Loop: Neomtron → Preview → Simulation → Checkout → Webhoo
     expect(dupResult.message).toBe('Already processed');
 
     // Cleanup
-    try { rmSync('./artifacts/demo', { recursive: true, force: true }); } catch {}
-    try { rmSync('./artifacts/demo2', { recursive: true, force: true }); } catch {}
+    try { rmSync('./artifacts', { recursive: true, force: true }); } catch {}
   });
 });

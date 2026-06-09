@@ -9,6 +9,36 @@ This module implements the monetization layer for EvalWeaver / Taste Compiler:
 - **Market simulation**: Synthetic buyer populations, conversion modeling, price sweeps
 - **Neomtron Singapore persona**: Demo persona for hackathon/simulation
 
+## Quick Demo: Run Mock Market Simulation
+
+```bash
+# Run the full test suite (includes a mock simulation demo)
+npm test
+
+# The demo scenario in tests/demo/full-loop.test.ts proves:
+# 1. Neomtron SG persona seeded
+# 2. Reveal preview created (locked)
+# 3. Mock simulation: 50 buyers × 5 days, deterministic replay
+# 4. Stripe test checkout session created (idempotent)
+# 5. Webhook unlocks reveal via two-phase state machine
+# 6. Report exported (JSON round-trip verified)
+# 7. Social proof updated on scorer
+# 8. Webhook deduplication confirmed
+#
+# Default: MARKET_SIM_MODE=mock_only (no Stripe API calls)
+# All simulation artifacts written to ./artifacts/ (gitignored)
+```
+
+To run just the simulation property tests:
+```bash
+npx vitest run tests/properties/simulation-replay.property.ts
+```
+
+To run the full end-to-end demo:
+```bash
+npx vitest run tests/demo/full-loop.test.ts
+```
+
 ## Local Development Setup
 
 ```bash
