@@ -610,9 +610,22 @@ def run_pipeline(config):
     # SAVE ALL ARTIFACTS + ZIP
     # ════════════════════════════════════════════════════════════════
     from evalweaver.artifacts import TRACE
+    import uuid
     save("trace", TRACE, out_dir)
+
+    # Run metadata (Task 33)
+    run_metadata = {
+        "run_id": str(uuid.uuid4()),
+        "provider_name": config.get("provider_name", "mock"),
+        "model_id": config.get("model_id", "mock-v1-seeded"),
+        "aws_region": config.get("aws_region", None),
+        "execution_backend": config.get("execution_backend", "local-exec"),
+        "artifact_store": config.get("artifact_store", "local-fs"),
+    }
+
     save("run_summary_v5", {
-        "version": "v5", "goal": goal, "raw_text": raw_text,
+        "version": "v5.1", "goal": goal, "raw_text": raw_text,
+        "run_metadata": run_metadata,
         "v5_fixes_applied": ["F1_pair_level_validation", "F2_pareto_eligibility_from_validation",
                              "F3_pair_source_policy", "F4_hard_soft_source_split",
                              "F5_pareto_eligibility_filter", "F6_four_new_probes",

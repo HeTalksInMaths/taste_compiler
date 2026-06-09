@@ -211,26 +211,26 @@ Priority order: modularize → push GitHub → run larger experiments → debug 
 
 ## Phase E: AWS Readiness
 
-- [ ] 31. AgentProvider protocol
-  - [ ] 31.1 Define `AgentProvider` protocol in `evalweaver/providers/base.py`
+- [x] 31. AgentProvider protocol
+  - [x] 31.1 Define `AgentProvider` protocol in `evalweaver/providers/base.py`
     - Methods: `generate_scorers()`, `generate_pairs()`, `generate_mutations()`, `generate_candidates()`
     - Accept config, return structured outputs
-  - [ ] 31.2 Implement `MockProvider` in `evalweaver/providers/mock_provider.py`
+  - [x] 31.2 Implement `MockProvider` in `evalweaver/providers/mock_provider.py`
     - Returns hardcoded/seeded outputs (current v5.1 behavior)
     - Used for all local tests — no AWS dependency
 
-- [ ] 32. BedrockClaudeProvider skeleton
-  - [ ] 32.1 Implement `BedrockClaudeProvider` in `evalweaver/providers/bedrock_claude_provider.py`
+- [x] 32. BedrockClaudeProvider skeleton
+  - [x] 32.1 Implement `BedrockClaudeProvider` in `evalweaver/providers/bedrock_claude_provider.py`
     - Uses boto3 Bedrock Runtime Converse API
     - Accepts model_id, aws_region in config
     - Skeleton methods that format prompts and parse responses
-  - [ ] 32.2 Do NOT require Bedrock for local tests (MockProvider is default)
+  - [x] 32.2 Do NOT require Bedrock for local tests (MockProvider is default)
 
-- [ ] 33. Run metadata
-  - [ ] 33.1 Add run metadata fields to artifacts: provider_name, model_id, aws_region, execution_backend, artifact_store, run_id
-  - [ ] 33.2 Include in run_summary artifact and trace log
+- [x] 33. Run metadata
+  - [x] 33.1 Add run metadata fields to artifacts: provider_name, model_id, aws_region, execution_backend, artifact_store, run_id
+  - [x] 33.2 Include in run_summary artifact and trace log
 
-- [ ] 34. Phase E checkpoint
+- [x] 34. Phase E checkpoint
   - Run all tests, fix non-ambiguous failures, ask user only if genuinely blocked on a product decision.
 
 ## Backlog (GitHub Issues)
