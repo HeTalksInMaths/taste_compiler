@@ -181,15 +181,15 @@ Priority order: modularize → push GitHub → run larger experiments → debug 
 
 ## Phase C: Minimal P0 Tests
 
-- [ ] 26. P0 property and unit tests
-  - [ ] 26.1 Source policy violation taxonomy test — each of the 7 canonical types detected correctly
-  - [ ] 26.2 Named entity guardrails — abbreviations/sentence-initial words don't false-positive, new companies do flag
-  - [ ] 26.3 C004 policy_ok=false with ≥1 hard violation
-  - [ ] 26.4 C002 not zeroed (> 0.05 normalized)
-  - [ ] 26.5 validate_scorer detects: runtime errors, constant outputs, out-of-range (using raw_value/out_of_range)
-  - [ ] 26.6 Pareto non-domination sanity — no dominated member in frontier
-  - [ ] 26.7 Repair metrics honesty — overall_improvement_claim_supported matches actual data
-  - [ ] 26.8 End-to-end smoke test — full pipeline produces expected artifacts
+- [x] 26. P0 property and unit tests
+  - [x] 26.1 Source policy violation taxonomy test — each of the 7 canonical types detected correctly
+  - [x] 26.2 Named entity guardrails — abbreviations/sentence-initial words don't false-positive, new companies do flag
+  - [x] 26.3 C004 policy_ok=false with ≥1 hard violation
+  - [x] 26.4 C002 not zeroed (> 0.05 normalized)
+  - [x] 26.5 validate_scorer detects: runtime errors, constant outputs, out-of-range (using raw_value/out_of_range)
+  - [x] 26.6 Pareto non-domination sanity — no dominated member in frontier
+  - [x] 26.7 Repair metrics honesty — overall_improvement_claim_supported matches actual data
+  - [x] 26.8 End-to-end smoke test — full pipeline produces expected artifacts
 
 - [ ] 27. Phase C checkpoint
   - Run all tests, fix non-ambiguous failures, ask user only if genuinely blocked on a product decision.

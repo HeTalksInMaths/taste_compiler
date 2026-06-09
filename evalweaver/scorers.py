@@ -20,7 +20,10 @@ VALIDATION_PAIRS = [
 
 
 def validate_scorer_on_pairs(code, validation_pairs=None):
-    """Validate scorer on actual pair behavior. F1+F2 FIX."""
+    """Validate scorer on actual pair behavior. F1+F2 FIX.
+
+    Uses the new out_of_range field from py_run_scorer (Task 21.2).
+    """
     if validation_pairs is None:
         validation_pairs = VALIDATION_PAIRS
     rows = []
@@ -32,11 +35,11 @@ def validate_scorer_on_pairs(code, validation_pairs=None):
                     "pair_validation_accuracy": 0, "pair_validation_margin": 0,
                     "pair_validation_spread": 0,
                     "details": {"pos_error": pr.get("error"), "neg_error": nr.get("error")}}
-        for v in [pr["value"], nr["value"]]:
-            if v < -0.01 or v > 1.01:
-                return {"valid": False, "reason": "out_of_range",
-                        "pair_validation_accuracy": 0, "pair_validation_margin": 0,
-                        "pair_validation_spread": 0}
+        # Use out_of_range field from runner (Task 21.2)
+        if pr.get("out_of_range") or nr.get("out_of_range"):
+            return {"valid": False, "reason": "out_of_range",
+                    "pair_validation_accuracy": 0, "pair_validation_margin": 0,
+                    "pair_validation_spread": 0}
         rows.append({"pair_id": p["pair_id"], "pos_score": pr["value"],
                      "neg_score": nr["value"], "margin": pr["value"] - nr["value"],
                      "correct": pr["value"] > nr["value"]})
