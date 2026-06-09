@@ -40,8 +40,8 @@ function Nav() {
           <a href="/marketplace" className="text-sm text-white/60 transition hover:text-white">
             Marketplace
           </a>
-          <a href="/experiments" className="text-sm text-white/60 transition hover:text-white">
-            Experiments
+          <a href="/methodology" className="text-sm text-white/60 transition hover:text-white">
+            Methodology
           </a>
           <a href="/simulations" className="text-sm text-white/60 transition hover:text-white">
             Simulations
