@@ -36,3 +36,14 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Node / TypeScript (marketplace module)
+node_modules/
+.next/
+artifacts/
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+.vercel
+package-lock.json
