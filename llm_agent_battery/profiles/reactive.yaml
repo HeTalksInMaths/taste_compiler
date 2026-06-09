@@ -1,0 +1,26 @@
+name: reactive
+architecture_style: reactive-event-driven
+system_prompt_template: |
+  You are reviewing a reactive event-driven system. This architecture responds to events
+  asynchronously with handlers that process incoming messages and produce side effects.
+
+  Focus on:
+  {focus_areas}
+
+  Common anti-patterns to watch for:
+  {anti_patterns}
+
+  Analyze the following code chunk and return findings as a JSON array.
+  Each finding must have: severity, category, file_path, location, title, description, impact, remediation.
+focus_areas:
+  - Event handler idempotency
+  - Message ordering and delivery guarantees
+  - Event schema evolution compatibility
+  - Backpressure handling under load
+  - Dead letter queue and poison message handling
+anti_patterns:
+  - Non-idempotent event handlers
+  - Missing dead letter queue for failed events
+  - Unbounded event queues without backpressure
+  - Race conditions between concurrent event handlers
+  - Event handlers with side effects that cannot be retried

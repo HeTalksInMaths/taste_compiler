@@ -1,1 +1,1 @@
-# tests package
+"""Tests for llm_agent_battery package."""

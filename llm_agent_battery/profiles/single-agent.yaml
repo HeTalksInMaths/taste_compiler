@@ -1,0 +1,26 @@
+name: single-agent
+architecture_style: single-agent
+system_prompt_template: |
+  You are reviewing a single-agent system. This architecture has one autonomous agent
+  that directly handles all tool calls, decisions, and state management.
+
+  Focus on:
+  {focus_areas}
+
+  Common anti-patterns to watch for:
+  {anti_patterns}
+
+  Analyze the following code chunk and return findings as a JSON array.
+  Each finding must have: severity, category, file_path, location, title, description, impact, remediation.
+focus_areas:
+  - Error handling around tool invocations
+  - State consistency after partial failures
+  - Input validation before tool execution
+  - Graceful degradation when tools are unavailable
+  - Token budget management for long conversations
+anti_patterns:
+  - Unbounded retry loops without backoff
+  - Missing error handling on external API calls
+  - State mutations without validation
+  - Hardcoded credentials or secrets in prompts
+  - Ignoring tool call return values
