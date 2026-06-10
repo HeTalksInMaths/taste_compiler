@@ -84,7 +84,7 @@ export default function CreateScorerPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white">Create a New Scorer</h1>
           <p className="mt-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            Pick a goal, see estimated demand instantly, then watch Bedrock generate taste research and scorer hypotheses step by step.
+            Pick a quality dimension, see estimated demand instantly, then watch the pipeline generate taste research and scorer hypotheses step by step.
           </p>
         </div>
 
@@ -117,10 +117,10 @@ export default function CreateScorerPage() {
           </div>
 
           <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Best for</label>
+            <label className="text-sm font-medium mb-2 block text-white">Ideal use cases</label>
             <div className="flex flex-wrap gap-2">
               {CONTENT_JOBS.map(job => (
-                <button key={job} onClick={() => toggleContentJob(job)} className="rounded-full px-3 py-1.5 text-xs transition" style={bestFor.includes(job) ? { backgroundColor: 'rgba(92,124,250,0.2)', color: 'rgb(145,167,255)', boxShadow: '0 0 0 1px rgba(92,124,250,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                <button key={job} onClick={() => toggleContentJob(job)} className="rounded-full px-3 py-1.5 text-xs transition" style={bestFor.includes(job) ? { backgroundColor: 'rgba(76,110,245,0.2)', color: 'rgb(145,167,255)', boxShadow: '0 0 0 1px rgba(76,110,245,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
                   {job}
                 </button>
               ))}
@@ -176,12 +176,12 @@ export default function CreateScorerPage() {
 
         {/* Cross-link: market-test this scorer */}
         {stepResults[3] != null && (
-          <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
+          <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(76,110,245,0.2)', backgroundColor: 'rgba(76,110,245,0.04)' }}>
             <div>
               <div className="text-sm font-medium text-white">Market-test this scorer</div>
               <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>See how Nemotron SG personas respond to it in the live market simulation.</div>
             </div>
-            <Link href="/market-dynamics/simulations" className="text-xs font-medium rounded-lg px-4 py-2 transition" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>
+            <Link href="/market-dynamics/simulations" className="text-xs font-medium rounded-lg px-4 py-2 transition" style={{ backgroundColor: 'rgba(76,110,245,0.1)', color: 'rgb(145,167,255)' }}>
               View Simulations →
             </Link>
           </div>
@@ -273,7 +273,7 @@ function ScorersPanel({ data }: { data: unknown }) {
             {!!s.mechanism && <p className="text-sm mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>{String(s.mechanism)}</p>}
             {!!s.formula_sketch && <div className="rounded-md px-3 py-2 font-mono text-xs" style={{ backgroundColor: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>{String(s.formula_sketch)}</div>}
             {Array.isArray(s.expected_segments) && (
-              <div className="mt-2 flex flex-wrap gap-1">{(s.expected_segments as string[]).map((seg: string) => <span key={seg} className="rounded-full px-2 py-0.5 text-[10px]" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>{seg}</span>)}</div>
+              <div className="mt-2 flex flex-wrap gap-1">{(s.expected_segments as string[]).map((seg: string) => <span key={seg} className="rounded-full px-2 py-0.5 text-[10px]" style={{ backgroundColor: 'rgba(76,110,245,0.1)', color: 'rgb(145,167,255)' }}>{seg}</span>)}</div>
             )}
           </div>
         ))}

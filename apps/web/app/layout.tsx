@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Taste Compiler",
-  description: "Agents that learn what 'good' means",
+  description: "Define quality. Generate scorers. Evaluate at scale.",
 };
 
 export default function RootLayout({

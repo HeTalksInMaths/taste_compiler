@@ -38,7 +38,7 @@ export default function Home() {
           <textarea
             id="goal-description"
             className="form-input"
-            placeholder="Describe what &apos;good&apos; means for your use case..."
+            placeholder="Describe what 'good' means for your use case..."
             rows={3}
           />
         </div>
@@ -59,19 +59,28 @@ export default function Home() {
           <div className="provider-options">
             <label className="provider-option">
               <input type="radio" name="provider" value="mock" defaultChecked />
-              <span className="badge-gray" title="Uses pre-built static data — no API calls">
+              <span
+                className="badge-gray"
+                title="Uses pre-built static data — no API calls"
+              >
                 Demo mode
               </span>
             </label>
             <label className="provider-option">
               <input type="radio" name="provider" value="bedrock-metadata" />
-              <span className="badge-amber" title="Fetches metadata from Bedrock, no live research">
+              <span
+                className="badge-amber"
+                title="Fetches metadata from Bedrock, no live research"
+              >
                 Metadata mode
               </span>
             </label>
             <label className="provider-option">
               <input type="radio" name="provider" value="bedrock-live" />
-              <span className="badge-green" title="Full live research via Bedrock">
+              <span
+                className="badge-green"
+                title="Full live research via Bedrock"
+              >
                 Live research
               </span>
             </label>
