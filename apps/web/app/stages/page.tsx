@@ -46,7 +46,8 @@ export default function StagesPage() {
       });
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || `HTTP ${res.status}`);
+        const errMsg = typeof err.error === 'string' ? err.error : JSON.stringify(err.error) || `HTTP ${res.status}`;
+        throw new Error(errMsg);
       }
       const { result, search_results } = await res.json();
       setStages(prev => prev.map((s, i) => i === stageNum ? { status: 'done', data: result, searchResults: search_results } : s));

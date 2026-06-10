@@ -87,9 +87,10 @@ export async function POST(request: Request) {
 
     } else if (stage === 2) {
       // Stage 2: Causal Graph (LLM only)
+      const prevData = previous_output ? JSON.stringify(previous_output).slice(0, 3000) : '[]';
       const raw = await callBedrock(
         'You are building a causal graph. Return valid JSON only.',
-        `Build a causal graph for: ${target_variable}\n\nResearch:\n${JSON.stringify(previous_output).slice(0, 3000)}\n\nReturn JSON:\n{"target_variable":"${target_variable}","causal_nodes":[{"node_id":"...","label":"...","role":"increases|decreases|mediates|moderates","definition":"...","mechanism":"..."}],"causal_edges":[{"from":"...","to":"...","relationship":"...","claim":"..."}],"causal_tensions":[{"claim":"...","nodes":["..."]}],"summary_theory":"..."}`
+        `Build a causal graph for: ${target_variable}\n\nResearch:\n${prevData}\n\nReturn JSON:\n{"target_variable":"${target_variable}","causal_nodes":[{"node_id":"...","label":"...","role":"increases|decreases|mediates|moderates","definition":"...","mechanism":"..."}],"causal_edges":[{"from":"...","to":"...","relationship":"...","claim":"..."}],"causal_tensions":[{"claim":"...","nodes":["..."]}],"summary_theory":"..."}`
       );
       result = parseJson(raw);
 
@@ -109,9 +110,10 @@ export async function POST(request: Request) {
 
     } else if (stage === 4) {
       // Stage 4: Scorer Hypotheses (LLM only)
+      const prevData = previous_output ? JSON.stringify(previous_output).slice(0, 2000) : '{}';
       const raw = await callBedrock(
         'You are generating scorer hypotheses and Python functions. Return valid JSON only.',
-        `Generate 5 distinct scoring hypotheses for: ${target_variable}\n\nCausal graph: ${JSON.stringify(previous_output).slice(0, 2000)}\n\nReturn JSON:\n{"target_variable":"${target_variable}","scorers":[{"scorer_id":"S0","hypothesis":"...","causal_nodes_used":["..."],"functional_form":"additive|interaction|gated|penalty","code":"def scorer(text, anchor, params):\\n    ...\\n    return score"}]}`,
+        `Generate 5 distinct scoring hypotheses for: ${target_variable}\n\nCausal graph: ${prevData}\n\nReturn JSON:\n{"target_variable":"${target_variable}","scorers":[{"scorer_id":"S0","hypothesis":"...","causal_nodes_used":["..."],"functional_form":"additive|interaction|gated|penalty","code":"def scorer(text, anchor, params):\\n    ...\\n    return score"}]}`,
         8192
       );
       result = parseJson(raw);

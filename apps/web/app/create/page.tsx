@@ -32,6 +32,7 @@ export default function CreateScorerPage() {
   const [stepResults, setStepResults] = useState<(unknown | null)[]>([null, null, null, null]);
   const [stepErrors, setStepErrors] = useState<(string | null)[]>([null, null, null, null]);
   const [running, setRunning] = useState(false);
+  const [demandDone, setDemandDone] = useState(false);
 
   function toggleSegment(id: string) { setSelectedSegments(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]); }
   function toggleContentJob(job: string) { setBestFor(prev => prev.includes(job) ? prev.filter(j => j !== job) : [...prev, job]); }
@@ -61,14 +62,22 @@ export default function CreateScorerPage() {
     }
   }
 
-  async function runPipeline() {
+  async function runDemand() {
     if (!goal.trim()) return;
     setRunning(true);
+    setDemandDone(false);
     setStepStatuses(['idle', 'idle', 'idle', 'idle']);
     setStepResults([null, null, null, null]);
     setStepErrors([null, null, null, null]);
-    let prev: unknown = null;
-    for (let i = 0; i < 4; i++) {
+    const result = await callStep(0, null);
+    if (result) setDemandDone(true);
+    setRunning(false);
+  }
+
+  async function runBedrockSteps() {
+    setRunning(true);
+    let prev: unknown = stepResults[0];
+    for (let i = 1; i < 4; i++) {
       const result = await callStep(i, prev);
       if (!result) break;
       prev = result;
@@ -142,8 +151,8 @@ export default function CreateScorerPage() {
             </div>
           </div>
 
-          <button onClick={runPipeline} disabled={running || !goal.trim()} className="w-full rounded-lg py-3 text-sm font-medium text-white transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: running || !goal.trim() ? 0.4 : 1, cursor: running || !goal.trim() ? 'not-allowed' : 'pointer' }}>
-            {running ? 'Running...' : 'Estimate Demand + Generate Scorer →'}
+          <button onClick={runDemand} disabled={running || !goal.trim()} className="w-full rounded-lg py-3 text-sm font-medium text-white transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: running || !goal.trim() ? 0.4 : 1, cursor: running || !goal.trim() ? 'not-allowed' : 'pointer' }}>
+            {running && !demandDone ? 'Estimating...' : 'Estimate Demand →'}
           </button>
         </div>
 
@@ -168,6 +177,20 @@ export default function CreateScorerPage() {
 
         {stepResults[0] != null && <DemandPanel data={stepResults[0]} />}
         {stepErrors[0] && <ErrorBox msg={stepErrors[0]} />}
+
+        {/* Proceed gate — only continue to Bedrock steps if user confirms */}
+        {demandDone && stepStatuses[1] === 'idle' && !running && (
+          <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(16,185,129,0.2)', backgroundColor: 'rgba(16,185,129,0.04)' }}>
+            <div>
+              <div className="text-sm font-medium text-white">Demand looks good?</div>
+              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Next steps use Bedrock to generate taste research, taste map, and scorer hypotheses.</div>
+            </div>
+            <button onClick={runBedrockSteps} className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #10b981, #4c6ef5)', color: 'white' }}>
+              Continue with Bedrock →
+            </button>
+          </div>
+        )}
+
         {stepStatuses[1] === 'running' && <LoadingBox label="Calling Bedrock for taste research..." />}
         {stepResults[1] != null && <ResearchPanel data={stepResults[1]} />}
         {stepErrors[1] && <ErrorBox msg={stepErrors[1]} />}
