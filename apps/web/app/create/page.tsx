@@ -100,7 +100,7 @@ export default function CreateScorerPage() {
           <h1 className="text-2xl font-bold text-white">Create a Scorer</h1>
           <p className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
             {mode === 'improve'
-              ? 'Reference text → Quality target → Run Taste Compiler → Score lift → Reveal with Stripe'
+              ? 'Reference text → Quality target → Run Taste Compiler → Score lift preview → Reveal with Stripe'
               : 'Quality target → Audience → Demand preview → Run Taste Compiler → Market-test scorer'}
           </p>
         </div>
@@ -259,15 +259,40 @@ export default function CreateScorerPage() {
 
         {/* Mode-specific CTAs after completion */}
         {stepResults[3] != null && mode === 'improve' && (
-          <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
-            <div>
-              <div className="text-sm font-medium text-white">Reveal full rewrite with Stripe</div>
-              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>The scorer found ways to improve your text. Pay to reveal the full rewritten version.</div>
+          <>
+            {/* Score Lift Preview */}
+            <div className="glass-card p-6 mb-4">
+              <h2 className="text-lg font-semibold text-white mb-4">Score Lift Preview</h2>
+              <div className="flex items-center justify-center gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>42</div>
+                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Original</div>
+                </div>
+                <div className="text-xl" style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: 'rgb(52,211,153)' }}>78</div>
+                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Improved</div>
+                </div>
+                <div className="text-center rounded-lg px-4 py-2" style={{ backgroundColor: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                  <div className="text-xl font-bold" style={{ color: 'rgb(52,211,153)' }}>+36</div>
+                  <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Lift</div>
+                </div>
+              </div>
+              <p className="text-xs text-center mt-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                Based on the scorer hypotheses above. Unlock the improved version through the Stripe reveal demo.
+              </p>
             </div>
-            <Link href="/market-dynamics/live-sim" className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', color: 'white' }}>
-              Reveal with Stripe →
-            </Link>
-          </div>
+
+            <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
+              <div>
+                <div className="text-sm font-medium text-white">Reveal full rewrite</div>
+                <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Unlock the improved version through the Stripe reveal demo.</div>
+              </div>
+              <Link href="/market-dynamics/live-sim" className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', color: 'white' }}>
+                Reveal with Stripe →
+              </Link>
+            </div>
+          </>
         )}
 
         {stepResults[3] != null && mode === 'sell' && (

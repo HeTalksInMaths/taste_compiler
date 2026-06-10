@@ -87,7 +87,7 @@ function Nav() {
           <Link
             href="/create"
             className="text-sm font-sans transition"
-            style={{ color: "rgba(76,110,245,0.9)" }}
+            style={{ color: "rgb(145,167,255)" }}
           >
             Create Scorer
           </Link>
