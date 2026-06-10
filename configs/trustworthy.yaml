@@ -1,0 +1,12 @@
+goal: trustworthy
+raw_text: "Most professionals now need to learn AI tools because the work around them is changing faster than traditional training can keep up. The point is not to replace judgment, but to learn how to use AI to search, draft, test, debug, and explain work more effectively while still checking the result."
+seed: 7
+n_rounds: 2
+n_init_scorers: 8
+n_repair_scorers: 6
+n_init_pairs: 24
+n_repair_pairs: 12
+test_fraction: 0.33
+n_candidates: 4
+min_init_heldout: 8
+min_r1_heldout: 15

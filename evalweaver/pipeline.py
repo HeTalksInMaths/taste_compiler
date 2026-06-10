@@ -5,7 +5,9 @@ This module replicates the end-to-end flow of the v5 script using
 all the extracted modules.
 """
 
+import hashlib
 import statistics
+import time
 from collections import defaultdict
 
 from evalweaver.artifacts import log, save, resolve_output_directory, build_zip_archive
@@ -297,6 +299,145 @@ NLP_THEORY = {
 
 
 # ─────────────────────────────────────────────────────────────────────
+# LIVE CANARY VALIDATION HELPERS
+# ─────────────────────────────────────────────────────────────────────
+
+def _validate_research(result):
+    """Validate live-generated research: must be a dict with at least 2 keys, each value non-empty string."""
+    if not isinstance(result, dict):
+        return {"valid": False, "reason": "Research must be a dict", "errors": ["not a dict"]}
+    if len(result) < 2:
+        return {"valid": False, "reason": f"Research must have at least 2 keys, got {len(result)}", "errors": ["too few keys"]}
+    for k, v in result.items():
+        if not isinstance(v, str) or not v.strip():
+            return {"valid": False, "reason": f"Key '{k}' has empty or non-string value", "errors": [f"invalid value for key '{k}'"]}
+    return {"valid": True, "reason": "ok", "errors": []}
+
+
+def _validate_taste_map(result):
+    """Validate live-generated taste map: must have goal, rewards (list>=1), punishes (list>=1)."""
+    if not isinstance(result, dict):
+        return {"valid": False, "reason": "Taste map must be a dict", "errors": ["not a dict"]}
+    errors = []
+    if "goal" not in result:
+        errors.append("missing 'goal'")
+    if "rewards" not in result or not isinstance(result.get("rewards"), list) or len(result.get("rewards", [])) < 1:
+        errors.append("missing or empty 'rewards' list")
+    if "punishes" not in result or not isinstance(result.get("punishes"), list) or len(result.get("punishes", [])) < 1:
+        errors.append("missing or empty 'punishes' list")
+    if errors:
+        return {"valid": False, "reason": "; ".join(errors), "errors": errors}
+    return {"valid": True, "reason": "ok", "errors": []}
+
+
+def _validate_pairs(result):
+    """Validate live-generated pairs: list of dicts with required fields."""
+    if not isinstance(result, list):
+        return {"valid": False, "reason": "Pairs must be a list", "errors": ["not a list"]}
+    if len(result) == 0:
+        return {"valid": False, "reason": "Pairs list is empty", "errors": ["empty list"]}
+    required_fields = ["pair_id", "anchor", "positive", "negative", "pair_type"]
+    errors = []
+    for i, pair in enumerate(result):
+        if not isinstance(pair, dict):
+            errors.append(f"item {i} is not a dict")
+            continue
+        for field in required_fields:
+            if field not in pair:
+                errors.append(f"item {i} missing '{field}' field")
+    if errors:
+        return {"valid": False, "reason": errors[0], "errors": errors}
+    return {"valid": True, "reason": "ok", "errors": []}
+
+
+def _validate_candidates(result):
+    """Validate live-generated candidates: list of dicts with required fields."""
+    if not isinstance(result, list):
+        return {"valid": False, "reason": "Candidates must be a list", "errors": ["not a list"]}
+    if len(result) == 0:
+        return {"valid": False, "reason": "Candidates list is empty", "errors": ["empty list"]}
+    required_fields = ["candidate_id", "strategy", "text"]
+    errors = []
+    for i, cand in enumerate(result):
+        if not isinstance(cand, dict):
+            errors.append(f"item {i} is not a dict")
+            continue
+        for field in required_fields:
+            if field not in cand:
+                errors.append(f"item {i} missing '{field}' field")
+    if errors:
+        return {"valid": False, "reason": errors[0], "errors": errors}
+    return {"valid": True, "reason": "ok", "errors": []}
+
+
+def _write_failure_points(out_dir, config, step_artifacts, run_id=None):
+    """Write failure_points.md summarizing the live canary run."""
+    import os
+
+    goal = config.get("goal", "unknown")
+    model_id = config.get("model_id", "unknown")
+    live_steps = config.get("generate_steps", [])
+
+    if run_id is None:
+        run_id = "unknown"
+
+    lines = []
+    lines.append("# EvalWeaver Live Canary Report\n")
+    lines.append("## Run Summary")
+    lines.append(f"- run_id: {run_id}")
+    lines.append(f"- goal: {goal}")
+    lines.append(f"- model: {model_id}")
+    lines.append(f"- live_steps: {live_steps}\n")
+
+    lines.append("## Step Results")
+    lines.append("| Step | Status | Latency | Validation |")
+    lines.append("|------|--------|---------|------------|")
+
+    completed_steps = {a["step"] for a in step_artifacts}
+    failure_details = []
+
+    for step in live_steps:
+        artifact = next((a for a in step_artifacts if a["step"] == step), None)
+        if artifact is None:
+            lines.append(f"| {step} | skipped | - | - |")
+        else:
+            call_meta = artifact.get("call_meta") or {}
+            latency = call_meta.get("latency_ms", 0)
+            latency_str = f"{latency:.0f}ms" if latency else "-"
+            validation = artifact.get("validation", {})
+            if validation.get("valid"):
+                lines.append(f"| {step} | \u2713 passed | {latency_str} | valid |")
+            else:
+                reason = validation.get("reason", "unknown")
+                lines.append(f"| {step} | \u2717 FAILED | {latency_str} | invalid: {reason} |")
+                failure_details.append((step, validation))
+
+    lines.append("")
+    lines.append("## Failure Details")
+    if not failure_details:
+        lines.append("No failures.\n")
+    else:
+        for step, validation in failure_details:
+            lines.append(f"### {step}")
+            lines.append(f"- Error: {validation.get('reason', 'unknown')}")
+            if validation.get("errors"):
+                for err in validation["errors"][:5]:
+                    lines.append(f"  - {err}")
+            lines.append(f"- Raw response saved: live_step_{step}.json\n")
+
+    lines.append("## Artifacts")
+    for a in step_artifacts:
+        status = "" if a["validation"]["valid"] else " (FAILED)"
+        lines.append(f"- live_step_{a['step']}.json{status}")
+
+    content = "\n".join(lines) + "\n"
+    path = os.path.join(out_dir, "failure_points.md")
+    with open(path, "w") as f:
+        f.write(content)
+    return path
+
+
+# ─────────────────────────────────────────────────────────────────────
 # PIPELINE RUNNER
 # ─────────────────────────────────────────────────────────────────────
 
@@ -327,17 +468,132 @@ def run_pipeline(config):
     # ════════════════════════════════════════════════════════════════
     # STEP 1: TASTE RESEARCH
     # ════════════════════════════════════════════════════════════════
-    log("step1", "Taste research (mocked realistic web search output)")
-    save("step1_raw_research", RAW_RESEARCH, out_dir)
-    combined_research = "\n\n---\n\n".join(RAW_RESEARCH.values())
-    log("step1", f"Research: {len(combined_research)} chars", "ok")
+    generate_step = config.get("generate_step", None)
+    provider_generation_enabled = config.get("provider_generation_enabled", False)
+    live_steps = config.get("generate_steps", [])
+    live_canary = config.get("live_canary", False)
+    bedrock_call_meta = None
+    step_artifacts = []
+    provider = None
+
+    # Initialize provider once for canary mode
+    if live_canary and live_steps:
+        from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+        provider = BedrockClaudeProvider(
+            model_id=config.get("model_id", "us.anthropic.claude-sonnet-4-6"),
+            aws_region=config.get("aws_region", "us-east-1"),
+        )
+
+    if (provider_generation_enabled and generate_step == "research") or ("research" in live_steps):
+        log("step1", "Taste research (LIVE Bedrock generation)")
+        if provider is None:
+            from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+            provider = BedrockClaudeProvider(
+                model_id=config.get("model_id", "us.anthropic.claude-sonnet-4-6"),
+                aws_region=config.get("aws_region", "us-east-1"),
+            )
+        _research_validation_error = None
+        try:
+            research_result = provider.generate_research(goal, raw_text)
+            bedrock_call_meta = provider.last_call_meta
+            # Validate research (only in canary mode)
+            if live_canary:
+                validation = _validate_research(research_result)
+                artifact = {
+                    "step": "research",
+                    "prompt": provider.last_prompt,
+                    "raw_response": provider.last_raw_response,
+                    "parsed_json": research_result,
+                    "validation": validation,
+                    "call_meta": provider.last_call_meta,
+                }
+                step_artifacts.append(artifact)
+                save("live_step_research", artifact, out_dir)
+                if not validation["valid"]:
+                    _research_validation_error = f"Live step 'research' failed validation: {validation['reason']}"
+        except Exception as e:
+            bedrock_call_meta = getattr(provider, '_last_call_meta', None) or {
+                "latency_ms": 0, "retry_mode": "standard", "max_attempts": 5, "error": str(e),
+            }
+            if live_canary:
+                artifact = {
+                    "step": "research",
+                    "prompt": getattr(provider, '_last_prompt', None),
+                    "raw_response": getattr(provider, '_last_raw_response', None),
+                    "parsed_json": None,
+                    "validation": {"valid": False, "reason": str(e), "errors": [str(e)]},
+                    "call_meta": bedrock_call_meta,
+                }
+                step_artifacts.append(artifact)
+                save("live_step_research", artifact, out_dir)
+                _write_failure_points(out_dir, config, step_artifacts)
+            log("step1", f"Bedrock generation failed: {e}", "error")
+            raise RuntimeError(f"Bedrock generation failed for step 'research': {e}") from e
+        if _research_validation_error:
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(_research_validation_error)
+        save("step1_raw_research", research_result, out_dir)
+        save("step1_raw_research_live", research_result, out_dir)
+        combined_research = "\n\n---\n\n".join(str(v) for v in research_result.values())
+        log("step1", f"LIVE research from Bedrock: {len(combined_research)} chars", "ok")
+    else:
+        log("step1", "Taste research (mocked realistic web search output)")
+        save("step1_raw_research", RAW_RESEARCH, out_dir)
+        combined_research = "\n\n---\n\n".join(RAW_RESEARCH.values())
+        research_result = RAW_RESEARCH
+        log("step1", f"Research: {len(combined_research)} chars", "ok")
 
     # ════════════════════════════════════════════════════════════════
     # STEP 2: TASTE MAP
     # ════════════════════════════════════════════════════════════════
-    log("step2", "Building taste map")
-    save("step2_taste_map", TASTE_MAP, out_dir)
-    log("step2", f"Taste map: {len(TASTE_MAP['rewards'])} rewards, {len(TASTE_MAP['punishes'])} punishes", "ok")
+    if "taste_map" in live_steps:
+        log("step2", "Building taste map (LIVE Bedrock generation)")
+        _taste_map_validation_error = None
+        try:
+            live_taste_map = provider.generate_taste_map(goal, research_result)
+            # Validate taste map
+            validation = _validate_taste_map(live_taste_map)
+            artifact = {
+                "step": "taste_map",
+                "prompt": provider.last_prompt,
+                "raw_response": provider.last_raw_response,
+                "parsed_json": live_taste_map,
+                "validation": validation,
+                "call_meta": provider.last_call_meta,
+            }
+            step_artifacts.append(artifact)
+            save("live_step_taste_map", artifact, out_dir)
+            if not validation["valid"]:
+                _taste_map_validation_error = f"Live step 'taste_map' failed validation: {validation['reason']}"
+            else:
+                # Use live taste map for downstream steps
+                active_taste_map = live_taste_map
+        except Exception as e:
+            artifact = {
+                "step": "taste_map",
+                "prompt": getattr(provider, '_last_prompt', None),
+                "raw_response": getattr(provider, '_last_raw_response', None),
+                "parsed_json": None,
+                "validation": {"valid": False, "reason": str(e), "errors": [str(e)]},
+                "call_meta": getattr(provider, '_last_call_meta', None) or {
+                    "latency_ms": 0, "retry_mode": "standard", "max_attempts": 5, "error": str(e),
+                },
+            }
+            step_artifacts.append(artifact)
+            save("live_step_taste_map", artifact, out_dir)
+            log("step2", f"Bedrock generation failed: {e}", "error")
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(f"Bedrock generation failed for step 'taste_map': {e}") from e
+        if _taste_map_validation_error:
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(_taste_map_validation_error)
+        save("step2_taste_map", active_taste_map, out_dir)
+        log("step2", f"LIVE taste map: {len(active_taste_map.get('rewards', []))} rewards, {len(active_taste_map.get('punishes', []))} punishes", "ok")
+    else:
+        log("step2", "Building taste map")
+        active_taste_map = TASTE_MAP
+        save("step2_taste_map", TASTE_MAP, out_dir)
+        log("step2", f"Taste map: {len(TASTE_MAP['rewards'])} rewards, {len(TASTE_MAP['punishes'])} punishes", "ok")
 
     # ════════════════════════════════════════════════════════════════
     # STEP 3: NLP THEORY
@@ -379,7 +635,58 @@ def run_pipeline(config):
     # STEP 5: PAIR GENERATION with source policy (F3 fix)
     # ════════════════════════════════════════════════════════════════
     log("step5", "Generating pair suite with source policy validation...")
-    pair_suite_r0, valid_pairs_r0, invalid_pairs_r0, _ = validate_and_split_pairs(ALL_PAIRS_R0, seed)
+
+    if "pairs" in live_steps:
+        log("step5", "Generating pairs (LIVE Bedrock generation)")
+        _pairs_validation_error = None
+        try:
+            n_pairs = config.get("n_init_pairs", 24)
+            live_pairs_raw = provider.generate_pairs(active_taste_map, {}, n_pairs)
+            # Validate pairs
+            validation = _validate_pairs(live_pairs_raw)
+            artifact = {
+                "step": "pairs",
+                "prompt": provider.last_prompt,
+                "raw_response": provider.last_raw_response,
+                "parsed_json": live_pairs_raw,
+                "validation": validation,
+                "call_meta": provider.last_call_meta,
+            }
+            step_artifacts.append(artifact)
+            save("live_step_pairs", artifact, out_dir)
+            if not validation["valid"]:
+                _pairs_validation_error = f"Live step 'pairs' failed validation: {validation['reason']}"
+            else:
+                # Add source_policy default if missing
+                for p in live_pairs_raw:
+                    if "source_policy" not in p:
+                        p["source_policy"] = DEFAULT_SOURCE_POLICY
+                # Replace ALL_PAIRS_R0 with live-generated pairs
+                active_pairs_r0 = live_pairs_raw
+                log("step5", f"LIVE pairs from Bedrock: {len(active_pairs_r0)} pairs", "ok")
+        except Exception as e:
+            artifact = {
+                "step": "pairs",
+                "prompt": getattr(provider, '_last_prompt', None),
+                "raw_response": getattr(provider, '_last_raw_response', None),
+                "parsed_json": None,
+                "validation": {"valid": False, "reason": str(e), "errors": [str(e)]},
+                "call_meta": getattr(provider, '_last_call_meta', None) or {
+                    "latency_ms": 0, "retry_mode": "standard", "max_attempts": 5, "error": str(e),
+                },
+            }
+            step_artifacts.append(artifact)
+            save("live_step_pairs", artifact, out_dir)
+            log("step5", f"Bedrock generation failed: {e}", "error")
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(f"Bedrock generation failed for step 'pairs': {e}") from e
+        if _pairs_validation_error:
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(_pairs_validation_error)
+    else:
+        active_pairs_r0 = ALL_PAIRS_R0
+
+    pair_suite_r0, valid_pairs_r0, invalid_pairs_r0, _ = validate_and_split_pairs(active_pairs_r0, seed)
 
     log("step5", f"Policy check: {len(valid_pairs_r0)} valid, {len(invalid_pairs_r0)} invalid (dropped)",
         "ok" if len(invalid_pairs_r0) == 0 else "warn")
@@ -543,6 +850,52 @@ def run_pipeline(config):
     log("step11", "Candidate generation and scoring...")
     candidate_ensemble = build_candidate_ensemble(pareto_r1)
 
+    # Live candidate generation
+    if "candidates" in live_steps:
+        log("step11", "Generating candidates (LIVE Bedrock generation)")
+        _candidates_validation_error = None
+        try:
+            n_candidates = config.get("n_candidates", 4)
+            live_candidates_raw = provider.generate_candidates(goal, raw_text, active_taste_map, n_candidates)
+            # Validate candidates
+            validation = _validate_candidates(live_candidates_raw)
+            artifact = {
+                "step": "candidates",
+                "prompt": provider.last_prompt,
+                "raw_response": provider.last_raw_response,
+                "parsed_json": live_candidates_raw,
+                "validation": validation,
+                "call_meta": provider.last_call_meta,
+            }
+            step_artifacts.append(artifact)
+            save("live_step_candidates", artifact, out_dir)
+            if not validation["valid"]:
+                _candidates_validation_error = f"Live step 'candidates' failed validation: {validation['reason']}"
+            else:
+                active_candidates = live_candidates_raw
+                log("step11", f"LIVE candidates from Bedrock: {len(active_candidates)} candidates", "ok")
+        except Exception as e:
+            artifact = {
+                "step": "candidates",
+                "prompt": getattr(provider, '_last_prompt', None),
+                "raw_response": getattr(provider, '_last_raw_response', None),
+                "parsed_json": None,
+                "validation": {"valid": False, "reason": str(e), "errors": [str(e)]},
+                "call_meta": getattr(provider, '_last_call_meta', None) or {
+                    "latency_ms": 0, "retry_mode": "standard", "max_attempts": 5, "error": str(e),
+                },
+            }
+            step_artifacts.append(artifact)
+            save("live_step_candidates", artifact, out_dir)
+            log("step11", f"Bedrock generation failed: {e}", "error")
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(f"Bedrock generation failed for step 'candidates': {e}") from e
+        if _candidates_validation_error:
+            _write_failure_points(out_dir, config, step_artifacts)
+            raise RuntimeError(_candidates_validation_error)
+    else:
+        active_candidates = CANDIDATES
+
     if not candidate_ensemble:
         log("step11", "NO ELIGIBLE SCORER ENSEMBLE -- cannot select candidate", "error")
         selected_candidate = None
@@ -550,7 +903,7 @@ def run_pipeline(config):
         c002 = {"ensemble_score": 0}
     else:
         log("step11", f"Eligible ensemble: {[s['scorer_id'] for s in candidate_ensemble]}", "ok")
-        scored_candidates = score_candidates(CANDIDATES, candidate_ensemble, all_scorer_code, raw_text)
+        scored_candidates = score_candidates(active_candidates, candidate_ensemble, all_scorer_code, raw_text)
         selected_candidate = select_candidate(scored_candidates)
 
         log("step11", f"Selected: {selected_candidate['candidate_id']} ({selected_candidate['strategy']})", "ok")
@@ -610,17 +963,47 @@ def run_pipeline(config):
     # SAVE ALL ARTIFACTS + ZIP
     # ════════════════════════════════════════════════════════════════
     from evalweaver.artifacts import TRACE
-    import uuid
     save("trace", TRACE, out_dir)
 
-    # Run metadata (Task 33)
+    # Run metadata — honest about what the provider actually did
+    provider_generation_enabled = config.get("provider_generation_enabled", False)
+    generate_step = config.get("generate_step", None)
+
+    if live_canary:
+        generated_steps_list = [a["step"] for a in step_artifacts if a["validation"]["valid"]]
+        failed_steps_list = [a["step"] for a in step_artifacts if not a["validation"]["valid"]]
+        bedrock_calls_made = len(step_artifacts)
+    else:
+        generated_steps_list = [generate_step] if (provider_generation_enabled and generate_step) else []
+        failed_steps_list = []
+        bedrock_calls_made = len(generated_steps_list)
+
+    # run_id: <goal>-<timestamp>-<short_hash>
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    short_hash = hashlib.sha256(f"{goal}{ts}{seed}".encode()).hexdigest()[:8]
+    run_id = f"{goal}-{ts}-{short_hash}"
+
     run_metadata = {
-        "run_id": str(uuid.uuid4()),
+        "run_id": run_id,
         "provider_name": config.get("provider_name", "mock"),
         "model_id": config.get("model_id", "mock-v1-seeded"),
         "aws_region": config.get("aws_region", None),
         "execution_backend": config.get("execution_backend", "local-exec"),
-        "artifact_store": config.get("artifact_store", "local-fs"),
+        "artifact_store": config.get("artifact_store", "local"),
+        "provider_generation_enabled": provider_generation_enabled,
+        "bedrock_validation_passed": config.get("bedrock_validation_passed", None),
+        "bedrock_calls_made": bedrock_calls_made,
+        "generated_steps": generated_steps_list,
+        "failed_steps": failed_steps_list,
+        "live_canary": live_canary,
+        "generate_steps": live_steps if live_canary else [],
+        "step_artifacts": step_artifacts,
+        "bedrock_call_meta": {
+            "latency_ms": bedrock_call_meta.get("latency_ms", 0),
+            "retry_mode": "standard",
+            "max_attempts": 5,
+            "error": bedrock_call_meta.get("error", None),
+        } if bedrock_calls_made > 0 and bedrock_call_meta else None,
     }
 
     save("run_summary_v5", {
@@ -654,6 +1037,28 @@ def run_pipeline(config):
     }, out_dir)
 
     zip_path = build_zip_archive(out_dir)
+
+    # Generate failure_points.md for canary mode
+    if live_canary:
+        _write_failure_points(out_dir, config, step_artifacts, run_id=run_id)
+
+    # S3 upload if configured
+    s3_meta = None
+    if config.get("artifact_store") == "s3":
+        bucket = config.get("s3_bucket")
+        if not bucket:
+            log("artifacts", "ERROR: --artifact-store s3 requires --s3-bucket or TASTE_COMPILER_ARTIFACT_BUCKET env", "error")
+        else:
+            from evalweaver.artifacts import upload_to_s3
+            s3_meta = upload_to_s3(out_dir, bucket, run_id, config.get("aws_region"))
+            log("artifacts", f"Uploaded to s3://{bucket}/runs/{run_id}/ ({s3_meta['uploaded_count']} files)", "ok")
+
+    # Update run_metadata with S3 info
+    run_metadata["artifact_store"] = config.get("artifact_store", "local")
+    run_metadata["s3_bucket"] = config.get("s3_bucket") if config.get("artifact_store") == "s3" else None
+    run_metadata["s3_prefix"] = f"runs/{run_id}" if s3_meta else None
+    run_metadata["zip_s3_key"] = s3_meta["zip_s3_key"] if s3_meta else None
+
     log("done", f"Artifacts saved to {out_dir}", "ok")
 
     return {

@@ -53,3 +53,5 @@ package-lock.json
 aws/credentials
 *.pem
 *.key
+.vercel
+.env*

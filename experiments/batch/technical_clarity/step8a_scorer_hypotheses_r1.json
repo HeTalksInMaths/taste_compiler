@@ -1,0 +1,144 @@
+[
+  {
+    "scorer_id": "S_r1_001",
+    "lineage": "mutation",
+    "hypothesis": "Mutation of S_r0_001: adds explicit fake-mechanism detection. Argument progression x real_mechanism_quality product \u2014 if real mechanism is negative (fake), score collapses. Addresses fake_mechanism trap failures.",
+    "research_basis": [
+      "ELM elaboration quality",
+      "Fake mechanism credibility inversion"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "causal_grounding",
+      "fake_mechanism"
+    ],
+    "expected_failure_mode": "May over-penalise short copy with brief mechanism phrases.",
+    "constants_and_thresholds": [
+      {
+        "name": "FAKE_VETO",
+        "value": 0.25,
+        "reason": "Jargon density above 0.25 reduces score by 80%"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r1_002",
+    "lineage": "mutation",
+    "hypothesis": "Mutation of S_r0_002: adds real_mechanism_quality gate on audience relevance amplification. Relevance only amplifies if mechanism is genuine. Addresses subtle_quality_gap where both have before/after but differ in mechanism quality.",
+    "research_basis": [
+      "Burnkrant & Unnava 1989",
+      "ELM involvement + argument quality"
+    ],
+    "taste_map_basis": [
+      "audience_relevance",
+      "causal_grounding",
+      "fake_mechanism",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "May penalise good audience-relevance copy that lacks explicit mechanism.",
+    "constants_and_thresholds": [
+      {
+        "name": "REL_BOOST_CAP",
+        "value": 1.3,
+        "reason": "Slightly higher cap \u2014 relevance is underweighted currently"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r1_003",
+    "lineage": "blind_node_repair",
+    "hypothesis": "Targets subtle_quality_gap blind spot: argument_progression x specificity_without_invention. Both must be above threshold. Abstract jargon density vetoes. Source continuity is soft floor only.",
+    "research_basis": [
+      "Argument structure",
+      "Kahneman specificity",
+      "Abstract jargon penalty"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "concrete_specificity",
+      "fake_mechanism",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "May miss good hype-free copy that is specific but lacks explicit before/after.",
+    "constants_and_thresholds": [
+      {
+        "name": "PROG_THRESHOLD",
+        "value": 0.4,
+        "reason": "Both progression and specificity must clear 0.4 to get full score"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r1_004",
+    "lineage": "recombination",
+    "hypothesis": "Recombination of S_r0_001 and S_r0_003: argument_progression x real_mechanism_quality (from S_r0_001) gated by jargon check (from S_r0_003). Hard policy only veto. Soft continuity weights the total.",
+    "research_basis": [
+      "ELM central route",
+      "Abstract jargon credibility",
+      "Friestad & Wright"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "fake_mechanism",
+      "concrete_specificity",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "Jargon gate may be too strict for domain-specific technical copy.",
+    "constants_and_thresholds": [
+      {
+        "name": "JARGON_THRESHOLD",
+        "value": 0.2,
+        "reason": "Stricter than S_r0_003 \u2014 fake_mechanism failures require tighter jargon gate"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r1_005",
+    "lineage": "novel_composition",
+    "hypothesis": "Novel: full argument quality score = progression + real mechanism quality + specificity_without_invention \u2014 abstract_jargon. Epistemic calibration multiplies the total. Hard policy is the only gate.",
+    "research_basis": [
+      "Full ELM model",
+      "Boush 2009 calibration",
+      "All taste map rewards"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "causal_grounding",
+      "concrete_specificity",
+      "epistemic_honesty",
+      "fake_mechanism"
+    ],
+    "expected_failure_mode": "Complex \u2014 may be dominated by simpler scorers that do one thing well.",
+    "constants_and_thresholds": [
+      {
+        "name": "EP_BOOST",
+        "value": 1.15,
+        "reason": "Calibration amplifies argument quality up to 15%"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r1_006",
+    "lineage": "novel_composition",
+    "hypothesis": "Novel: treats source continuity as the primary signal, amplified by argument quality. A text that preserves the intent AND adds a real mechanism is maximally persuasive. No soft gate zeros.",
+    "research_basis": [
+      "Credibility transfer",
+      "Langer 1978",
+      "ELM"
+    ],
+    "taste_map_basis": [
+      "source_continuity",
+      "causal_grounding",
+      "argument_progression",
+      "source_violation"
+    ],
+    "expected_failure_mode": "May reward source-preserving text that adds only shallow mechanism.",
+    "constants_and_thresholds": [
+      {
+        "name": "CONTINUITY_WEIGHT",
+        "value": 0.4,
+        "reason": "Continuity x quality \u2014 neither alone is enough"
+      }
+    ]
+  }
+]

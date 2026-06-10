@@ -1,0 +1,14 @@
+{
+  "signals": {
+    "parse_error": "JSON parse error: Unterminated string starting at: line 167 column 15 (char 44722)"
+  },
+  "passed": false,
+  "failures": [
+    {
+      "signal": "parse",
+      "value": "error",
+      "threshold": "valid_json",
+      "op": "=="
+    }
+  ]
+}
