@@ -53,9 +53,9 @@ export default function Home() {
           <Link href="/runs/demo" className="btn btn-primary">
             View demo run
           </Link>
-          <button className="btn btn-disabled" disabled>
-            Start run — Coming soon
-          </button>
+          <Link href="/stages" className="btn btn-primary">
+            Run Stages 1–4 Live
+          </Link>
         </div>
       </section>
     </main>
