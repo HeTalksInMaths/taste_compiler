@@ -165,6 +165,21 @@ export default function SimulationsPage() {
             ))}
           </div>
         </div>
+
+        {/* CTA to Create */}
+        <div className="mt-8 glass-card p-8 text-center border-purple-500/20">
+          <h2 className="text-xl font-bold mb-2">See demand for your own scorer?</h2>
+          <p className="text-white/50 text-sm mb-4 max-w-lg mx-auto">
+            These results are from the existing Nemotron persona panel. Try creating your own scorer —
+            pick a goal, see estimated demand, and let Bedrock Claude generate the taste research.
+          </p>
+          <a
+            href="/create"
+            className="inline-block rounded-lg bg-gradient-to-r from-brand-600 to-purple-600 px-6 py-3 text-sm font-medium text-white transition hover:from-brand-500 hover:to-purple-500"
+          >
+            Create Your Own Scorer →
+          </a>
+        </div>
       </div>
     </div>
   );
