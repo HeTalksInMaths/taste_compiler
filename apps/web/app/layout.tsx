@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ViewModeProvider } from "@/providers/ViewModeProvider";
+import { ChatWidget } from "@/components/chat-widget";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body>
         <Nav />
         <ViewModeProvider>{children}</ViewModeProvider>
+        <ChatWidget />
       </body>
     </html>
   );
