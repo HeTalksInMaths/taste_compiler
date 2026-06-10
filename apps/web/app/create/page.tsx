@@ -90,6 +90,23 @@ export default function CreateScorerPage() {
     setRunning(false);
   }
 
+  // Improve mode skips demand entirely — one click runs research → taste map → scorers → score lift
+  async function runImproveMode() {
+    if (!goal.trim() || !rawText.trim()) return;
+    setRunning(true);
+    setDemandDone(false);
+    setStepStatuses(['idle', 'idle', 'idle', 'idle', 'idle']);
+    setStepResults([null, null, null, null, null]);
+    setStepErrors([null, null, null, null, null]);
+    let prev: unknown = null;
+    for (let i = 1; i < 5; i++) {
+      const result = await callStep(i, prev);
+      if (!result) break;
+      prev = result;
+    }
+    setRunning(false);
+  }
+
   const inputStyle = { width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', padding: '10px 16px', fontSize: '14px', color: 'white', outline: 'none' };
   const canRun = goal.trim() && (mode === 'sell' || rawText.trim());
 
@@ -101,8 +118,8 @@ export default function CreateScorerPage() {
           <h1 className="text-2xl font-bold text-white">Create a Scorer</h1>
           <p className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
             {mode === 'improve'
-              ? 'Reference text → Quality target → Run Taste Compiler → Score lift preview → Reveal with Stripe'
-              : 'Quality target → Audience → Demand preview → Run Taste Compiler → Market-test scorer'}
+              ? 'Paste your text, set a quality goal → research → taste map → scorer → score lift → Stripe reveal'
+              : 'Quality target → Audience → Demand preview → Continue → Pipeline → Market-test scorer'}
           </p>
         </div>
 
@@ -198,20 +215,25 @@ export default function CreateScorerPage() {
           )}
 
           <button
-            onClick={runDemand}
+            onClick={mode === 'sell' ? runDemand : runImproveMode}
             disabled={running || !canRun}
             className="w-full rounded-lg py-3 text-sm font-medium text-white transition"
             style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: !canRun || running ? 0.4 : 1, cursor: !canRun || running ? 'not-allowed' : 'pointer' }}
           >
-            {running && !demandDone ? 'Estimating...' : mode === 'sell' ? 'Estimate Demand →' : 'Run Taste Compiler →'}
+            {running
+              ? (mode === 'sell' && !demandDone ? 'Estimating...' : 'Running...')
+              : mode === 'sell' ? 'Estimate Demand →' : 'Run Taste Compiler →'}
           </button>
         </div>
 
         {/* Pipeline progress */}
         {!stepStatuses.every(s => s === 'idle') && (
           <div className="mb-6 flex items-center justify-center gap-2 flex-wrap">
-            {STEP_LABELS.slice(0, mode === 'improve' ? 5 : 4).map((label, i) => {
-              const status = stepStatuses[i];
+            {(mode === 'improve'
+              ? STEP_LABELS.slice(1).map((label, i) => ({ label, statusIdx: i + 1 }))
+              : STEP_LABELS.slice(0, 4).map((label, i) => ({ label, statusIdx: i }))
+            ).map(({ label, statusIdx }, i, arr) => {
+              const status = stepStatuses[statusIdx];
               const style = status === 'done' ? { backgroundColor: 'rgba(16,185,129,0.1)', color: 'rgb(52,211,153)', boxShadow: '0 0 0 1px rgba(16,185,129,0.2)' }
                 : status === 'running' ? { backgroundColor: 'rgba(245,158,11,0.1)', color: 'rgb(251,191,36)', boxShadow: '0 0 0 1px rgba(245,158,11,0.2)' }
                 : status === 'error' ? { backgroundColor: 'rgba(248,113,113,0.1)', color: 'rgb(248,113,113)', boxShadow: '0 0 0 1px rgba(248,113,113,0.2)' }
@@ -219,7 +241,7 @@ export default function CreateScorerPage() {
               return (
                 <div key={i} className="flex items-center gap-2">
                   <span className="rounded-full px-3 py-1 text-xs font-medium" style={style}>{label}</span>
-                  {i < (mode === 'improve' ? 4 : 3) && <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>→</span>}
+                  {i < arr.length - 1 && <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>→</span>}
                 </div>
               );
             })}
@@ -230,8 +252,8 @@ export default function CreateScorerPage() {
         {stepResults[0] != null && <DemandPanel data={stepResults[0]} />}
         {stepErrors[0] && <ErrorBox msg={stepErrors[0]} />}
 
-        {/* Proceed gate */}
-        {demandDone && stepStatuses[1] === 'idle' && !running && (
+        {/* Proceed gate — sell mode only, after demand estimate */}
+        {mode === 'sell' && demandDone && stepStatuses[1] === 'idle' && !running && (
           <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(16,185,129,0.2)', backgroundColor: 'rgba(16,185,129,0.04)' }}>
             <div>
               <div className="text-sm font-medium text-white">
