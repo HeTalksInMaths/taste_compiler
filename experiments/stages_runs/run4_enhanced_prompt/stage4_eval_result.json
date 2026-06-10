@@ -1,0 +1,31 @@
+{
+  "signals": {
+    "num_scorers": 8,
+    "hypothesis_completeness_rate": 1.0,
+    "causal_node_validity_rate": 1.0,
+    "measurement_reference_rate": 1.0,
+    "functional_form_diversity": 8,
+    "interaction_usage_rate": 1.0,
+    "normalization_usage_rate": 0.375,
+    "code_exec_rate": 1.0,
+    "numeric_return_rate": 1.0,
+    "nonconstant_behavior_rate": 0.375,
+    "scorer_distinctness_score": 1.0,
+    "hypothesis_code_alignment_score": 0.5939434580730164
+  },
+  "passed": false,
+  "failures": [
+    {
+      "signal": "normalization_usage_rate",
+      "value": 0.375,
+      "threshold": 0.4,
+      "op": ">="
+    },
+    {
+      "signal": "nonconstant_behavior_rate",
+      "value": 0.375,
+      "threshold": 0.6,
+      "op": ">="
+    }
+  ]
+}

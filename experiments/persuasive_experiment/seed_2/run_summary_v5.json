@@ -1,0 +1,185 @@
+{
+  "version": "v5.1",
+  "goal": "persuasive",
+  "raw_text": "EvalWeaver lets anyone create, use, and monetize AI improvers for subjective goals like make this more persuasive.",
+  "run_metadata": {
+    "run_id": "83ab567a-a766-48af-8d52-a461ff747c90",
+    "provider_name": "mock",
+    "model_id": "us.anthropic.claude-sonnet-4-6",
+    "aws_region": null,
+    "execution_backend": "local-exec",
+    "artifact_store": "local-fs",
+    "provider_generation_enabled": false,
+    "bedrock_validation_passed": null,
+    "bedrock_calls_made": 0,
+    "generated_steps": []
+  },
+  "v5_fixes_applied": [
+    "F1_pair_level_validation",
+    "F2_pareto_eligibility_from_validation",
+    "F3_pair_source_policy",
+    "F4_hard_soft_source_split",
+    "F5_pareto_eligibility_filter",
+    "F6_four_new_probes",
+    "F7_fake_mechanism_pairs",
+    "F8_mutation_instruction_history",
+    "F9_computed_spec_criteria"
+  ],
+  "counts": {
+    "probes_total": 10,
+    "scorer_r0": 8,
+    "scorer_r1": 6,
+    "scorers_valid_r0": 8,
+    "scorers_valid_r1": 6,
+    "pairs_train_r0": 13,
+    "pairs_heldout_r0": 8,
+    "pairs_adv_train_r1": 5,
+    "pairs_heldout_r1": 15,
+    "pair_policy_violations": 0,
+    "pareto_r0": 5,
+    "pareto_r1": 7,
+    "eligible_ensemble": 7
+  },
+  "r0_best": {
+    "scorer_id": "S_r0_001",
+    "test_acc": 0.75,
+    "test_margin": 0.25609375
+  },
+  "r1_best": {
+    "scorer_id": "S_r0_001",
+    "lineage": "initial",
+    "test_acc": 0.8,
+    "test_margin": 0.29241666666666666,
+    "survived_because": "best test margin (0.292)"
+  },
+  "selected_candidate": "C001",
+  "c002_score": 0.2004,
+  "hype_baseline_score": 0.0,
+  "spec_criteria_summary": {
+    "pass": 19,
+    "warn": 1,
+    "fail": 0
+  },
+  "computed_criteria": [
+    {
+      "criterion": "taste_research_present",
+      "status": "pass",
+      "computed_value": 3,
+      "threshold": "3"
+    },
+    {
+      "criterion": "taste_map_rewards_present",
+      "status": "pass",
+      "computed_value": 5,
+      "threshold": "3"
+    },
+    {
+      "criterion": "taste_map_punishes_present",
+      "status": "pass",
+      "computed_value": 3,
+      "threshold": "1"
+    },
+    {
+      "criterion": "scorer_hypotheses_r0",
+      "status": "pass",
+      "computed_value": 8,
+      "threshold": "8"
+    },
+    {
+      "criterion": "scorer_code_valid_r0",
+      "status": "pass",
+      "computed_value": 8,
+      "threshold": "2"
+    },
+    {
+      "criterion": "pair_policy_violations",
+      "status": "pass",
+      "computed_value": 0,
+      "threshold": "0"
+    },
+    {
+      "criterion": "initial_heldout_count",
+      "status": "pass",
+      "computed_value": 8,
+      "threshold": "8"
+    },
+    {
+      "criterion": "pareto_r0_nonempty",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "failure_packet_has_instructions",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "repair_hypotheses_generated",
+      "status": "pass",
+      "computed_value": 6,
+      "threshold": "6"
+    },
+    {
+      "criterion": "adversarial_pairs_generated",
+      "status": "pass",
+      "computed_value": 12,
+      "threshold": "12"
+    },
+    {
+      "criterion": "fake_mechanism_pairs",
+      "status": "pass",
+      "computed_value": 12,
+      "threshold": "3"
+    },
+    {
+      "criterion": "heldout_grew",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "final_heldout_count",
+      "status": "pass",
+      "computed_value": 15,
+      "threshold": "15"
+    },
+    {
+      "criterion": "pareto_r1_nonempty",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "eligible_ensemble_exists",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "candidate_selected",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "hype_baseline_zeroed",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "c002_not_zeroed",
+      "status": "pass",
+      "computed_value": true,
+      "threshold": "True"
+    },
+    {
+      "criterion": "mutation_instructions_not_all_repeated",
+      "status": "warning",
+      "computed_value": false,
+      "threshold": "True"
+    }
+  ]
+}

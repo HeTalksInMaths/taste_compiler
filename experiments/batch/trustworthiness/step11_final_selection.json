@@ -1,0 +1,44 @@
+{
+  "selected": {
+    "candidate_id": "C001",
+    "strategy": "mechanism_first",
+    "text": "EvalWeaver lets anyone create, use, and monetise AI improvers for subjective goals like 'more persuasive' \u2014 by building a causal theory of what the goal means, testing it on real examples, and using the strongest evaluator to guide each rewrite.",
+    "raw_scores": {
+      "S_r0_001": 0.19191176470588234,
+      "S_r0_007": 0.2,
+      "S_r0_003": 0.17272058823529413,
+      "S_r1_001": 0.14073529411764707,
+      "S_r0_004": 0.145,
+      "S_r0_002": 0.14235294117647057,
+      "S_r1_005": 0.08955882352941175
+    },
+    "norm_scores": {
+      "S_r0_001": 1.0,
+      "S_r0_007": 1.0,
+      "S_r0_003": 1.0,
+      "S_r1_001": 1.0,
+      "S_r0_004": 1.0,
+      "S_r0_002": 0.6170212765957446,
+      "S_r1_005": 1.0
+    },
+    "ensemble_score": 0.9453,
+    "normalized_ensemble_score": 0.9453,
+    "raw_mean_score": 0.1546,
+    "policy_ok": true,
+    "policy_violations": []
+  },
+  "eligible_ensemble": [
+    "S_r0_001",
+    "S_r0_007",
+    "S_r0_003",
+    "S_r1_001",
+    "S_r0_004",
+    "S_r0_002",
+    "S_r1_005"
+  ],
+  "winning_scorer_hypotheses": [
+    "Argument progression (problem->mechanism->result) is the primary driver. Real mechanism quality distinguishes genuine from fake. Hard source policy is the only veto -- no soft gate.",
+    "Argument progression x real mechanism quality is the product score. Both must be present. Fake mechanism vetoes regardless of other signals. No soft source gate."
+  ],
+  "explanation_for_product_mode": "Selected because: Argument progression (problem->mechanism->result) is the primary driver. Real mechanism quality distinguishes genuine from fake. Hard source policy is the only veto -- no soft gate."
+}

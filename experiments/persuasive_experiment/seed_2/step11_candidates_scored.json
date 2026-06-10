@@ -1,0 +1,120 @@
+[
+  {
+    "candidate_id": "C001",
+    "strategy": "mechanism_first",
+    "text": "EvalWeaver lets anyone create, use, and monetise AI improvers for subjective goals like 'more persuasive' \u2014 by building a causal theory of what the goal means, testing it on real examples, and using the strongest evaluator to guide each rewrite.",
+    "raw_scores": {
+      "S_r0_001": 0.24519230769230768,
+      "S_r0_007": 0.2,
+      "S_r0_003": 0.22067307692307694,
+      "S_r1_001": 0.17980769230769234,
+      "S_r0_004": 0.18525641025641026,
+      "S_r0_002": 0.17076923076923076,
+      "S_r1_005": 0.1144230769230769
+    },
+    "norm_scores": {
+      "S_r0_001": 1.0,
+      "S_r0_007": 1.0,
+      "S_r0_003": 1.0,
+      "S_r1_001": 1.0,
+      "S_r0_004": 1.0,
+      "S_r0_002": 0.6781124921002738,
+      "S_r1_005": 1.0
+    },
+    "ensemble_score": 0.954,
+    "normalized_ensemble_score": 0.954,
+    "raw_mean_score": 0.188,
+    "policy_ok": true,
+    "policy_violations": []
+  },
+  {
+    "candidate_id": "C003",
+    "strategy": "concrete_outcome",
+    "text": "EvalWeaver turns vague goals like 'more persuasive' into testable evaluators \u2014 so you improve text based on what actually moves your readers, not what sounds plausible to an AI.",
+    "raw_scores": {
+      "S_r0_001": 0.07211538461538461,
+      "S_r0_007": 0.0,
+      "S_r0_003": 0.10817307692307691,
+      "S_r1_001": 0.0,
+      "S_r0_004": 0.04807692307692307,
+      "S_r0_002": 0.25183023872679045,
+      "S_r1_005": 0.0
+    },
+    "norm_scores": {
+      "S_r0_001": 0.29411764705882354,
+      "S_r0_007": 0.0,
+      "S_r0_003": 0.4901960784313725,
+      "S_r1_001": 0.0,
+      "S_r0_004": 0.25951557093425603,
+      "S_r0_002": 1.0,
+      "S_r1_005": 0.0
+    },
+    "ensemble_score": 0.292,
+    "normalized_ensemble_score": 0.292,
+    "raw_mean_score": 0.0686,
+    "policy_ok": true,
+    "policy_violations": []
+  },
+  {
+    "candidate_id": "C002",
+    "strategy": "audience_pain",
+    "text": "Tired of asking AI to improve your writing and getting results that feel off? EvalWeaver discovers what your improvement goal actually means, validates that theory against real examples, and only then rewrites.",
+    "raw_scores": {
+      "S_r0_001": 0.0,
+      "S_r0_007": 0.0,
+      "S_r0_003": 0.11724999999999998,
+      "S_r1_001": 0.0,
+      "S_r0_004": 0.020615384615384615,
+      "S_r0_002": 0.1573846153846154,
+      "S_r1_005": 0.01546153846153846
+    },
+    "norm_scores": {
+      "S_r0_001": 0.0,
+      "S_r0_007": 0.0,
+      "S_r0_003": 0.5313289760348583,
+      "S_r1_001": 0.0,
+      "S_r0_004": 0.11128027681660899,
+      "S_r0_002": 0.6249631346113336,
+      "S_r1_005": 0.1351260504201681
+    },
+    "ensemble_score": 0.2004,
+    "normalized_ensemble_score": 0.2004,
+    "raw_mean_score": 0.0444,
+    "policy_ok": true,
+    "policy_violations": []
+  },
+  {
+    "candidate_id": "C004",
+    "strategy": "hype_control_baseline",
+    "text": "EvalWeaver is the ultimate revolutionary AI that instantly transforms any writing goal into the most amazing, guaranteed persuasion results you've ever seen.",
+    "raw_scores": {
+      "S_r0_001": 0.0,
+      "S_r0_007": 0.0,
+      "S_r0_003": 0.0,
+      "S_r1_001": 0.0,
+      "S_r0_004": 0.0,
+      "S_r0_002": 0.0,
+      "S_r1_005": 0.0
+    },
+    "norm_scores": {
+      "S_r0_001": 0.0,
+      "S_r0_007": 0.0,
+      "S_r0_003": 0.0,
+      "S_r1_001": 0.0,
+      "S_r0_004": 0.0,
+      "S_r0_002": 0.0,
+      "S_r1_005": 0.0
+    },
+    "ensemble_score": 0.0,
+    "normalized_ensemble_score": 0.0,
+    "raw_mean_score": 0.0,
+    "policy_ok": false,
+    "policy_violations": [
+      {
+        "violation_type": "guarantee_claim",
+        "evidence": "amazing, guaranteed persuasio",
+        "severity": "hard"
+      }
+    ]
+  }
+]

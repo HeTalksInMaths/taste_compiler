@@ -1,7 +1,19 @@
 {
-  "version": "v5",
+  "version": "v5.1",
   "goal": "persuasive",
   "raw_text": "EvalWeaver lets anyone create, use, and monetize AI improvers for subjective goals like make this more persuasive.",
+  "run_metadata": {
+    "run_id": "7c0c335e-5216-453e-bc7a-2bd893390970",
+    "provider_name": "mock",
+    "model_id": "mock-v1-seeded",
+    "aws_region": null,
+    "execution_backend": "local-exec",
+    "artifact_store": "local-fs",
+    "provider_generation_enabled": false,
+    "bedrock_validation_passed": null,
+    "bedrock_calls_made": 0,
+    "generated_steps": []
+  },
   "v5_fixes_applied": [
     "F1_pair_level_validation",
     "F2_pareto_eligibility_from_validation",

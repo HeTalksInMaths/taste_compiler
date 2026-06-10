@@ -1,0 +1,198 @@
+[
+  {
+    "scorer_id": "S_r0_001",
+    "lineage": "initial",
+    "hypothesis": "Argument progression (problem->mechanism->result) is the primary driver. Real mechanism quality distinguishes genuine from fake. Hard source policy is the only veto -- no soft gate.",
+    "research_basis": [
+      "ELM central route",
+      "Langer 1978",
+      "Argument progression research"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "causal_grounding",
+      "fake_mechanism",
+      "source_violation"
+    ],
+    "expected_failure_mode": "May miss audience-relevance-only pairs that lack explicit mechanism.",
+    "constants_and_thresholds": [
+      {
+        "name": "FAKE_MECH_CANCEL",
+        "value": 0.3,
+        "reason": "Fake mechanism above 0.3 cancels positive signals"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_002",
+    "lineage": "initial",
+    "hypothesis": "Audience relevance amplifies causal grounding. Before/after contrast + second-person is the primary relevance signal. Soft source continuity reduces but doesn't zero the score.",
+    "research_basis": [
+      "Burnkrant & Unnava 1989",
+      "JTBD framing",
+      "ELM involvement"
+    ],
+    "taste_map_basis": [
+      "audience_relevance",
+      "causal_grounding",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "May reward pain-framing that has fake mechanism -- needs real_mechanism_quality gate.",
+    "constants_and_thresholds": [
+      {
+        "name": "REL_BOOST_CAP",
+        "value": 1.25,
+        "reason": "Relevance amplifies mechanism up to 25%"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_003",
+    "lineage": "initial",
+    "hypothesis": "Fake mechanism is the primary disqualifier. Abstract jargon density penalises marketing-speak. Specificity without invention is the primary positive signal.",
+    "research_basis": [
+      "Abstract jargon credibility",
+      "Friestad & Wright 1994"
+    ],
+    "taste_map_basis": [
+      "fake_mechanism",
+      "concrete_specificity",
+      "epistemic_honesty",
+      "source_violation"
+    ],
+    "expected_failure_mode": "May be too strict on abstract language in domain-specific copy.",
+    "constants_and_thresholds": [
+      {
+        "name": "JARGON_VETO",
+        "value": 0.25,
+        "reason": "Jargon density above 0.25 significantly reduces score"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_004",
+    "lineage": "initial",
+    "hypothesis": "Full chain: argument progression gates concrete specificity. Specificity only counts when argument has a real mechanism. Source continuity is soft. Fake mechanism vetoes.",
+    "research_basis": [
+      "ELM full model",
+      "Kahneman System 1",
+      "Langer 1978"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "concrete_specificity",
+      "causal_grounding",
+      "fake_mechanism",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "Complex scorer may over-penalise good short copy that nails one dimension.",
+    "constants_and_thresholds": [
+      {
+        "name": "PROG_GATE",
+        "value": 0.4,
+        "reason": "Argument progression below 0.4 reduces specificity credit"
+      },
+      {
+        "name": "FAKE_MECH_VETO",
+        "value": 0.35,
+        "reason": "Fake mechanism above 0.35 vetoes"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_005",
+    "lineage": "initial",
+    "hypothesis": "Epistemic calibration amplifies the base score. Well-calibrated text (hedges present, superlatives absent, no jargon) is more persuasive. Persuasion risk cancels.",
+    "research_basis": [
+      "Boush 2009",
+      "Friestad & Wright 1994"
+    ],
+    "taste_map_basis": [
+      "epistemic_honesty",
+      "persuasion_knowledge_trigger",
+      "fake_mechanism",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "May under-reward legitimately confident specific claims.",
+    "constants_and_thresholds": [
+      {
+        "name": "EP_BOOST_MAX",
+        "value": 1.2,
+        "reason": "Epistemic calibration boosts score up to 20%"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_006",
+    "lineage": "initial",
+    "hypothesis": "Source continuity (soft) combined with causal density -- a text is more persuasive when it preserves the anchor's intent AND adds mechanism. Hard policy is the only veto.",
+    "research_basis": [
+      "Credibility transfer",
+      "Langer 1978"
+    ],
+    "taste_map_basis": [
+      "source_continuity",
+      "causal_grounding",
+      "source_violation"
+    ],
+    "expected_failure_mode": "Doesn't penalise abstract jargon -- may reward fake mechanism if it has causal words.",
+    "constants_and_thresholds": [
+      {
+        "name": "CONTINUITY_FLOOR",
+        "value": 0.2,
+        "reason": "Source continuity below 0.2 still reduces but doesn't zero"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_007",
+    "lineage": "initial",
+    "hypothesis": "Argument progression x real mechanism quality is the product score. Both must be present. Fake mechanism vetoes regardless of other signals. No soft source gate.",
+    "research_basis": [
+      "Argument structure",
+      "ELM elaboration",
+      "real mechanism"
+    ],
+    "taste_map_basis": [
+      "argument_progression",
+      "causal_grounding",
+      "fake_mechanism"
+    ],
+    "expected_failure_mode": "Ignores source drift -- may reward well-structured text that invents claims.",
+    "constants_and_thresholds": [
+      {
+        "name": "FAKE_MECH_CANCEL",
+        "value": 0.25,
+        "reason": "Any fake mechanism above 0.25 -> score *= 0.1"
+      }
+    ]
+  },
+  {
+    "scorer_id": "S_r0_008",
+    "lineage": "initial",
+    "hypothesis": "Contrast scorer: specificity_without_invention minus abstract_jargon_density minus persuasion_risk. High-quality = specific, no jargon, no hype. Source continuity weights the total.",
+    "research_basis": [
+      "Boush 2009 specificity-hype ratio",
+      "Kahneman System 1"
+    ],
+    "taste_map_basis": [
+      "concrete_specificity",
+      "fake_mechanism",
+      "persuasion_knowledge_trigger",
+      "source_continuity"
+    ],
+    "expected_failure_mode": "May penalise platform-noun-heavy B2B copy that is genuinely persuasive.",
+    "constants_and_thresholds": [
+      {
+        "name": "SPEC_WEIGHT",
+        "value": 0.5,
+        "reason": "Specificity is primary positive"
+      },
+      {
+        "name": "JARGON_WEIGHT",
+        "value": 0.3,
+        "reason": "Jargon penalises more than hype"
+      }
+    ]
+  }
+]

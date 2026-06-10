@@ -1,0 +1,17 @@
+{
+  "selected": {
+    "candidate_id": "C001",
+    "strategy": "mechanism_first",
+    "text": "EvalWeaver lets anyone create, use, and monetise AI improvers for subjective goals like 'more persuasive' — by building a causal theory of what the goal means, testing it on real examples, and using the strongest evaluator to guide each rewrite.",
+    "ensemble_score": 0.9453,
+    "raw_mean_score": 0.1456,
+    "policy_ok": true,
+    "policy_violations": []
+  },
+  "eligible_ensemble": ["S_r0_001", "S_r0_007", "S_r0_003", "S_r1_001", "S_r0_004", "S_r0_002", "S_r1_005"],
+  "winning_scorer_hypotheses": [
+    "Argument progression (problem->mechanism->result) is the primary driver.",
+    "Argument progression x real mechanism quality is the product score."
+  ],
+  "explanation_for_product_mode": "Selected because: Argument progression is the primary driver. Real mechanism quality distinguishes genuine from fake."
+}

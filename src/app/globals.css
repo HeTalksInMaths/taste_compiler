@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 3%;
+    --foreground: 210 40% 98%;
+    --card: 0 0% 5%;
+    --card-border: 0 0% 12%;
+    --muted: 0 0% 40%;
+    --accent: 225 73% 57%;
+    --accent-light: 225 90% 70%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --danger: 0 84% 60%;
+  }
+
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-brand-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .stat-card {
+    @apply glass-card p-6 transition-all duration-200 hover:border-white/[0.12] hover:bg-white/[0.05];
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20;
+  }
+
+  .badge-info {
+    @apply badge bg-brand-500/10 text-brand-300 ring-1 ring-brand-500/20;
+  }
+}

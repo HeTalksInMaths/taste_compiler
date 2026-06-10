@@ -1,0 +1,51 @@
+[
+  {
+    "pair_id": "R0_P01",
+    "anchor": "We built an AI tool that helps product teams ship features faster.",
+    "positive": "We built an AI tool that helps product teams ship features faster by surfacing which backlog items have the most customer signal.",
+    "negative": "We built an amazing AI tool that helps product teams ship features faster with our revolutionary intelligent platform.",
+    "pair_type": "hype_trap",
+    "split": "train"
+  },
+  {
+    "pair_id": "R0_F01",
+    "anchor": "We help marketing teams measure campaign performance.",
+    "positive": "We help marketing teams see which campaign elements drove conversions — by tracing each sign-up back to the specific ad variant.",
+    "negative": "We help marketing teams measure campaign performance by leveraging our advanced AI engine which synergistically optimises your entire marketing funnel.",
+    "pair_type": "fake_mechanism",
+    "split": "train"
+  },
+  {
+    "pair_id": "R0_P04",
+    "anchor": "Our sales tool helps reps close more deals.",
+    "positive": "Our sales tool shows reps which objection pattern each prospect matches — so they run the right playbook at the right moment.",
+    "negative": "Our sales tool helps reps close more deals faster with higher win rates and better customer satisfaction across enterprise clients.",
+    "pair_type": "specificity_trap",
+    "split": "train"
+  },
+  {
+    "pair_id": "R0_P05",
+    "anchor": "Turn customer feedback into product decisions.",
+    "positive": "Stop guessing what to build next. Turn messy customer feedback into ranked decisions your team can act on this sprint.",
+    "negative": "Transform your customer feedback experience into optimised product decision solutions leveraging our advanced platform.",
+    "pair_type": "subtle_quality_gap",
+    "split": "train"
+  },
+  {
+    "pair_id": "R0_P07",
+    "anchor": "EvalWeaver lets anyone create, use, and monetize AI improvers for subjective goals.",
+    "positive": "EvalWeaver lets anyone create, use, and monetise AI improvers for subjective goals — by discovering what the goal means and testing it before rewriting.",
+    "negative": "EvalWeaver lets anyone create, use, and monetise AI improvers. Our groundbreaking platform has helped thousands achieve amazing results.",
+    "pair_type": "source_drift",
+    "split": "train"
+  },
+  {
+    "pair_id": "R0_T01",
+    "anchor": "Our tool saves engineers time on code reviews.",
+    "positive": "Our tool saves engineers time on code reviews by flagging only changes that touch security boundaries or performance-critical paths.",
+    "negative": "Our amazing tool saves engineers significant time on code reviews through our intelligent automated review system that makes everything effortless.",
+    "pair_type": "hype_trap",
+    "split": "test",
+    "frozen": true
+  }
+]

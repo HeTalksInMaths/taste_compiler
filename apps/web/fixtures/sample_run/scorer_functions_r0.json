@@ -1,0 +1,38 @@
+{
+  "S_r0_001": {
+    "hypothesis": "Argument progression (problem->mechanism->result) is the primary driver. Real mechanism quality distinguishes genuine from fake.",
+    "code": "\ndef scorer(text, anchor, params):\n    FAKE_MECH_CANCEL = 0.3\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    fake = probe_real_mechanism_quality(text)\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > FAKE_MECH_CANCEL:\n        return 0.0\n    prog = probe_argument_progression(text)\n    mech = probe_causal_density(text)\n    continuity = probe_source_continuity(text, anchor)\n    base = prog * 0.5 + mech * 0.3 + max(0, fake) * 0.2\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.5,
+      "pair_validation_margin": 0.267,
+      "pair_validation_spread": 0.674
+    }
+  },
+  "S_r0_002": {
+    "hypothesis": "Audience relevance amplifies causal grounding. Before/after contrast + second-person is the primary relevance signal.",
+    "code": "\ndef scorer(text, anchor, params):\n    REL_BOOST_CAP = 1.25\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    rel = probe_audience_relevance(text)\n    mech = probe_causal_density(text)\n    continuity = probe_source_continuity(text, anchor)\n    amp_mech = min(mech * (1 + rel * (REL_BOOST_CAP - 1)), mech * REL_BOOST_CAP)\n    base = max(rel * 0.4 + amp_mech * 0.6, 0)\n    jargon_penalty = max(0, jargon - 0.1) * 0.5\n    return _clamp(base * (0.6 + 0.4 * continuity) - jargon_penalty)\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 1.0,
+      "pair_validation_margin": 0.249,
+      "pair_validation_spread": 0.611
+    }
+  },
+  "S_r0_003": {
+    "hypothesis": "Fake mechanism is the primary disqualifier. Abstract jargon density penalises marketing-speak. Specificity without invention is the primary positive signal.",
+    "code": "\ndef scorer(text, anchor, params):\n    JARGON_VETO = 0.25\n    if violates_hard_source_policy(text, anchor):\n        return 0.0\n    jargon = probe_abstract_jargon_density(text)\n    if jargon > JARGON_VETO:\n        return _clamp(0.1 - jargon)\n    spec = probe_specificity_without_invention(text, anchor)\n    ep = probe_epistemic_calibration(text)\n    prog = probe_argument_progression(text)\n    continuity = probe_source_continuity(text, anchor)\n    base = spec * 0.4 + ep * 0.3 + prog * 0.3\n    return _clamp(base * (0.5 + 0.5 * continuity))\n",
+    "validation": {
+      "loaded": true,
+      "valid": true,
+      "reason": "ok",
+      "pair_validation_accuracy": 0.75,
+      "pair_validation_margin": 0.19,
+      "pair_validation_spread": 0.315
+    }
+  }
+}

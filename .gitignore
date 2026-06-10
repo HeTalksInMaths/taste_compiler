@@ -37,10 +37,21 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Secrets — NEVER commit
+# Node / TypeScript (marketplace module)
+node_modules/
+.next/
+artifacts/
 .env
-.env.*
+.env.local
+.env.*.local
+*.tsbuildinfo
+.vercel
+package-lock.json
+
+# Secrets — NEVER commit
 .aws/
 aws/credentials
 *.pem
 *.key
+.vercel
+.env*

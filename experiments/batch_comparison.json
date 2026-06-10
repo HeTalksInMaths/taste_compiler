@@ -1,5 +1,5 @@
 {
-  "topics": 2,
+  "topics": 3,
   "seeds_per_topic": 1,
   "per_topic_results": [
     {
@@ -13,14 +13,24 @@
       "output_dir": "experiments/batch/persuasive"
     },
     {
-      "topic": "concise",
-      "config_path": "configs/concise.yaml",
+      "topic": "technical_clarity",
+      "config_path": "configs/technical_clarity.yaml",
       "success": true,
       "pareto_size": 7,
       "best_margin": 0.29241666666666666,
       "selected": "C001",
       "criteria_pass": true,
-      "output_dir": "experiments/batch/concise"
+      "output_dir": "experiments/batch/technical_clarity"
+    },
+    {
+      "topic": "trustworthiness",
+      "config_path": "configs/trustworthiness.yaml",
+      "success": true,
+      "pareto_size": 7,
+      "best_margin": 0.29241666666666666,
+      "selected": "C001",
+      "criteria_pass": true,
+      "output_dir": "experiments/batch/trustworthiness"
     }
   ]
 }

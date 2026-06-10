@@ -1,0 +1,43 @@
+{
+  "version": "v5",
+  "goal": "concise",
+  "raw_text": "EvalWeaver helps writers identify and eliminate unnecessary words, redundant phrases, and verbose constructions to make their writing shorter and more impactful.",
+  "run_metadata": {
+    "provider_name": "bedrock",
+    "model_id": "us.anthropic.claude-sonnet-4-6",
+    "aws_region": "us-west-2",
+    "provider_generation_enabled": true,
+    "bedrock_validation_passed": true,
+    "bedrock_calls_made": 1,
+    "generated_steps": ["research"],
+    "artifact_store": "local_json",
+    "execution_backend": "evalweaver_v51"
+  },
+  "counts": {
+    "probes_total": 10,
+    "scorer_r0": 8,
+    "scorer_r1": 6,
+    "pairs_train_r0": 13,
+    "pairs_heldout_r0": 8,
+    "pareto_r0": 5,
+    "pareto_r1": 7,
+    "eligible_ensemble": 7
+  },
+  "r0_best": {
+    "scorer_id": "S_r0_001",
+    "test_acc": 0.75,
+    "test_margin": 0.256
+  },
+  "r1_best": {
+    "scorer_id": "S_r0_001",
+    "lineage": "initial",
+    "test_acc": 0.8,
+    "test_margin": 0.292
+  },
+  "selected_candidate": "C001",
+  "spec_criteria_summary": {
+    "pass": 19,
+    "warn": 1,
+    "fail": 0
+  }
+}
