@@ -101,9 +101,21 @@ class Stage5to8Orchestrator:
         measurement_research = self.stage3_output.get("measurement_research", [])
         scorers = self.stage4_output.get("scorers", [])
 
-        system, user = build_stage_5_prompt(
-            self.target_variable, causal_graph, measurement_research, scorers, self.source_policy
-        )
+        # Use search-enhanced prompt if Exa is available
+        use_search = self.config.get("use_exa_search", False)
+        if use_search:
+            from evalweaver.search_enhanced_prompts import build_stage_5_prompt_with_search
+            system, user = build_stage_5_prompt_with_search(
+                self.target_variable, causal_graph, measurement_research, scorers,
+                self.source_policy,
+                channel=self.config.get("channel", "LinkedIn"),
+                topic=self.config.get("topic", "AI tools for professionals"),
+                audience=self.config.get("audience", "startup founders"),
+            )
+        else:
+            system, user = build_stage_5_prompt(
+                self.target_variable, causal_graph, measurement_research, scorers, self.source_policy
+            )
         return self._call_provider(5, system, user)
 
     def _run_stage_6(self, stage5_parsed: dict) -> tuple:

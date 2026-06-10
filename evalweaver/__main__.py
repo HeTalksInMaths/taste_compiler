@@ -133,6 +133,10 @@ def main():
         "--run-label", type=str, default=None,
         help="Label for this run (used in output subdirectory)",
     )
+    stages_parser.add_argument(
+        "--use-exa-search", action="store_true", default=False,
+        help="Use Exa API for real web search in Stages 1, 3 (requires EXA_API_KEY)",
+    )
 
     # ── stages-5-8 subcommand ──
     s58_parser = subparsers.add_parser(
@@ -161,6 +165,10 @@ def main():
     s58_parser.add_argument(
         "--max-tokens", type=int, default=16384,
         help="Max tokens for LLM responses (default: 16384)",
+    )
+    s58_parser.add_argument(
+        "--use-exa-search", action="store_true", default=False,
+        help="Use Exa API for real web search in Stage 5 pair anchors (requires EXA_API_KEY)",
     )
 
     args = parser.parse_args()
@@ -294,6 +302,7 @@ def main():
             max_tokens=args.max_tokens,
         )
         out_dir = resolve_output_directory()
+        config["use_exa_search"] = args.use_exa_search
         orchestrator = StageOrchestrator(provider=provider, config=config, out_dir=out_dir)
 
         result = orchestrator.run(resume_from=args.resume_from)
@@ -356,6 +365,8 @@ def main():
             temperature=args.temperature,
             max_tokens=args.max_tokens,
         )
+
+        config["use_exa_search"] = args.use_exa_search
 
         orchestrator = Stage5to8Orchestrator(
             provider=provider,

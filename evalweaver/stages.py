@@ -215,7 +215,12 @@ class StageOrchestrator:
 
     def _run_stage_1(self) -> StageResult:
         """Execute Stage 1: Causal Research Search."""
-        system, user = build_stage_1_prompt(self.target_variable)
+        use_search = self.config.get("use_exa_search", False)
+        if use_search:
+            from evalweaver.search_enhanced_prompts import build_stage_1_prompt_with_search
+            system, user = build_stage_1_prompt_with_search(self.target_variable)
+        else:
+            system, user = build_stage_1_prompt(self.target_variable)
         return self._call_provider(1, system, user)
 
     def _run_stage_2(self, stage1_output: dict) -> StageResult:
@@ -226,7 +231,12 @@ class StageOrchestrator:
 
     def _run_stage_3(self, stage2_nodes: list) -> StageResult:
         """Execute Stage 3: Measurement Research Search."""
-        system, user = build_stage_3_prompt(self.target_variable, stage2_nodes)
+        use_search = self.config.get("use_exa_search", False)
+        if use_search:
+            from evalweaver.search_enhanced_prompts import build_stage_3_prompt_with_search
+            system, user = build_stage_3_prompt_with_search(self.target_variable, stage2_nodes)
+        else:
+            system, user = build_stage_3_prompt(self.target_variable, stage2_nodes)
         return self._call_provider(3, system, user)
 
     def _run_stage_4(self, stage2_output: dict, stage3_output: dict) -> StageResult:
