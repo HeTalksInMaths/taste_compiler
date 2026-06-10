@@ -262,24 +262,24 @@ export default function CreateScorerPage() {
           <>
             {/* Score Lift Preview */}
             <div className="glass-card p-6 mb-4">
-              <h2 className="text-lg font-semibold text-white mb-4">Score Lift Preview</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">Demo Score Lift Preview</h2>
               <div className="flex items-center justify-center gap-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>42</div>
-                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Original</div>
+                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Example original</div>
                 </div>
                 <div className="text-xl" style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
                 <div className="text-center">
                   <div className="text-3xl font-bold" style={{ color: 'rgb(52,211,153)' }}>78</div>
-                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Improved</div>
+                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Example improved</div>
                 </div>
                 <div className="text-center rounded-lg px-4 py-2" style={{ backgroundColor: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
                   <div className="text-xl font-bold" style={{ color: 'rgb(52,211,153)' }}>+36</div>
-                  <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Lift</div>
+                  <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Example lift</div>
                 </div>
               </div>
               <p className="text-xs text-center mt-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                Based on the scorer hypotheses above. Unlock the improved version through the Stripe reveal demo.
+                Demo numbers shown for the reveal flow. Live scoring connects to the scorer artifact.
               </p>
             </div>
 

@@ -5,11 +5,11 @@ export default function Home() {
     <main className="px-6 py-20">
       <div className="mx-auto max-w-3xl text-center">
         <h1 className="text-4xl font-bold text-white tracking-tight leading-tight">
-          Turn &ldquo;this sounds AI-generated&rdquo; into a scorer.
+          Go against AI slop. Monetize your taste.
         </h1>
         <p className="mt-4 text-lg leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-          Paste text, choose the quality you want, and Taste Compiler discovers what &ldquo;better&rdquo; means.
-          It scores the original, builds a reusable scorer, and tests whether people would pay to reveal the improved result.
+          Taste Compiler helps you define what &ldquo;better&rdquo; sounds like, turn that judgment into a scorer,
+          test it on real examples, and see whether people would pay to reveal the result.
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -18,7 +18,7 @@ export default function Home() {
             className="rounded-lg px-8 py-3.5 text-sm font-medium text-white transition"
             style={{ background: "linear-gradient(to right, #4c6ef5, #7c3aed)" }}
           >
-            Improve or Create a Scorer
+            Improve Text or Create Scorer
           </Link>
           <Link
             href="/runs/demo"
