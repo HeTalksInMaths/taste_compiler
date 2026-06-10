@@ -10,6 +10,14 @@ const SECTIONS = [
     badgeText: "rgb(145,167,255)",
   },
   {
+    href: "/market-dynamics/simulations",
+    title: "Persona Simulation",
+    description: "200 Nemotron personas evaluated across Singapore and US markets — see who buys.",
+    badge: "200 personas",
+    badgeColor: "rgba(16,185,129,0.1)",
+    badgeText: "rgb(52,211,153)",
+  },
+  {
     href: "/market-dynamics/live-sim",
     title: "Market Test",
     description: "Run personas through the decision model and see who would pay for a Stripe reveal.",

@@ -16,6 +16,9 @@ export default function MarketDynamicsLayout({
           <Link href="/market-dynamics/marketplace" className="text-xs transition" style={{ color: "rgba(255,255,255,0.45)" }}>
             Scorers
           </Link>
+          <Link href="/market-dynamics/simulations" className="text-xs transition" style={{ color: "rgba(255,255,255,0.45)" }}>
+            Personas
+          </Link>
           <Link href="/market-dynamics/live-sim" className="text-xs transition" style={{ color: "rgba(255,255,255,0.45)" }}>
             Market Test
           </Link>
