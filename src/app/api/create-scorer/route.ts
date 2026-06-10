@@ -4,7 +4,7 @@ import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-r
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow up to 60s for LLM calls
 
-const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-sonnet-4-6';
+const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'us.anthropic.claude-sonnet-4-6';
 const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
 
 // Existing persona panel data — no need to resample Nemotron
@@ -40,7 +40,7 @@ interface CreateScorerRequest {
   best_for: string[]; // content jobs
 }
 
-async function callBedrock(system: string, user: string): Promise<string> {
+async function callBedrock(system: string, user: string, maxTokens = 2048): Promise<string> {
   const client = new BedrockRuntimeClient({
     region: AWS_REGION,
     ...(process.env.AWS_ACCESS_KEY_ID ? {
@@ -56,7 +56,7 @@ async function callBedrock(system: string, user: string): Promise<string> {
     modelId: MODEL_ID,
     messages: [{ role: 'user', content: [{ text: user }] }],
     system: [{ text: system }],
-    inferenceConfig: { maxTokens: 2048, temperature: 0.7 },
+    inferenceConfig: { maxTokens, temperature: 0.7 },
   });
 
   const response = await client.send(command);
@@ -67,18 +67,35 @@ async function callBedrock(system: string, user: string): Promise<string> {
   return '';
 }
 
-function parseJsonResponse(text: string): Record<string, unknown> {
+function parseJsonResponse(text: string): Record<string, unknown> | Array<Record<string, unknown>> {
   let clean = text.trim();
-  if (clean.includes('```json')) {
+  // Strip markdown code fences — handle ```json and plain ```
+  const fenceMatch = clean.match(/^```(?:json)?\s*\n?([\s\S]*?)```\s*$/);
+  if (fenceMatch) {
+    clean = fenceMatch[1].trim();
+  } else if (clean.includes('```json')) {
     const start = clean.indexOf('```json') + 7;
     const end = clean.indexOf('```', start);
     if (end > start) clean = clean.slice(start, end).trim();
   } else if (clean.includes('```')) {
     const start = clean.indexOf('```') + 3;
-    const end = clean.indexOf('```', start);
-    if (end > start) clean = clean.slice(start, end).trim();
+    const lineEnd = clean.indexOf('\n', start);
+    const contentStart = lineEnd > start ? lineEnd + 1 : start;
+    const end = clean.indexOf('```', contentStart);
+    if (end > contentStart) clean = clean.slice(contentStart, end).trim();
   }
-  return JSON.parse(clean);
+  // If still can't parse, try to find first [ or { 
+  try {
+    return JSON.parse(clean);
+  } catch {
+    // Fallback: extract the JSON portion
+    const jsonStart = clean.search(/[\[{]/);
+    if (jsonStart >= 0) {
+      const sub = clean.slice(jsonStart);
+      return JSON.parse(sub);
+    }
+    throw new Error(`Could not parse JSON from response: ${clean.slice(0, 100)}`);
+  }
 }
 
 function estimateDemand(goal: string, targetSegments: string[], priceCents: number, bestFor: string[]) {
@@ -146,11 +163,12 @@ export async function POST(request: Request) {
 
       // Step 4: Generate scorer hypotheses
       const hypothesesResponse = await callBedrock(
-        'You are a scorer designer for a text quality evaluation system. Generate 3 scorer hypotheses. Return a JSON array of objects, each with: "name" (string), "mechanism" (string - what linguistic signal it measures), "formula_sketch" (string - pseudocode for how to compute the score), "expected_segments" (list of segment names this scorer would appeal to).',
-        `Goal: "${goal}"\nTaste map:\n${JSON.stringify(tasteMap, null, 2)}\n\nDesign 3 scorers that measure different aspects of "${goal}" quality. Each should be implementable as a Python function that takes (original_text, rewritten_text) and returns a float 0-1.`
+        'You are a scorer designer. Generate exactly 3 scorers. Return a JSON array. Each object has: "name" (short string), "mechanism" (1 sentence), "formula_sketch" (1 line pseudocode), "expected_segments" (list of 2-3 segment names). Keep responses concise. No prose outside JSON.',
+        `Goal: "${goal}"\nRewards: ${JSON.stringify((tasteMap as Record<string, unknown>).rewards)}\nPunishes: ${JSON.stringify((tasteMap as Record<string, unknown>).punishes)}\n\nReturn JSON array of 3 scorers. Be brief.`,
+        4096
       );
       const parsed = parseJsonResponse(hypothesesResponse);
-      scorerHypotheses = Array.isArray(parsed) ? parsed : (parsed as Record<string, unknown>).hypotheses ?? (parsed as Record<string, unknown>).scorers ?? [parsed];
+      scorerHypotheses = Array.isArray(parsed) ? parsed : ((parsed as Record<string, unknown>).hypotheses ?? (parsed as Record<string, unknown>).scorers ?? [parsed]) as Array<Record<string, unknown>>;
     } catch (e: unknown) {
       bedrockError = e instanceof Error ? e.message : 'Bedrock call failed';
     }
