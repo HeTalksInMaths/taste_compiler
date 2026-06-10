@@ -1,20 +1,23 @@
-/* Dark terminal aesthetic theme for Taste Compiler */
+/* Taste Compiler — dark navy theme */
 
 :root {
-  --bg: #0a0a0a;
-  --fg: #e0e0e0;
-  --fg-muted: #888888;
-  --green: #4ade80;
-  --green-bg: rgba(74, 222, 128, 0.12);
-  --amber: #fbbf24;
-  --amber-bg: rgba(251, 191, 36, 0.12);
-  --red: #f87171;
-  --red-bg: rgba(248, 113, 113, 0.12);
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --fg-muted: #7d8590;
+  --primary: #4c6ef5;
+  --primary-bg: rgba(76, 110, 245, 0.12);
+  --green: #3fb950;
+  --green-bg: rgba(63, 185, 80, 0.12);
+  --amber: #e3b341;
+  --amber-bg: rgba(227, 179, 65, 0.12);
+  --red: #f85149;
+  --red-bg: rgba(248, 81, 73, 0.12);
   --gray: #6b7280;
   --gray-bg: rgba(107, 114, 128, 0.12);
-  --panel-bg: #141414;
-  --panel-border: #2a2a2a;
-  --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", "Menlo", "Courier New", monospace;
+  --panel-bg: #161b27;
+  --panel-border: #2d3347;
+  --font-sans: "Inter", "system-ui", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", "Roboto Mono", monospace;
 }
 
 * {
@@ -26,7 +29,7 @@
 body {
   background-color: var(--bg);
   color: var(--fg);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -162,14 +165,14 @@ a:hover {
   border-radius: 4px;
   padding: 10px 12px;
   color: var(--fg);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 14px;
   resize: vertical;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: var(--green);
+  border-color: var(--primary);
 }
 
 .provider-options {
@@ -186,7 +189,7 @@ a:hover {
 }
 
 .provider-option input[type="radio"] {
-  accent-color: var(--green);
+  accent-color: var(--primary);
 }
 
 .landing-actions {
@@ -208,14 +211,14 @@ a:hover {
 }
 
 .btn-primary {
-  background-color: var(--green-bg);
-  color: var(--green);
-  border-color: var(--green);
+  background-color: var(--primary-bg);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-primary:hover {
-  background-color: var(--green);
-  color: var(--bg);
+  background-color: var(--primary);
+  color: #fff;
   text-decoration: none;
 }
 
@@ -535,8 +538,8 @@ a:hover {
 }
 
 .mode-option.active {
-  background-color: var(--green-bg);
-  color: var(--green);
+  background-color: var(--primary-bg);
+  color: var(--primary);
 }
 
 /* No data and error states */

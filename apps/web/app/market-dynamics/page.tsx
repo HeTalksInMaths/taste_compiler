@@ -21,7 +21,7 @@ const SECTIONS = [
     href: "/market-dynamics/live-sim",
     title: "Live Simulation",
     description: "Run Nemotron personas through the decision model and create real Stripe test checkout sessions.",
-    badge: "Live ⚡",
+    badge: "Live",
     badgeColor: "rgba(245,158,11,0.1)",
     badgeText: "rgb(251,191,36)",
   },

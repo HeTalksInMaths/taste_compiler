@@ -82,10 +82,6 @@ export default function CreateScorerPage() {
     <div className="px-6 py-16">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm" style={{ border: '1px solid rgba(177,151,252,0.2)', backgroundColor: 'rgba(177,151,252,0.05)', color: 'rgb(177,151,252)' }}>
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: 'rgb(177,151,252)' }} />
-            Bedrock Claude → EvalWeaver Pipeline
-          </div>
           <h1 className="text-3xl font-bold text-white">Create a New Scorer</h1>
           <p className="mt-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Pick a goal, see estimated demand instantly, then watch Bedrock generate taste research and scorer hypotheses step by step.
@@ -95,7 +91,7 @@ export default function CreateScorerPage() {
         {/* Input Form */}
         <div className="glass-card p-6 mb-8">
           <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Dynamic Variable (goal)</label>
+            <label className="text-sm font-medium mb-2 block text-white">Quality dimension</label>
             <input type="text" value={goal} onChange={e => setGoal(e.target.value)} placeholder='"urgent", "trustworthy", "funny"' style={inputStyle} />
             <div className="mt-2 flex flex-wrap gap-1.5">
               {GOAL_SUGGESTIONS.map(g => (
@@ -143,7 +139,7 @@ export default function CreateScorerPage() {
           </div>
 
           <button onClick={runPipeline} disabled={running || !goal.trim()} className="w-full rounded-lg py-3 text-sm font-medium text-white transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: running || !goal.trim() ? 0.4 : 1, cursor: running || !goal.trim() ? 'not-allowed' : 'pointer' }}>
-            {running ? 'Running...' : 'Estimate Demand + Generate Scorer →'}
+            {running ? 'Running pipeline...' : 'Run Pipeline →'}
           </button>
         </div>
 
@@ -183,7 +179,7 @@ export default function CreateScorerPage() {
           <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
             <div>
               <div className="text-sm font-medium text-white">Market-test this scorer</div>
-              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>See how the Nemotron persona panel responds to it in the market simulation.</div>
+              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>See how Nemotron SG personas respond to it in the live market simulation.</div>
             </div>
             <Link href="/market-dynamics/simulations" className="text-xs font-medium rounded-lg px-4 py-2 transition" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>
               View Simulations →
@@ -229,9 +225,18 @@ function ResearchPanel({ data }: { data: unknown }) {
     <div className="glass-card p-6 mb-6">
       <h2 className="text-lg font-semibold text-white mb-4">Taste Research</h2>
       <div className="space-y-4 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-        {Object.entries(d).map(([key, val]) => (
-          <div key={key}><div className="text-xs font-medium uppercase mb-1" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>{key.replace(/_/g, ' ')}</div><p className="leading-relaxed">{String(val).slice(0, 400)}</p></div>
-        ))}
+        {Object.entries(d).map(([key, val]) => {
+          const label = key
+            .split('_')
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(' ');
+          return (
+            <div key={key}>
+              <div className="text-xs font-medium uppercase mb-1" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>{label}</div>
+              <p className="leading-relaxed">{String(val).slice(0, 400)}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

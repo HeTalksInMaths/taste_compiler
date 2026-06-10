@@ -38,8 +38,8 @@ function Nav() {
     <nav
       className="sticky top-0 z-50 backdrop-blur-xl font-sans"
       style={{
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        backgroundColor: "rgba(0,0,0,0.85)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        backgroundColor: "rgba(13,17,23,0.92)",
       }}
     >
       <div
@@ -67,7 +67,7 @@ function Nav() {
               height: "28px",
               width: "28px",
               borderRadius: "6px",
-              background: "linear-gradient(135deg, #5c7cfa, #b197fc)",
+              backgroundColor: "#4c6ef5",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -85,39 +85,25 @@ function Nav() {
 
         <div className="flex items-center gap-6">
           <Link
-            href="/create"
+            href="/runs/demo"
             className="text-sm font-sans transition"
-            style={{ color: "rgba(177,151,252,0.85)" }}
+            style={{ color: "rgba(230,237,243,0.55)" }}
           >
-            Create Scorer ✨
+            Demo Run
           </Link>
           <Link
-            href="/"
-            className="text-sm font-sans transition"
-            style={{ color: "rgba(255,255,255,0.55)" }}
+            href="/create"
+            className="text-sm font-sans font-medium transition"
+            style={{ color: "rgb(145,167,255)" }}
           >
-            Runs
+            Create Scorer
           </Link>
           <Link
             href="/market-dynamics"
             className="text-sm font-sans transition"
-            style={{ color: "rgba(255,255,255,0.55)" }}
+            style={{ color: "rgba(230,237,243,0.55)" }}
           >
-            Market Dynamics
-          </Link>
-          <Link
-            href="/market-dynamics/live-sim"
-            className="text-sm font-sans transition"
-            style={{ color: "rgba(251,191,36,0.85)" }}
-          >
-            Live Sim ⚡
-          </Link>
-          <Link
-            href="/market-dynamics/dashboard"
-            className="text-sm font-sans transition"
-            style={{ color: "rgba(255,255,255,0.55)" }}
-          >
-            Dashboard
+            Market
           </Link>
         </div>
       </div>

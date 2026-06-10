@@ -5,46 +5,75 @@ export default function Home() {
     <main className="landing">
       <header className="landing-header">
         <h1 className="landing-title">Taste Compiler</h1>
-        <p className="landing-tagline">Agents that learn what &apos;good&apos; means</p>
-        <p className="landing-pipeline">
-          Research → Taste Map → Scorer Evolution → Pair Tests → Repair → Rewrite
+        <p className="landing-tagline">
+          Define quality. Generate scorers. Evaluate at scale.
         </p>
+        <div className="landing-pipeline" aria-label="Pipeline stages">
+          {[
+            "Research",
+            "Taste Map",
+            "Scorer Evolution",
+            "Pair Tests",
+            "Repair",
+            "Rewrite",
+          ].map((stage, i, arr) => (
+            <span key={stage}>
+              <span className="timeline-stage">{stage}</span>
+              {i < arr.length - 1 && (
+                <span className="timeline-arrow" aria-hidden="true">
+                  {" "}
+                  →{" "}
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
       </header>
 
       <section className="panel landing-form">
         <div className="form-group">
-          <label className="form-label" htmlFor="goal-description">Goal description</label>
+          <label className="form-label" htmlFor="goal-description">
+            Goal description
+          </label>
           <textarea
             id="goal-description"
             className="form-input"
-            placeholder="Describe what 'good' means for your use case..."
+            placeholder="Describe what &apos;good&apos; means for your use case..."
             rows={3}
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="goal-variable">Goal variable</label>
+          <label className="form-label" htmlFor="goal-variable">
+            Quality dimension
+          </label>
           <select id="goal-variable" className="form-input">
-            <option value="concise">concise</option>
-            <option value="persuasive">persuasive</option>
-            <option value="technical_clarity">technical_clarity</option>
+            <option value="concise">Concise</option>
+            <option value="persuasive">Persuasive</option>
+            <option value="technical_clarity">Technical clarity</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label className="form-label">Provider</label>
+          <label className="form-label">Data mode</label>
           <div className="provider-options">
             <label className="provider-option">
               <input type="radio" name="provider" value="mock" defaultChecked />
-              <span className="badge-red">mock/static</span>
+              <span className="badge-gray" title="Uses pre-built static data — no API calls">
+                Demo mode
+              </span>
             </label>
             <label className="provider-option">
               <input type="radio" name="provider" value="bedrock-metadata" />
-              <span className="badge-amber">bedrock metadata-only</span>
+              <span className="badge-amber" title="Fetches metadata from Bedrock, no live research">
+                Metadata mode
+              </span>
             </label>
             <label className="provider-option">
               <input type="radio" name="provider" value="bedrock-live" />
-              <span className="badge-green">bedrock live research</span>
+              <span className="badge-green" title="Full live research via Bedrock">
+                Live research
+              </span>
             </label>
           </div>
         </div>
@@ -53,8 +82,8 @@ export default function Home() {
           <Link href="/runs/demo" className="btn btn-primary">
             View demo run
           </Link>
-          <Link href="/stages" className="btn btn-primary">
-            Run Stages 1–4 Live
+          <Link href="/create" className="btn btn-primary">
+            Try it live
           </Link>
         </div>
       </section>

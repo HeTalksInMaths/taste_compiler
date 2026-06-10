@@ -23,6 +23,9 @@ export default async function RunPage({ params }: RunPageProps) {
     return (
       <main className="run-page">
         <div className="run-page-toolbar">
+          <span style={{ fontSize: "12px", color: "var(--fg-muted)", marginRight: "8px" }}>
+            View:
+          </span>
           <ModeToggle />
         </div>
         <RunHeader run={run} />
@@ -37,12 +40,12 @@ export default async function RunPage({ params }: RunPageProps) {
         <ArtifactDebugPanel artifacts={run.raw_artifacts} />
 
         {/* Cross-link: market-test this scorer */}
-        <div style={{ margin: "16px 0", padding: "14px 16px", borderRadius: "6px", border: "1px solid rgba(92,124,250,0.25)", backgroundColor: "rgba(92,124,250,0.06)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+        <div style={{ margin: "16px 0", padding: "14px 16px", borderRadius: "6px", border: "1px solid rgba(76,110,245,0.25)", backgroundColor: "rgba(76,110,245,0.06)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
           <div>
-            <div style={{ fontSize: "13px", fontWeight: 600, color: "#e0e0e0" }}>Market-test this scorer</div>
-            <div style={{ fontSize: "12px", color: "#888", marginTop: "2px" }}>See how Nemotron personas respond to it in the live market simulation.</div>
+            <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--fg)" }}>Market-test this scorer</div>
+            <div style={{ fontSize: "12px", color: "var(--fg-muted)", marginTop: "2px" }}>See how Nemotron SG personas respond to it in the live market simulation.</div>
           </div>
-          <Link href="/market-dynamics/simulations" style={{ fontSize: "12px", fontWeight: 500, padding: "6px 12px", borderRadius: "4px", backgroundColor: "rgba(92,124,250,0.12)", color: "rgb(145,167,255)", textDecoration: "none", whiteSpace: "nowrap" }}>
+          <Link href="/market-dynamics/simulations" style={{ fontSize: "12px", fontWeight: 500, padding: "6px 12px", borderRadius: "4px", backgroundColor: "rgba(76,110,245,0.12)", color: "rgb(145,167,255)", textDecoration: "none", whiteSpace: "nowrap" }}>
             View Simulations →
           </Link>
         </div>
