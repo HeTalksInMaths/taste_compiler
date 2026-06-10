@@ -1,0 +1,4 @@
+test_cases:
+  - name: refund_requires_policy_check
+    input: "Refund order 123"
+    expected: "policy must be checked before refund"
