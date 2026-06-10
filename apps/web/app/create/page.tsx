@@ -21,8 +21,8 @@ const CONTENT_JOBS = ['sales copy', 'landing page', 'LinkedIn post', 'email camp
 const PRICE_OPTIONS = [{ cents: 299, label: '$2.99' }, { cents: 499, label: '$4.99' }, { cents: 699, label: '$6.99' }, { cents: 999, label: '$9.99' }, { cents: 1499, label: '$14.99' }];
 
 type StepStatus = 'idle' | 'running' | 'done' | 'error';
-const STEPS = ['demand', 'research', 'taste_map', 'scorers'] as const;
-const STEP_LABELS = ['Demand Preview', 'Taste Research', 'Taste Map', 'Scorer Hypotheses'];
+const STEPS = ['demand', 'research', 'taste_map', 'scorers', 'score_lift'] as const;
+const STEP_LABELS = ['Demand Preview', 'Taste Research', 'Taste Map', 'Scorer Hypotheses', 'Score Lift'];
 
 export default function CreateScorerPage() {
   const [mode, setMode] = useState<Mode>('improve');
@@ -31,9 +31,9 @@ export default function CreateScorerPage() {
   const [selectedSegments, setSelectedSegments] = useState<string[]>(['startup_founder_operator', 'marketing_growth_lead', 'creator_coach_consultant']);
   const [priceCents, setPriceCents] = useState(499);
   const [bestFor, setBestFor] = useState<string[]>([]);
-  const [stepStatuses, setStepStatuses] = useState<StepStatus[]>(['idle', 'idle', 'idle', 'idle']);
-  const [stepResults, setStepResults] = useState<(unknown | null)[]>([null, null, null, null]);
-  const [stepErrors, setStepErrors] = useState<(string | null)[]>([null, null, null, null]);
+  const [stepStatuses, setStepStatuses] = useState<StepStatus[]>(['idle', 'idle', 'idle', 'idle', 'idle']);
+  const [stepResults, setStepResults] = useState<(unknown | null)[]>([null, null, null, null, null]);
+  const [stepErrors, setStepErrors] = useState<(string | null)[]>([null, null, null, null, null]);
   const [running, setRunning] = useState(false);
   const [demandDone, setDemandDone] = useState(false);
 
@@ -70,9 +70,9 @@ export default function CreateScorerPage() {
     if (mode === 'improve' && !rawText.trim()) return;
     setRunning(true);
     setDemandDone(false);
-    setStepStatuses(['idle', 'idle', 'idle', 'idle']);
-    setStepResults([null, null, null, null]);
-    setStepErrors([null, null, null, null]);
+    setStepStatuses(['idle', 'idle', 'idle', 'idle', 'idle']);
+    setStepResults([null, null, null, null, null]);
+    setStepErrors([null, null, null, null, null]);
     const result = await callStep(0, null);
     if (result) setDemandDone(true);
     setRunning(false);
@@ -81,7 +81,8 @@ export default function CreateScorerPage() {
   async function runBedrockSteps() {
     setRunning(true);
     let prev: unknown = stepResults[0];
-    for (let i = 1; i < 4; i++) {
+    const maxStep = mode === 'improve' ? 5 : 4;
+    for (let i = 1; i < maxStep; i++) {
       const result = await callStep(i, prev);
       if (!result) break;
       prev = result;
@@ -209,7 +210,7 @@ export default function CreateScorerPage() {
         {/* Pipeline progress */}
         {!stepStatuses.every(s => s === 'idle') && (
           <div className="mb-6 flex items-center justify-center gap-2 flex-wrap">
-            {STEP_LABELS.map((label, i) => {
+            {STEP_LABELS.slice(0, mode === 'improve' ? 5 : 4).map((label, i) => {
               const status = stepStatuses[i];
               const style = status === 'done' ? { backgroundColor: 'rgba(16,185,129,0.1)', color: 'rgb(52,211,153)', boxShadow: '0 0 0 1px rgba(16,185,129,0.2)' }
                 : status === 'running' ? { backgroundColor: 'rgba(245,158,11,0.1)', color: 'rgb(251,191,36)', boxShadow: '0 0 0 1px rgba(245,158,11,0.2)' }
@@ -218,7 +219,7 @@ export default function CreateScorerPage() {
               return (
                 <div key={i} className="flex items-center gap-2">
                   <span className="rounded-full px-3 py-1 text-xs font-medium" style={style}>{label}</span>
-                  {i < 3 && <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>→</span>}
+                  {i < (mode === 'improve' ? 4 : 3) && <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>→</span>}
                 </div>
               );
             })}
@@ -260,38 +261,22 @@ export default function CreateScorerPage() {
         {/* Mode-specific CTAs after completion */}
         {stepResults[3] != null && mode === 'improve' && (
           <>
-            {/* Score Lift Preview */}
-            <div className="glass-card p-6 mb-4">
-              <h2 className="text-lg font-semibold text-white mb-4">Demo Score Lift Preview</h2>
-              <div className="flex items-center justify-center gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>42</div>
-                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Example original</div>
-                </div>
-                <div className="text-xl" style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: 'rgb(52,211,153)' }}>78</div>
-                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Example improved</div>
-                </div>
-                <div className="text-center rounded-lg px-4 py-2" style={{ backgroundColor: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                  <div className="text-xl font-bold" style={{ color: 'rgb(52,211,153)' }}>+36</div>
-                  <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Example lift</div>
-                </div>
-              </div>
-              <p className="text-xs text-center mt-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                Demo numbers shown for the reveal flow. Live scoring connects to the scorer artifact.
-              </p>
-            </div>
+            {/* Score Lift - from step 5 */}
+            {stepStatuses[4] === 'running' && <LoadingBox label="Scoring original and generating improved version..." />}
+            {stepResults[4] != null && <ScoreLiftPanel data={stepResults[4]} />}
+            {stepErrors[4] && <ErrorBox msg={stepErrors[4]} />}
 
-            <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
-              <div>
-                <div className="text-sm font-medium text-white">Reveal full rewrite</div>
-                <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Unlock the improved version through the Stripe reveal demo.</div>
+            {stepResults[4] != null && (
+              <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
+                <div>
+                  <div className="text-sm font-medium text-white">Reveal full rewrite</div>
+                  <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Unlock the improved version through the Stripe reveal demo.</div>
+                </div>
+                <Link href="/market-dynamics/live-sim" className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', color: 'white' }}>
+                  Reveal with Stripe →
+                </Link>
               </div>
-              <Link href="/market-dynamics/live-sim" className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', color: 'white' }}>
-                Reveal with Stripe →
-              </Link>
-            </div>
+            )}
           </>
         )}
 
@@ -315,6 +300,45 @@ export default function CreateScorerPage() {
             </Link>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function ScoreLiftPanel({ data }: { data: unknown }) {
+  const d = data as { original_score: number; improved_score: number; lift: number; scorer_used: string; top_reasons: string[]; rewrite_preview: string; rewrite_word_count: number };
+  return (
+    <div className="glass-card p-6 mb-4">
+      <h2 className="text-lg font-semibold text-white mb-4">Score Lift</h2>
+      <div className="flex items-center justify-center gap-6 mb-4">
+        <div className="text-center">
+          <div className="text-3xl font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>{d.original_score}</div>
+          <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Original</div>
+        </div>
+        <div className="text-xl" style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+        <div className="text-center">
+          <div className="text-3xl font-bold" style={{ color: 'rgb(52,211,153)' }}>{d.improved_score}</div>
+          <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Improved</div>
+        </div>
+        <div className="text-center rounded-lg px-4 py-2" style={{ backgroundColor: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
+          <div className="text-xl font-bold" style={{ color: 'rgb(52,211,153)' }}>+{d.lift}</div>
+          <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Lift</div>
+        </div>
+      </div>
+      <div className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Scored by: {d.scorer_used}</div>
+      {d.top_reasons && d.top_reasons.length > 0 && (
+        <div className="mb-3">
+          <div className="text-[10px] uppercase mb-1.5" style={{ color: 'rgba(255,255,255,0.3)', letterSpacing: '0.05em' }}>Why it scores higher</div>
+          <div className="flex flex-wrap gap-1.5">
+            {d.top_reasons.map((r, i) => (
+              <span key={i} className="rounded-full px-2.5 py-0.5 text-[10px]" style={{ backgroundColor: 'rgba(16,185,129,0.08)', color: 'rgb(52,211,153)', border: '1px solid rgba(16,185,129,0.15)' }}>{r}</span>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="text-[10px] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.3)', letterSpacing: '0.05em' }}>Preview ({d.rewrite_word_count} words hidden)</div>
+        <p className="text-sm italic" style={{ color: 'rgba(255,255,255,0.5)' }}>{d.rewrite_preview}</p>
       </div>
     </div>
   );

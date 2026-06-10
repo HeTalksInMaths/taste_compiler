@@ -100,6 +100,61 @@ export async function POST(request: Request) {
       return NextResponse.json({ step: 'scorers', result });
     }
 
+    if (step === 'score_lift') {
+      // Step 5: Score lift — rewrite text using best scorer, score both, return lift
+      // previous_result should be the scorers array from step 4
+      const scorers = Array.isArray(previous_result) ? previous_result : (previous_result as { scorers?: unknown[] })?.scorers || [previous_result];
+      const bestScorer = scorers[0] as Record<string, unknown> || {};
+      const scorerHypothesis = String(bestScorer.hypothesis || bestScorer.mechanism || `more ${goal}`);
+      const scorerName = String(bestScorer.name || bestScorer.scorer_id || 'Selected Scorer');
+
+      if (!raw_text) {
+        return NextResponse.json({ error: 'raw_text (reference text) is required for score_lift step' }, { status: 400 });
+      }
+
+      const liftRaw = await callBedrock(
+        `You are a text quality scorer and rewriter. You will:
+1. Score the original text on a 0-100 scale for the quality "${goal}" using this scorer logic: "${scorerHypothesis}"
+2. Rewrite the text to score significantly higher on this scorer
+3. Score the rewritten text on the same 0-100 scale
+Be honest with scores — the original should score in the 30-55 range if it's mediocre, the rewrite in the 70-90 range.
+Return valid JSON only.`,
+        `Original text:
+"${raw_text.slice(0, 500)}"
+
+Quality target: "${goal}"
+Scorer: ${scorerName} — ${scorerHypothesis}
+
+Score the original, rewrite it to be more "${goal}" according to the scorer logic, then score the rewrite.
+Keep the rewrite similar in length (within 20% of original word count).
+
+Return JSON:
+{"original_score": <number 0-100>, "improved_score": <number 0-100>, "lift": <number>, "scorer_used": "${scorerName}", "top_reasons": ["reason1", "reason2", "reason3"], "rewrite": "<the full improved text>"}`,
+        4096
+      );
+      const liftResult = parseJson(liftRaw) as Record<string, unknown>;
+
+      // Split into visible and hidden parts
+      const fullRewrite = String(liftResult.rewrite || '');
+      const words = fullRewrite.split(/\s+/);
+      const previewWords = words.slice(0, Math.min(15, Math.ceil(words.length * 0.2)));
+
+      return NextResponse.json({
+        step: 'score_lift',
+        result: {
+          original_score: liftResult.original_score,
+          improved_score: liftResult.improved_score,
+          lift: liftResult.lift,
+          scorer_used: liftResult.scorer_used,
+          top_reasons: liftResult.top_reasons,
+          rewrite_preview: previewWords.join(' ') + '...',
+          // full_rewrite is hidden — only revealed after Stripe payment
+          rewrite_hidden: true,
+          rewrite_word_count: words.length,
+        },
+      });
+    }
+
     return NextResponse.json({ error: `Unknown step: ${step}` }, { status: 400 });
   } catch (e: unknown) {
     return NextResponse.json({ error: e instanceof Error ? e.message : 'Unknown error' }, { status: 500 });
