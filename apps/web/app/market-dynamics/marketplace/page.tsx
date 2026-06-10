@@ -5,7 +5,7 @@ const SCORER_CARDS = [
     scorer_id: 'persuasive_without_hype',
     title: 'Persuasive Without Hype',
     dynamic_variable: 'persuasive',
-    creator: 'EvalWeaver Seed',
+    creator: 'Taste Compiler Seed',
     positioning: 'Makes copy clearer, more credible, and more action-oriented without sounding fake.',
     best_for: ['sales copy', 'landing page', 'launch post', 'proposal'],
     price_to_reveal: 4.99,
@@ -29,7 +29,7 @@ const SCORER_CARDS = [
     scorer_id: 'scientific_but_readable',
     title: 'Scientific But Readable',
     dynamic_variable: 'scientific',
-    creator: 'EvalWeaver Seed',
+    creator: 'Taste Compiler Seed',
     positioning: 'Makes claims more evidence-grounded, careful, and easier to read.',
     best_for: ['research summary', 'technical blog', 'grant text'],
     price_to_reveal: 4.99,
@@ -72,7 +72,7 @@ export default function MarketplacePage() {
         <div className="mt-12 glass-card p-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-2">Build Your Own Scorer</h2>
           <p className="mb-6 max-w-lg mx-auto text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
-            EvalWeaver discovers, validates, and evolves quality scorers for any subjective goal.
+            Taste Compiler discovers, validates, and evolves quality scorers for any subjective goal.
             Publish yours and earn 70% of every reveal.
           </p>
           <div className="flex items-center justify-center gap-4 mb-6">

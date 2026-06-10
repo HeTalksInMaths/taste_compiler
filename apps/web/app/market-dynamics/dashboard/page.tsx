@@ -103,7 +103,7 @@ export default function DashboardPage() {
         <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: "rgba(177,151,252,0.2)", backgroundColor: "rgba(177,151,252,0.04)" }}>
           <div>
             <div className="text-sm font-medium text-white">Want to add a scorer to the marketplace?</div>
-            <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Run the full EvalWeaver pipeline and publish your scorer — 70% revenue share.</div>
+            <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Run the Taste Compiler pipeline and publish your scorer — 70% revenue share.</div>
           </div>
           <Link href="/create" className="text-xs font-medium rounded-lg px-4 py-2 transition" style={{ backgroundColor: "rgba(177,151,252,0.1)", color: "rgb(177,151,252)" }}>
             Create Scorer →

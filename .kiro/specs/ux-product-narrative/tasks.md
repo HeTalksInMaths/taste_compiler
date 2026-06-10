@@ -40,9 +40,9 @@
 - [x] Deploy and verify /create page works end-to-end in both modes
 
 ## Task 4: Consistency Pass
-- [ ] Grep all user-facing strings for "goal variable", "raw_text", "Live Sim", "Stages 1-4/1-8" and replace with product terminology
-- [ ] Update Market Dynamics page subtitle with "Before selling a scorer..." copy
-- [ ] Update `lib/chat-system-prompt.ts` to use consistent product terminology
+- [x] Grep all user-facing strings for "goal variable", "raw_text", "Live Sim", "Stages 1-4/1-8" and replace with product terminology
+- [x] Update Market Dynamics page subtitle with "Before selling a scorer..." copy
+- [x] Update `lib/chat-system-prompt.ts` to use consistent product terminology
 - [ ] Wrap any remaining technical details (model IDs, provider info) in collapsible sections
 - [ ] Final review: walk through Homepage → Create → Run → Results → Market → Pipeline and confirm no jargon leaks
-- [ ] Deploy and run full acceptance test
+- [x] Deploy and run full acceptance test

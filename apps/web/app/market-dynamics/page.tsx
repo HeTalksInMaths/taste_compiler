@@ -84,7 +84,7 @@ export default function MarketDynamicsIndexPage() {
         <div className="mt-12 glass-card p-8 text-center">
           <h2 className="text-xl font-bold text-white mb-2">Build your own scorer</h2>
           <p className="mb-5 text-sm max-w-lg mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
-            Use the EvalWeaver pipeline to discover, validate, and evolve a quality scorer for any
+            Use the Taste Compiler pipeline to discover, validate, and evolve a quality scorer for any
             subjective goal — then publish it here.
           </p>
           <Link

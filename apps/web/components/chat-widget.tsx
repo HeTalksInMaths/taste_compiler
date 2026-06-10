@@ -160,18 +160,18 @@ export function ChatWidget() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Open Ask EvalWeaver chat"
+        aria-label="Open Ask Taste Compiler chat"
         style={styles.button}
       >
         <span aria-hidden="true">💬</span>
-        <span>Ask EvalWeaver</span>
+        <span>Ask Taste Compiler</span>
       </button>
 
       {isOpen && (
         <div role="dialog" aria-labelledby="chat-widget-title" style={styles.panel}>
           <div style={styles.header}>
             <h2 id="chat-widget-title" style={styles.title}>
-              Ask EvalWeaver ✨
+              Ask Taste Compiler
             </h2>
             <button onClick={() => setIsOpen(false)} aria-label="Close chat" style={styles.closeBtn}>
               ✕
@@ -181,7 +181,7 @@ export function ChatWidget() {
           <div style={styles.messageArea} aria-live="polite">
             {messages.length === 0 && (
               <p style={styles.emptyState}>
-                Ask me anything about this page or the EvalWeaver demo.
+                Ask me anything about this page or the Taste Compiler demo.
               </p>
             )}
             {messages.map((msg) => (

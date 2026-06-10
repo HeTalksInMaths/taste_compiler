@@ -171,7 +171,7 @@ export default function SimulationsPage() {
           <h2 className="text-xl font-bold text-white mb-2">See demand for your own scorer?</h2>
           <p className="text-sm mb-4 max-w-lg mx-auto" style={{ color: "rgba(255,255,255,0.5)" }}>
             These results are from the existing Nemotron persona panel. Try creating your own scorer —
-            pick a goal, see estimated demand, and let Bedrock Claude generate the taste research.
+            pick a quality target, see estimated demand, and let Taste Compiler generate the taste research.
           </p>
           <Link
             href="/create"

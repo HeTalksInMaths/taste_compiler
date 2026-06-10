@@ -237,7 +237,7 @@ export default function CreateScorerPage() {
                 {mode === 'sell' ? 'Demand looks viable?' : 'Ready to generate scorer?'}
               </div>
               <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                Next: taste research, taste map, and scorer hypotheses via Bedrock.
+                Next: taste research, taste map, and scorer hypotheses.
               </div>
             </div>
             <button onClick={runBedrockSteps} className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #10b981, #4c6ef5)', color: 'white' }}>
