@@ -327,7 +327,7 @@ function ResearchPanel({ data }: { data: unknown }) {
       <h2 className="text-lg font-semibold text-white mb-4">Taste Research</h2>
       <div className="space-y-4 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
         {Object.entries(d).map(([key, val]) => (
-          <div key={key}><div className="text-xs font-medium uppercase mb-1" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>{key.replace(/_/g, ' ')}</div><p className="leading-relaxed">{String(val).slice(0, 400)}</p></div>
+          <div key={key}><div className="text-xs font-medium uppercase mb-1" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>{key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</div><p className="leading-relaxed">{String(val).slice(0, 400)}</p></div>
         ))}
       </div>
     </div>

@@ -25,7 +25,7 @@ export default function Home() {
             className="rounded-lg px-8 py-3.5 text-sm font-medium transition"
             style={{ border: "1px solid rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.7)" }}
           >
-            View Demo Run
+            See the Pipeline
           </Link>
         </div>
 
@@ -35,7 +35,7 @@ export default function Home() {
             className="text-xs transition"
             style={{ color: "rgba(255,255,255,0.35)" }}
           >
-            See the live pipeline proof →
+            Inspect the 8-stage agent loop →
           </Link>
         </div>
 

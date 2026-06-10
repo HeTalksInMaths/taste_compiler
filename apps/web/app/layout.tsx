@@ -67,7 +67,7 @@ function Nav() {
               height: "28px",
               width: "28px",
               borderRadius: "6px",
-              background: "linear-gradient(135deg, #5c7cfa, #b197fc)",
+              backgroundColor: "#4c6ef5",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -87,7 +87,7 @@ function Nav() {
           <Link
             href="/create"
             className="text-sm font-sans transition"
-            style={{ color: "rgba(177,151,252,0.85)" }}
+            style={{ color: "rgba(76,110,245,0.9)" }}
           >
             Create Scorer
           </Link>
