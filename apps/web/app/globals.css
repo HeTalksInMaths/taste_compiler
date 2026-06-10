@@ -560,3 +560,81 @@ a:hover {
   font-size: 13px;
   color: var(--fg-muted);
 }
+
+/* ── Market Dynamics component classes ─────────────────────────────────────── */
+
+.glass-card {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(4px);
+}
+
+.stat-card {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(4px);
+  padding: 1.5rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.stat-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-success {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: rgb(52, 211, 153);
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+}
+
+.badge-warning {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(245, 158, 11, 0.1);
+  color: rgb(251, 191, 36);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.2);
+}
+
+.badge-info {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(92, 124, 250, 0.1);
+  color: rgb(145, 167, 255);
+  box-shadow: 0 0 0 1px rgba(92, 124, 250, 0.2);
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #748ffc, #b197fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Tailwind utilities (last so explicit utilities win over base styles) ──── */
+@tailwind utilities;

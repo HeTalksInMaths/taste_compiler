@@ -1,0 +1,287 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+
+const SEGMENTS = [
+  { id: 'sme_owner_operator', label: 'SME Owner/Operator' },
+  { id: 'startup_founder_operator', label: 'Startup Founder' },
+  { id: 'marketing_growth_lead', label: 'Marketing / Growth' },
+  { id: 'creator_coach_consultant', label: 'Creator / Consultant' },
+  { id: 'sales_bd_customer_success', label: 'Sales / BD / CS' },
+  { id: 'agency_freelancer', label: 'Agency / Freelancer' },
+  { id: 'researcher_technical_writer', label: 'Researcher / Tech Writer' },
+  { id: 'student_job_seeker', label: 'Student / Job Seeker' },
+];
+
+const GOAL_SUGGESTIONS = ['persuasive', 'concise', 'urgent', 'trustworthy', 'funny', 'professional', 'empathetic', 'data-driven', 'storytelling', 'actionable'];
+const CONTENT_JOBS = ['sales copy', 'landing page', 'LinkedIn post', 'email campaign', 'pitch deck', 'newsletter', 'technical blog', 'cover letter', 'proposal', 'social media ad'];
+const PRICE_OPTIONS = [{ cents: 299, label: '$2.99' }, { cents: 499, label: '$4.99' }, { cents: 699, label: '$6.99' }, { cents: 999, label: '$9.99' }, { cents: 1499, label: '$14.99' }];
+
+type StepStatus = 'idle' | 'running' | 'done' | 'error';
+const STEPS = ['demand', 'research', 'taste_map', 'scorers'] as const;
+const STEP_LABELS = ['Demand Estimate', 'Taste Research', 'Taste Map', 'Scorer Hypotheses'];
+
+export default function CreateScorerPage() {
+  const [goal, setGoal] = useState('');
+  const [rawText, setRawText] = useState('');
+  const [selectedSegments, setSelectedSegments] = useState<string[]>(['startup_founder_operator', 'marketing_growth_lead', 'creator_coach_consultant']);
+  const [priceCents, setPriceCents] = useState(499);
+  const [bestFor, setBestFor] = useState<string[]>([]);
+  const [stepStatuses, setStepStatuses] = useState<StepStatus[]>(['idle', 'idle', 'idle', 'idle']);
+  const [stepResults, setStepResults] = useState<(unknown | null)[]>([null, null, null, null]);
+  const [stepErrors, setStepErrors] = useState<(string | null)[]>([null, null, null, null]);
+  const [running, setRunning] = useState(false);
+
+  function toggleSegment(id: string) { setSelectedSegments(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]); }
+  function toggleContentJob(job: string) { setBestFor(prev => prev.includes(job) ? prev.filter(j => j !== job) : [...prev, job]); }
+
+  async function callStep(stepIdx: number, previousResult: unknown): Promise<unknown | null> {
+    setStepStatuses(prev => prev.map((s, i) => i === stepIdx ? 'running' : s));
+    try {
+      const res = await fetch('/api/market-dynamics/create-scorer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          goal: goal.trim(), raw_text: rawText.trim(),
+          target_segments: selectedSegments, price_cents: priceCents, best_for: bestFor,
+          step: STEPS[stepIdx], previous_result: previousResult,
+        }),
+      });
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error || `HTTP ${res.status}`); }
+      const { result } = await res.json();
+      setStepStatuses(prev => prev.map((s, i) => i === stepIdx ? 'done' : s));
+      setStepResults(prev => prev.map((r, i) => i === stepIdx ? result : r));
+      return result;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Unknown error';
+      setStepStatuses(prev => prev.map((s, i) => i === stepIdx ? 'error' : s));
+      setStepErrors(prev => prev.map((r, i) => i === stepIdx ? msg : r));
+      return null;
+    }
+  }
+
+  async function runPipeline() {
+    if (!goal.trim()) return;
+    setRunning(true);
+    setStepStatuses(['idle', 'idle', 'idle', 'idle']);
+    setStepResults([null, null, null, null]);
+    setStepErrors([null, null, null, null]);
+    let prev: unknown = null;
+    for (let i = 0; i < 4; i++) {
+      const result = await callStep(i, prev);
+      if (!result) break;
+      prev = result;
+    }
+    setRunning(false);
+  }
+
+  const inputStyle = { width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', padding: '10px 16px', fontSize: '14px', color: 'white', outline: 'none' };
+
+  return (
+    <div className="px-6 py-16">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-8">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm" style={{ border: '1px solid rgba(177,151,252,0.2)', backgroundColor: 'rgba(177,151,252,0.05)', color: 'rgb(177,151,252)' }}>
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: 'rgb(177,151,252)' }} />
+            Bedrock Claude → EvalWeaver Pipeline
+          </div>
+          <h1 className="text-3xl font-bold text-white">Create a New Scorer</h1>
+          <p className="mt-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            Pick a goal, see estimated demand instantly, then watch Bedrock generate taste research and scorer hypotheses step by step.
+          </p>
+        </div>
+
+        {/* Input Form */}
+        <div className="glass-card p-6 mb-8">
+          <div className="mb-6">
+            <label className="text-sm font-medium mb-2 block text-white">Dynamic Variable (goal)</label>
+            <input type="text" value={goal} onChange={e => setGoal(e.target.value)} placeholder='"urgent", "trustworthy", "funny"' style={inputStyle} />
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {GOAL_SUGGESTIONS.map(g => (
+                <button key={g} onClick={() => setGoal(g)} className="rounded-full px-3 py-1 text-xs transition" style={{ ...(goal === g ? { backgroundColor: '#4c6ef5', color: 'white' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }) }}>{g}</button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="text-sm font-medium mb-2 block text-white">Sample text (optional)</label>
+            <textarea value={rawText} onChange={e => setRawText(e.target.value)} placeholder="Paste text to improve..." rows={2} style={{ ...inputStyle, resize: 'none' }} />
+          </div>
+
+          <div className="mb-6">
+            <label className="text-sm font-medium mb-2 block text-white">Target segments</label>
+            <div className="flex flex-wrap gap-2">
+              {SEGMENTS.map(seg => (
+                <button key={seg.id} onClick={() => toggleSegment(seg.id)} className="rounded-full px-3 py-1.5 text-xs transition" style={selectedSegments.includes(seg.id) ? { backgroundColor: 'rgba(16,185,129,0.2)', color: 'rgb(52,211,153)', boxShadow: '0 0 0 1px rgba(16,185,129,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                  {seg.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="text-sm font-medium mb-2 block text-white">Best for</label>
+            <div className="flex flex-wrap gap-2">
+              {CONTENT_JOBS.map(job => (
+                <button key={job} onClick={() => toggleContentJob(job)} className="rounded-full px-3 py-1.5 text-xs transition" style={bestFor.includes(job) ? { backgroundColor: 'rgba(92,124,250,0.2)', color: 'rgb(145,167,255)', boxShadow: '0 0 0 1px rgba(92,124,250,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                  {job}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="text-sm font-medium mb-2 block text-white">Price</label>
+            <div className="flex gap-2">
+              {PRICE_OPTIONS.map(p => (
+                <button key={p.cents} onClick={() => setPriceCents(p.cents)} className="rounded-lg px-4 py-2 text-sm font-mono transition" style={priceCents === p.cents ? { backgroundColor: '#4c6ef5', color: 'white' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button onClick={runPipeline} disabled={running || !goal.trim()} className="w-full rounded-lg py-3 text-sm font-medium text-white transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: running || !goal.trim() ? 0.4 : 1, cursor: running || !goal.trim() ? 'not-allowed' : 'pointer' }}>
+            {running ? 'Running...' : 'Estimate Demand + Generate Scorer →'}
+          </button>
+        </div>
+
+        {/* Pipeline progress */}
+        {!stepStatuses.every(s => s === 'idle') && (
+          <div className="mb-6 flex items-center justify-center gap-2 flex-wrap">
+            {STEP_LABELS.map((label, i) => {
+              const status = stepStatuses[i];
+              const style = status === 'done' ? { backgroundColor: 'rgba(16,185,129,0.1)', color: 'rgb(52,211,153)', boxShadow: '0 0 0 1px rgba(16,185,129,0.2)' }
+                : status === 'running' ? { backgroundColor: 'rgba(245,158,11,0.1)', color: 'rgb(251,191,36)', boxShadow: '0 0 0 1px rgba(245,158,11,0.2)' }
+                : status === 'error' ? { backgroundColor: 'rgba(248,113,113,0.1)', color: 'rgb(248,113,113)', boxShadow: '0 0 0 1px rgba(248,113,113,0.2)' }
+                : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.3)', boxShadow: '0 0 0 1px rgba(255,255,255,0.1)' };
+              return (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="rounded-full px-3 py-1 text-xs font-medium" style={style}>{label}</span>
+                  {i < 3 && <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>→</span>}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {stepResults[0] != null && <DemandPanel data={stepResults[0]} />}
+        {stepErrors[0] && <ErrorBox msg={stepErrors[0]} />}
+        {stepStatuses[1] === 'running' && <LoadingBox label="Calling Bedrock for taste research..." />}
+        {stepResults[1] != null && <ResearchPanel data={stepResults[1]} />}
+        {stepErrors[1] && <ErrorBox msg={stepErrors[1]} />}
+        {stepStatuses[2] === 'running' && <LoadingBox label="Generating taste map..." />}
+        {stepResults[2] != null && <TasteMapPanel data={stepResults[2]} />}
+        {stepErrors[2] && <ErrorBox msg={stepErrors[2]} />}
+        {stepStatuses[3] === 'running' && <LoadingBox label="Generating scorer hypotheses..." />}
+        {stepResults[3] != null && <ScorersPanel data={stepResults[3]} />}
+        {stepErrors[3] && <ErrorBox msg={stepErrors[3]} />}
+
+        {/* Cross-link: market-test this scorer */}
+        {stepResults[3] != null && (
+          <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
+            <div>
+              <div className="text-sm font-medium text-white">Market-test this scorer</div>
+              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>See how the Nemotron persona panel responds to it in the market simulation.</div>
+            </div>
+            <Link href="/market-dynamics/simulations" className="text-xs font-medium rounded-lg px-4 py-2 transition" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>
+              View Simulations →
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DemandPanel({ data }: { data: unknown }) {
+  const d = data as { segment_demand: Array<{ label: string; reveal_probability: number; estimated_buyers_per_100: number }>; avg_conversion_rate: number; estimated_revenue_per_100_personas: number; estimated_platform_take: number };
+  return (
+    <div className="glass-card p-6 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-white">Demand Estimate</h2>
+        <span className="badge-info">from Nemotron panel</span>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-3 mb-6">
+        <div className="text-center"><div className="text-2xl font-bold" style={{ color: 'rgb(52,211,153)' }}>{(d.avg_conversion_rate * 100).toFixed(0)}%</div><div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Avg conversion</div></div>
+        <div className="text-center"><div className="text-2xl font-bold text-white">${d.estimated_revenue_per_100_personas.toFixed(0)}</div><div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Revenue / 100</div></div>
+        <div className="text-center"><div className="text-2xl font-bold" style={{ color: 'rgb(145,167,255)' }}>${d.estimated_platform_take.toFixed(0)}</div><div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Platform take</div></div>
+      </div>
+      <div className="space-y-2">
+        {d.segment_demand.map(seg => (
+          <div key={seg.label} className="flex items-center gap-3">
+            <span className="w-36 text-xs truncate" style={{ color: 'rgba(255,255,255,0.5)' }}>{seg.label}</span>
+            <div className="flex-1 h-4 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}>
+              <div className="h-full rounded-full opacity-70" style={{ width: `${seg.reveal_probability * 100}%`, background: 'linear-gradient(to right, #4c6ef5, #10b981)' }} />
+            </div>
+            <span className="w-12 text-right text-xs font-mono" style={{ color: 'rgba(255,255,255,0.5)' }}>{seg.estimated_buyers_per_100}/100</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ResearchPanel({ data }: { data: unknown }) {
+  const d = data as Record<string, string>;
+  return (
+    <div className="glass-card p-6 mb-6">
+      <h2 className="text-lg font-semibold text-white mb-4">Taste Research</h2>
+      <div className="space-y-4 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
+        {Object.entries(d).map(([key, val]) => (
+          <div key={key}><div className="text-xs font-medium uppercase mb-1" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>{key.replace(/_/g, ' ')}</div><p className="leading-relaxed">{String(val).slice(0, 400)}</p></div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TasteMapPanel({ data }: { data: unknown }) {
+  const d = data as Record<string, unknown>;
+  const colors = { rewards: 'rgb(52,211,153)', punishes: 'rgb(248,113,113)', preserves: 'rgb(251,191,36)' };
+  return (
+    <div className="glass-card p-6 mb-6">
+      <h2 className="text-lg font-semibold text-white mb-4">Taste Map</h2>
+      <div className="grid gap-4 sm:grid-cols-3">
+        {(['rewards', 'punishes', 'preserves'] as const).map(key => {
+          const items = d[key];
+          if (!Array.isArray(items)) return null;
+          return (
+            <div key={key}><div className="text-xs font-medium uppercase mb-2" style={{ color: colors[key], letterSpacing: '0.05em' }}>{key}</div><ul className="space-y-1">{items.map((item, i) => <li key={i} className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>• {String(item)}</li>)}</ul></div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ScorersPanel({ data }: { data: unknown }) {
+  const scorers = Array.isArray(data) ? data : [];
+  return (
+    <div className="glass-card p-6 mb-6">
+      <h2 className="text-lg font-semibold text-white mb-4">Generated Scorer Hypotheses</h2>
+      <div className="space-y-4">
+        {scorers.map((s: Record<string, unknown>, i: number) => (
+          <div key={i} className="rounded-lg p-4" style={{ border: '1px solid rgba(255,255,255,0.06)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+            <div className="flex items-center justify-between mb-2"><span className="text-sm font-semibold text-white">{String(s.name || `Scorer ${i + 1}`)}</span></div>
+            {!!s.mechanism && <p className="text-sm mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>{String(s.mechanism)}</p>}
+            {!!s.formula_sketch && <div className="rounded-md px-3 py-2 font-mono text-xs" style={{ backgroundColor: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>{String(s.formula_sketch)}</div>}
+            {Array.isArray(s.expected_segments) && (
+              <div className="mt-2 flex flex-wrap gap-1">{(s.expected_segments as string[]).map((seg: string) => <span key={seg} className="rounded-full px-2 py-0.5 text-[10px]" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>{seg}</span>)}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LoadingBox({ label }: { label: string }) {
+  return <div className="glass-card p-4 mb-6 text-sm animate-pulse" style={{ color: 'rgb(251,191,36)' }}>⟳ {label}</div>;
+}
+
+function ErrorBox({ msg }: { msg: string | null }) {
+  if (!msg) return null;
+  return <div className="mb-6 rounded-lg p-4 text-sm" style={{ border: '1px solid rgba(248,113,113,0.2)', backgroundColor: 'rgba(248,113,113,0.05)', color: 'rgb(248,113,113)' }}>{msg}</div>;
+}
