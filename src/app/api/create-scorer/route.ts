@@ -4,7 +4,7 @@ import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-r
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow up to 60s for LLM calls
 
-const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-sonnet-4-20250514';
+const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-sonnet-4-6';
 const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
 
 // Existing persona panel data — no need to resample Nemotron
