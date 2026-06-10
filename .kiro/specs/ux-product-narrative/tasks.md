@@ -27,17 +27,17 @@
 - [x] Clarify the two user motivations at the top of /create:
   1. Improve my own text
   2. Create a scorer to sell
-- [ ] In "Improve my own text" mode:
+- [x] In "Improve my own text" mode:
   - Reference Text is required
   - The result should emphasize score lift and "Reveal full rewrite with Stripe"
-- [ ] In "Create a scorer to sell" mode:
+- [x] In "Create a scorer to sell" mode:
   - Audience, Use Case, and price/reveal intent are emphasized
   - Demand Preview comes before building/running the scorer
   - The result CTA should be "Market-test this scorer"
 - [x] Do not present these as the same motivation — use a clear mode toggle or tab at the top of /create
-- [ ] Ensure bridge CTAs appear after scorer generation and match the selected mode
-- [ ] Verify the demand-pause flow still works correctly after label changes
-- [ ] Deploy and verify /create page works end-to-end in both modes
+- [x] Ensure bridge CTAs appear after scorer generation and match the selected mode
+- [x] Verify the demand-pause flow still works correctly after label changes
+- [x] Deploy and verify /create page works end-to-end in both modes
 
 ## Task 4: Consistency Pass
 - [ ] Grep all user-facing strings for "goal variable", "raw_text", "Live Sim", "Stages 1-4/1-8" and replace with product terminology

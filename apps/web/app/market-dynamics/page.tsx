@@ -19,9 +19,9 @@ const SECTIONS = [
   },
   {
     href: "/market-dynamics/live-sim",
-    title: "Live Simulation",
+    title: "Market Test",
     description: "Run Nemotron personas through the decision model and create real Stripe test checkout sessions.",
-    badge: "Live ⚡",
+    badge: "Live",
     badgeColor: "rgba(245,158,11,0.1)",
     badgeText: "rgb(251,191,36)",
   },
@@ -50,11 +50,11 @@ export default function MarketDynamicsIndexPage() {
         <div className="mb-12">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "rgb(92,124,250)" }} />
-            EvalWeaver · Scorer Marketplace
+            Taste Compiler · Market Testing
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-white">Market Dynamics</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-white">Market</h1>
           <p className="mt-3 text-lg" style={{ color: "rgba(255,255,255,0.5)" }}>
-            Persona-validated scorer marketplace — from taste research to live Stripe sessions.
+            Before selling a scorer, we simulate whether the target audience would pay to reveal it.
           </p>
         </div>
 

@@ -26,7 +26,7 @@ export default function MarketDynamicsLayout({
             Dashboard
           </Link>
           <Link href="/market-dynamics/live-sim" className="text-xs transition ml-auto" style={{ color: "rgba(251,191,36,0.7)" }}>
-            Live Sim ⚡
+            Market Test
           </Link>
         </div>
       </div>

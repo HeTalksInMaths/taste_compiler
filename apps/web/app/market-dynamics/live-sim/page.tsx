@@ -73,7 +73,7 @@ export default function LiveSimPage() {
           className="mb-8 rounded-lg px-8 py-3 text-sm font-medium text-white transition"
           style={{ backgroundColor: "#4c6ef5", opacity: loading ? 0.5 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
         >
-          {loading ? 'Running Simulation...' : 'Run Live Simulation →'}
+          {loading ? 'Running Market Test...' : 'Run Market Test →'}
         </button>
 
         {error && (
