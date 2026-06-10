@@ -21,11 +21,11 @@ export default function Home() {
             Create a Scorer
           </Link>
           <Link
-            href="/stages"
+            href="/runs/demo"
             className="rounded-lg px-8 py-3.5 text-sm font-medium transition"
             style={{ border: "1px solid rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.7)" }}
           >
-            See the Pipeline
+            View Demo Run
           </Link>
         </div>
 
@@ -35,7 +35,7 @@ export default function Home() {
             className="text-xs transition"
             style={{ color: "rgba(255,255,255,0.35)" }}
           >
-            Inspect the 8-stage agent loop →
+            Run the live pipeline yourself →
           </Link>
         </div>
 
