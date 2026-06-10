@@ -92,6 +92,13 @@ function Nav() {
             Demo Run
           </Link>
           <Link
+            href="/stages"
+            className="text-sm font-sans transition"
+            style={{ color: "rgba(230,237,243,0.55)" }}
+          >
+            Live Pipeline
+          </Link>
+          <Link
             href="/create"
             className="text-sm font-sans font-medium transition"
             style={{ color: "rgb(145,167,255)" }}
