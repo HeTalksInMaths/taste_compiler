@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
+type Mode = 'improve' | 'sell';
+
 const SEGMENTS = [
   { id: 'sme_owner_operator', label: 'SME Owner/Operator' },
   { id: 'startup_founder_operator', label: 'Startup Founder' },
@@ -14,15 +16,16 @@ const SEGMENTS = [
   { id: 'student_job_seeker', label: 'Student / Job Seeker' },
 ];
 
-const GOAL_SUGGESTIONS = ['persuasive', 'concise', 'urgent', 'trustworthy', 'funny', 'professional', 'empathetic', 'data-driven', 'storytelling', 'actionable'];
+const GOAL_SUGGESTIONS = ['trustworthy', 'persuasive', 'concise', 'human', 'professional', 'empathetic', 'data-driven', 'actionable', 'funny', 'urgent'];
 const CONTENT_JOBS = ['sales copy', 'landing page', 'LinkedIn post', 'email campaign', 'pitch deck', 'newsletter', 'technical blog', 'cover letter', 'proposal', 'social media ad'];
 const PRICE_OPTIONS = [{ cents: 299, label: '$2.99' }, { cents: 499, label: '$4.99' }, { cents: 699, label: '$6.99' }, { cents: 999, label: '$9.99' }, { cents: 1499, label: '$14.99' }];
 
 type StepStatus = 'idle' | 'running' | 'done' | 'error';
 const STEPS = ['demand', 'research', 'taste_map', 'scorers'] as const;
-const STEP_LABELS = ['Demand Estimate', 'Taste Research', 'Taste Map', 'Scorer Hypotheses'];
+const STEP_LABELS = ['Demand Preview', 'Taste Research', 'Taste Map', 'Scorer Hypotheses'];
 
 export default function CreateScorerPage() {
+  const [mode, setMode] = useState<Mode>('improve');
   const [goal, setGoal] = useState('');
   const [rawText, setRawText] = useState('');
   const [selectedSegments, setSelectedSegments] = useState<string[]>(['startup_founder_operator', 'marketing_growth_lead', 'creator_coach_consultant']);
@@ -49,7 +52,7 @@ export default function CreateScorerPage() {
           step: STEPS[stepIdx], previous_result: previousResult,
         }),
       });
-      if (!res.ok) { const err = await res.json(); throw new Error(err.error || `HTTP ${res.status}`); }
+      if (!res.ok) { const err = await res.json(); throw new Error(typeof err.error === 'string' ? err.error : JSON.stringify(err.error) || `HTTP ${res.status}`); }
       const { result } = await res.json();
       setStepStatuses(prev => prev.map((s, i) => i === stepIdx ? 'done' : s));
       setStepResults(prev => prev.map((r, i) => i === stepIdx ? result : r));
@@ -64,6 +67,7 @@ export default function CreateScorerPage() {
 
   async function runDemand() {
     if (!goal.trim()) return;
+    if (mode === 'improve' && !rawText.trim()) return;
     setRunning(true);
     setDemandDone(false);
     setStepStatuses(['idle', 'idle', 'idle', 'idle']);
@@ -86,73 +90,119 @@ export default function CreateScorerPage() {
   }
 
   const inputStyle = { width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', padding: '10px 16px', fontSize: '14px', color: 'white', outline: 'none' };
+  const canRun = goal.trim() && (mode === 'sell' || rawText.trim());
 
   return (
-    <div className="px-6 py-16">
+    <div className="px-6 py-12">
       <div className="mx-auto max-w-5xl">
+        {/* Header */}
         <div className="mb-8">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm" style={{ border: '1px solid rgba(177,151,252,0.2)', backgroundColor: 'rgba(177,151,252,0.05)', color: 'rgb(177,151,252)' }}>
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: 'rgb(177,151,252)' }} />
-            Bedrock Claude → EvalWeaver Pipeline
-          </div>
-          <h1 className="text-3xl font-bold text-white">Create a New Scorer</h1>
-          <p className="mt-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            Pick a goal, see estimated demand instantly, then watch Bedrock generate taste research and scorer hypotheses step by step.
+          <h1 className="text-2xl font-bold text-white">Create a Scorer</h1>
+          <p className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            {mode === 'improve'
+              ? 'Reference text → Quality target → Run Taste Compiler → Score lift → Reveal with Stripe'
+              : 'Quality target → Audience → Demand preview → Run Taste Compiler → Market-test scorer'}
           </p>
         </div>
 
+        {/* Mode Toggle */}
+        <div className="glass-card p-4 mb-6">
+          <div className="text-xs font-medium mb-3" style={{ color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>What do you want to do?</div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setMode('improve')}
+              className="flex-1 rounded-lg p-4 text-left transition"
+              style={mode === 'improve' ? { backgroundColor: 'rgba(92,124,250,0.1)', border: '1px solid rgba(92,124,250,0.3)' } : { border: '1px solid rgba(255,255,255,0.06)', backgroundColor: 'rgba(255,255,255,0.02)' }}
+            >
+              <div className="text-sm font-medium text-white mb-1">Improve my text</div>
+              <div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Score your text against a quality target, see the lift, and reveal a rewrite via Stripe.</div>
+            </button>
+            <button
+              onClick={() => setMode('sell')}
+              className="flex-1 rounded-lg p-4 text-left transition"
+              style={mode === 'sell' ? { backgroundColor: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' } : { border: '1px solid rgba(255,255,255,0.06)', backgroundColor: 'rgba(255,255,255,0.02)' }}
+            >
+              <div className="text-sm font-medium text-white mb-1">Create a scorer to sell</div>
+              <div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Build a scorer artifact, estimate demand with personas, and market-test it.</div>
+            </button>
+          </div>
+        </div>
+
         {/* Input Form */}
-        <div className="glass-card p-6 mb-8">
-          <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Dynamic Variable (goal)</label>
-            <input type="text" value={goal} onChange={e => setGoal(e.target.value)} placeholder='"urgent", "trustworthy", "funny"' style={inputStyle} />
+        <div className="glass-card p-6 mb-6">
+          {/* Quality Target */}
+          <div className="mb-5">
+            <label className="text-sm font-medium mb-2 block text-white">Quality Target</label>
+            <input type="text" value={goal} onChange={e => setGoal(e.target.value)} placeholder='"trustworthy", "persuasive", "human"' style={inputStyle} />
             <div className="mt-2 flex flex-wrap gap-1.5">
               {GOAL_SUGGESTIONS.map(g => (
-                <button key={g} onClick={() => setGoal(g)} className="rounded-full px-3 py-1 text-xs transition" style={{ ...(goal === g ? { backgroundColor: '#4c6ef5', color: 'white' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }) }}>{g}</button>
+                <button key={g} onClick={() => setGoal(g)} className="rounded-full px-3 py-1 text-xs transition" style={goal === g ? { backgroundColor: '#4c6ef5', color: 'white' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>{g}</button>
               ))}
             </div>
           </div>
 
-          <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Sample text (optional)</label>
-            <textarea value={rawText} onChange={e => setRawText(e.target.value)} placeholder="Paste text to improve..." rows={2} style={{ ...inputStyle, resize: 'none' }} />
+          {/* Reference Text — required in improve mode, optional in sell mode */}
+          <div className="mb-5">
+            <label className="text-sm font-medium mb-2 block text-white">
+              Reference Text {mode === 'improve' && <span style={{ color: 'rgb(248,113,113)' }}>*</span>}
+            </label>
+            <textarea
+              value={rawText}
+              onChange={e => setRawText(e.target.value)}
+              placeholder={mode === 'improve' ? "Paste the text you want to improve..." : "Optional — paste example text for context"}
+              rows={3}
+              style={{ ...inputStyle, resize: 'none' }}
+            />
+            {mode === 'improve' && !rawText.trim() && goal.trim() && (
+              <div className="text-[11px] mt-1" style={{ color: 'rgb(251,191,36)' }}>Reference text is required to generate a score lift.</div>
+            )}
           </div>
 
-          <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Target segments</label>
-            <div className="flex flex-wrap gap-2">
-              {SEGMENTS.map(seg => (
-                <button key={seg.id} onClick={() => toggleSegment(seg.id)} className="rounded-full px-3 py-1.5 text-xs transition" style={selectedSegments.includes(seg.id) ? { backgroundColor: 'rgba(16,185,129,0.2)', color: 'rgb(52,211,153)', boxShadow: '0 0 0 1px rgba(16,185,129,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
-                  {seg.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Audience — emphasized in sell mode */}
+          {mode === 'sell' && (
+            <>
+              <div className="mb-5">
+                <label className="text-sm font-medium mb-2 block text-white">Audience</label>
+                <div className="flex flex-wrap gap-2">
+                  {SEGMENTS.map(seg => (
+                    <button key={seg.id} onClick={() => toggleSegment(seg.id)} className="rounded-full px-3 py-1.5 text-xs transition" style={selectedSegments.includes(seg.id) ? { backgroundColor: 'rgba(16,185,129,0.2)', color: 'rgb(52,211,153)', boxShadow: '0 0 0 1px rgba(16,185,129,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                      {seg.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Best for</label>
-            <div className="flex flex-wrap gap-2">
-              {CONTENT_JOBS.map(job => (
-                <button key={job} onClick={() => toggleContentJob(job)} className="rounded-full px-3 py-1.5 text-xs transition" style={bestFor.includes(job) ? { backgroundColor: 'rgba(92,124,250,0.2)', color: 'rgb(145,167,255)', boxShadow: '0 0 0 1px rgba(92,124,250,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
-                  {job}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div className="mb-5">
+                <label className="text-sm font-medium mb-2 block text-white">Use Case</label>
+                <div className="flex flex-wrap gap-2">
+                  {CONTENT_JOBS.map(job => (
+                    <button key={job} onClick={() => toggleContentJob(job)} className="rounded-full px-3 py-1.5 text-xs transition" style={bestFor.includes(job) ? { backgroundColor: 'rgba(92,124,250,0.2)', color: 'rgb(145,167,255)', boxShadow: '0 0 0 1px rgba(92,124,250,0.3)' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                      {job}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block text-white">Price</label>
-            <div className="flex gap-2">
-              {PRICE_OPTIONS.map(p => (
-                <button key={p.cents} onClick={() => setPriceCents(p.cents)} className="rounded-lg px-4 py-2 text-sm font-mono transition" style={priceCents === p.cents ? { backgroundColor: '#4c6ef5', color: 'white' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div className="mb-5">
+                <label className="text-sm font-medium mb-2 block text-white">Reveal Price</label>
+                <div className="flex gap-2">
+                  {PRICE_OPTIONS.map(p => (
+                    <button key={p.cents} onClick={() => setPriceCents(p.cents)} className="rounded-lg px-4 py-2 text-sm font-mono transition" style={priceCents === p.cents ? { backgroundColor: '#4c6ef5', color: 'white' } : { border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
-          <button onClick={runDemand} disabled={running || !goal.trim()} className="w-full rounded-lg py-3 text-sm font-medium text-white transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: running || !goal.trim() ? 0.4 : 1, cursor: running || !goal.trim() ? 'not-allowed' : 'pointer' }}>
-            {running && !demandDone ? 'Estimating...' : 'Estimate Demand →'}
+          <button
+            onClick={runDemand}
+            disabled={running || !canRun}
+            className="w-full rounded-lg py-3 text-sm font-medium text-white transition"
+            style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', opacity: !canRun || running ? 0.4 : 1, cursor: !canRun || running ? 'not-allowed' : 'pointer' }}
+          >
+            {running && !demandDone ? 'Estimating...' : mode === 'sell' ? 'Estimate Demand →' : 'Run Taste Compiler →'}
           </button>
         </div>
 
@@ -175,41 +225,68 @@ export default function CreateScorerPage() {
           </div>
         )}
 
+        {/* Demand Preview */}
         {stepResults[0] != null && <DemandPanel data={stepResults[0]} />}
         {stepErrors[0] && <ErrorBox msg={stepErrors[0]} />}
 
-        {/* Proceed gate — only continue to Bedrock steps if user confirms */}
+        {/* Proceed gate */}
         {demandDone && stepStatuses[1] === 'idle' && !running && (
           <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(16,185,129,0.2)', backgroundColor: 'rgba(16,185,129,0.04)' }}>
             <div>
-              <div className="text-sm font-medium text-white">Demand looks good?</div>
-              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Next steps use Bedrock to generate taste research, taste map, and scorer hypotheses.</div>
+              <div className="text-sm font-medium text-white">
+                {mode === 'sell' ? 'Demand looks viable?' : 'Ready to generate scorer?'}
+              </div>
+              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                Next: taste research, taste map, and scorer hypotheses via Bedrock.
+              </div>
             </div>
             <button onClick={runBedrockSteps} className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #10b981, #4c6ef5)', color: 'white' }}>
-              Continue with Bedrock →
+              Continue →
             </button>
           </div>
         )}
 
-        {stepStatuses[1] === 'running' && <LoadingBox label="Calling Bedrock for taste research..." />}
+        {/* Bedrock steps */}
+        {stepStatuses[1] === 'running' && <LoadingBox label="Generating taste research..." />}
         {stepResults[1] != null && <ResearchPanel data={stepResults[1]} />}
         {stepErrors[1] && <ErrorBox msg={stepErrors[1]} />}
-        {stepStatuses[2] === 'running' && <LoadingBox label="Generating taste map..." />}
+        {stepStatuses[2] === 'running' && <LoadingBox label="Building taste map..." />}
         {stepResults[2] != null && <TasteMapPanel data={stepResults[2]} />}
         {stepErrors[2] && <ErrorBox msg={stepErrors[2]} />}
         {stepStatuses[3] === 'running' && <LoadingBox label="Generating scorer hypotheses..." />}
         {stepResults[3] != null && <ScorersPanel data={stepResults[3]} />}
         {stepErrors[3] && <ErrorBox msg={stepErrors[3]} />}
 
-        {/* Cross-link: market-test this scorer */}
-        {stepResults[3] != null && (
+        {/* Mode-specific CTAs after completion */}
+        {stepResults[3] != null && mode === 'improve' && (
           <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(92,124,250,0.2)', backgroundColor: 'rgba(92,124,250,0.04)' }}>
             <div>
-              <div className="text-sm font-medium text-white">Market-test this scorer</div>
-              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>See how the Nemotron persona panel responds to it in the market simulation.</div>
+              <div className="text-sm font-medium text-white">Reveal full rewrite with Stripe</div>
+              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>The scorer found ways to improve your text. Pay to reveal the full rewritten version.</div>
             </div>
-            <Link href="/market-dynamics/simulations" className="text-xs font-medium rounded-lg px-4 py-2 transition" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>
-              View Simulations →
+            <Link href="/market-dynamics/live-sim" className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #4c6ef5, #7c3aed)', color: 'white' }}>
+              Reveal with Stripe →
+            </Link>
+          </div>
+        )}
+
+        {stepResults[3] != null && mode === 'sell' && (
+          <div className="mt-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(16,185,129,0.2)', backgroundColor: 'rgba(16,185,129,0.04)' }}>
+            <div>
+              <div className="text-sm font-medium text-white">Market-test this scorer</div>
+              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Simulate how Nemotron personas respond and whether they would pay to reveal results.</div>
+            </div>
+            <Link href="/market-dynamics" className="text-xs font-medium rounded-lg px-5 py-2.5 transition" style={{ background: 'linear-gradient(to right, #10b981, #4c6ef5)', color: 'white' }}>
+              Market-test →
+            </Link>
+          </div>
+        )}
+
+        {/* Always show pipeline proof link */}
+        {stepResults[3] != null && (
+          <div className="mt-3 text-center">
+            <Link href="/stages" className="text-xs transition" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              View full pipeline proof →
             </Link>
           </div>
         )}
@@ -222,10 +299,7 @@ function DemandPanel({ data }: { data: unknown }) {
   const d = data as { segment_demand: Array<{ label: string; reveal_probability: number; estimated_buyers_per_100: number }>; avg_conversion_rate: number; estimated_revenue_per_100_personas: number; estimated_platform_take: number };
   return (
     <div className="glass-card p-6 mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-white">Demand Estimate</h2>
-        <span className="badge-info">from Nemotron panel</span>
-      </div>
+      <h2 className="text-lg font-semibold text-white mb-4">Demand Preview</h2>
       <div className="grid gap-4 sm:grid-cols-3 mb-6">
         <div className="text-center"><div className="text-2xl font-bold" style={{ color: 'rgb(52,211,153)' }}>{(d.avg_conversion_rate * 100).toFixed(0)}%</div><div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Avg conversion</div></div>
         <div className="text-center"><div className="text-2xl font-bold text-white">${d.estimated_revenue_per_100_personas.toFixed(0)}</div><div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Revenue / 100</div></div>
@@ -262,7 +336,7 @@ function ResearchPanel({ data }: { data: unknown }) {
 
 function TasteMapPanel({ data }: { data: unknown }) {
   const d = data as Record<string, unknown>;
-  const colors = { rewards: 'rgb(52,211,153)', punishes: 'rgb(248,113,113)', preserves: 'rgb(251,191,36)' };
+  const colors: Record<string, string> = { rewards: 'rgb(52,211,153)', punishes: 'rgb(248,113,113)', preserves: 'rgb(251,191,36)' };
   return (
     <div className="glass-card p-6 mb-6">
       <h2 className="text-lg font-semibold text-white mb-4">Taste Map</h2>
@@ -283,16 +357,13 @@ function ScorersPanel({ data }: { data: unknown }) {
   const scorers = Array.isArray(data) ? data : [];
   return (
     <div className="glass-card p-6 mb-6">
-      <h2 className="text-lg font-semibold text-white mb-4">Generated Scorer Hypotheses</h2>
-      <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-white mb-4">Scorer Hypotheses</h2>
+      <div className="space-y-3">
         {scorers.map((s: Record<string, unknown>, i: number) => (
           <div key={i} className="rounded-lg p-4" style={{ border: '1px solid rgba(255,255,255,0.06)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <div className="flex items-center justify-between mb-2"><span className="text-sm font-semibold text-white">{String(s.name || `Scorer ${i + 1}`)}</span></div>
-            {!!s.mechanism && <p className="text-sm mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>{String(s.mechanism)}</p>}
+            <div className="text-sm font-semibold text-white mb-1">{String(s.name || `Scorer ${i + 1}`)}</div>
+            {!!s.mechanism && <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>{String(s.mechanism)}</p>}
             {!!s.formula_sketch && <div className="rounded-md px-3 py-2 font-mono text-xs" style={{ backgroundColor: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>{String(s.formula_sketch)}</div>}
-            {Array.isArray(s.expected_segments) && (
-              <div className="mt-2 flex flex-wrap gap-1">{(s.expected_segments as string[]).map((seg: string) => <span key={seg} className="rounded-full px-2 py-0.5 text-[10px]" style={{ backgroundColor: 'rgba(92,124,250,0.1)', color: 'rgb(145,167,255)' }}>{seg}</span>)}</div>
-            )}
           </div>
         ))}
       </div>
