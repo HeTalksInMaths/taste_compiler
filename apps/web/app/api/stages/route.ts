@@ -7,8 +7,10 @@ export const maxDuration = 120;
 const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'us.anthropic.claude-sonnet-4-6';
 const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
 const EXA_API_KEY = process.env.EXA_API_KEY || '';
+const AI_GATEWAY_URL = process.env.AI_GATEWAY_URL || 'https://ai-gateway.vercel.sh/v1';
+const AI_GATEWAY_API_KEY = process.env.AI_GATEWAY_API_KEY || '';
 
-async function callBedrock(system: string, user: string, maxTokens = 4096): Promise<string> {
+async function callBedrockOnce(system: string, user: string, maxTokens = 4096): Promise<string> {
   const client = new BedrockRuntimeClient({
     region: AWS_REGION,
     ...(process.env.AWS_ACCESS_KEY_ID ? {
@@ -35,20 +37,74 @@ async function callBedrock(system: string, user: string, maxTokens = 4096): Prom
   return '';
 }
 
+async function callBedrock(system: string, user: string, maxTokens = 4096): Promise<string> {
+  const maxRetries = 2;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await callBedrockOnce(system, user, maxTokens);
+    } catch (e: unknown) {
+      if (attempt === maxRetries) throw e;
+      // Wait before retry: 1s, then 2s
+      await new Promise(r => setTimeout(r, (attempt + 1) * 1000));
+    }
+  }
+  return '';
+}
+
+async function callAIGateway(system: string, user: string, maxTokens = 4096): Promise<string> {
+  const maxRetries = 2;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetch(`${AI_GATEWAY_URL}/chat/completions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AI_GATEWAY_API_KEY}` },
+        body: JSON.stringify({
+          model: 'anthropic/claude-sonnet-4-6',
+          messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+          max_tokens: maxTokens,
+          temperature: 0.3,
+        }),
+      });
+      if (!res.ok) {
+        if (attempt === maxRetries) throw new Error(`AI Gateway ${res.status}: ${await res.text()}`);
+        await new Promise(r => setTimeout(r, (attempt + 1) * 1000));
+        continue;
+      }
+      const data = await res.json();
+      return data.choices?.[0]?.message?.content ?? '';
+    } catch (e: unknown) {
+      if (attempt === maxRetries) throw e;
+      await new Promise(r => setTimeout(r, (attempt + 1) * 1000));
+    }
+  }
+  return '';
+}
+
 async function searchExa(query: string, numResults = 5): Promise<Array<{ title: string; url: string; snippet: string }>> {
   if (!EXA_API_KEY) return [];
-  try {
-    const res = await fetch('https://api.exa.ai/search', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': EXA_API_KEY },
-      body: JSON.stringify({ query, num_results: numResults, type: 'neural', contents: { text: { max_characters: 300 } } }),
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.results || []).map((r: { title?: string; url?: string; text?: string }) => ({
-      title: r.title || '', url: r.url || '', snippet: (r.text || '').slice(0, 300),
-    }));
-  } catch { return []; }
+  const maxRetries = 2;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetch('https://api.exa.ai/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': EXA_API_KEY },
+        body: JSON.stringify({ query, num_results: numResults, type: 'neural', contents: { text: { max_characters: 300 } } }),
+      });
+      if (!res.ok) {
+        if (attempt === maxRetries) return [];
+        await new Promise(r => setTimeout(r, (attempt + 1) * 1000));
+        continue;
+      }
+      const data = await res.json();
+      return (data.results || []).map((r: { title?: string; url?: string; text?: string }) => ({
+        title: r.title || '', url: r.url || '', snippet: (r.text || '').slice(0, 300),
+      }));
+    } catch {
+      if (attempt === maxRetries) return [];
+      await new Promise(r => setTimeout(r, (attempt + 1) * 1000));
+    }
+  }
+  return [];
 }
 
 function parseJson(text: string): unknown {
@@ -135,29 +191,85 @@ export async function POST(request: Request) {
       result = parseJson(raw);
 
     } else if (stage === 6) {
-      // Stage 6: Deterministic scorer eval (simulated — no real Python exec in browser)
-      const pairs = (previous_output as { pairs?: Array<{ pair_id: string }> })?.pairs || [];
-      const scorers = (all_outputs?.stage4 as { scorers?: Array<{ scorer_id: string }> })?.scorers || [];
-      // Simulate deterministic eval results
-      const evaluations = scorers.map((s: { scorer_id: string }) => {
-        const accuracy = 0.4 + Math.random() * 0.5;
-        const gap = 0.05 + Math.random() * 0.3;
-        return {
-          scorer_id: s.scorer_id,
-          pairs_evaluated: pairs.length,
-          train_accuracy: +(accuracy + 0.05).toFixed(3),
-          heldout_accuracy: +accuracy.toFixed(3),
-          train_mean_gap: +(gap + 0.02).toFixed(4),
-          heldout_mean_gap: +gap.toFixed(4),
-          nonconstant: true,
-          eligible: accuracy >= 0.5 && gap > 0,
-          pareto_member: accuracy >= 0.6,
-        };
-      });
+      // Stage 6: Real scorer evaluation via LLM-as-judge (AI Gateway)
+      const pairs = (previous_output as { pairs?: Array<{ pair_id: string; anchor: string; positive: string; negative: string; split: string }> })?.pairs || [];
+      const scorers = (all_outputs?.stage4 as { scorers?: Array<{ scorer_id: string; hypothesis: string; code: string }> })?.scorers || [];
+
+      // Use AI Gateway (or fallback to Bedrock) to evaluate each scorer against pairs
+      const callLLM = AI_GATEWAY_API_KEY ? callAIGateway : callBedrock;
+
+      const evaluations = [];
+      for (const scorer of scorers.slice(0, 5)) {
+        const trainPairs = pairs.filter(p => p.split === 'train');
+        const heldoutPairs = pairs.filter(p => p.split !== 'train');
+        // If no split labels, treat first half as train, rest as heldout
+        const allPairs = trainPairs.length > 0 ? { train: trainPairs, heldout: heldoutPairs.length > 0 ? heldoutPairs : pairs.slice(Math.ceil(pairs.length / 2)) }
+          : { train: pairs.slice(0, Math.ceil(pairs.length / 2)), heldout: pairs.slice(Math.ceil(pairs.length / 2)) };
+
+        const evalPrompt = `You are evaluating a text scorer. For each pair, the scorer should assign a HIGHER score to the "positive" text and a LOWER score to the "negative" text.
+
+Scorer: ${scorer.scorer_id}
+Hypothesis: ${scorer.hypothesis}
+${scorer.code ? `Code logic:\n${scorer.code.slice(0, 500)}` : ''}
+
+Evaluate on these pairs. For each pair, score both positive and negative on a 0-10 scale according to the scorer's logic.
+
+Pairs:
+${pairs.map(p => `${p.pair_id}: anchor="${(p.anchor || '').slice(0, 80)}" positive="${(p.positive || '').slice(0, 80)}" negative="${(p.negative || '').slice(0, 80)}"`).join('\n')}
+
+Return JSON only:
+{"scores":[{"pair_id":"...","positive_score":0,"negative_score":0}]}`;
+
+        const raw = await callLLM('You are a precise text evaluator. Return valid JSON only.', evalPrompt, 2048);
+        try {
+          const parsed = parseJson(raw) as { scores: Array<{ pair_id: string; positive_score: number; negative_score: number }> };
+          const scores = parsed.scores || [];
+
+          // Calculate accuracy (positive > negative) and mean gap
+          const trainIds = new Set(allPairs.train.map(p => p.pair_id));
+          const trainScores = scores.filter(s => trainIds.has(s.pair_id));
+          const heldoutScores = scores.filter(s => !trainIds.has(s.pair_id));
+          // If we couldn't split cleanly, use all as both
+          const evalSet = (arr: typeof scores) => {
+            if (arr.length === 0) return { accuracy: 0, gap: 0 };
+            const correct = arr.filter(s => s.positive_score > s.negative_score).length;
+            const gaps = arr.map(s => s.positive_score - s.negative_score);
+            return { accuracy: correct / arr.length, gap: gaps.reduce((a, b) => a + b, 0) / arr.length };
+          };
+          const trainEval = evalSet(trainScores.length > 0 ? trainScores : scores);
+          const heldoutEval = evalSet(heldoutScores.length > 0 ? heldoutScores : scores);
+
+          evaluations.push({
+            scorer_id: scorer.scorer_id,
+            pairs_evaluated: scores.length,
+            train_accuracy: +trainEval.accuracy.toFixed(3),
+            heldout_accuracy: +heldoutEval.accuracy.toFixed(3),
+            train_mean_gap: +trainEval.gap.toFixed(4),
+            heldout_mean_gap: +heldoutEval.gap.toFixed(4),
+            nonconstant: scores.some(s => s.positive_score !== s.negative_score),
+            eligible: heldoutEval.accuracy >= 0.5 && heldoutEval.gap > 0,
+            pareto_member: heldoutEval.accuracy >= 0.6 && heldoutEval.gap > 0.5,
+          });
+        } catch {
+          // If parsing fails for one scorer, give it a zero result
+          evaluations.push({
+            scorer_id: scorer.scorer_id,
+            pairs_evaluated: 0,
+            train_accuracy: 0,
+            heldout_accuracy: 0,
+            train_mean_gap: 0,
+            heldout_mean_gap: 0,
+            nonconstant: false,
+            eligible: false,
+            pareto_member: false,
+          });
+        }
+      }
+
       result = {
         scorer_evaluations: evaluations,
-        pareto_frontier: evaluations.filter((e: { pareto_member: boolean }) => e.pareto_member).map((e: { scorer_id: string }) => e.scorer_id),
-        summary: { total_evaluated: scorers.length, eligible: evaluations.filter((e: { eligible: boolean }) => e.eligible).length, pareto_size: evaluations.filter((e: { pareto_member: boolean }) => e.pareto_member).length },
+        pareto_frontier: evaluations.filter(e => e.pareto_member).map(e => e.scorer_id),
+        summary: { total_evaluated: evaluations.length, eligible: evaluations.filter(e => e.eligible).length, pareto_size: evaluations.filter(e => e.pareto_member).length },
       };
 
     } else if (stage === 7) {
