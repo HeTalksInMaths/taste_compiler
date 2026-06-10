@@ -101,6 +101,68 @@ def main():
     batch_parser.add_argument("--configs", type=str, nargs="+", required=True)
     batch_parser.add_argument("--seeds", type=int, default=1)
 
+    # ── stages subcommand (Stages 1–4 reasoning pipeline) ──
+    stages_parser = subparsers.add_parser(
+        "stages", help="Run Stages 1–4 reasoning pipeline (live Bedrock)"
+    )
+    stages_parser.add_argument(
+        "--config", "-c", type=str, default="configs/trustworthy.yaml",
+        help="Path to YAML config file (default: configs/trustworthy.yaml)",
+    )
+    stages_parser.add_argument(
+        "--model-id", type=str, default="us.anthropic.claude-sonnet-4-6",
+        help="Model ID for Bedrock (default: us.anthropic.claude-sonnet-4-6)",
+    )
+    stages_parser.add_argument(
+        "--target-variable", type=str, default=None,
+        help="Override target variable from config",
+    )
+    stages_parser.add_argument(
+        "--temperature", type=float, default=1.0,
+        help="Temperature for LLM calls (default: 1.0)",
+    )
+    stages_parser.add_argument(
+        "--max-tokens", type=int, default=16384,
+        help="Max tokens for LLM responses (default: 16384)",
+    )
+    stages_parser.add_argument(
+        "--resume-from", type=int, default=None, choices=[2, 3, 4],
+        help="Resume from a specific stage (uses existing artifacts for previous stages)",
+    )
+    stages_parser.add_argument(
+        "--run-label", type=str, default=None,
+        help="Label for this run (used in output subdirectory)",
+    )
+
+    # ── stages-5-8 subcommand ──
+    s58_parser = subparsers.add_parser(
+        "stages-5-8", help="Run Stages 5–8 reasoning pipeline (requires Stage 1–4 artifacts)"
+    )
+    s58_parser.add_argument(
+        "--config", "-c", type=str, default="configs/trustworthy.yaml",
+        help="Path to YAML config file (default: configs/trustworthy.yaml)",
+    )
+    s58_parser.add_argument(
+        "--artifacts-dir", type=str, required=True,
+        help="Directory containing Stage 1–4 artifacts (stage2_parsed_json.json, etc.)",
+    )
+    s58_parser.add_argument(
+        "--model-id", type=str, default="us.anthropic.claude-sonnet-4-6",
+        help="Model ID for Bedrock (default: us.anthropic.claude-sonnet-4-6)",
+    )
+    s58_parser.add_argument(
+        "--target-variable", type=str, default=None,
+        help="Override target variable from config",
+    )
+    s58_parser.add_argument(
+        "--temperature", type=float, default=1.0,
+        help="Temperature for LLM calls (default: 1.0)",
+    )
+    s58_parser.add_argument(
+        "--max-tokens", type=int, default=16384,
+        help="Max tokens for LLM responses (default: 16384)",
+    )
+
     args = parser.parse_args()
 
     if args.command == "run":
@@ -201,6 +263,117 @@ def main():
         passed = sum(1 for r in batch_summary["per_topic_results"] if r["success"])
         print(f"\nBatch complete. {passed}/{total} topics succeeded.")
         sys.exit(0 if passed == total else 1)
+
+    elif args.command == "stages":
+        config = load_config(args.config)
+        region = os.environ.get("AWS_REGION", "us-east-1")
+        model_id = args.model_id
+
+        # Override target variable if provided
+        if args.target_variable:
+            config["goal"] = args.target_variable
+
+        # Validate Bedrock credentials
+        validation = _validate_bedrock(model_id, region)
+        if not validation["passed"]:
+            print(f"ERROR: Bedrock credential validation failed: {validation['error']}")
+            sys.exit(1)
+        print(f"Bedrock credentials valid: account={validation['account']} region={region}")
+        print(f"Model: {model_id}")
+        print(f"Target variable: {config.get('goal', 'trustworthy')}")
+
+        # Run Stages 1–4
+        from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+        from evalweaver.stages import StageOrchestrator
+        from evalweaver.artifacts import resolve_output_directory
+
+        provider = BedrockClaudeProvider(
+            model_id=model_id,
+            aws_region=region,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+        )
+        out_dir = resolve_output_directory()
+        orchestrator = StageOrchestrator(provider=provider, config=config, out_dir=out_dir)
+
+        result = orchestrator.run(resume_from=args.resume_from)
+
+        if result.get("success"):
+            print(f"\nStages 1–4 PASSED. Output: {out_dir}")
+            sys.exit(0)
+        else:
+            print(f"\nStages pipeline FAILED at Stage {result.get('failed_stage', '?')}. Output: {out_dir}")
+            sys.exit(1)
+
+    elif args.command == "stages-5-8":
+        import json as _json
+        config = load_config(args.config)
+        region = os.environ.get("AWS_REGION", "us-east-1")
+        model_id = args.model_id
+
+        if args.target_variable:
+            config["goal"] = args.target_variable
+
+        # Validate Bedrock credentials
+        validation = _validate_bedrock(model_id, region)
+        if not validation["passed"]:
+            print(f"ERROR: Bedrock credential validation failed: {validation['error']}")
+            sys.exit(1)
+        print(f"Bedrock credentials valid: account={validation['account']} region={region}")
+        print(f"Model: {model_id}")
+        print(f"Target variable: {config.get('goal', 'trustworthy')}")
+
+        # Load Stage 1–4 artifacts
+        artifacts_dir = args.artifacts_dir
+        with open(os.path.join(artifacts_dir, "stage2_parsed_json.json")) as f:
+            stage2_output = _json.load(f)
+        with open(os.path.join(artifacts_dir, "stage3_parsed_json.json")) as f:
+            stage3_output = _json.load(f)
+
+        # Load scorers (prefer parallel working scorers if available)
+        scorers_path = os.path.join(artifacts_dir, "stage4_parallel_working_scorers.json")
+        if not os.path.exists(scorers_path):
+            scorers_path = os.path.join(artifacts_dir, "stage4_parsed_json.json")
+        with open(scorers_path) as f:
+            scorers_data = _json.load(f)
+        if isinstance(scorers_data, list):
+            stage4_output = {"scorers": scorers_data, "target_variable": config.get("goal", "trustworthy")}
+        else:
+            stage4_output = scorers_data
+
+        print(f"Loaded artifacts from: {artifacts_dir}")
+        print(f"  Stage 2 nodes: {len(stage2_output.get('causal_nodes', []))}")
+        print(f"  Stage 3 items: {len(stage3_output.get('measurement_research', []))}")
+        print(f"  Stage 4 scorers: {len(stage4_output.get('scorers', []))}")
+
+        # Run Stages 5–8
+        from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+        from evalweaver.stages_5_8 import Stage5to8Orchestrator
+
+        provider = BedrockClaudeProvider(
+            model_id=model_id,
+            aws_region=region,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+        )
+
+        orchestrator = Stage5to8Orchestrator(
+            provider=provider,
+            config=config,
+            out_dir=artifacts_dir,
+            stage2_output=stage2_output,
+            stage3_output=stage3_output,
+            stage4_output=stage4_output,
+        )
+
+        result = orchestrator.run()
+
+        if result.get("success"):
+            print(f"\nStages 5–8 PASSED. Output: {artifacts_dir}")
+            sys.exit(0)
+        else:
+            print(f"\nStages 5–8 FAILED at Stage {result.get('failed_stage', '?')}. Output: {artifacts_dir}")
+            sys.exit(1)
 
     else:
         parser.print_help()
