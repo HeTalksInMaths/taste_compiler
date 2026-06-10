@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import AskWidget from '@/components/AskWidget';
 
 export const metadata: Metadata = {
   title: 'EvalWeaver — AI Quality Scorer Marketplace',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen font-sans">
         <Nav />
         <main>{children}</main>
+        <AskWidget />
       </body>
     </html>
   );
