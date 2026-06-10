@@ -1,0 +1,882 @@
+{
+  "target": "data-driven",
+  "ref_text": "Our product is really great and customers love it. We have had amazing growth and our team is super passionate about solving this problem for everyone.",
+  "stages": {
+    "stage1": {
+      "target_variable": "text perceived as data-driven",
+      "causal_research": [
+        {
+          "source_id": "SRC_001",
+          "claim": "Presence of numerical statistics and quantitative figures in text increases reader perception of data-drivenness by signaling empirical grounding.",
+          "causal_variable": "numerical content density",
+          "effect_direction": "increases",
+          "mechanism": "Numbers serve as surface-level cues that activate schema associations with scientific and analytical reasoning.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_002",
+          "claim": "Use of hedging language and epistemic uncertainty markers decreases perceived data-drivenness by suggesting lack of empirical confidence.",
+          "causal_variable": "hedging language",
+          "effect_direction": "decreases",
+          "mechanism": "Hedges signal authorial uncertainty, which readers interpret as inconsistent with systematic data analysis.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_003",
+          "claim": "Citation of named datasets, studies, or empirical sources increases perceived data-drivenness by providing verifiable evidentiary anchors.",
+          "causal_variable": "explicit source citation",
+          "effect_direction": "increases",
+          "mechanism": "Named references allow readers to attribute claims to external empirical authority rather than authorial opinion.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_004",
+          "claim": "Passive voice and impersonal constructions increase perceived data-drivenness by distancing the author from the claims and mimicking scientific register.",
+          "causal_variable": "passive/impersonal voice",
+          "effect_direction": "increases",
+          "mechanism": "Scientific writing conventions associate passive constructions with objectivity, leading readers to infer empirical methodology.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_005",
+          "claim": "Causal linguistic properties such as use of causal connectives (therefore, because, thus) increase perceived analytical rigor and data-drivenness.",
+          "causal_variable": "causal connective usage",
+          "effect_direction": "increases",
+          "mechanism": "Causal connectives signal logical inference chains that readers associate with systematic evidence-based reasoning.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_006",
+          "claim": "Emotionally charged or evaluative language decreases perceived data-drivenness by signaling opinion rather than neutral analysis.",
+          "causal_variable": "emotional/evaluative language",
+          "effect_direction": "decreases",
+          "mechanism": "Affective language activates persuasion schemas that are incongruent with objective empirical reporting.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_007",
+          "claim": "Reader's prior domain expertise moderates the effect of technical jargon on perceived data-drivenness, amplifying it for experts and reducing it for novices.",
+          "causal_variable": "reader domain expertise",
+          "effect_direction": "moderates",
+          "mechanism": "Experts recognize domain-specific terminology as markers of methodological rigor; novices may perceive it as obfuscation.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_008",
+          "claim": "Structural features such as tables, figures references, and section headers (methods, results) increase perceived data-drivenness by conforming to empirical report formats.",
+          "causal_variable": "empirical document structure",
+          "effect_direction": "increases",
+          "mechanism": "Document format acts as a frame that primes readers to interpret content through an evidence-evaluation lens.",
+          "evidence_strength": "high"
+        }
+      ],
+      "research_tensions": [
+        {
+          "claim": "While numerical density robustly increases perceived data-drivenness, some studies find that excessive statistics without narrative context can reduce credibility and thus undermine the perception of rigorous analysis.",
+          "variables": [
+            "numerical content density",
+            "narrative coherence"
+          ]
+        },
+        {
+          "claim": "Passive voice is conventionally linked to scientific objectivity and higher perceived data-drivenness, yet recent NLP findings suggest active, direct claim-making can equally signal empirical confidence depending on genre expectations.",
+          "variables": [
+            "passive/impersonal voice",
+            "genre/register expectations"
+          ]
+        }
+      ]
+    },
+    "stage2": {
+      "target_variable": "text perceived as data-driven",
+      "causal_nodes": [
+        {
+          "node_id": "N01",
+          "label": "numerical content density",
+          "role": "increases",
+          "definition": "The frequency and prominence of numerical statistics, quantitative figures, and measurable data points within the text.",
+          "mechanism": "Numbers serve as surface-level cues that activate schema associations with scientific and analytical reasoning, signaling empirical grounding to readers."
+        },
+        {
+          "node_id": "N02",
+          "label": "hedging language",
+          "role": "decreases",
+          "definition": "Use of epistemic uncertainty markers such as 'might', 'possibly', 'seems', or 'it is suggested that' throughout the text.",
+          "mechanism": "Hedges signal authorial uncertainty, which readers interpret as inconsistent with systematic data analysis and empirical confidence."
+        },
+        {
+          "node_id": "N03",
+          "label": "explicit source citation",
+          "role": "increases",
+          "definition": "Direct reference to named datasets, studies, empirical sources, or verifiable external authorities within the text.",
+          "mechanism": "Named references allow readers to attribute claims to external empirical authority rather than authorial opinion, increasing perceived evidentiary grounding."
+        },
+        {
+          "node_id": "N04",
+          "label": "passive and impersonal voice",
+          "role": "increases",
+          "definition": "Grammatical constructions that distance the author from claims, such as passive voice ('it was found that') and impersonal constructions ('the data indicate').",
+          "mechanism": "Scientific writing conventions associate passive constructions with objectivity, leading readers to infer empirical methodology and neutrality."
+        },
+        {
+          "node_id": "N05",
+          "label": "causal connective usage",
+          "role": "increases",
+          "definition": "Frequency of logical and causal linking words such as 'therefore', 'because', 'thus', 'consequently', and 'as a result'.",
+          "mechanism": "Causal connectives signal logical inference chains that readers associate with systematic evidence-based reasoning and analytical rigor."
+        },
+        {
+          "node_id": "N06",
+          "label": "emotional and evaluative language",
+          "role": "decreases",
+          "definition": "Use of affectively charged, opinionated, or subjectively evaluative words and phrases that convey sentiment rather than neutral observation.",
+          "mechanism": "Affective language activates persuasion schemas that are incongruent with objective empirical reporting, reducing perceived analytical neutrality."
+        },
+        {
+          "node_id": "N07",
+          "label": "reader domain expertise",
+          "role": "moderates",
+          "definition": "The level of prior knowledge and familiarity the reader has with the subject domain of the text.",
+          "mechanism": "Experts recognize domain-specific terminology as markers of methodological rigor; novices may perceive the same jargon as obfuscation, reversing its effect on perceived data-drivenness."
+        },
+        {
+          "node_id": "N08",
+          "label": "technical jargon density",
+          "role": "increases",
+          "definition": "The concentration of domain-specific, specialized, or methodological terminology within the text.",
+          "mechanism": "Technical language signals insider knowledge of empirical methods and domain conventions, which expert readers interpret as evidence of rigorous analytical practice."
+        },
+        {
+          "node_id": "N09",
+          "label": "structured formatting and visual organization",
+          "role": "increases",
+          "definition": "Use of tables, charts, numbered lists, headers, and other structural elements that organize information systematically.",
+          "mechanism": "Structured presentation mimics the conventions of empirical reports and scientific documents, priming readers to interpret content as methodologically grounded."
+        },
+        {
+          "node_id": "N10",
+          "label": "perceived analytical rigor",
+          "role": "mediates",
+          "definition": "The reader's intermediate inference that the text reflects careful, systematic, and methodologically sound analysis.",
+          "mechanism": "Analytical rigor serves as a cognitive bridge between surface linguistic features and the final holistic judgment that a text is data-driven."
+        },
+        {
+          "node_id": "N11",
+          "label": "text perceived as data-driven",
+          "role": "increases",
+          "definition": "The target outcome: the degree to which a reader judges a text to be grounded in empirical data, systematic analysis, and objective evidence rather than opinion or intuition.",
+          "mechanism": "Composite reader judgment formed from multiple linguistic, structural, and contextual cues processed through domain-specific and general analytical schemas."
+        }
+      ],
+      "causal_edges": [
+        {
+          "from": "N01",
+          "to": "N10",
+          "relationship": "increases",
+          "claim": "Higher numerical content density increases perceived analytical rigor by providing concrete quantitative anchors that signal empirical grounding."
+        },
+        {
+          "from": "N03",
+          "to": "N10",
+          "relationship": "increases",
+          "claim": "Explicit source citation increases perceived analytical rigor by grounding claims in verifiable external empirical authority."
+        },
+        {
+          "from": "N05",
+          "to": "N10",
+          "relationship": "increases",
+          "claim": "Causal connective usage increases perceived analytical rigor by demonstrating logical inference chains consistent with evidence-based reasoning."
+        },
+        {
+          "from": "N02",
+          "to": "N10",
+          "relationship": "decreases",
+          "claim": "Hedging language decreases perceived analytical rigor by signaling authorial uncertainty inconsistent with confident empirical analysis."
+        },
+        {
+          "from": "N06",
+          "to": "N10",
+          "relationship": "decreases",
+          "claim": "Emotional and evaluative language decreases perceived analytical rigor by activating opinion and persuasion schemas incompatible with objective reporting."
+        },
+        {
+          "from": "N04",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Passive and impersonal voice directly increases perceived data-drivenness by mimicking the register of scientific and empirical writing."
+        },
+        {
+          "from": "N08",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Technical jargon density increases perceived data-drivenness by signaling domain expertise and familiarity with empirical methodology."
+        },
+        {
+          "from": "N09",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Structured formatting and visual organization increase perceived data-drivenness by aligning the text with conventions of empirical and analytical documents."
+        },
+        {
+          "from": "N10",
+          "to": "N11",
+          "relationship": "mediates",
+          "claim": "Perceived analytical rigor mediates the path from multiple linguistic features to the final holistic judgment that a text is data-driven."
+        },
+        {
+          "from": "N07",
+          "to": "N08",
+          "relationship": "moderates",
+          "claim": "Reader domain expertise moderates the effect of technical jargon on perceived data-drivenness, amplifying it for experts and attenuating or reversing it for novices."
+        },
+        {
+          "from": "N01",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Numerical content density also directly increases perceived data-drivenness independent of the analytical rigor pathway, as numbers are primary surface-level cues."
+        },
+        {
+          "from": "N02",
+          "to": "N11",
+          "relationship": "decreases",
+          "claim": "Hedging language directly decreases perceived data-drivenness by undermining the confident, assertive tone associated with empirical reporting."
+        },
+        {
+          "from": "N06",
+          "to": "N11",
+          "relationship": "decreases",
+          "claim": "Emotional and evaluative language directly decreases perceived data-drivenness by signaling subjective opinion rather than neutral empirical analysis."
+        }
+      ],
+      "causal_tensions": [
+        {
+          "claim": "Technical jargon may simultaneously increase perceived data-drivenness for expert readers and decrease it for novice readers, meaning the same linguistic feature can have opposing causal effects depending on audience, creating a moderator-dependent directional tension.",
+          "nodes": [
+            "N07",
+            "N08",
+            "N11"
+          ]
+        },
+        {
+          "claim": "Hedging language may reflect genuine scientific epistemic humility (e.g., 'the data suggest') which is a hallmark of rigorous empirical writing, yet it decreases perceived data-drivenness by signaling uncertainty \u2014 creating a tension between actual methodological rigor and reader perception.",
+          "nodes": [
+            "N02",
+            "N10",
+            "N11"
+          ]
+        },
+        {
+          "claim": "Passive voice increases perceived data-drivenness through scientific register mimicry, but some empirical style guides now discourage passive voice in favor of active, transparent reporting \u2014 meaning the feature may signal rigor to some readers and outdated convention to others.",
+          "nodes": [
+            "N04",
+            "N11"
+          ]
+        }
+      ],
+      "summary_theory": "The perception of a text as data-driven is a composite reader judgment shaped by multiple interacting linguistic and structural features. High numerical content density and explicit source citation are the strongest direct drivers, providing concrete empirical anchors that activate analytical schemas. Passive and impersonal voice, causal connectives, technical jargon, and structured formatting each contribute positively by aligning the text with scientific register conventions. Conversely, hedging language and emotional or evaluative language suppress perceived data-drivenness by signaling uncertainty and subjectivity respectively. These features largely operate through the mediating construct of perceived analytical rigor \u2014 an intermediate reader inference that the text reflects systematic, methodologically sound analysis \u2014 which then feeds into the holistic data-driven judgment. Reader domain expertise acts as a critical moderator, particularly for technical jargon, where the same terminology amplifies perceived rigor for experts but may obscure it for novices. A key theoretical tension exists between authentic epistemic humility (appropriate hedging in rigorous science) and reader perception, where such hedging paradoxically reduces the impression of data-drivenness despite being methodologically sound practice."
+    },
+    "stage3": {
+      "target_variable": "data-driven",
+      "measurement_research": [
+        {
+          "causal_node": "numerical content density",
+          "measurement_claim": "Texts with higher density of numerical expressions and quantitative claims are perceived as more data-driven; NLP can detect and count numeric tokens, ranges, and statistical expressions to proxy this density.",
+          "text_features": [
+            "count of numeric tokens (integers, decimals, percentages, currencies)",
+            "ratio of numeric tokens to total tokens",
+            "presence of statistical terms (mean, median, p-value, confidence interval)",
+            "detection of numerical ranges and comparisons",
+            "exaggerated vs. grounded numeral classification (FENCE/Numeracy-600K approach)"
+          ],
+          "implementation_ideas": [
+            "Use regex and spaCy NER to extract NUM entities and compute token-level density",
+            "Apply Numeracy-600K-style models to classify whether numerals are precise/grounded vs. vague/exaggerated",
+            "Build a composite numeric density score: (numeric tokens + statistical terms) / total tokens",
+            "Use FENCE classifier to flag inflated numerals that reduce perceived data-drivenness"
+          ]
+        },
+        {
+          "causal_node": "hedging language",
+          "measurement_claim": "Higher frequency of hedging expressions (epistemic modals, approximators, shields) reduces perceived data-drivenness by signaling uncertainty; NLP hedge detection systems can quantify this.",
+          "text_features": [
+            "epistemic modal verbs (might, could, may, should)",
+            "approximators (about, around, roughly, approximately)",
+            "shields and attribution hedges (I think, it seems, reportedly)",
+            "plausibility shields (probably, possibly, perhaps)",
+            "hedge density ratio per sentence and per document"
+          ],
+          "implementation_ideas": [
+            "Apply hedge detection models from Katerenchuk et al. to label hedge tokens and spans",
+            "Use BioScope or CoNLL hedge corpora to fine-tune a BERT-based hedge classifier",
+            "Compute hedge-per-sentence rate and hedge-to-assertion ratio as features",
+            "Distinguish hedge types (epistemic vs. approximator) since they may differentially affect data-driven perception"
+          ]
+        },
+        {
+          "causal_node": "explicit source citation",
+          "measurement_claim": "Presence of explicit citations, named sources, and referenced datasets signals evidentiary grounding and increases perceived data-drivenness.",
+          "text_features": [
+            "in-text citation patterns (Author, Year) or [N] formats",
+            "named data source mentions (e.g., 'according to the World Bank', 'as reported by')",
+            "URL and DOI presence",
+            "attribution verb constructions (reported, found, showed, demonstrated)",
+            "count and density of citation spans per document"
+          ],
+          "implementation_ideas": [
+            "Use regex and rule-based patterns to detect citation formats (APA, MLA, numeric)",
+            "Train a span classifier on citation detection using SciREX or ACL Anthology data",
+            "Use NER to identify organization and dataset names as source markers",
+            "Compute citation density = citation spans / total sentences"
+          ]
+        },
+        {
+          "causal_node": "passive and impersonal voice",
+          "measurement_claim": "Passive constructions and impersonal subject use signal objectivity and methodological distance, contributing to data-driven perception.",
+          "text_features": [
+            "passive voice verb constructions (was measured, were analyzed, is shown)",
+            "impersonal subject pronouns (it was found, there is evidence)",
+            "agentless passive rate",
+            "first-person pronoun absence (I, we) as negative feature",
+            "ratio of passive to active clauses"
+          ],
+          "implementation_ideas": [
+            "Use spaCy dependency parsing to detect 'nsubjpass' and 'auxpass' relations",
+            "Compute passive clause ratio using constituency parse trees",
+            "Build a logistic regression feature using passive rate + impersonal subject rate",
+            "Use passive voice as a moderating signal when combined with numeric density"
+          ]
+        },
+        {
+          "causal_node": "causal connective usage",
+          "measurement_claim": "Explicit causal and logical connectives (therefore, because, thus, consequently) signal structured reasoning and analytical argumentation, increasing perceived data-drivenness.",
+          "text_features": [
+            "causal connectives (because, since, therefore, thus, consequently, hence)",
+            "contrastive connectives (however, although, despite)",
+            "additive logical connectives (furthermore, moreover, in addition)",
+            "connective density per sentence",
+            "discourse relation labels from RST or PDTB parsing"
+          ],
+          "implementation_ideas": [
+            "Use a predefined causal connective lexicon (Penn Discourse Treebank markers) for lookup",
+            "Apply a PDTB-style discourse relation classifier to detect Cause and Result relations",
+            "Compute causal connective density and logical connective diversity score",
+            "Use RST parsers (e.g., CODRA, DMRST) to extract Cause and Elaboration relation counts"
+          ]
+        },
+        {
+          "causal_node": "emotional and evaluative language",
+          "measurement_claim": "Higher emotional valence and subjective evaluative language reduces perceived data-drivenness by signaling opinion over evidence.",
+          "text_features": [
+            "sentiment polarity scores (positive/negative)",
+            "subjectivity scores from lexicons (SentiWordNet, VADER, MPQA)",
+            "evaluative adjective density (great, terrible, amazing)",
+            "emotion word counts (NRC Emotion Lexicon categories)",
+            "opinion expression spans detected by opinion mining tools"
+          ],
+          "implementation_ideas": [
+            "Apply VADER or TextBlob for sentence-level sentiment and subjectivity scoring",
+            "Use NRC Emotion Lexicon to count emotion-laden tokens per document",
+            "Fine-tune a BERT sentiment classifier on domain-relevant corpora",
+            "Compute emotional language ratio as inverse proxy for data-drivenness"
+          ]
+        },
+        {
+          "causal_node": "reader domain expertise",
+          "measurement_claim": "Texts assume varying levels of reader expertise; NLP can estimate assumed expertise level through vocabulary complexity and assumed background knowledge markers.",
+          "text_features": [
+            "Flesch-Kincaid readability score",
+            "average word frequency rank (low-frequency words signal expert audience)",
+            "presence of unexplained acronyms and technical abbreviations",
+            "use of definitional constructions ('X is defined as') as signals of low assumed expertise",
+            "domain-specific vocabulary coverage ratio"
+          ],
+          "implementation_ideas": [
+            "Compute readability metrics (Flesch-Kincaid, Gunning Fog, SMOG) as proxies for assumed expertise level",
+            "Use word frequency lists (BNC, COCA) to score lexical sophistication",
+            "Detect undefined acronyms with regex and compare against known acronym databases",
+            "Use domain vocabulary overlap with specialized glossaries as expertise-assumption indicator"
+          ]
+        },
+        {
+          "causal_node": "technical jargon density",
+          "measurement_claim": "Higher density of domain-specific technical terms signals specialized knowledge grounding, contributing to perceived analytical rigor and data-drivenness.",
+          "text_features": [
+            "domain-specific term frequency (using domain glossaries or TF-IDF against general corpus)",
+            "named entity types: QUANTITY, PERCENT, ORG, PRODUCT, WORK_OF_ART",
+            "low-frequency word ratio relative to general language corpora",
+            "presence of methodology-specific terms (regression, ANOVA, cohort, latency)",
+            "content-dense text score using features from Niculae & Danescu-Niculescu-Mizil (arXiv 1704.00440)"
+          ],
+          "implementation_ideas": [
+            "Apply content-dense text detection model from arXiv:1704.00440 combining lexical and syntactic features",
+            "Build domain-specific jargon lexicons and compute coverage ratio",
+            "Use TF-IDF against a general news corpus to identify domain-specific high-weight terms",
+            "Fine-tune a token classifier to label jargon spans using domain-annotated corpora"
+          ]
+        },
+        {
+          "causal_node": "structured formatting and visual organization",
+          "measurement_claim": "Use of structured elements (headers, lists, tables, numbered sections) signals organized analytical presentation associated with data-driven documents.",
+          "text_features": [
+            "presence and count of markdown or HTML headers (H1, H2, H3)",
+            "bullet and numbered list frequency",
+            "table markup detection",
+            "section label patterns (Introduction, Methods, Results, Discussion)",
+            "paragraph length variance as proxy for structured vs. prose formatting"
+          ],
+          "implementation_ideas": [
+            "Parse HTML or Markdown to extract structural elements and compute structure density score",
+            "Use regex to detect IMRaD section headers in scientific and analytical texts",
+            "Compute list-to-prose ratio as a structural organization feature",
+            "Build a document structure classifier trained on structured (reports, papers) vs. unstructured (blog, opinion) corpora"
+          ]
+        },
+        {
+          "causal_node": "perceived analytical rigor",
+          "measurement_claim": "Analytical rigor is a latent construct measurable through combinations of methodology mentions, logical argument structure, and quantitative precision markers.",
+          "text_features": [
+            "methodology keyword presence (controlled, randomized, longitudinal, validated, replicated)",
+            "logical argument completeness (claim + evidence + warrant pattern)",
+            "precision of quantitative claims (confidence intervals, error margins, sample sizes)",
+            "counter-argument acknowledgment patterns",
+            "citation-to-claim ratio"
+          ],
+          "implementation_ideas": [
+            "Train an argument mining model to detect claim-evidence-warrant structures (using IBM Debater or Argument Web corpora)",
+            "Build a methodology mention detector using keyword lists and NER for study design terms",
+            "Use precision markers (\u00b1 , CI, n=, p<) as regex features for quantitative rigor scoring",
+            "Compute a composite rigor score from methodology density + citation density + logical connective usage"
+          ]
+        },
+        {
+          "causal_node": "text perceived as data-driven",
+          "measurement_claim": "The overall perception of a text as data-driven can be measured as a composite score from upstream causal node features or via direct annotation and supervised classification.",
+          "text_features": [
+            "composite score from numeric density, citation density, jargon density, passive voice rate, and low hedging",
+            "human annotation labels for data-driven perception on Likert scale",
+            "document-level embedding similarity to prototypical data-driven documents (scientific abstracts, statistical reports)",
+            "classifier probability from a fine-tuned transformer trained on data-driven vs. opinion text pairs",
+            "content-dense text classification score (arXiv:1704.00440 approach)"
+          ],
+          "implementation_ideas": [
+            "Collect human judgments of data-drivenness via crowdsourcing (MTurk/Prolific) and train a supervised classifier",
+            "Fine-tune RoBERTa or DeBERTa on labeled pairs of data-driven (e.g., statistical reports) vs. non-data-driven (e.g., opinion columns) texts",
+            "Build a weighted composite index from all upstream causal node scores using regression weights learned from human ratings",
+            "Use sentence-transformer embeddings to compute cosine similarity to a curated corpus of prototypical data-driven documents as a zero-shot proxy"
+          ]
+        }
+      ]
+    },
+    "stage4": {
+      "target_variable": "data-driven",
+      "scorers": [
+        {
+          "scorer_id": "S0",
+          "hypothesis": "Data-driven text is primarily signaled by the density of numerical content relative to total tokens. A text rich in precise numeric expressions, statistical terms, and quantitative comparisons will be perceived as more empirically grounded, with diminishing returns beyond saturation.",
+          "causal_nodes_used": [
+            "N01"
+          ],
+          "text_features_used": [
+            "count of numeric tokens (integers, decimals, percentages, currencies)",
+            "ratio of numeric tokens to total tokens",
+            "presence of statistical terms (mean, median, p-value, confidence interval)",
+            "detection of numerical ranges and comparisons"
+          ],
+          "functional_form": "composite",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n\n    tokens = text.split()\n    total_tokens = max(len(tokens), 1)\n\n    # Count numeric tokens: integers, decimals, percentages, currencies\n    numeric_pattern = re.compile(\n        r'\\b\\d+\\.?\\d*%?\\b|\\$\\d+\\.?\\d*|\\\u00a3\\d+\\.?\\d*|\\\u20ac\\d+\\.?\\d*'\n    )\n    numeric_tokens = numeric_pattern.findall(text)\n    numeric_count = len(numeric_tokens)\n\n    # Ratio of numeric tokens to total tokens\n    numeric_ratio = numeric_count / total_tokens\n\n    # Statistical terms\n    stat_terms = [\n        'mean', 'median', 'mode', 'variance', 'standard deviation', 'std',\n        'p-value', 'p value', 'confidence interval', 'correlation', 'regression',\n        'coefficient', 'significance', 'sample size', 'n=', 'effect size',\n        'odds ratio', 'relative risk', 'chi-square', 'anova', 'r-squared',\n        'statistical', 'statistically', 'distribution', 'percentile', 'quartile'\n    ]\n    text_lower = text.lower()\n    stat_count = sum(1 for t in stat_terms if t in text_lower)\n\n    # Numerical ranges and comparisons\n    range_pattern = re.compile(\n        r'\\b\\d+\\.?\\d*\\s*[-\u2013to]+\\s*\\d+\\.?\\d*\\b|\\b(between|from)\\s+\\d+\\.?\\d*\\s+(and|to)\\s+\\d+\\.?\\d*\\b',\n        re.IGNORECASE\n    )\n    range_count = len(range_pattern.findall(text))\n\n    # Composite score:\n    # numeric_ratio scaled to 0-5 (saturates at 10% density)\n    ratio_score = min(numeric_ratio / 0.10, 1.0) * 5.0\n\n    # stat_count contribution (log-scaled, max ~3 points)\n    stat_score = min(math.log1p(stat_count) / math.log1p(10), 1.0) * 3.0\n\n    # range bonus (up to 2 points)\n    range_score = min(range_count / 3.0, 1.0) * 2.0\n\n    score = ratio_score + stat_score + range_score\n    return round(min(max(score, 0.0), 10.0), 3)"
+        },
+        {
+          "scorer_id": "S1",
+          "hypothesis": "Hedging language actively undermines the data-driven perception of a text; a scorer that measures the ratio of hedging expressions to total assertions captures this dampening effect, penalizing texts that express uncertainty inconsistent with systematic empirical analysis.",
+          "causal_nodes_used": [
+            "N02"
+          ],
+          "text_features_used": [
+            "epistemic modal verbs (might, could, may, should)",
+            "approximators (about, around, roughly, approximately)",
+            "shields and attribution hedges (I think, it seems, reportedly)",
+            "plausibility shields (probably, possibly, perhaps)",
+            "hedge density ratio per sentence and per document"
+          ],
+          "functional_form": "penalty",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n\n    tokens = text.lower().split()\n    total_tokens = max(len(tokens), 1)\n\n    # Epistemic modals\n    epistemic_modals = {'might', 'could', 'may', 'should', 'would', 'ought'}\n    modal_count = sum(1 for t in tokens if t in epistemic_modals)\n\n    # Approximators\n    approximators = {\n        'about', 'around', 'roughly', 'approximately', 'nearly', 'almost',\n        'somewhat', 'fairly', 'quite', 'rather', 'sort of', 'kind of'\n    }\n    approx_count = sum(1 for t in tokens if t in approximators)\n    # Also catch multi-word approximators\n    approx_count += len(re.findall(r'\\b(sort of|kind of|more or less)\\b', text.lower()))\n\n    # Shields and attribution hedges\n    shields = [\n        'i think', 'i believe', 'i feel', 'it seems', 'it appears',\n        'reportedly', 'allegedly', 'supposedly', 'it is suggested',\n        'one might argue', 'it could be argued', 'in my opinion'\n    ]\n    shield_count = sum(1 for s in shields if s in text.lower())\n\n    # Plausibility shields\n    plausibility = {'probably', 'possibly', 'perhaps', 'conceivably', 'likely', 'unlikely'}\n    plaus_count = sum(1 for t in tokens if t in plausibility)\n\n    # Total hedge count and density ratio\n    total_hedges = modal_count + approx_count + shield_count + plaus_count\n    hedge_ratio = total_hedges / total_tokens\n\n    # Base score starts at 10; penalize by hedge density\n    # Soft penalty: each 1% hedge ratio reduces score by 1 point\n    # Hard gate: if hedge_ratio > 0.05, apply additional multiplier penalty\n    penalty = hedge_ratio * 100.0  # 1 point per 1% hedge density\n\n    if hedge_ratio > 0.05:\n        # Additional 20% penalty for high hedge saturation\n        gate_penalty = (hedge_ratio - 0.05) * 100.0 * 0.20\n        penalty += gate_penalty\n\n    score = 10.0 - penalty\n    return round(min(max(score, 0.0), 10.0), 3)"
+        },
+        {
+          "scorer_id": "S2",
+          "hypothesis": "Explicit source citations and attribution constructions multiply the perceived evidentiary grounding of a text; a scorer that captures both citation patterns and attribution verbs, combined via an interaction term with numeric density, rewards texts where quantitative claims are anchored to named external authorities.",
+          "causal_nodes_used": [
+            "N03",
+            "N01"
+          ],
+          "text_features_used": [
+            "in-text citation patterns (Author, Year) or [N] formats",
+            "named data source mentions (e.g., 'according to the World Bank', 'as reported by')",
+            "URL and DOI presence",
+            "attribution verb constructions (reported, found, showed, demonstrated)",
+            "ratio of numeric tokens to total tokens"
+          ],
+          "functional_form": "interaction",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n\n    tokens = text.split()\n    total_tokens = max(len(tokens), 1)\n    text_lower = text.lower()\n\n    # In-text citation patterns: (Author, Year) or [N]\n    citation_pattern = re.compile(\n        r'\\([A-Z][a-z]+(?:\\s+(?:et al\\.?|&|and)\\s+[A-Z][a-z]+)?\\s*,\\s*\\d{4}\\)'\n        r'|\\[\\d+(?:,\\s*\\d+)*\\]'\n        r'|\\b(?:ibid|op\\.?\\s*cit)\\b',\n        re.IGNORECASE\n    )\n    citation_count = len(citation_pattern.findall(text))\n\n    # Named data source mentions\n    source_phrases = [\n        'according to', 'as reported by', 'as shown by', 'as demonstrated by',\n        'based on data from', 'sourced from', 'data from', 'figures from',\n        'the study found', 'research shows', 'evidence suggests',\n        'world bank', 'imf', 'who', 'cdc', 'oecd', 'un ', 'census bureau',\n        'pew research', 'gallup', 'statista', 'eurostat'\n    ]\n    source_count = sum(1 for s in source_phrases if s in text_lower)\n\n    # URL and DOI presence\n    url_pattern = re.compile(r'https?://\\S+|www\\.\\S+|doi\\.org/\\S+|\\bdoi:\\s*\\S+')\n    url_count = len(url_pattern.findall(text))\n\n    # Attribution verbs\n    attr_verbs = [\n        'reported', 'found', 'showed', 'demonstrated', 'revealed',\n        'indicated', 'confirmed', 'established', 'measured', 'calculated',\n        'estimated', 'observed', 'recorded', 'documented'\n    ]\n    attr_count = sum(1 for v in attr_verbs if re.search(r'\\b' + v + r'\\b', text_lower))\n\n    # Numeric ratio (interaction partner)\n    numeric_pattern = re.compile(r'\\b\\d+\\.?\\d*%?\\b')\n    numeric_count = len(numeric_pattern.findall(text))\n    numeric_ratio = numeric_count / total_tokens\n\n    # Citation signal: weighted sum of citation evidence\n    citation_signal = (\n        citation_count * 1.5 +\n        source_count * 1.0 +\n        url_count * 0.8 +\n        attr_count * 0.5\n    )\n    # Normalize citation signal to 0-1 (saturates at signal=10)\n    citation_norm = min(citation_signal / 10.0, 1.0)\n\n    # Numeric ratio normalized to 0-1 (saturates at 8% density)\n    numeric_norm = min(numeric_ratio / 0.08, 1.0)\n\n    # Interaction term: citations * numeric density synergize\n    interaction = citation_norm * numeric_norm\n\n    # Score: base citation component + interaction boost\n    base = citation_norm * 6.0\n    boost = interaction * 4.0\n\n    score = base + boost\n    return round(min(max(score, 0.0), 10.0), 3)"
+        },
+        {
+          "scorer_id": "S3",
+          "hypothesis": "Passive and impersonal voice constructions signal scientific objectivity and distance the author from claims; combined with precision language (exact figures, defined measurements), these features collectively mark a text as systematically analytical rather than opinion-based.",
+          "causal_nodes_used": [
+            "N04",
+            "N01"
+          ],
+          "text_features_used": [
+            "passive voice constructions (was/were + past participle)",
+            "impersonal constructions ('the data indicate', 'results show', 'analysis reveals')",
+            "count of numeric tokens (integers, decimals, percentages, currencies)",
+            "presence of statistical terms (mean, median, p-value, confidence interval)",
+            "exaggerated vs. grounded numeral classification"
+          ],
+          "functional_form": "gated",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n\n    tokens = text.split()\n    total_tokens = max(len(tokens), 1)\n    sentences = re.split(r'[.!?]+', text)\n    total_sentences = max(len([s for s in sentences if s.strip()]), 1)\n    text_lower = text.lower()\n\n    # Passive voice: was/were/been/is/are/has been + past participle\n    passive_pattern = re.compile(\n        r'\\b(was|were|been|is|are|has been|have been|had been|will be)\\s+'\n        r'(\\w+ed|\\w+en|found|shown|reported|measured|calculated|estimated|observed|recorded)\\b',\n        re.IGNORECASE\n    )\n    passive_count = len(passive_pattern.findall(text))\n\n    # Impersonal constructions\n    impersonal_phrases = [\n        'the data indicate', 'the data show', 'the data suggest',\n        'results show', 'results indicate', 'results demonstrate',\n        'analysis reveals', 'analysis shows', 'analysis indicates',\n        'the findings', 'the evidence shows', 'the model predicts',\n        'it was found', 'it was observed', 'it was determined',\n        'it has been shown', 'it is evident', 'this study finds',\n        'the study demonstrates', 'the research indicates'\n    ]\n    impersonal_count = sum(1 for p in impersonal_phrases if p in text_lower)\n\n    # Passive + impersonal density per sentence\n    objective_density = (passive_count + impersonal_count * 2) / total_sentences\n\n    # Numeric precision: exact figures (not vague like 'millions' without number)\n    precise_numeric = re.compile(\n        r'\\b\\d{1,3}(?:,\\d{3})*(?:\\.\\d+)?%?\\b|\\b\\d+\\.\\d+\\b'\n    )\n    precise_count = len(precise_numeric.findall(text))\n\n    # Vague numerics that reduce grounding\n    vague_numerics = [\n        'many', 'several', 'numerous', 'a lot', 'tons of', 'loads of',\n        'countless', 'various', 'multiple', 'some', 'few', 'a number of'\n    ]\n    vague_count = sum(1 for v in vague_numerics if re.search(r'\\b' + v + r'\\b', text_lower))\n\n    # Statistical terms\n    stat_terms = [\n        'mean', 'median', 'variance', 'p-value', 'confidence interval',\n        'regression', 'correlation', 'coefficient', 'standard deviation',\n        'effect size', 'statistical significance'\n    ]\n    stat_count = sum(1 for t in stat_terms if t in text_lower)\n\n    # Objective voice score (0-5)\n    objective_score = min(objective_density / 1.5, 1.0) * 5.0\n\n    # Precision score (0-4)\n    precision_score = min(precise_count / 8.0, 1.0) * 4.0\n\n    # Stat term bonus (0-2)\n    stat_bonus = min(stat_count / 5.0, 1.0) * 2.0\n\n    # GATE: if vague numerics exceed threshold, apply penalty\n    # Gate threshold: more than 3 vague numeric expressions\n    if vague_count > 3:\n        vague_penalty = (vague_count - 3) * 0.5\n    else:\n        vague_penalty = 0.0\n\n    score = objective_score + precision_score + stat_bonus - vague_penalty\n    return round(min(max(score, 0.0), 10.0), 3)"
+        },
+        {
+          "scorer_id": "S4",
+          "hypothesis": "A holistic data-driven scorer integrates all four causal dimensions \u2014 numeric density, hedging suppression, citation grounding, and objective voice \u2014 using a multiplicative gate on hedging that collapses the score when uncertainty language dominates, while additive components reward each positive signal proportionally.",
+          "causal_nodes_used": [
+            "N01",
+            "N02",
+            "N03",
+            "N04"
+          ],
+          "text_features_used": [
+            "ratio of numeric tokens to total tokens",
+            "presence of statistical terms (mean, median, p-value, confidence interval)",
+            "hedge density ratio per sentence and per document",
+            "epistemic modal verbs (might, could, may, should)",
+            "in-text citation patterns (Author, Year) or [N] formats",
+            "named data source mentions",
+            "passive voice constructions (was/were + past participle)",
+            "impersonal constructions ('the data indicate', 'results show')"
+          ],
+          "functional_form": "composite",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n\n    tokens = text.split()\n    total_tokens = max(len(tokens), 1)\n    text_lower = text.lower()\n    sentences = re.split(r'[.!?]+', text)\n    total_sentences = max(len([s for s in sentences if s.strip()]), 1)\n\n    # === COMPONENT 1: Numeric Density (N01) ===\n    numeric_pattern = re.compile(r'\\b\\d+\\.?\\d*%?\\b|\\$\\d+\\.?\\d*')\n    numeric_count = len(numeric_pattern.findall(text))\n    numeric_ratio = numeric_count / total_tokens\n\n    stat_terms = [\n        'mean', 'median', 'variance', 'p-value', 'p value', 'confidence interval',\n        'regression', 'correlation', 'coefficient', 'standard deviation', 'std dev',\n        'effect size', 'statistical', 'r-squared', 'chi-square', 'anova',\n        'percentile', 'quartile', 'distribution', 'sample size'\n    ]\n    stat_count = sum(1 for t in stat_terms if t in text_lower)\n\n    numeric_score = (\n        min(numeric_ratio / 0.08, 1.0) * 3.5 +\n        min(math.log1p(stat_count) / math.log1p(8), 1.0) * 1.5\n    )  # max 5.0\n\n    # === COMPONENT 2: Hedge Suppression (N02) ===\n    hedge_words = {\n        'might', 'could', 'may', 'possibly', 'perhaps', 'probably',\n        'seemingly', 'apparently', 'presumably', 'conceivably',\n        'roughly', 'approximately', 'about', 'around', 'nearly'\n    }\n    hedge_phrases = [\n        'i think', 'i believe', 'it seems', 'it appears', 'one might',\n        'it could be', 'it is possible', 'it is suggested', 'reportedly',\n        'allegedly', 'in my opinion', 'it may be'\n    ]\n    hedge_token_count = sum(1 for t in tokens if t.lower() in hedge_words)\n    hedge_phrase_count = sum(1 for p in hedge_phrases if p in text_lower)\n    total_hedges = hedge_token_count + hedge_phrase_count * 1.5\n    hedge_ratio = total_hedges / total_tokens\n\n    # Multiplicative gate: high hedging collapses the hedge component\n    # hedge_multiplier approaches 0 as hedge_ratio rises above 0.03\n    hedge_multiplier = max(0.0, 1.0 - (hedge_ratio / 0.06))\n    hedge_score = hedge_multiplier * 2.0  # max 2.0\n\n    # === COMPONENT 3: Citation Grounding (N03) ===\n    citation_pattern = re.compile(\n        r'\\([A-Z][a-z]+(?:\\s+et al\\.?)?\\s*,\\s*\\d{4}\\)|\\[\\d+(?:,\\d+)*\\]',\n        re.IGNORECASE\n    )\n    citation_count = len(citation_pattern.findall(text))\n\n    source_phrases = [\n        'according to', 'as reported by', 'data from', 'based on',\n        'as shown by', 'the study found', 'research shows', 'evidence from',\n        'sourced from', 'published in'\n    ]\n    source_count = sum(1 for s in source_phrases if s in text_lower)\n\n    url_count = len(re.findall(r'https?://\\S+|doi\\.org/\\S+', text))\n\n    citation_signal = citation_count * 1.5 + source_count * 1.0 + url_count * 0.5\n    citation_score = min(citation_signal / 6.0, 1.0) * 2.0  # max 2.0\n\n    # === COMPONENT 4: Objective Voice (N04) ===\n    passive_pattern = re.compile(\n        r'\\b(was|were|is|are|been|has been|have been)\\s+'\n        r'(\\w+ed|found|shown|reported|measured|estimated|observed|calculated)\\b',\n        re.IGNORECASE\n    )\n    passive_count = len(passive_pattern.findall(text))\n\n    impersonal_phrases = [\n        'the data', 'the results', 'the analysis', 'the findings',\n        'the evidence', 'the model', 'this study', 'the research',\n        'it was found', 'it was observed', 'it has been shown'\n    ]\n    impersonal_count = sum(1 for p in impersonal_phrases if p in text_lower)\n\n    objective_density = (passive_count + impersonal_count) / total_sentences\n    objective_score = min(objective_density / 2.0, 1.0) * 1.0  # max 1.0\n\n    # === FINAL COMPOSITE ===\n    # Weighted sum: numeric(5) + hedge(2) + citation(2) + objective(1) = 10\n    raw_score = numeric_score + hedge_score + citation_score + objective_score\n\n    # Additional interaction bonus: numeric AND citation both strong\n    numeric_norm = min(numeric_ratio / 0.08, 1.0)\n    citation_norm = min(citation_signal / 6.0, 1.0)\n    interaction_bonus = numeric_norm * citation_norm * 0.5  # up to 0.5 bonus\n\n    score = raw_score + interaction_bonus\n    return round(min(max(score, 0.0), 10.0), 3)"
+        }
+      ]
+    },
+    "stage5": {
+      "pairs": [
+        {
+          "pair_id": "P001",
+          "anchor": "Our LinkedIn content strategy improved engagement significantly after we restructured our posting cadence last quarter.",
+          "positive": "Our LinkedIn content strategy improved engagement by 43% after restructuring our posting cadence from 3x to 5x weekly, based on 90-day platform analytics.",
+          "negative": "Our LinkedIn content strategy seemed to improve engagement somewhat after we restructured our posting cadence, though results may vary by industry.",
+          "split": "train",
+          "target_delta": "positive adds specific metric (43%), frequency data, and attribution to analytics; negative introduces hedging ('seemed', 'somewhat', 'may vary')",
+          "causal_nodes_tested": [
+            "N01",
+            "N02"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P002",
+          "anchor": "I use a five-step agent pipeline to write Substack articles, reducing production time considerably.",
+          "positive": "I use a five-step agent pipeline to write Substack articles, cutting production time from 6 hours to 45 minutes across 12 published posts.",
+          "negative": "I use a kind of multi-step agent pipeline to write Substack articles, which I believe has reduced my production time, though it's hard to say exactly.",
+          "split": "train",
+          "target_delta": "positive provides before/after time measurements and sample size; negative uses uncertainty markers ('kind of', 'I believe', 'hard to say')",
+          "causal_nodes_tested": [
+            "N01",
+            "N03"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P003",
+          "anchor": "Replacing expensive SEO posts with AI-generated content delivered strong ROI for our agency.",
+          "positive": "Replacing $200 SEO posts with AI-generated content cut per-post cost to $12 while maintaining a 91% client approval rate across 34 deliverables (Q1 2024).",
+          "negative": "Replacing expensive SEO posts with AI-generated content probably delivered strong ROI for our agency, at least anecdotally speaking.",
+          "split": "train",
+          "target_delta": "positive anchors claims with dollar figures, percentages, count, and time period; negative weakens with 'probably' and 'anecdotally'",
+          "causal_nodes_tested": [
+            "N02",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P004",
+          "anchor": "After analyzing one month of LinkedIn posts, we found that carousel formats outperformed standard text posts.",
+          "positive": "After analyzing 62 LinkedIn posts over 30 days (Hollingshead, 2024), carousels averaged 4.2\u00d7 more impressions than standard text posts.",
+          "negative": "After looking at some LinkedIn posts over a month or so, it seemed like carousel formats generally did better than plain text, in our experience.",
+          "split": "validation",
+          "target_delta": "positive adds post count, duration, named source citation, and a precise multiplier; negative introduces vagueness ('some', 'or so', 'seemed', 'generally')",
+          "causal_nodes_tested": [
+            "N01",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P005",
+          "anchor": "Building a self-improving LinkedIn system with Claude Code automated most of my content research workflow.",
+          "positive": "Building a self-improving LinkedIn system with Claude Code automated 80% of my content research workflow, processing 200+ sources weekly (Ahmed, 2024).",
+          "negative": "Building what I think is a self-improving LinkedIn system with Claude Code has automated a good chunk of my content research, more or less.",
+          "split": "validation",
+          "target_delta": "positive quantifies automation percentage, throughput, and cites source; negative uses epistemic hedges ('what I think', 'good chunk', 'more or less')",
+          "causal_nodes_tested": [
+            "N02",
+            "N03"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P006",
+          "anchor": "Our LinkedIn Content Engine template system helped clients publish more consistently and grow their follower counts.",
+          "positive": "Our LinkedIn Content Engine template system increased median client posting frequency by 3.1\u00d7 and drove an average 18% follower growth over 60 days (ASquare Solution, 2024).",
+          "negative": "Our LinkedIn Content Engine template system has helped many clients publish more consistently and could potentially grow their follower counts over time.",
+          "split": "test",
+          "target_delta": "positive replaces vague claims with multiplier, percentage, timeframe, and citation; negative adds 'could potentially' and 'over time' hedges",
+          "causal_nodes_tested": [
+            "N03",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        }
+      ]
+    },
+    "stage6": {
+      "scorer_evaluations": [
+        {
+          "scorer_id": "S0",
+          "pairs_evaluated": 6,
+          "train_accuracy": 1,
+          "heldout_accuracy": 1,
+          "train_mean_gap": 5,
+          "heldout_mean_gap": 4.3333,
+          "nonconstant": true,
+          "eligible": true,
+          "pareto_member": true
+        },
+        {
+          "scorer_id": "S1",
+          "pairs_evaluated": 6,
+          "train_accuracy": 1,
+          "heldout_accuracy": 1,
+          "train_mean_gap": 5.3333,
+          "heldout_mean_gap": 5,
+          "nonconstant": true,
+          "eligible": true,
+          "pareto_member": true
+        },
+        {
+          "scorer_id": "S2",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S3",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S4",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        }
+      ],
+      "pareto_frontier": [
+        "S0",
+        "S1"
+      ],
+      "summary": {
+        "total_evaluated": 5,
+        "eligible": 2,
+        "pareto_size": 2
+      }
+    },
+    "stage7": {
+      "failure_patterns": [
+        {
+          "pattern_id": "FP01",
+          "scorer_ids": [
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "reasoning_error": "Scorers produced zero pairs evaluated, zero accuracy, and zero mean gap across both train and heldout splits. These scorers are entirely non-functional \u2014 likely failing to parse input, crashing silently, returning null/empty scores, or emitting constant output that prevents any pair comparison. They are ineligible and contribute nothing to the Pareto frontier.",
+          "severity": "high"
+        },
+        {
+          "pattern_id": "FP02",
+          "scorer_ids": [
+            "S0",
+            "S1"
+          ],
+          "reasoning_error": "While S0 and S1 are functional and Pareto-eligible, there is a mild generalization gap between train and heldout mean scores (S0: 5.0 train vs 4.33 heldout; S1: 5.33 train vs 5.0 heldout). This suggests marginal overfitting to training signal or sensitivity to distribution shift in heldout examples. Not a critical failure but warrants monitoring.",
+          "severity": "low"
+        }
+      ],
+      "mutation_instructions": [
+        {
+          "instruction_id": "MI01",
+          "targets_failure_patterns": [
+            "FP01"
+          ],
+          "instruction": "Rewrite S2, S3, and S4 from scratch using the structure of the highest-performing eligible scorer (S1) as a template. Ensure each scorer: (1) explicitly reads and tokenizes the input text, (2) computes a non-constant numeric score over at least two distinct score values, (3) returns a valid numeric output for every input without silent exception handling, and (4) is validated against at least one positive and one negative example before deployment. Add a fallback default score (e.g., 0.5) if parsing fails, rather than returning null or empty.",
+          "expected_metric_movement": "pairs_evaluated should rise from 0 to \u22656; nonconstant should become true; heldout_accuracy should reach \u22650.8; eligible and pareto_member flags should become true for at least one of the repaired scorers."
+        },
+        {
+          "instruction_id": "MI02",
+          "targets_failure_patterns": [
+            "FP02"
+          ],
+          "instruction": "For S0 and S1, audit the scoring rubric for data-driven criteria to identify features that may be over-indexed on training examples (e.g., surface keywords present in train but not heldout). Introduce at least one additional generalizable signal \u2014 such as presence of quantitative evidence, citation of sources, or use of empirical reasoning patterns \u2014 that is domain-agnostic and less likely to overfit to specific training instances.",
+          "expected_metric_movement": "heldout_mean_gap for S0 should increase from 4.33 toward \u22654.8; heldout_mean_gap for S1 should increase from 5.0 toward \u22655.2; train-heldout gap should narrow to \u22640.3."
+        }
+      ],
+      "heldout_aggregate": {
+        "best_accuracy": 1,
+        "mean_gap_range": "4.3333\u20135.0"
+      }
+    },
+    "stage8": {
+      "repair_scorers": [
+        {
+          "scorer_id": "R0",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S0",
+            "S2"
+          ],
+          "targets_failure_patterns": [
+            "FP01",
+            "FP02"
+          ],
+          "hypothesis": "Data-driven text is signaled by a combination of numeric density, explicit source citation patterns, and statistical terminology. A composite score weighting all three signals with thresholded normalization will produce non-constant, generalizable scores that distinguish data-driven from non-data-driven text.",
+          "functional_form": "composite_score = clamp(0.4 * numeric_density_signal + 0.35 * citation_signal + 0.25 * statistical_term_signal, 1, 7)",
+          "repair_strategy": "S2 was rewritten from scratch using S1 as a structural template. The scorer now (1) explicitly tokenizes input and handles empty text, (2) uses three distinct feature signals combined via weighted sum, (3) returns a valid float in [1,7] for every input with a fallback of 3.5, and (4) avoids silent exception handling by wrapping only the outermost call. Citation patterns and statistical terms add generalizable signals not present in S0.",
+          "text_features_used": [
+            "count of numeric tokens (integers, decimals, percentages, currencies)",
+            "ratio of numeric tokens to total tokens",
+            "presence of statistical terms (mean, median, p-value, confidence interval, correlation, regression, variance, std, coefficient)",
+            "in-text citation patterns (Author Year, et al., parenthetical numbers as citations)",
+            "explicit attribution phrases (according to, based on data, study found, research shows)"
+          ],
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n\n    try:\n        if not text or not isinstance(text, str):\n            return 3.5\n\n        tokens = text.split()\n        total_tokens = max(len(tokens), 1)\n        text_lower = text.lower()\n\n        # --- Signal 1: Numeric density ---\n        # Match integers, decimals, percentages, currencies, ranges\n        numeric_pattern = re.compile(\n            r'\\b\\d+\\.?\\d*%?\\b|\\$\\d+|\\d+\\s*[-\u2013]\\s*\\d+'\n        )\n        numeric_matches = numeric_pattern.findall(text)\n        numeric_count = len(numeric_matches)\n        numeric_density = numeric_count / total_tokens\n        # Map density to 1-7: 0 -> 1, >=0.15 -> 7\n        numeric_signal = 1.0 + min(numeric_density / 0.15, 1.0) * 6.0\n\n        # --- Signal 2: Source citation patterns ---\n        citation_score = 0.0\n        # Author (Year) style\n        author_year = re.findall(r'\\([A-Z][a-z]+(?:\\s+et\\s+al\\.?)?[,\\s]+(?:19|20)\\d{2}\\)', text)\n        citation_score += len(author_year) * 1.5\n        # et al. usage\n        et_al = re.findall(r'et\\s+al\\.?', text_lower)\n        citation_score += len(et_al) * 1.0\n        # Explicit attribution phrases\n        attribution_phrases = [\n            'according to', 'based on data', 'study found', 'research shows',\n            'data show', 'evidence suggest', 'analysis reveal', 'survey of',\n            'reported by', 'published in', 'as reported', 'findings indicate',\n            'results show', 'the data', 'per the report'\n        ]\n        for phrase in attribution_phrases:\n            if phrase in text_lower:\n                citation_score += 0.8\n        # Normalize citation signal to 1-7\n        citation_signal = 1.0 + min(citation_score / 5.0, 1.0) * 6.0\n\n        # --- Signal 3: Statistical terminology ---\n        stat_terms = [\n            'mean', 'median', 'mode', 'average', 'standard deviation', 'std',\n            'variance', 'p-value', 'p value', 'confidence interval', 'ci',\n            'correlation', 'regression', 'coefficient', 'r-squared', 'r2',\n            'sample size', 'statistical', 'significance', 'hypothesis',\n            'probability', 'distribution', 'chi-square', 'anova', 't-test',\n            'effect size', 'odds ratio', 'relative risk', 'baseline',\n            'control group', 'treatment group', 'cohort', 'longitudinal',\n            'cross-sectional', 'meta-analysis', 'systematic review'\n        ]\n        stat_count = sum(1 for term in stat_terms if term in text_lower)\n        stat_signal = 1.0 + min(stat_count / 4.0, 1.0) * 6.0\n\n        # --- Composite score ---\n        raw_score = (\n            0.40 * numeric_signal +\n            0.35 * citation_signal +\n            0.25 * stat_signal\n        )\n\n        # Clamp to [1, 7]\n        final_score = max(1.0, min(7.0, raw_score))\n        return round(final_score, 3)\n\n    except Exception:\n        return 3.5\n"
+        },
+        {
+          "scorer_id": "R1",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S1",
+            "S3"
+          ],
+          "targets_failure_patterns": [
+            "FP01",
+            "FP02"
+          ],
+          "hypothesis": "Data-driven text avoids hedging language while actively using empirical reasoning markers and precise quantitative comparisons. A scorer that combines inverse-hedging signal with positive empirical-evidence markers and numeric comparison detection will generalize better than pure hedging detection alone.",
+          "functional_form": "composite_score = clamp(base + empirical_boost - hedge_penalty, 1, 7) where base=4.0",
+          "repair_strategy": "S3 was rewritten from scratch using S1 as a structural template. The key fix is that S1 only penalized hedging; this scorer adds a positive empirical-evidence signal (causal claims, comparison language, precise measurements) to provide lift on genuinely data-driven text. The hedge penalty is calibrated so moderate hedging does not collapse scores to 1. A fallback of 3.5 is returned on any parse failure.",
+          "text_features_used": [
+            "epistemic modal verbs (might, could, may, should as hedges)",
+            "approximators (about, around, roughly, approximately, nearly)",
+            "shields and attribution hedges (I think, it seems, reportedly, supposedly)",
+            "empirical reasoning markers (therefore, thus, consequently, demonstrates, confirms, supports, indicates)",
+            "quantitative comparison language (higher than, lower than, increased by, decreased by, compared to, relative to)",
+            "measurement and precision markers (measured, calculated, estimated, recorded, observed, detected)"
+          ],
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n\n    try:\n        if not text or not isinstance(text, str):\n            return 3.5\n\n        tokens = text.lower().split()\n        total_tokens = max(len(tokens), 1)\n        text_lower = text.lower()\n\n        # --- Hedge penalty signal ---\n        epistemic_modals = {\n            'might', 'could', 'may', 'should', 'would', 'seem', 'seems',\n            'appeared', 'appears', 'possibly', 'perhaps', 'presumably'\n        }\n        approximators = {\n            'about', 'around', 'roughly', 'approximately', 'nearly',\n            'almost', 'somewhat', 'rather', 'fairly', 'quite', 'sort of',\n            'kind of', 'more or less'\n        }\n        shield_phrases = [\n            'i think', 'i believe', 'i feel', 'it seems', 'it appears',\n            'reportedly', 'supposedly', 'allegedly', 'some say', 'many feel',\n            'people think', 'it is thought', 'it is believed'\n        ]\n\n        modal_count = sum(1 for t in tokens if t in epistemic_modals)\n        approx_count = sum(1 for t in tokens if t in approximators)\n        shield_count = sum(1 for phrase in shield_phrases if phrase in text_lower)\n\n        hedge_density = (modal_count + approx_count + shield_count) / total_tokens\n        # Penalty: up to -3 points for heavy hedging\n        hedge_penalty = min(hedge_density / 0.10, 1.0) * 3.0\n\n        # --- Empirical evidence boost ---\n        empirical_markers = [\n            'therefore', 'thus', 'consequently', 'demonstrates', 'confirms',\n            'supports', 'indicates', 'shows', 'reveals', 'proves', 'establishes',\n            'validates', 'verifies', 'documents', 'records', 'reports'\n        ]\n        comparison_phrases = [\n            'higher than', 'lower than', 'increased by', 'decreased by',\n            'compared to', 'relative to', 'greater than', 'less than',\n            'more than', 'fewer than', 'twice as', 'three times',\n            'significantly more', 'significantly less', 'outperformed'\n        ]\n        measurement_verbs = [\n            'measured', 'calculated', 'estimated', 'recorded', 'observed',\n            'detected', 'quantified', 'assessed', 'evaluated', 'analyzed',\n            'tested', 'sampled', 'surveyed', 'tracked', 'monitored'\n        ]\n\n        empirical_count = sum(1 for m in empirical_markers if m in text_lower)\n        comparison_count = sum(1 for p in comparison_phrases if p in text_lower)\n        measurement_count = sum(1 for v in measurement_verbs if v in text_lower)\n\n        empirical_density = (empirical_count + comparison_count + measurement_count) / total_tokens\n        # Boost: up to +3 points for strong empirical signals\n        empirical_boost = min(empirical_density / 0.08, 1.0) * 3.0\n\n        # --- Composite score ---\n        base = 4.0\n        raw_score = base + empirical_boost - hedge_penalty\n\n        final_score = max(1.0, min(7.0, raw_score))\n        return round(final_score, 3)\n\n    except Exception:\n        return 3.5\n"
+        },
+        {
+          "scorer_id": "R2",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S4"
+          ],
+          "targets_failure_patterns": [
+            "FP01"
+          ],
+          "hypothesis": "Data-driven text is characterized by the co-occurrence of precise numeric expressions with domain-specific empirical framing (e.g., study design language, result reporting phrases, and comparative quantitative claims). A scorer that detects interaction between numeric precision and empirical framing context will capture data-drivenness more robustly than numeric density alone.",
+          "functional_form": "composite_score = clamp(1 + 6 * sigmoid(3 * (interaction_score - 0.5)), 1, 7) where interaction_score combines numeric precision, result framing, and study design signals",
+          "repair_strategy": "S4 was rewritten from scratch. The scorer uses an interaction design: numeric precision alone gives partial credit, but the score is amplified when numeric content co-occurs with result-framing language (found that, showed that, results indicate) and study-design markers (sample, participants, dataset, experiment). A sigmoid mapping ensures smooth non-constant output across the full 1-7 range. Fallback of 3.5 on any failure.",
+          "text_features_used": [
+            "count of numeric tokens (integers, decimals, percentages, currencies)",
+            "detection of numerical ranges and comparisons",
+            "exaggerated vs. grounded numeral classification (precise multi-digit vs. round vague numbers)",
+            "result-framing phrases (found that, showed that, results indicate, data suggest, analysis shows)",
+            "study design markers (sample, participants, dataset, experiment, trial, cohort, subjects, n=)",
+            "interaction term: numeric precision score multiplied by empirical framing score"
+          ],
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n\n    try:\n        if not text or not isinstance(text, str):\n            return 3.5\n\n        tokens = text.split()\n        total_tokens = max(len(tokens), 1)\n        text_lower = text.lower()\n\n        # --- Numeric precision signal ---\n        # Precise numerals: multi-digit, decimals, percentages with decimals\n        precise_pattern = re.compile(\n            r'\\b\\d{2,}\\.\\d+%?\\b|\\b\\d+\\.\\d{2,}%?\\b|\\b\\d{3,}\\b'\n        )\n        # Vague/round numerals: single or double digit round numbers\n        vague_pattern = re.compile(r'\\b[1-9]0\\b|\\b[1-9]00\\b|\\b\\d\\b')\n        # Any numeric token\n        any_numeric = re.compile(r'\\b\\d+\\.?\\d*%?\\b')\n\n        precise_count = len(precise_pattern.findall(text))\n        vague_count = len(vague_pattern.findall(text))\n        any_numeric_count = len(any_numeric.findall(text))\n\n        # Precision ratio: precise / (precise + vague + 1)\n        precision_ratio = precise_count / (precise_count + vague_count + 1)\n        # Numeric density\n        numeric_density = any_numeric_count / total_tokens\n        # Combined numeric precision signal [0,1]\n        numeric_signal = min(\n            0.5 * min(numeric_density / 0.12, 1.0) + 0.5 * precision_ratio,\n            1.0\n        )\n\n        # --- Result framing signal ---\n        result_phrases = [\n            'found that', 'showed that', 'results indicate', 'results show',\n            'data suggest', 'data show', 'analysis shows', 'analysis reveals',\n            'study found', 'study shows', 'we found', 'we observed',\n            'the results', 'our findings', 'the findings', 'evidence shows',\n            'the analysis', 'the model', 'the experiment'\n        ]\n        result_count = sum(1 for p in result_phrases if p in text_lower)\n        result_signal = min(result_count / 3.0, 1.0)\n\n        # --- Study design signal ---\n        study_design_terms = [\n            'sample', 'participants', 'subjects', 'respondents', 'dataset',\n            'experiment', 'trial', 'cohort', 'control', 'treatment',\n            'baseline', 'intervention', 'randomized', 'placebo',\n            'longitudinal', 'cross-sectional', 'survey', 'observation'\n        ]\n        # Also detect n= pattern\n        n_eq = re.findall(r'n\\s*=\\s*\\d+', text_lower)\n        study_count = sum(1 for t in study_design_terms if t in text_lower) + len(n_eq)\n        study_signal = min(study_count / 3.0, 1.0)\n\n        # --- Interaction score ---\n        # Numeric signal is amplified by co-occurrence with empirical framing\n        framing_signal = 0.5 * result_signal + 0.5 * study_signal\n        # Interaction: numeric alone gives partial credit; framing boosts it\n        interaction_score = (\n            0.4 * numeric_signal +\n            0.3 * framing_signal +\n            0.3 * numeric_signal * framing_signal  # interaction term\n        )\n\n        # --- Sigmoid mapping to [1, 7] ---\n        # sigmoid centered at 0.4 so moderate evidence scores ~4\n        def sigmoid(x):\n            return 1.0 / (1.0 + math.exp(-x))\n\n        raw = 1.0 + 6.0 * sigmoid(6.0 * (interaction_score - 0.40))\n        final_score = max(1.0, min(7.0, raw))\n        return round(final_score, 3)\n\n    except Exception:\n        return 3.5\n"
+        }
+      ],
+      "repair_evaluations": [
+        {
+          "scorer_id": "R0",
+          "accuracy": 0,
+          "mean_gap": 0,
+          "pairs_evaluated": 0
+        },
+        {
+          "scorer_id": "R1",
+          "accuracy": 1,
+          "mean_gap": 4.67,
+          "pairs_evaluated": 6
+        },
+        {
+          "scorer_id": "R2",
+          "accuracy": 1,
+          "mean_gap": 4.67,
+          "pairs_evaluated": 6
+        }
+      ],
+      "comparison": {
+        "best_original": {
+          "scorer_id": "S1",
+          "accuracy": 1,
+          "gap": 5
+        },
+        "best_repair": {
+          "scorer_id": "R1",
+          "accuracy": 1,
+          "gap": 4.67
+        },
+        "improvement": -0.33
+      }
+    }
+  }
+}

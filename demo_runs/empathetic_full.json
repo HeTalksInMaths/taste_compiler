@@ -1,0 +1,676 @@
+{
+  "target": "empathetic",
+  "ref_text": "Your subscription has been cancelled. Please note that all data will be permanently deleted after 30 days. Contact support if you have questions.",
+  "stages": {
+    "stage1": {
+      "target_variable": "text perceived as empathetic",
+      "causal_research": [
+        {
+          "source_id": "SRC_001",
+          "claim": "Explicit emotional acknowledgment in text\u2014naming and validating the other person's feelings\u2014causally increases perceived empathy. This is a core linguistic trigger identified in online interaction studies.",
+          "causal_variable": "emotional acknowledgment",
+          "effect_direction": "increases",
+          "mechanism": "Directly signals recognition of the other's affective state, reducing perceived emotional distance.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_002",
+          "claim": "Use of first-person plural pronouns (we, us, our) increases perceived empathy by creating a sense of shared experience and solidarity. Computational stylistic analysis of medical narratives confirms this pattern.",
+          "causal_variable": "inclusive pronoun use",
+          "effect_direction": "increases",
+          "mechanism": "Linguistic markers of shared identity signal in-group belonging and mutual understanding.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_003",
+          "claim": "Hedging language and epistemic modality (e.g., 'I imagine,' 'it must feel like') increase perceived empathy by conveying perspective-taking rather than assertion. This is identified as a key empathy communication pattern.",
+          "causal_variable": "hedging and perspective-taking language",
+          "effect_direction": "increases",
+          "mechanism": "Signals that the writer is attempting to inhabit the other's viewpoint rather than imposing their own interpretation.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_004",
+          "claim": "High sentiment intensity or emotionally charged vocabulary increases perceived empathy up to a threshold, beyond which it may be perceived as performative or insincere. Computational linguistic analysis identifies this curvilinear relationship.",
+          "causal_variable": "emotional vocabulary intensity",
+          "effect_direction": "mediates",
+          "mechanism": "Moderate emotional language matches the register of the recipient's distress; excessive intensity triggers skepticism about authenticity.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_005",
+          "claim": "Cause identification in text\u2014explicitly referencing the source or trigger of the other person's emotion\u2014increases perceived empathy. NLP research on empathy cause identification shows this is a distinct and impactful textual feature.",
+          "causal_variable": "empathy cause identification in text",
+          "effect_direction": "increases",
+          "mechanism": "Demonstrating awareness of why someone feels a certain way signals deeper understanding beyond surface emotional mirroring.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_006",
+          "claim": "Formal or clinical register decreases perceived empathy in personal or emotional contexts, as found in stylistic profiling of medical narrative essays. Informal, conversational tone is associated with higher empathy ratings.",
+          "causal_variable": "text formality/register",
+          "effect_direction": "decreases",
+          "mechanism": "Formal language creates social and emotional distance, signaling procedural rather than interpersonal engagement.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_007",
+          "claim": "Absence of explicit empathy mechanisms in LLM-generated text\u2014such as no acknowledgment of emotional context or no adaptive response to distress cues\u2014decreases perceived empathy. Research argues LLMs need dedicated empathy modules to overcome this deficit.",
+          "causal_variable": "explicit empathy mechanisms in generation",
+          "effect_direction": "increases",
+          "mechanism": "Without structural prompts to model emotional states, generated text defaults to informational tone, which is rated as less empathetic.",
+          "evidence_strength": "low"
+        },
+        {
+          "source_id": "SRC_008",
+          "claim": "Narrative self-disclosure by the text author\u2014sharing relevant personal experiences\u2014moderates perceived empathy, particularly in medical and peer-support contexts. Stylistic profiling shows this feature differentiates high- from low-empathy essays.",
+          "causal_variable": "author self-disclosure",
+          "effect_direction": "moderates",
+          "mechanism": "Shared vulnerability signals genuine emotional engagement and reduces power asymmetry between writer and reader.",
+          "evidence_strength": "medium"
+        }
+      ],
+      "research_tensions": [
+        {
+          "claim": "Some studies find high emotional vocabulary intensity increases empathy perception, while others show it can decrease perceived sincerity and thus empathy, suggesting the relationship is non-linear and context-dependent.",
+          "variables": [
+            "emotional vocabulary intensity",
+            "perceived sincerity"
+          ]
+        },
+        {
+          "claim": "Research on human-written text emphasizes spontaneous stylistic cues (hedging, self-disclosure) as drivers of empathy, while LLM research suggests explicit structural mechanisms are needed\u2014implying different causal pathways for human vs. machine-generated empathetic text.",
+          "variables": [
+            "spontaneous stylistic empathy cues",
+            "explicit empathy generation mechanisms"
+          ]
+        }
+      ]
+    },
+    "stage2": {
+      "target_variable": "empathetic",
+      "causal_nodes": [
+        {
+          "node_id": "N01",
+          "label": "emotional acknowledgment",
+          "role": "increases",
+          "definition": "Explicitly naming and validating the other person's feelings within the text.",
+          "mechanism": "Directly signals recognition of the other's affective state, reducing perceived emotional distance and demonstrating that their feelings have been heard."
+        },
+        {
+          "node_id": "N02",
+          "label": "inclusive pronoun use",
+          "role": "increases",
+          "definition": "Use of first-person plural pronouns such as 'we', 'us', and 'our' to create a sense of shared experience.",
+          "mechanism": "Linguistic markers of shared identity signal in-group belonging and mutual understanding, fostering solidarity."
+        },
+        {
+          "node_id": "N03",
+          "label": "hedging and perspective-taking language",
+          "role": "increases",
+          "definition": "Use of epistemic modality and hedging phrases such as 'I imagine' or 'it must feel like' to signal perspective-taking.",
+          "mechanism": "Signals that the writer is attempting to inhabit the other's viewpoint rather than imposing their own interpretation, conveying genuine effort to understand."
+        },
+        {
+          "node_id": "N04",
+          "label": "emotional vocabulary intensity",
+          "role": "mediates",
+          "definition": "The degree of emotional charge or sentiment intensity in the vocabulary used within the text.",
+          "mechanism": "Moderate emotional language matches the register of the recipient's distress and increases perceived empathy; excessive intensity triggers skepticism about authenticity, creating a curvilinear relationship."
+        },
+        {
+          "node_id": "N05",
+          "label": "empathy cause identification in text",
+          "role": "increases",
+          "definition": "Explicitly referencing the source or trigger of the other person's emotion within the text.",
+          "mechanism": "Demonstrating awareness of why someone feels a certain way signals deeper understanding beyond surface emotional mirroring, elevating perceived empathy."
+        },
+        {
+          "node_id": "N06",
+          "label": "text formality/register",
+          "role": "decreases",
+          "definition": "The degree to which language is formal, clinical, or procedural rather than informal and conversational.",
+          "mechanism": "Formal language creates social and emotional distance, signaling procedural rather than interpersonal engagement, thereby reducing perceived empathy."
+        },
+        {
+          "node_id": "N07",
+          "label": "perceived sincerity/authenticity",
+          "role": "mediates",
+          "definition": "The reader's judgment of whether the empathetic expressions in the text are genuine rather than performative.",
+          "mechanism": "Acts as an intermediary variable: when emotional vocabulary or acknowledgment is perceived as authentic, empathy ratings rise; when perceived as performative, empathy ratings fall regardless of other linguistic features."
+        },
+        {
+          "node_id": "N08",
+          "label": "text perceived as empathetic",
+          "role": "increases",
+          "definition": "The target outcome: the degree to which a reader rates or perceives a piece of text as empathetic.",
+          "mechanism": "Composite outcome shaped by multiple linguistic, stylistic, and pragmatic features working in concert."
+        }
+      ],
+      "causal_edges": [
+        {
+          "from": "N01",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Explicit emotional acknowledgment directly increases perceived empathy by signaling recognition of the other's affective state and reducing emotional distance. (SRC_001, high evidence)"
+        },
+        {
+          "from": "N02",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Use of inclusive pronouns increases perceived empathy by creating linguistic markers of shared identity and solidarity. (SRC_002, medium evidence)"
+        },
+        {
+          "from": "N03",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Hedging and perspective-taking language increases perceived empathy by conveying genuine effort to inhabit the other's viewpoint. (SRC_003, medium evidence)"
+        },
+        {
+          "from": "N04",
+          "to": "N07",
+          "relationship": "mediates",
+          "claim": "Emotional vocabulary intensity shapes perceived sincerity: moderate intensity is seen as authentic, while excessive intensity triggers skepticism. (SRC_004, medium evidence)"
+        },
+        {
+          "from": "N07",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Higher perceived sincerity/authenticity of empathetic expressions translates into higher overall perceived empathy ratings."
+        },
+        {
+          "from": "N04",
+          "to": "N08",
+          "relationship": "mediates",
+          "claim": "Emotional vocabulary intensity has a curvilinear (non-linear) mediated effect on perceived empathy, operating partly through authenticity judgments. (SRC_004, medium evidence)"
+        },
+        {
+          "from": "N05",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Explicitly identifying the cause of the other's emotion in text increases perceived empathy by demonstrating deeper understanding beyond surface mirroring. (SRC_005, medium evidence)"
+        },
+        {
+          "from": "N06",
+          "to": "N08",
+          "relationship": "decreases",
+          "claim": "High text formality or clinical register decreases perceived empathy by creating social and emotional distance. (SRC_006, medium evidence)"
+        },
+        {
+          "from": "N06",
+          "to": "N07",
+          "relationship": "decreases",
+          "claim": "Formal register reduces perceived sincerity in personal/emotional contexts, indirectly lowering empathy ratings."
+        },
+        {
+          "from": "N01",
+          "to": "N07",
+          "relationship": "increases",
+          "claim": "Emotional acknowledgment that is specific and contextually appropriate enhances perceived authenticity, reinforcing empathy perception."
+        }
+      ],
+      "causal_tensions": [
+        {
+          "claim": "Emotional vocabulary intensity has a dual and potentially contradictory effect: at moderate levels it increases perceived empathy, but at high levels it may decrease empathy by appearing performative or insincere. This creates a non-linear tension where the same variable can both increase and decrease the outcome depending on degree.",
+          "nodes": [
+            "N04",
+            "N07",
+            "N08"
+          ]
+        },
+        {
+          "claim": "Hedging language (N03) and emotional acknowledgment (N01) may partially conflict: strong, direct emotional acknowledgment signals confidence in understanding, while excessive hedging may undermine the same confidence and reduce perceived understanding. The optimal balance between the two is context-dependent.",
+          "nodes": [
+            "N03",
+            "N01",
+            "N08"
+          ]
+        },
+        {
+          "claim": "Inclusive pronoun use (N02) can increase perceived empathy through solidarity, but if combined with high formality (N06), the solidarity signal may be neutralized by the distancing effect of formal register, creating an unresolved interaction between these two variables.",
+          "nodes": [
+            "N02",
+            "N06",
+            "N08"
+          ]
+        }
+      ],
+      "summary_theory": "Text is perceived as empathetic through the convergent action of several linguistic and stylistic features. The strongest driver is explicit emotional acknowledgment\u2014naming and validating the other's feelings directly reduces emotional distance. This is reinforced by inclusive pronoun use, which signals solidarity, and by hedging and perspective-taking language, which demonstrates genuine effort to understand the other's viewpoint. Identifying the cause of the other's emotion adds a layer of depth beyond surface mirroring. Critically, all these features are mediated by perceived sincerity: emotional vocabulary must be calibrated to a moderate intensity to appear authentic rather than performative. Excessive emotional intensity undermines authenticity and thereby reduces perceived empathy despite superficially resembling empathetic expression. Conversely, formal or clinical register consistently suppresses perceived empathy by signaling procedural distance over interpersonal connection. The overall model suggests that empathy in text is a multi-component construct requiring the right combination of content (acknowledgment, cause identification), perspective (hedging, inclusive pronouns), register (informal, conversational), and calibration (moderate emotional intensity) to achieve authentic perceived empathy."
+    },
+    "stage3": {
+      "target_variable": "empathetic",
+      "measurement_research": [
+        {
+          "causal_node": "emotional acknowledgment",
+          "measurement_claim": "Emotional acknowledgment can be measured by detecting explicit references to another person's emotional state, such as validating phrases or reflective statements, using emotion classification models and sentiment-aware NLP pipelines.",
+          "text_features": [
+            "presence of second-person emotional state references (e.g., 'you must feel', 'I understand you are')",
+            "emotion word co-occurrence with second-person pronouns",
+            "sentiment polarity alignment between speaker and addressee turns",
+            "frequency of validating or affirming phrases"
+          ],
+          "implementation_ideas": [
+            "Fine-tune an emotion classification model (e.g., RoBERTa on GoEmotions) to detect acknowledgment-specific emotion labels directed at interlocutors",
+            "Use dependency parsing to link emotion words to second-person subjects",
+            "Build a lexicon of acknowledgment phrases and score their frequency and syntactic position",
+            "Apply span-level annotation to identify emotional acknowledgment spans as a sub-task of empathy detection"
+          ]
+        },
+        {
+          "causal_node": "inclusive pronoun use",
+          "measurement_claim": "Inclusive pronoun use (e.g., 'we', 'us', 'our') signals solidarity and shared experience, measurable via pronoun frequency and distribution analysis, with care taken to avoid gender bias as highlighted in pronoun-focused NLP benchmarks.",
+          "text_features": [
+            "frequency ratio of first-person plural pronouns ('we', 'us', 'our') to total pronouns",
+            "ratio of second-person pronouns ('you', 'your') indicating direct address",
+            "absence of distancing third-person references when addressing the interlocutor",
+            "gender-neutral pronoun usage patterns"
+          ],
+          "implementation_ideas": [
+            "Use POS tagging to extract and count pronoun types, then compute inclusivity ratios",
+            "Apply the Gender Inclusivity Fairness Index (GIFI) framework to assess whether pronoun use is equitable and inclusive across demographic references",
+            "Leverage findings from 'Pronoun Matters' benchmark to build bias-aware pronoun classifiers that distinguish inclusive from distancing usage",
+            "Train a classifier on annotated corpora distinguishing inclusive vs. exclusive pronoun contexts"
+          ]
+        },
+        {
+          "causal_node": "hedging and perspective-taking language",
+          "measurement_claim": "Hedging and perspective-taking language, such as modal verbs, epistemic stance markers, and conditional constructions, can be identified using span-level epistemic stance detection models trained on academic and conversational corpora.",
+          "text_features": [
+            "modal verb frequency ('might', 'could', 'may', 'seem')",
+            "epistemic stance markers ('I think', 'it seems', 'perhaps', 'possibly')",
+            "conditional clause frequency ('if you feel', 'in case')",
+            "perspective-shift phrases ('from your point of view', 'in your experience')"
+          ],
+          "implementation_ideas": [
+            "Adapt the span identification approach for epistemic stance-taking (BEA workshop) to conversational and empathetic text domains",
+            "Use a pre-trained language model fine-tuned on hedge detection datasets (e.g., CoNLL 2010 shared task on hedge detection)",
+            "Build a multi-label classifier for stance types: certainty, uncertainty, perspective-attribution",
+            "Score texts on a hedging continuum from assertive to highly hedged using weighted feature counts"
+          ]
+        },
+        {
+          "causal_node": "emotional vocabulary intensity",
+          "measurement_claim": "Emotional vocabulary intensity reflects the strength and valence of emotion words used, measurable via affective lexicons and transformer-based emotion intensity regression models.",
+          "text_features": [
+            "NRC Emotion Intensity scores for words in the text",
+            "VADER or LIWC affective dimension scores",
+            "frequency of high-arousal emotion words",
+            "distribution of positive vs. negative affect words",
+            "use of intensifiers adjacent to emotion words ('deeply sorry', 'truly understand')"
+          ],
+          "implementation_ideas": [
+            "Apply NRC Emotion Intensity Lexicon (EmoLex) to score average emotional intensity per sentence",
+            "Use a regression model trained on SemEval emotion intensity tasks to predict continuous intensity scores",
+            "Extract emotion word spans and apply intensifier detection via dependency parsing",
+            "Compare emotional vocabulary profiles of high- vs. low-empathy rated texts using LIWC dimensions"
+          ]
+        },
+        {
+          "causal_node": "empathy cause identification in text",
+          "measurement_claim": "Identifying the cause or trigger of empathetic response in text (e.g., referencing a specific hardship the other person faces) can be approached as a causal span extraction task using event and emotion cause detection models.",
+          "text_features": [
+            "presence of causal connectives ('because', 'since', 'due to') linking to emotional content",
+            "explicit mention of the interlocutor's situation or hardship",
+            "co-reference chains linking empathy expressions to triggering events",
+            "narrative event mentions preceding empathetic statements"
+          ],
+          "implementation_ideas": [
+            "Apply Emotion Cause in Conversation (ECC) models to identify what triggers empathetic utterances",
+            "Use causal relation extraction pipelines (e.g., based on BERT fine-tuned on COPA or ECF datasets)",
+            "Build a span extraction model that identifies 'empathy target' spans \u2014 the situation being acknowledged",
+            "Leverage EMBRACE framework's implicit conversation alignment to surface unstated causes of empathy in social media contexts"
+          ]
+        },
+        {
+          "causal_node": "text formality/register",
+          "measurement_claim": "Text formality and register influence perceived empathy; overly formal text may feel cold, while informal register can feel warmer. Formality can be measured using dedicated formality classifiers and stylistic feature extraction.",
+          "text_features": [
+            "Heylighen & Dewaele F-score (noun/adjective ratio vs. pronoun/verb/adverb ratio)",
+            "sentence length and syntactic complexity",
+            "contractions and colloquial expression frequency",
+            "passive vs. active voice ratio",
+            "vocabulary sophistication scores (e.g., Flesch-Kincaid)"
+          ],
+          "implementation_ideas": [
+            "Apply a pre-trained formality classifier (e.g., trained on GYAFC dataset) to score text on a formal-informal continuum",
+            "Compute Heylighen-Dewaele F-measure from POS-tagged text",
+            "Use readability metrics as proxies for register complexity",
+            "Train a register-aware model that predicts empathy ratings as a function of formality level, informed by 'Feels Feminine to Me' style annotation methodology"
+          ]
+        },
+        {
+          "causal_node": "perceived sincerity/authenticity",
+          "measurement_claim": "Perceived sincerity is a latent construct reflecting whether empathetic language appears genuine rather than formulaic; it can be approximated by detecting clich\u00e9d phrases, lexical diversity, and consistency between emotional expression and context.",
+          "text_features": [
+            "proportion of formulaic or boilerplate empathy phrases (e.g., 'I'm sorry for your loss')",
+            "lexical diversity and type-token ratio",
+            "contextual coherence between expressed emotion and described situation",
+            "presence of specific vs. generic references to the interlocutor's situation",
+            "alignment between stated emotion and inferred emotional state of speaker"
+          ],
+          "implementation_ideas": [
+            "Build a clich\u00e9 detection module using n-gram frequency lists from large corpora to flag overused empathy phrases",
+            "Compute type-token ratio and moving-average TTR as proxies for lexical authenticity",
+            "Use semantic similarity between the empathetic response and the specific content of the interlocutor's message to score specificity",
+            "Leverage EMBRACE's social norm alignment approach to assess whether empathetic responses conform to or deviate from expected authentic norms in community discourse"
+          ]
+        },
+        {
+          "causal_node": "text perceived as empathetic",
+          "measurement_claim": "Overall perceived empathy in text is the aggregate outcome variable, measurable via human-annotated datasets and fine-tuned empathy scoring models that combine signals from emotional acknowledgment, language style, and content relevance.",
+          "text_features": [
+            "composite empathy score from multi-dimensional feature aggregation",
+            "human annotation agreement scores on empathy scales",
+            "model-predicted empathy probability from fine-tuned classifiers",
+            "ratio of empathy-indicative utterances to total utterances in a dialogue"
+          ],
+          "implementation_ideas": [
+            "Fine-tune a transformer model (e.g., DeBERTa, RoBERTa) on the EmpatheticDialogues dataset for empathy classification or regression",
+            "Use multi-task learning combining emotion recognition, stance detection, and empathy scoring heads",
+            "Construct a weighted composite score from sub-component NLP features (pronoun inclusivity, emotional intensity, hedging, formality) calibrated against human empathy ratings",
+            "Apply the GIFI multilevel evaluation framework logic to assess empathy representation fairness across demographic groups in model outputs"
+          ]
+        }
+      ]
+    },
+    "stage4": {
+      "target_variable": "empathetic",
+      "scorers": [
+        {
+          "scorer_id": "S0",
+          "hypothesis": "Empathy is signaled by the co-occurrence of emotion words with second-person pronouns, indicating direct acknowledgment of the interlocutor's emotional state. Higher frequency of such co-occurrences yields a higher empathy score.",
+          "causal_nodes_used": [
+            "emotional acknowledgment"
+          ],
+          "functional_form": "additive",
+          "code": "def scorer(text, anchor, params):\n    import re\n    emotion_words = [\n        'feel', 'feeling', 'felt', 'sad', 'happy', 'angry', 'scared', 'afraid',\n        'hurt', 'pain', 'joy', 'grief', 'anxious', 'worried', 'upset', 'frustrated',\n        'lonely', 'overwhelmed', 'excited', 'nervous', 'confused', 'lost', 'hopeful'\n    ]\n    second_person = ['you', 'your', 'yours', 'yourself']\n    sentences = re.split(r'[.!?]', text.lower())\n    score = 0.0\n    total_sentences = max(len(sentences), 1)\n    for sent in sentences:\n        words = re.findall(r'\\b\\w+\\b', sent)\n        has_second_person = any(w in second_person for w in words)\n        has_emotion = any(w in emotion_words for w in words)\n        if has_second_person and has_emotion:\n            score += 1.0\n    normalized = min(score / total_sentences, 1.0)\n    return round(normalized, 4)"
+        },
+        {
+          "scorer_id": "S1",
+          "hypothesis": "Empathy is expressed through validating and affirming phrases that explicitly recognize the interlocutor's experience. A lexicon-based approach counting such phrases, normalized by text length, captures this dimension.",
+          "causal_nodes_used": [
+            "emotional acknowledgment"
+          ],
+          "functional_form": "additive",
+          "code": "def scorer(text, anchor, params):\n    import re\n    validating_phrases = [\n        'i understand', 'i hear you', 'that makes sense', 'i can imagine',\n        'you must feel', 'you must be', 'i can see why', 'it sounds like',\n        'that sounds', 'i appreciate', 'thank you for sharing', 'i know how',\n        'i get it', 'of course you', 'it makes sense that you', 'i believe you',\n        'your feelings are valid', 'that must be', 'i am sorry you', \"i'm sorry you\",\n        'i can understand', 'i recognize', 'i acknowledge'\n    ]\n    text_lower = text.lower()\n    word_count = max(len(re.findall(r'\\b\\w+\\b', text_lower)), 1)\n    match_count = 0\n    for phrase in validating_phrases:\n        matches = re.findall(re.escape(phrase), text_lower)\n        match_count += len(matches)\n    score = min(match_count / (word_count / 50.0), 1.0)\n    return round(score, 4)"
+        },
+        {
+          "scorer_id": "S2",
+          "hypothesis": "Empathy correlates with inclusive pronoun use (first-person plural and second-person direct address), reflecting solidarity and shared experience with the interlocutor. A higher ratio of inclusive pronouns to total pronouns indicates greater empathy.",
+          "causal_nodes_used": [
+            "inclusive pronoun use"
+          ],
+          "functional_form": "additive",
+          "code": "def scorer(text, anchor, params):\n    import re\n    text_lower = text.lower()\n    words = re.findall(r'\\b\\w+\\b', text_lower)\n    inclusive_pronouns = {'we', 'us', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves'}\n    all_pronouns = {\n        'i', 'me', 'my', 'mine', 'myself',\n        'we', 'us', 'our', 'ours', 'ourselves',\n        'you', 'your', 'yours', 'yourself', 'yourselves',\n        'he', 'him', 'his', 'himself',\n        'she', 'her', 'hers', 'herself',\n        'it', 'its', 'itself',\n        'they', 'them', 'their', 'theirs', 'themselves'\n    }\n    inclusive_count = sum(1 for w in words if w in inclusive_pronouns)\n    total_pronoun_count = sum(1 for w in words if w in all_pronouns)\n    if total_pronoun_count == 0:\n        return 0.0\n    ratio = inclusive_count / total_pronoun_count\n    score = min(ratio, 1.0)\n    return round(score, 4)"
+        },
+        {
+          "scorer_id": "S3",
+          "hypothesis": "Empathy requires both emotional acknowledgment AND inclusive pronoun use together; neither alone is sufficient. A gated interaction score rewards texts that demonstrate both features simultaneously, capturing the full empathetic communication pattern.",
+          "causal_nodes_used": [
+            "emotional acknowledgment",
+            "inclusive pronoun use"
+          ],
+          "functional_form": "interaction",
+          "code": "def scorer(text, anchor, params):\n    import re\n    # Component 1: Emotional acknowledgment via validating phrases\n    validating_phrases = [\n        'i understand', 'i hear you', 'that makes sense', 'i can imagine',\n        'you must feel', 'you must be', 'i can see why', 'it sounds like',\n        'that sounds', 'i believe you', 'that must be', 'i am sorry you',\n        \"i'm sorry you\", 'i can understand', 'your feelings'\n    ]\n    text_lower = text.lower()\n    word_count = max(len(re.findall(r'\\b\\w+\\b', text_lower)), 1)\n    phrase_count = sum(len(re.findall(re.escape(p), text_lower)) for p in validating_phrases)\n    ack_score = min(phrase_count / max(word_count / 60.0, 1.0), 1.0)\n    # Component 2: Inclusive pronoun ratio\n    words = re.findall(r'\\b\\w+\\b', text_lower)\n    inclusive_pronouns = {'we', 'us', 'our', 'ours', 'you', 'your', 'yours', 'yourself'}\n    all_pronouns = {\n        'i', 'me', 'my', 'mine', 'we', 'us', 'our', 'ours',\n        'you', 'your', 'yours', 'yourself', 'he', 'him', 'his',\n        'she', 'her', 'hers', 'they', 'them', 'their'\n    }\n    inc_count = sum(1 for w in words if w in inclusive_pronouns)\n    total_pron = sum(1 for w in words if w in all_pronouns)\n    pronoun_score = inc_count / total_pron if total_pron > 0 else 0.0\n    pronoun_score = min(pronoun_score, 1.0)\n    # Interaction: geometric mean rewards both being high\n    if ack_score == 0 or pronoun_score == 0:\n        interaction = 0.0\n    else:\n        interaction = (ack_score * pronoun_score) ** 0.5\n    return round(interaction, 4)"
+        },
+        {
+          "scorer_id": "S4",
+          "hypothesis": "Empathy is penalized when the text is dominated by first-person singular self-focus (excessive 'I', 'me', 'my') at the expense of other-focused language, and boosted by emotional acknowledgment. This penalty-adjusted model captures the self-vs-other orientation critical to empathy.",
+          "causal_nodes_used": [
+            "emotional acknowledgment",
+            "inclusive pronoun use"
+          ],
+          "functional_form": "penalty",
+          "code": "def scorer(text, anchor, params):\n    import re\n    text_lower = text.lower()\n    words = re.findall(r'\\b\\w+\\b', text_lower)\n    total_words = max(len(words), 1)\n    # Base score: emotional acknowledgment phrases\n    validating_phrases = [\n        'i understand', 'i hear you', 'that makes sense', 'i can imagine',\n        'you must feel', 'you must be', 'i can see why', 'it sounds like',\n        'that sounds difficult', 'i believe you', 'that must be hard',\n        'i am sorry you', \"i'm sorry you\", 'i can understand how',\n        'your feelings are', 'it makes sense that'\n    ]\n    phrase_count = sum(len(re.findall(re.escape(p), text_lower)) for p in validating_phrases)\n    base_score = min(phrase_count / max(total_words / 50.0, 1.0), 1.0)\n    # Second-person direct address bonus\n    second_person = {'you', 'your', 'yours', 'yourself'}\n    sp_count = sum(1 for w in words if w in second_person)\n    sp_bonus = min(sp_count / (total_words / 10.0), 0.3)\n    # Penalty: excessive first-person singular self-focus\n    first_person_singular = {'i', 'me', 'my', 'mine', 'myself'}\n    fp_count = sum(1 for w in words if w in first_person_singular)\n    other_focused = {'you', 'your', 'we', 'us', 'our'}\n    of_count = sum(1 for w in words if w in other_focused)\n    self_focus_ratio = fp_count / max(fp_count + of_count, 1)\n    penalty = max(0.0, self_focus_ratio - 0.6) * 0.5\n    final_score = max(0.0, min(base_score + sp_bonus - penalty, 1.0))\n    return round(final_score, 4)"
+        }
+      ]
+    },
+    "stage5": {
+      "pairs": [
+        {
+          "pair_id": "P001",
+          "anchor": "Losing a job is hard. Many people go through this. It helps to update your resume and start networking right away.",
+          "positive": "Losing a job can feel devastating, and it's completely okay to grieve that loss. When you're ready, updating your resume and reaching out to your network can help you move forward.",
+          "negative": "Job loss is common. The practical steps are resume updates and networking. Most people recover quickly if they act fast.",
+          "split": "train",
+          "target_delta": "positive increases emotional acknowledgment and permission-giving; negative removes emotional language entirely",
+          "causal_nodes_tested": [
+            "N01",
+            "N02"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P002",
+          "anchor": "Leadership requires making tough decisions. Not everyone will agree with you, and that is part of the role.",
+          "positive": "Leadership means making hard calls, and we all know how isolating that can feel. Acknowledging the weight of those decisions\u2014and the people affected\u2014is what separates good leaders from great ones.",
+          "negative": "Leadership involves difficult decisions. Disagreement is expected. Effective leaders make the call and move on without second-guessing.",
+          "split": "train",
+          "target_delta": "positive adds shared emotional experience via inclusive pronouns and validates difficulty; negative is directive and emotionally flat",
+          "causal_nodes_tested": [
+            "N02",
+            "N03"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P003",
+          "anchor": "Burnout is affecting a lot of professionals right now. Setting boundaries and taking breaks can help manage it.",
+          "positive": "So many of us are feeling the weight of burnout right now\u2014you are not alone in this. Setting boundaries and protecting your rest are not luxuries; they are acts of self-respect you genuinely deserve.",
+          "negative": "Burnout is a documented workplace issue. Implementing boundary-setting protocols and scheduled breaks are evidence-based mitigation strategies professionals should adopt.",
+          "split": "train",
+          "target_delta": "positive uses inclusive pronouns, validates feelings, and affirms worth; negative depersonalizes with clinical language",
+          "causal_nodes_tested": [
+            "N01",
+            "N03"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P004",
+          "anchor": "Writing that connects with readers tends to perform better. Understanding your audience is a key part of that.",
+          "positive": "When we write with genuine curiosity about what our readers are feeling and struggling with, something shifts\u2014the words land differently. Understanding their world, not just their demographics, is where real connection begins.",
+          "negative": "High-performing content is audience-targeted. Demographic analysis and behavioral data should inform your writing strategy to maximize engagement metrics.",
+          "split": "validation",
+          "target_delta": "positive uses first-person plural, emotional language, and reader-centered framing; negative is analytical and metric-focused",
+          "causal_nodes_tested": [
+            "N03",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P005",
+          "anchor": "Navigating a crisis at work tests everyone involved. Staying calm and focused on solutions is important.",
+          "positive": "Crisis moments at work test us in ways we rarely anticipate, and it is okay to feel shaken. Staying grounded while also holding space for your team's stress is one of the most human things a leader can do.",
+          "negative": "Workplace crises require composed, solution-oriented leadership. Emotional reactions should be managed so that operational focus is maintained throughout the incident.",
+          "split": "train",
+          "target_delta": "positive normalizes emotional response and affirms team feelings; negative frames emotions as obstacles to manage",
+          "causal_nodes_tested": [
+            "N01",
+            "N02"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P006",
+          "anchor": "Sharing personal stories in posts can build trust with your audience. Authenticity tends to resonate with people.",
+          "positive": "When we share the moments that humbled us or scared us, we give others permission to feel the same. That vulnerability is not weakness\u2014it is the thread that stitches real trust between us and the people reading our words.",
+          "negative": "Personal storytelling is a proven content strategy. Authentic narratives increase audience trust scores and improve post engagement rates across platforms.",
+          "split": "validation",
+          "target_delta": "positive uses inclusive pronouns, emotional imagery, and affirms vulnerability; negative reframes authenticity as a performance metric",
+          "causal_nodes_tested": [
+            "N02",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        }
+      ]
+    },
+    "stage6": {
+      "scorer_evaluations": [
+        {
+          "scorer_id": "S0",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S1",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S2",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S3",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S4",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        }
+      ],
+      "pareto_frontier": [],
+      "summary": {
+        "total_evaluated": 5,
+        "eligible": 0,
+        "pareto_size": 0
+      }
+    },
+    "stage7": {
+      "failure_patterns": [
+        {
+          "pattern_id": "FP01",
+          "scorer_ids": [
+            "S0",
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "reasoning_error": "Complete evaluation failure: all scorers report zero pairs_evaluated, indicating no comparisons were made. This suggests a pipeline-level failure upstream of scoring \u2014 likely a data ingestion error, empty candidate pool, or prompt generation failure that produced no scoreable outputs for the 'empathetic' target.",
+          "severity": "high"
+        },
+        {
+          "pattern_id": "FP02",
+          "scorer_ids": [
+            "S0",
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "reasoning_error": "All scorers are non-constant=false and eligible=false with zero accuracy and zero mean_gap, resulting in an empty Pareto frontier. No scorer was able to distinguish empathetic from non-empathetic responses, possibly due to ambiguous or missing rubric criteria for the 'empathetic' dimension, or scorer prompts that do not operationalize empathy with sufficient specificity.",
+          "severity": "high"
+        },
+        {
+          "pattern_id": "FP03",
+          "scorer_ids": [
+            "S0",
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "reasoning_error": "Zero train_mean_gap and heldout_mean_gap across all scorers indicates scorers are producing identical or null scores for all candidates, suggesting the scoring rubric may be collapsing all responses to the same value or the scorer model is not receiving valid input.",
+          "severity": "medium"
+        }
+      ],
+      "mutation_instructions": [
+        {
+          "instruction_id": "MI01",
+          "targets_failure_patterns": [
+            "FP01"
+          ],
+          "instruction": "Audit the data pipeline for the 'empathetic' target: verify that candidate response generation is producing non-empty output, that pair construction logic is correctly sampling and formatting (response_A, response_B) tuples, and that the scorer input queue is populated before evaluation begins. Add a pre-flight assertion that pairs_evaluated > 0 before proceeding.",
+          "expected_metric_movement": "pairs_evaluated should rise to at least the minimum batch size (e.g., \u226550 train pairs, \u226520 heldout pairs), unlocking non-zero accuracy and gap metrics."
+        },
+        {
+          "instruction_id": "MI02",
+          "targets_failure_patterns": [
+            "FP02"
+          ],
+          "instruction": "Rewrite the empathy scoring rubric with explicit, operationalized criteria: (1) acknowledgment of the user's emotional state, (2) validation without judgment, (3) use of first-person perspective-taking language, (4) absence of dismissive or purely informational responses. Provide 2\u20133 labeled anchor examples per score level in the scorer prompt to reduce scorer ambiguity.",
+          "expected_metric_movement": "train_accuracy should exceed 0.60 and train_mean_gap should exceed 0.15, enabling at least one scorer to reach eligibility threshold."
+        },
+        {
+          "instruction_id": "MI03",
+          "targets_failure_patterns": [
+            "FP02",
+            "FP03"
+          ],
+          "instruction": "Introduce contrastive pair diversity: ensure training pairs include high-contrast examples (e.g., a clearly empathetic response paired with a purely factual or cold response) alongside near-miss pairs. Aim for at least 30% of pairs to be high-contrast to establish a non-trivial score gap signal.",
+          "expected_metric_movement": "heldout_mean_gap should increase from 0.0 to \u22650.20, and at least one scorer should achieve nonconstant=true and eligible=true."
+        },
+        {
+          "instruction_id": "MI04",
+          "targets_failure_patterns": [
+            "FP03"
+          ],
+          "instruction": "Validate scorer model I/O: log raw scorer outputs before thresholding to detect if the model is returning null, malformed JSON, or a constant default value. If constant outputs are detected, switch to a chain-of-thought scoring format that requires the scorer to first identify empathetic signals before assigning a score.",
+          "expected_metric_movement": "Eliminates constant-output failure mode; train_mean_gap should become non-zero and scorers should become eligible for Pareto selection."
+        }
+      ],
+      "heldout_aggregate": {
+        "best_accuracy": 0,
+        "mean_gap_range": "0.0 \u2013 0.0"
+      }
+    },
+    "stage8": {
+      "error": "The read operation timed out"
+    }
+  }
+}

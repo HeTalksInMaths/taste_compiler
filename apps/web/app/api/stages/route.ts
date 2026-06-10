@@ -165,11 +165,30 @@ export async function POST(request: Request) {
       result = parseJson(raw);
 
     } else if (stage === 4) {
-      // Stage 4: Scorer Hypotheses (LLM only)
-      const prevData = previous_output ? JSON.stringify(previous_output).slice(0, 2000) : '{}';
+      // Stage 4: Scorer Hypotheses (LLM only) — grounded in measurement research
+      const causalGraph = all_outputs?.stage2 ? JSON.stringify(all_outputs.stage2).slice(0, 1500) : '{}';
+      const measurementResearch = previous_output ? JSON.stringify(previous_output).slice(0, 2500) : '{}';
       const raw = await callBedrock(
-        'You are generating scorer hypotheses and Python functions. Return valid JSON only.',
-        `Generate 5 distinct scoring hypotheses for: ${target_variable}\n\nCausal graph: ${prevData}\n\nReturn JSON:\n{"target_variable":"${target_variable}","scorers":[{"scorer_id":"S0","hypothesis":"...","causal_nodes_used":["..."],"functional_form":"additive|interaction|gated|penalty","code":"def scorer(text, anchor, params):\\n    ...\\n    return score"}]}`,
+        'You are an NLP scorer architect. You design scoring functions that combine multiple measurable text features into a single quality score. Your scorers must be grounded in the measurement research — use the specific text features and implementation ideas provided. Return valid JSON only.',
+        `Design 5 distinct, sophisticated scoring functions for: "${target_variable}"
+
+CAUSAL GRAPH (what drives ${target_variable}):
+${causalGraph}
+
+MEASUREMENT RESEARCH (how to measure each causal node in text):
+${measurementResearch}
+
+REQUIREMENTS:
+- Each scorer MUST use at least 2-3 specific text features from the measurement research above
+- Scorers should combine features using non-trivial formulas (weighted interactions, gated thresholds, penalty terms)
+- Include at least one scorer that uses RATIO features (e.g., hedging_words / total_words)
+- Include at least one scorer that uses INTERACTION terms (e.g., feature_A * feature_B)
+- Include at least one scorer with a PENALTY gate (if X exceeds threshold, apply penalty)
+- The code should be implementable with regex, word lists, and basic NLP (no external models needed)
+- Each scorer should produce meaningfully different scores on high-quality vs low-quality text
+
+Return JSON:
+{"target_variable":"${target_variable}","scorers":[{"scorer_id":"S0","hypothesis":"1-2 sentences explaining the scoring theory","causal_nodes_used":["node1","node2"],"text_features_used":["specific feature from measurement research"],"functional_form":"additive|interaction|gated|penalty|composite","code":"def scorer(text, anchor=None, params=None):\\n    # Implementation using specific text features\\n    ...\\n    return score  # float 0-10"}]}`,
         8192
       );
       result = parseJson(raw);
@@ -283,15 +302,88 @@ Return JSON only:
       result = parseJson(raw);
 
     } else if (stage === 8) {
-      // Stage 8: Repair Scorer Generation (LLM)
+      // Stage 8: Repair Scorer Generation + Re-evaluation
       const failurePacket = previous_output as { failure_patterns?: Array<{ pattern_id: string }>; mutation_instructions?: Array<{ instruction: string }> };
-      const priorScorers = (all_outputs?.stage4 as { scorers?: Array<{ scorer_id: string; hypothesis: string }> })?.scorers || [];
+      const priorScorers = (all_outputs?.stage4 as { scorers?: Array<{ scorer_id: string; hypothesis: string; code: string }> })?.scorers || [];
+      const measurementResearch = all_outputs?.stage3 ? JSON.stringify(all_outputs.stage3).slice(0, 1500) : '';
+      const pairs = (all_outputs?.stage5 as { pairs?: Array<{ pair_id: string; anchor: string; positive: string; negative: string; split: string }> })?.pairs || [];
+
+      // Generate repair scorers with stronger prompt
       const raw = await callBedrock(
-        'You are generating repair scorers. Return valid JSON only.',
-        `Generate 3 repair scorers addressing these failure patterns:\nTarget: ${target_variable}\nFailure patterns: ${JSON.stringify(failurePacket?.failure_patterns)}\nMutation instructions: ${JSON.stringify(failurePacket?.mutation_instructions)}\nPrior scorers: ${priorScorers.slice(0, 3).map((s: { scorer_id: string; hypothesis: string }) => s.scorer_id + ': ' + s.hypothesis?.slice(0, 40)).join('; ')}\n\nReturn JSON:\n{"repair_scorers":[{"scorer_id":"R0","lineage":"repair","parent_scorer_ids":["S0"],"targets_failure_patterns":["FP01"],"hypothesis":"...","functional_form":"...","repair_strategy":"...","code":"def scorer(text, anchor, params):\\n    ...\\n    return score"}]}`,
+        'You are an NLP scorer repair specialist. You fix scorers that failed evaluation by redesigning their feature combinations. Use specific text features from the measurement research. Return valid JSON only.',
+        `Generate 3 repair scorers that fix the identified failure patterns.
+
+Target: ${target_variable}
+Failure patterns: ${JSON.stringify(failurePacket?.failure_patterns)}
+Mutation instructions: ${JSON.stringify(failurePacket?.mutation_instructions)}
+
+Prior scorers that failed:
+${priorScorers.slice(0, 3).map((s: { scorer_id: string; hypothesis: string; code: string }) => `${s.scorer_id}: ${s.hypothesis?.slice(0, 60)}\nCode: ${s.code?.slice(0, 200)}`).join('\n\n')}
+
+Measurement research (features to use):
+${measurementResearch}
+
+REQUIREMENTS:
+- Each repair scorer MUST address a specific failure pattern
+- Use DIFFERENT feature combinations than the failed scorers
+- Include more sophisticated signal combinations (interactions, thresholds, ratios)
+- The code must be implementable with regex and word lists
+
+Return JSON:
+{"repair_scorers":[{"scorer_id":"R0","lineage":"repair","parent_scorer_ids":["S0"],"targets_failure_patterns":["FP01"],"hypothesis":"...","functional_form":"...","repair_strategy":"what was changed and why","text_features_used":["..."],"code":"def scorer(text, anchor=None, params=None):\\n    ...\\n    return score"}]}`,
         8192
       );
-      result = parseJson(raw);
+      const repairResult = parseJson(raw) as { repair_scorers?: Array<{ scorer_id: string; hypothesis: string; code: string }> };
+
+      // Re-evaluate repair scorers against the same pairs from Stage 5
+      const callLLM = AI_GATEWAY_API_KEY ? callAIGateway : callBedrock;
+      const repairEvals = [];
+
+      if (pairs.length > 0 && repairResult?.repair_scorers) {
+        for (const scorer of repairResult.repair_scorers) {
+          const evalPrompt = `You are evaluating a text scorer. For each pair, the scorer should assign a HIGHER score to the "positive" text and a LOWER score to the "negative" text.
+
+Scorer: ${scorer.scorer_id}
+Hypothesis: ${scorer.hypothesis}
+${scorer.code ? `Code logic:\n${scorer.code.slice(0, 500)}` : ''}
+
+Evaluate on these pairs. For each pair, score both positive and negative on a 0-10 scale according to the scorer's logic.
+
+Pairs:
+${pairs.map(p => `${p.pair_id}: anchor="${(p.anchor || '').slice(0, 80)}" positive="${(p.positive || '').slice(0, 80)}" negative="${(p.negative || '').slice(0, 80)}"`).join('\n')}
+
+Return JSON only:
+{"scores":[{"pair_id":"...","positive_score":0,"negative_score":0}]}`;
+
+          try {
+            const evalRaw = await callLLM('You are a precise text evaluator. Return valid JSON only.', evalPrompt, 2048);
+            const parsed = parseJson(evalRaw) as { scores: Array<{ pair_id: string; positive_score: number; negative_score: number }> };
+            const scores = parsed.scores || [];
+            const correct = scores.filter(s => s.positive_score > s.negative_score).length;
+            const gaps = scores.map(s => s.positive_score - s.negative_score);
+            const accuracy = scores.length > 0 ? correct / scores.length : 0;
+            const meanGap = gaps.length > 0 ? gaps.reduce((a, b) => a + b, 0) / gaps.length : 0;
+            repairEvals.push({ scorer_id: scorer.scorer_id, accuracy: +accuracy.toFixed(3), mean_gap: +meanGap.toFixed(2), pairs_evaluated: scores.length });
+          } catch {
+            repairEvals.push({ scorer_id: scorer.scorer_id, accuracy: 0, mean_gap: 0, pairs_evaluated: 0 });
+          }
+        }
+      }
+
+      // Compare with original Stage 6 results
+      const stage6Evals = (all_outputs?.stage6 as { scorer_evaluations?: Array<{ scorer_id: string; heldout_accuracy: number; heldout_mean_gap: number }> })?.scorer_evaluations || [];
+      const bestOriginal = stage6Evals.length > 0 ? stage6Evals.reduce((best, e) => e.heldout_mean_gap > best.heldout_mean_gap ? e : best, stage6Evals[0]) : null;
+      const bestRepair = repairEvals.length > 0 ? repairEvals.reduce((best, e) => e.mean_gap > best.mean_gap ? e : best, repairEvals[0]) : null;
+
+      result = {
+        repair_scorers: repairResult?.repair_scorers || [],
+        repair_evaluations: repairEvals,
+        comparison: {
+          best_original: bestOriginal ? { scorer_id: bestOriginal.scorer_id, accuracy: bestOriginal.heldout_accuracy, gap: bestOriginal.heldout_mean_gap } : null,
+          best_repair: bestRepair ? { scorer_id: bestRepair.scorer_id, accuracy: bestRepair.accuracy, gap: bestRepair.mean_gap } : null,
+          improvement: bestOriginal && bestRepair ? +(bestRepair.mean_gap - bestOriginal.heldout_mean_gap).toFixed(2) : null,
+        },
+      };
     }
 
     return NextResponse.json({ stage, target_variable, result, search_results, model: MODEL_ID });

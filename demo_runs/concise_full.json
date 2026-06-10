@@ -1,0 +1,724 @@
+{
+  "target": "concise",
+  "ref_text": "The comprehensive integration of multi-modal analytics with our proprietary machine learning algorithms enables unprecedented insights into user behavior patterns across platforms.",
+  "stages": {
+    "stage1": {
+      "target_variable": "perceived_conciseness",
+      "causal_research": [
+        {
+          "source_id": "SRC_001",
+          "claim": "Linguistic compression techniques such as noun phrase compaction, clause reduction, and deletion of redundant modifiers directly increase perceived conciseness in summaries.",
+          "causal_variable": "linguistic_compression",
+          "effect_direction": "increases",
+          "mechanism": "Removing syntactic redundancy reduces word count while preserving core meaning, making text feel tighter and more efficient to readers.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_002",
+          "claim": "Presence of verbose constructions such as nominalizations, pleonasms, and circumlocutions decreases perceived conciseness.",
+          "causal_variable": "verbose_constructions",
+          "effect_direction": "decreases",
+          "mechanism": "Inflated phrasing adds syllables and tokens without informational gain, causing readers to judge text as unnecessarily long.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_003",
+          "claim": "Constrained paraphrase generation that enforces a target length reduction increases perceived conciseness without sacrificing meaning.",
+          "causal_variable": "length_constraint",
+          "effect_direction": "increases",
+          "mechanism": "Hard token-budget constraints force lexical substitution and clause merging, yielding shorter surface forms that readers rate as more concise.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_004",
+          "claim": "Brevity in social media posts causally increases engagement metrics, suggesting brevity is perceived as a positive stylistic quality including conciseness.",
+          "causal_variable": "message_brevity",
+          "effect_direction": "increases",
+          "mechanism": "Shorter posts reduce cognitive load and signal communicative efficiency, which readers interpret as concise and well-crafted.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_005",
+          "claim": "Content appropriateness relative to an imposed length constraint moderates whether brevity is perceived as conciseness versus incompleteness.",
+          "causal_variable": "content_to_length_fit",
+          "effect_direction": "moderates",
+          "mechanism": "When information density matches the length budget, readers perceive the text as concise; when content is under-specified relative to length, they perceive it as laconic or incomplete.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_006",
+          "claim": "Deletion of low-salience information (e.g., background details, hedges) during simplification increases perceived conciseness.",
+          "causal_variable": "low_salience_deletion",
+          "effect_direction": "increases",
+          "mechanism": "Removing peripheral content raises the ratio of core information to total words, which readers use as a heuristic for judging conciseness.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_007",
+          "claim": "Syntactic complexity and embedded clause depth decrease perceived conciseness even when raw word count is held constant.",
+          "causal_variable": "syntactic_complexity",
+          "effect_direction": "decreases",
+          "mechanism": "Deep syntactic nesting increases processing effort, making text feel verbose regardless of its actual length.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_008",
+          "claim": "Reader familiarity with domain vocabulary increases perceived conciseness because technical terms compress multi-word concepts into single tokens.",
+          "causal_variable": "domain_vocabulary_familiarity",
+          "effect_direction": "increases",
+          "mechanism": "Shared terminology allows writers to omit definitional expansions; readers who recognize terms experience the text as efficiently packed rather than cryptic.",
+          "evidence_strength": "low"
+        }
+      ],
+      "research_tensions": [
+        {
+          "claim": "Brevity (fewer words) is treated as both a cause of conciseness (SRC_004) and merely a moderating condition contingent on content fit (SRC_005), creating ambiguity about whether word count alone drives conciseness perception or whether informational completeness must be jointly satisfied.",
+          "variables": [
+            "message_brevity",
+            "content_to_length_fit"
+          ]
+        },
+        {
+          "claim": "Linguistic compression via deletion increases conciseness (SRC_001, SRC_006), yet deleting too much content risks being perceived as laconic or incomplete (SRC_005), suggesting the same deletion operation can either increase or decrease perceived conciseness depending on what is deleted.",
+          "variables": [
+            "linguistic_compression",
+            "low_salience_deletion"
+          ]
+        }
+      ]
+    },
+    "stage2": {
+      "target_variable": "concise",
+      "causal_nodes": [
+        {
+          "node_id": "N1",
+          "label": "linguistic_compression",
+          "role": "increases",
+          "definition": "Use of noun phrase compaction, clause reduction, and deletion of redundant modifiers to tighten text.",
+          "mechanism": "Removing syntactic redundancy reduces word count while preserving core meaning, making text feel tighter and more efficient to readers."
+        },
+        {
+          "node_id": "N2",
+          "label": "verbose_constructions",
+          "role": "decreases",
+          "definition": "Presence of nominalizations, pleonasms, and circumlocutions that inflate phrasing without informational gain.",
+          "mechanism": "Inflated phrasing adds syllables and tokens without informational gain, causing readers to judge text as unnecessarily long."
+        },
+        {
+          "node_id": "N3",
+          "label": "length_constraint",
+          "role": "increases",
+          "definition": "Imposed token-budget or word-count limits that force shorter surface forms during generation or editing.",
+          "mechanism": "Hard token-budget constraints force lexical substitution and clause merging, yielding shorter surface forms that readers rate as more concise."
+        },
+        {
+          "node_id": "N4",
+          "label": "message_brevity",
+          "role": "increases",
+          "definition": "Overall shortness of a message or post relative to the information communicated.",
+          "mechanism": "Shorter posts reduce cognitive load and signal communicative efficiency, which readers interpret as concise and well-crafted."
+        },
+        {
+          "node_id": "N5",
+          "label": "content_to_length_fit",
+          "role": "moderates",
+          "definition": "The degree to which information density matches the length budget of a text.",
+          "mechanism": "When information density matches the length budget, readers perceive the text as concise; when content is under-specified relative to length, they perceive it as laconic or incomplete."
+        },
+        {
+          "node_id": "N6",
+          "label": "low_salience_deletion",
+          "role": "increases",
+          "definition": "Deliberate removal of peripheral, low-importance content such as background details and hedges.",
+          "mechanism": "Removing peripheral content raises the ratio of core information to total words, which readers use as a heuristic for judging conciseness."
+        },
+        {
+          "node_id": "N7",
+          "label": "syntactic_complexity",
+          "role": "decreases",
+          "definition": "Degree of embedded clause depth and nested syntactic structures within a text.",
+          "mechanism": "Deep syntactic nesting increases processing effort, making text feel verbose regardless of its actual word count."
+        },
+        {
+          "node_id": "N8",
+          "label": "perceived_conciseness",
+          "role": "mediates",
+          "definition": "A reader's subjective judgment that a text efficiently conveys its intended meaning without unnecessary length or elaboration.",
+          "mechanism": "Aggregates signals from word count, syntactic structure, information density, and stylistic choices to form an overall conciseness impression."
+        }
+      ],
+      "causal_edges": [
+        {
+          "from": "N1",
+          "to": "N8",
+          "relationship": "increases",
+          "claim": "Linguistic compression techniques such as noun phrase compaction, clause reduction, and deletion of redundant modifiers directly increase perceived conciseness in summaries."
+        },
+        {
+          "from": "N2",
+          "to": "N8",
+          "relationship": "decreases",
+          "claim": "Presence of verbose constructions such as nominalizations, pleonasms, and circumlocutions decreases perceived conciseness."
+        },
+        {
+          "from": "N3",
+          "to": "N8",
+          "relationship": "increases",
+          "claim": "Constrained paraphrase generation that enforces a target length reduction increases perceived conciseness without sacrificing meaning."
+        },
+        {
+          "from": "N3",
+          "to": "N4",
+          "relationship": "increases",
+          "claim": "Length constraints directly produce shorter messages by forcing lexical and syntactic compression."
+        },
+        {
+          "from": "N4",
+          "to": "N8",
+          "relationship": "increases",
+          "claim": "Brevity in social media posts causally increases engagement metrics, suggesting brevity is perceived as a positive stylistic quality including conciseness."
+        },
+        {
+          "from": "N5",
+          "to": "N8",
+          "relationship": "moderates",
+          "claim": "Content appropriateness relative to an imposed length constraint moderates whether brevity is perceived as conciseness versus incompleteness."
+        },
+        {
+          "from": "N5",
+          "to": "N4",
+          "relationship": "moderates",
+          "claim": "The fit between content and length determines whether a brief message is read as concise or as lacking necessary detail."
+        },
+        {
+          "from": "N6",
+          "to": "N8",
+          "relationship": "increases",
+          "claim": "Deletion of low-salience information during simplification increases perceived conciseness by raising the core-information-to-word ratio."
+        },
+        {
+          "from": "N6",
+          "to": "N4",
+          "relationship": "increases",
+          "claim": "Removing peripheral content reduces overall message length, contributing to brevity."
+        },
+        {
+          "from": "N7",
+          "to": "N8",
+          "relationship": "decreases",
+          "claim": "Syntactic complexity and embedded clause depth decrease perceived conciseness even when raw word count is held constant."
+        },
+        {
+          "from": "N1",
+          "to": "N7",
+          "relationship": "decreases",
+          "claim": "Linguistic compression reduces clause depth and nesting, thereby lowering syntactic complexity."
+        },
+        {
+          "from": "N2",
+          "to": "N7",
+          "relationship": "increases",
+          "claim": "Verbose constructions often involve embedded clauses and nominalized phrases that increase syntactic complexity."
+        }
+      ],
+      "causal_tensions": [
+        {
+          "claim": "Message brevity unconditionally increases perceived conciseness (SRC_004) versus content-to-length fit moderating this relationship (SRC_005): a very short message may be perceived as incomplete or laconic rather than concise if the content is under-specified, meaning brevity alone is insufficient.",
+          "nodes": [
+            "N4",
+            "N5",
+            "N8"
+          ]
+        },
+        {
+          "claim": "Low-salience deletion increases conciseness (SRC_006) by removing peripheral content, but if deletion removes too much context, content-to-length fit worsens (SRC_005), potentially undermining the conciseness gain and introducing a perception of incompleteness.",
+          "nodes": [
+            "N6",
+            "N5",
+            "N8"
+          ]
+        },
+        {
+          "claim": "Length constraints increase perceived conciseness (SRC_003) by forcing compression, yet syntactic complexity can remain high even under tight word limits (SRC_007), meaning token reduction alone may not produce a conciseness perception if nesting is preserved.",
+          "nodes": [
+            "N3",
+            "N7",
+            "N8"
+          ]
+        }
+      ],
+      "summary_theory": "Perceived conciseness is a multi-dimensional reader judgment shaped by at least four distinct causal pathways. First, linguistic compression (N1) directly reduces surface redundancy and also lowers syntactic complexity (N7), both of which raise conciseness ratings. Second, verbose constructions (N2) act as an opposing force, adding tokens and nesting without informational benefit, suppressing conciseness. Third, imposed length constraints (N3) drive brevity (N4), which in turn signals communicative efficiency to readers; however, this pathway is moderated by content-to-length fit (N5): brevity is only read as conciseness when information density is appropriate\u2014too little content for the space yields a perception of incompleteness rather than conciseness. Fourth, low-salience deletion (N6) elevates the ratio of core information to total words, increasing both brevity and conciseness, but risks crossing the threshold where fit deteriorates. Syntactic complexity (N7) acts as an independent drag on conciseness perception even when word count is controlled, highlighting that structural processing effort matters independently of length. The central tension in the graph is that brevity and conciseness are correlated but not identical: conciseness requires that the content-to-length fit be maintained, making N5 a critical moderating node that determines whether compression strategies are perceived as efficient communication or as inadequate coverage."
+    },
+    "stage3": {
+      "target_variable": "concise",
+      "measurement_research": [
+        {
+          "causal_node": "linguistic_compression",
+          "measurement_claim": "Linguistic compression can be measured by identifying deletion, fusion, and substitution operations that reduce surface form while preserving meaning, as studied in single-sentence human-written summaries (EMNLP 2023). Higher compression ratios with preserved semantic content indicate greater conciseness.",
+          "text_features": [
+            "compression ratio (source length / summary length)",
+            "deletion rate of non-head tokens",
+            "syntactic fusion frequency",
+            "paraphrase substitution density",
+            "dependency arc reduction count"
+          ],
+          "implementation_ideas": [
+            "Use constituency or dependency parsers to detect clause merging and ellipsis",
+            "Align source and compressed text using token-level edit distance to classify compression operations",
+            "Train a sequence labeling model to tag compression operations (delete, keep, paraphrase) following EMNLP 2023 annotation scheme",
+            "Compute semantic similarity (e.g., BERTScore) between original and compressed form to verify meaning preservation alongside compression"
+          ]
+        },
+        {
+          "causal_node": "verbose_constructions",
+          "measurement_claim": "Verbose constructions such as pleonasms, circumlocutions, and redundant modifiers can be detected computationally as surface patterns that increase length without adding information, reducing conciseness.",
+          "text_features": [
+            "frequency of expletive constructions (e.g., 'it is the case that')",
+            "rate of nominalization (verb-to-noun conversion inflating length)",
+            "passive voice frequency",
+            "hedge phrase density (e.g., 'in order to', 'due to the fact that')",
+            "prepositional phrase stacking count"
+          ],
+          "implementation_ideas": [
+            "Build a regex and POS-tag based lexicon of known verbose phrases and compute their frequency per 100 words",
+            "Use dependency parsing to detect nominalization patterns (deverbal nouns with light verbs)",
+            "Compare sentence length against a paraphrased shorter equivalent generated by a summarization model to estimate verbosity surplus",
+            "Fine-tune a classifier on verbose vs. concise sentence pairs from style transfer datasets"
+          ]
+        },
+        {
+          "causal_node": "length_constraint",
+          "measurement_claim": "The degree to which a text conforms to an implicit or explicit length constraint can be modeled computationally, as explored in 'Verbose, Laconic or Just Right' (EACL), where content appropriateness under length constraints is formalized. Deviation from expected length given communicative goal signals poor conciseness.",
+          "text_features": [
+            "token count relative to genre-expected length norms",
+            "sentence length variance across document",
+            "ratio of actual length to minimum length needed to convey core propositions",
+            "over-length penalty score relative to task-specific length budget"
+          ],
+          "implementation_ideas": [
+            "Estimate minimum sufficient length by extracting core propositions via semantic role labeling and measuring their surface length",
+            "Compute z-score of document length against genre-stratified corpus norms",
+            "Use the 'Verbose, Laconic or Just Right' model to score content appropriateness given a length budget",
+            "Apply information-theoretic measures to quantify bits of information per token as a length efficiency score"
+          ]
+        },
+        {
+          "causal_node": "message_brevity",
+          "measurement_claim": "Message brevity refers to the absolute and relative shortness of the communicative unit. It can be measured by surface length metrics normalized by communicative content density.",
+          "text_features": [
+            "word count per proposition",
+            "average sentence length in tokens",
+            "type-token ratio as proxy for lexical efficiency",
+            "syllable count per content word",
+            "ratio of function words to content words"
+          ],
+          "implementation_ideas": [
+            "Extract propositions using OpenIE or SRL and divide total word count by proposition count",
+            "Compute function-to-content word ratio using POS tagging (NN, VB, JJ, RB as content; DT, IN, CC as function)",
+            "Use readability formulas (Flesch-Kincaid) adapted for brevity rather than readability",
+            "Compare brevity scores across matched documents with identical propositional content using paraphrase corpora"
+          ]
+        },
+        {
+          "causal_node": "content_to_length_fit",
+          "measurement_claim": "Content-to-length fit measures how efficiently the text encodes its informational content relative to its surface length. This aligns with Kolmogorov complexity intuitions (LiLT 2014) where shorter descriptions of the same content signal higher efficiency.",
+          "text_features": [
+            "information density (bits per word using language model surprisal)",
+            "Kolmogorov complexity approximation via compression ratio (e.g., gzip compressed size / raw size)",
+            "semantic content coverage per token (e.g., unique named entities per 100 tokens)",
+            "surprisal-based redundancy score from n-gram or neural LM"
+          ],
+          "implementation_ideas": [
+            "Approximate Kolmogorov complexity using lossless compression algorithms (gzip, bzip2) on tokenized text and compute compressed-to-raw ratio",
+            "Use a pretrained language model (GPT-2, LLaMA) to compute per-token surprisal and average across document as information density",
+            "Extract unique semantic units (entities, events, relations) and divide by token count for content density",
+            "Correlate compression ratio with human conciseness ratings to validate as a proxy measure"
+          ]
+        },
+        {
+          "causal_node": "low_salience_deletion",
+          "measurement_claim": "Concise texts systematically omit low-salience information (background details, redundant elaborations). NLP can measure the degree to which a text retains only high-salience content by comparing retained content against salience rankings.",
+          "text_features": [
+            "proportion of sentences containing only high-TF-IDF terms",
+            "rate of appositive and parenthetical clauses (low-salience elaborations)",
+            "coreference chain length as proxy for redundant re-mention",
+            "discourse relation frequency for elaboration vs. nucleus relations"
+          ],
+          "implementation_ideas": [
+            "Use extractive summarization salience scores (e.g., TextRank, BertSum) to rank sentences and measure what proportion of low-salience sentences are present",
+            "Apply RST (Rhetorical Structure Theory) parsing to identify and count satellite (low-salience) vs. nucleus clauses",
+            "Detect appositive and relative clause frequency via dependency parsing as markers of elaboration",
+            "Measure coreference chain redundancy using NeuralCoref or SpanBERT-based coref resolution"
+          ]
+        },
+        {
+          "causal_node": "syntactic_complexity",
+          "measurement_claim": "Syntactic complexity inversely relates to conciseness when complexity arises from embedding and elaboration rather than information packing. Construction grammar complexity models (arXiv 1904.05588) and through-the-compression-glass frameworks link syntactic elaboration to reduced conciseness.",
+          "text_features": [
+            "mean dependency distance",
+            "depth of syntactic parse tree",
+            "frequency of embedded subordinate clauses",
+            "count of non-projective dependency arcs",
+            "construction type diversity using construction grammar inventory"
+          ],
+          "implementation_ideas": [
+            "Parse text with spaCy or Stanford CoreNLP and compute mean dependency distance and tree depth per sentence",
+            "Count subordinating conjunctions and relative pronouns as proxies for clause embedding",
+            "Use construction grammar complexity metrics from arXiv 1904.05588 to score construction inventory size and redundancy",
+            "Correlate parse tree depth with human conciseness ratings to establish threshold values"
+          ]
+        },
+        {
+          "causal_node": "perceived_conciseness",
+          "measurement_claim": "Perceived conciseness is the human judgment outcome and can be modeled by training regressors on annotated conciseness ratings using combinations of the above features, or by using pretrained LLMs as proxy raters.",
+          "text_features": [
+            "human conciseness rating scores from annotation studies",
+            "LLM-based conciseness scoring via zero-shot or few-shot prompting",
+            "composite feature vector from length, compression, verbosity, and salience metrics",
+            "pairwise preference judgments between text variants of varying length"
+          ],
+          "implementation_ideas": [
+            "Collect human conciseness ratings via crowdsourcing (e.g., Mechanical Turk) on a Likert scale and train a regression model on extracted features",
+            "Prompt GPT-4 or similar LLM with a conciseness rubric and collect scores as silver-standard labels",
+            "Train a fine-tuned BERT/RoBERTa classifier on concise vs. verbose sentence pairs from existing style transfer datasets",
+            "Use pairwise ranking models (e.g., Bradley-Terry) on human preference data to produce continuous conciseness scores"
+          ]
+        }
+      ]
+    },
+    "stage4": {
+      "target_variable": "concise",
+      "scorers": [
+        {
+          "scorer_id": "S0",
+          "hypothesis": "Conciseness is inversely related to text length normalized by information content. Shorter texts that preserve semantic density are more concise. We measure this as the ratio of unique content words to total words, penalized by absolute length beyond a threshold.",
+          "causal_nodes_used": [
+            "linguistic_compression"
+          ],
+          "functional_form": "penalty",
+          "code": "def scorer(text, anchor, params):\n    import re\n    import math\n\n    length_threshold = params.get('length_threshold', 150)\n    penalty_weight = params.get('penalty_weight', 0.5)\n\n    words = re.findall(r'\\b[a-zA-Z]+\\b', text.lower())\n    if not words:\n        return 0.0\n\n    stopwords = set([\n        'the','a','an','is','are','was','were','be','been','being',\n        'have','has','had','do','does','did','will','would','could',\n        'should','may','might','shall','can','to','of','in','for',\n        'on','with','at','by','from','as','it','its','this','that',\n        'these','those','and','or','but','not','so','if','then',\n        'than','there','their','they','we','you','he','she','i','my',\n        'your','our','his','her','which','who','what','how','when'\n    ])\n\n    content_words = [w for w in words if w not in stopwords]\n    unique_content = set(content_words)\n\n    if len(words) == 0:\n        return 0.0\n\n    content_density = len(unique_content) / len(words)\n\n    length_penalty = 0.0\n    if len(words) > length_threshold:\n        excess = len(words) - length_threshold\n        length_penalty = penalty_weight * math.log1p(excess) / math.log1p(length_threshold)\n\n    score = content_density - length_penalty\n    score = max(0.0, min(1.0, score))\n    return float(score)"
+        },
+        {
+          "scorer_id": "S1",
+          "hypothesis": "Verbose constructions such as hedge phrases, expletive constructions, and circumlocutions directly reduce conciseness. A text is more concise when it contains fewer such patterns per unit of text.",
+          "causal_nodes_used": [
+            "verbose_constructions"
+          ],
+          "functional_form": "penalty",
+          "code": "def scorer(text, anchor, params):\n    import re\n\n    verbose_patterns = params.get('verbose_patterns', [\n        r'\\bit is (the case|worth noting|important to note) that\\b',\n        r'\\bin order to\\b',\n        r'\\bdue to the fact that\\b',\n        r'\\bfor the purpose of\\b',\n        r'\\bat this point in time\\b',\n        r'\\bin the event that\\b',\n        r'\\bthe reason (why|for) is (that|because)\\b',\n        r'\\bit should be noted that\\b',\n        r'\\bas a matter of fact\\b',\n        r'\\bin spite of the fact that\\b',\n        r'\\bwhat I am trying to say\\b',\n        r'\\bbasically\\b',\n        r'\\bactually\\b',\n        r'\\bvery\\s+very\\b',\n        r'\\bcompletely and utterly\\b',\n        r'\\bfirst and foremost\\b',\n        r'\\bneedless to say\\b',\n        r'\\bto be honest with you\\b',\n        r'\\bthe fact of the matter is\\b',\n        r'\\bwhat this means is\\b'\n    ])\n\n    penalty_per_match = params.get('penalty_per_match', 0.08)\n    base_score = params.get('base_score', 1.0)\n\n    text_lower = text.lower()\n    total_matches = 0\n    for pattern in verbose_patterns:\n        matches = re.findall(pattern, text_lower)\n        total_matches += len(matches)\n\n    words = re.findall(r'\\b[a-zA-Z]+\\b', text_lower)\n    num_words = max(len(words), 1)\n\n    normalized_verbosity = total_matches / (num_words / 100.0)\n    score = base_score - (penalty_per_match * normalized_verbosity)\n    score = max(0.0, min(1.0, score))\n    return float(score)"
+        },
+        {
+          "scorer_id": "S2",
+          "hypothesis": "Conciseness emerges from the interaction between low redundancy (few repeated concepts) and high compression (short sentences relative to their syntactic complexity). Texts that are both non-redundant and syntactically compact score highest.",
+          "causal_nodes_used": [
+            "linguistic_compression",
+            "verbose_constructions"
+          ],
+          "functional_form": "interaction",
+          "code": "def scorer(text, anchor, params):\n    import re\n    import math\n\n    sentences = re.split(r'(?<=[.!?])\\s+', text.strip())\n    sentences = [s for s in sentences if len(s.strip()) > 0]\n\n    if not sentences:\n        return 0.0\n\n    words = re.findall(r'\\b[a-zA-Z]+\\b', text.lower())\n    if not words:\n        return 0.0\n\n    # Redundancy: measure repeated content words\n    stopwords = set(['the','a','an','is','are','was','were','be','been',\n                     'have','has','had','do','does','did','will','would',\n                     'to','of','in','for','on','with','at','by','from',\n                     'as','it','this','that','and','or','but','not'])\n    content_words = [w for w in words if w not in stopwords]\n    if not content_words:\n        return 0.0\n\n    word_counts = {}\n    for w in content_words:\n        word_counts[w] = word_counts.get(w, 0) + 1\n\n    repeated = sum(1 for v in word_counts.values() if v > 1)\n    redundancy_ratio = repeated / len(word_counts) if word_counts else 0\n    non_redundancy_score = 1.0 - redundancy_ratio\n\n    # Compression: avg words per sentence (lower is more compressed)\n    avg_sent_len = len(words) / len(sentences)\n    compression_score = 1.0 / (1.0 + math.log1p(max(0, avg_sent_len - 10)))\n\n    interaction_score = non_redundancy_score * compression_score\n    score = max(0.0, min(1.0, interaction_score))\n    return float(score)"
+        },
+        {
+          "scorer_id": "S3",
+          "hypothesis": "A concise text avoids nominalization and passive voice constructions that inflate length. We detect these via POS-tag heuristics: high rates of abstract nouns ending in -tion/-ness/-ment and passive auxiliaries indicate low conciseness.",
+          "causal_nodes_used": [
+            "verbose_constructions"
+          ],
+          "functional_form": "penalty",
+          "code": "def scorer(text, anchor, params):\n    import re\n\n    nominalization_suffixes = params.get('nominalization_suffixes',\n        ['tion', 'tions', 'ness', 'ment', 'ments', 'ity', 'ities',\n         'ance', 'ances', 'ence', 'ences', 'ism', 'isms'])\n\n    passive_patterns = params.get('passive_patterns', [\n        r'\\b(is|are|was|were|be|been|being)\\s+\\w+ed\\b',\n        r'\\b(is|are|was|were|be|been|being)\\s+\\w+en\\b',\n    ])\n\n    nom_penalty_weight = params.get('nom_penalty_weight', 0.4)\n    passive_penalty_weight = params.get('passive_penalty_weight', 0.3)\n\n    words = re.findall(r'\\b[a-zA-Z]+\\b', text.lower())\n    if not words:\n        return 0.0\n\n    num_words = len(words)\n\n    # Nominalization rate\n    nom_count = sum(\n        1 for w in words\n        if any(w.endswith(suffix) for suffix in nominalization_suffixes)\n        and len(w) > len(max(nominalization_suffixes, key=len)) + 2\n    )\n    nom_rate = nom_count / num_words\n\n    # Passive voice rate\n    text_lower = text.lower()\n    passive_count = 0\n    for pattern in passive_patterns:\n        passive_count += len(re.findall(pattern, text_lower))\n\n    sentences = re.split(r'(?<=[.!?])\\s+', text.strip())\n    num_sentences = max(len(sentences), 1)\n    passive_rate = passive_count / num_sentences\n\n    nom_penalty = nom_penalty_weight * min(nom_rate * 5, 1.0)\n    passive_penalty = passive_penalty_weight * min(passive_rate * 0.5, 1.0)\n\n    score = 1.0 - nom_penalty - passive_penalty\n    score = max(0.0, min(1.0, score))\n    return float(score)"
+        },
+        {
+          "scorer_id": "S4",
+          "hypothesis": "True conciseness is gated by meaning preservation: a text is only concise if it is both short AND semantically complete relative to the anchor. We use a gated scoring approach where brevity only contributes positively when semantic similarity to the anchor exceeds a threshold.",
+          "causal_nodes_used": [
+            "linguistic_compression",
+            "verbose_constructions"
+          ],
+          "functional_form": "gated",
+          "code": "def scorer(text, anchor, params):\n    import re\n    import math\n\n    similarity_threshold = params.get('similarity_threshold', 0.3)\n    ideal_length = params.get('ideal_length', 80)\n    length_sensitivity = params.get('length_sensitivity', 0.015)\n\n    def simple_token_overlap(t1, t2):\n        stopwords = set(['the','a','an','is','are','was','were','be','been',\n                         'have','has','had','do','does','did','will','would',\n                         'to','of','in','for','on','with','at','by','from',\n                         'as','it','this','that','and','or','but','not','i',\n                         'we','you','he','she','they','my','your','our'])\n        def get_tokens(s):\n            return set(w for w in re.findall(r'\\b[a-zA-Z]+\\b', s.lower())\n                       if w not in stopwords)\n        t1_tokens = get_tokens(t1)\n        t2_tokens = get_tokens(t2)\n        if not t1_tokens or not t2_tokens:\n            return 0.0\n        intersection = t1_tokens & t2_tokens\n        union = t1_tokens | t2_tokens\n        return len(intersection) / len(union)\n\n    if not anchor or not anchor.strip():\n        # No anchor: fall back to pure brevity scoring\n        words = re.findall(r'\\b[a-zA-Z]+\\b', text)\n        num_words = len(words)\n        if num_words == 0:\n            return 0.0\n        brevity_score = math.exp(-length_sensitivity * max(0, num_words - ideal_length))\n        return float(min(1.0, brevity_score))\n\n    semantic_sim = simple_token_overlap(text, anchor)\n\n    # Gate: if semantic similarity below threshold, conciseness is penalized\n    if semantic_sim < similarity_threshold:\n        gate = semantic_sim / similarity_threshold\n    else:\n        gate = 1.0\n\n    words = re.findall(r'\\b[a-zA-Z]+\\b', text)\n    num_words = len(words)\n    if num_words == 0:\n        return 0.0\n\n    brevity_score = math.exp(-length_sensitivity * max(0, num_words - ideal_length))\n\n    # Also penalize extremely short texts (< 5 words) as likely incomplete\n    if num_words < 5:\n        brevity_score *= (num_words / 5.0)\n\n    score = gate * brevity_score\n    score = max(0.0, min(1.0, score))\n    return float(score)"
+        }
+      ]
+    },
+    "stage5": {
+      "pairs": [
+        {
+          "pair_id": "P001",
+          "anchor": "Most job seekers spend hours tailoring their entire resume when really the summary is the only section recruiters read first.",
+          "positive": "Most job seekers over-tailor their resume. Recruiters only read the summary first.",
+          "negative": "It is worth noting that most job seekers tend to spend a significant amount of hours tailoring their entire resume, when in reality the summary section is really the only part that recruiters tend to read first.",
+          "split": "train",
+          "target_delta": "positive removes redundancy and hedging; negative adds expletives and hedge phrases",
+          "causal_nodes_tested": [
+            "N1",
+            "N2"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P002",
+          "anchor": "Your LinkedIn summary should show your value clearly and quickly so recruiters don't have to work to understand what you do.",
+          "positive": "Your LinkedIn summary must signal value instantly\u2014recruiters won't work to understand you.",
+          "negative": "It is generally a good idea to make sure that your LinkedIn summary is written in a way that shows your value clearly and quickly enough so that recruiters don't really have to put in a lot of work to understand what it is that you actually do.",
+          "split": "train",
+          "target_delta": "positive uses active construction and cuts filler; negative piles on hedges and expletives",
+          "causal_nodes_tested": [
+            "N1",
+            "N3"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P003",
+          "anchor": "90% of resume summaries say nothing because they use generic phrases like results-driven professional with strong communication skills.",
+          "positive": "90% of summaries fail. Phrases like 'results-driven professional' signal nothing to recruiters.",
+          "negative": "There is a well-known issue in resume writing where approximately 90% of resume summaries end up saying essentially nothing of substance because they tend to rely on very generic and overused phrases such as results-driven professional with strong communication skills.",
+          "split": "train",
+          "target_delta": "positive splits into tight sentences; negative adds expletive opener and redundant qualifiers",
+          "causal_nodes_tested": [
+            "N2",
+            "N4"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P004",
+          "anchor": "Shorter hooks win on social media because attention spans are compressed and people scroll past anything that doesn't land immediately.",
+          "positive": "Shorter hooks win. Compressed attention means anything slow gets scrolled past.",
+          "negative": "The reason why shorter hooks tend to win more often on social media platforms is basically because attention spans have become increasingly compressed over time, and people will generally scroll right past anything that doesn't seem to land immediately for them.",
+          "split": "validation",
+          "target_delta": "positive front-loads the claim and cuts causal padding; negative buries claim in subordinate clauses",
+          "causal_nodes_tested": [
+            "N1",
+            "N2"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P005",
+          "anchor": "Use a three-sentence resume summary formula: who you are, what you've achieved, and what you're looking for next.",
+          "positive": "Three sentences: who you are, your top achievement, your next goal.",
+          "negative": "One approach you might want to consider is using a formula that consists of three sentences for your resume summary, where the first sentence covers who you are, the second addresses what you have achieved, and the third explains what you are looking for in your next role.",
+          "split": "train",
+          "target_delta": "positive compresses the list and removes instructional scaffolding; negative expands each element with explanatory clauses",
+          "causal_nodes_tested": [
+            "N3",
+            "N4"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P006",
+          "anchor": "When formatting your resume for 2026, stop treating it like an archival document and start treating it like a marketing asset.",
+          "positive": "Stop archiving your resume. Format it as a marketing asset.",
+          "negative": "When you are thinking about how to go about formatting your resume for the year 2026, it is really important that you stop treating it like some kind of archival document and instead start treating it more like the kind of marketing asset that it should really be.",
+          "split": "validation",
+          "target_delta": "positive uses imperative voice and eliminates temporal framing; negative adds expletives and redundant qualifiers throughout",
+          "causal_nodes_tested": [
+            "N2",
+            "N3"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        }
+      ]
+    },
+    "stage6": {
+      "scorer_evaluations": [
+        {
+          "scorer_id": "S0",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S1",
+          "pairs_evaluated": 6,
+          "train_accuracy": 1,
+          "heldout_accuracy": 1,
+          "train_mean_gap": 6.5,
+          "heldout_mean_gap": 7.5,
+          "nonconstant": true,
+          "eligible": true,
+          "pareto_member": true
+        },
+        {
+          "scorer_id": "S2",
+          "pairs_evaluated": 6,
+          "train_accuracy": 1,
+          "heldout_accuracy": 1,
+          "train_mean_gap": 6.75,
+          "heldout_mean_gap": 7.5,
+          "nonconstant": true,
+          "eligible": true,
+          "pareto_member": true
+        },
+        {
+          "scorer_id": "S3",
+          "pairs_evaluated": 6,
+          "train_accuracy": 1,
+          "heldout_accuracy": 1,
+          "train_mean_gap": 6.25,
+          "heldout_mean_gap": 7,
+          "nonconstant": true,
+          "eligible": true,
+          "pareto_member": true
+        },
+        {
+          "scorer_id": "S4",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        }
+      ],
+      "pareto_frontier": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "summary": {
+        "total_evaluated": 5,
+        "eligible": 3,
+        "pareto_size": 3
+      }
+    },
+    "stage7": {
+      "failure_patterns": [
+        {
+          "pattern_id": "FP01",
+          "scorer_ids": [
+            "S0",
+            "S4"
+          ],
+          "reasoning_error": "Scorers evaluated zero pairs, producing constant zero outputs across all metrics. These scorers are non-functional \u2014 likely due to implementation errors such as missing scoring logic, early returns, or failures to parse inputs \u2014 rendering them ineligible and excluded from the Pareto frontier.",
+          "severity": "high"
+        },
+        {
+          "pattern_id": "FP02",
+          "scorer_ids": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "reasoning_error": "All Pareto-eligible scorers achieve perfect train and heldout accuracy (1.0), suggesting potential overfitting to a small evaluation set of only 6 pairs. With such a limited sample, perfect accuracy may not generalize, and the mean gap variance across scorers (train: 6.25\u20136.75, heldout: 7.0\u20137.5) is narrow, limiting discriminative power for selecting the best scorer.",
+          "severity": "low"
+        },
+        {
+          "pattern_id": "FP03",
+          "scorer_ids": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "reasoning_error": "Heldout mean gaps are uniformly higher than train mean gaps across all eligible scorers (S1: +1.0, S2: +0.75, S3: +0.75), indicating a systematic positive shift on heldout data. This may reflect distribution mismatch between train and heldout pairs or scorer sensitivity to unseen phrasing patterns associated with conciseness.",
+          "severity": "medium"
+        }
+      ],
+      "mutation_instructions": [
+        {
+          "instruction_id": "MI01",
+          "targets_failure_patterns": [
+            "FP01"
+          ],
+          "instruction": "Inspect S0 and S4 scorer implementations for silent failures: verify that input parsing, pair iteration, and scoring function invocations are all reachable code paths. Add explicit error logging and fallback return values. Re-run with a minimal smoke-test pair to confirm pairs_evaluated > 0 before full evaluation.",
+          "expected_metric_movement": "pairs_evaluated should increase from 0 to \u22656; nonconstant and eligible flags should become true, enabling Pareto consideration."
+        },
+        {
+          "instruction_id": "MI02",
+          "targets_failure_patterns": [
+            "FP02"
+          ],
+          "instruction": "Expand the evaluation set beyond 6 pairs by adding adversarial and borderline conciseness examples (e.g., responses differing by a single redundant clause). Introduce near-miss pairs where both candidates are moderately concise to stress-test scorer discrimination. Target at least 20\u201330 pairs to reduce the probability of spurious perfect accuracy.",
+          "expected_metric_movement": "Train and heldout accuracy expected to decrease slightly from 1.0 toward 0.85\u20130.95, with increased mean gap variance revealing true scorer differentiation."
+        },
+        {
+          "instruction_id": "MI03",
+          "targets_failure_patterns": [
+            "FP03"
+          ],
+          "instruction": "Audit the train/heldout pair split for distribution skew: ensure heldout pairs are drawn from the same conciseness contrast distribution as train pairs. If the gap shift persists, add calibration logic to normalize scorer outputs against a held-aside reference set, or apply temperature scaling to reduce systematic score inflation on heldout data.",
+          "expected_metric_movement": "Heldout mean gap should converge closer to train mean gap (delta < 0.25), reducing the train-heldout gap discrepancy from the current 0.75\u20131.0 range."
+        }
+      ],
+      "heldout_aggregate": {
+        "best_accuracy": 1,
+        "mean_gap_range": "7.0\u20137.5"
+      }
+    },
+    "stage8": {
+      "repair_scorers": [
+        {
+          "scorer_id": "R0",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S0"
+          ],
+          "targets_failure_patterns": [
+            "FP01"
+          ],
+          "hypothesis": "Conciseness is inversely related to text length normalized by informational content. A concise response conveys the same meaning with fewer words. By computing a ratio of word count to unique content words (excluding stopwords), we can estimate verbosity and score conciseness as its inverse.",
+          "functional_form": "score = 1 / (1 + alpha * (total_words / max(unique_content_words, 1) - 1))",
+          "repair_strategy": "Rewrite S0 from scratch with explicit input validation, guaranteed pair iteration, and a fallback return of 0.0 on any parse error. Add a smoke-test guard at function entry to confirm text is a non-empty string before proceeding.",
+          "code": "def scorer(text, anchor, params):\n    import re\n    import math\n\n    # --- Input validation / smoke-test guard ---\n    try:\n        if not isinstance(text, str) or not isinstance(anchor, str):\n            return 0.0\n        text = text.strip()\n        anchor = anchor.strip()\n        if len(text) == 0 or len(anchor) == 0:\n            return 0.0\n    except Exception:\n        return 0.0\n\n    # --- Parameters ---\n    alpha = float(params.get('alpha', 0.5)) if params else 0.5\n\n    STOPWORDS = {\n        'a','an','the','and','or','but','in','on','at','to','for','of','with',\n        'is','are','was','were','be','been','being','have','has','had','do',\n        'does','did','will','would','could','should','may','might','shall',\n        'that','this','these','those','it','its','i','you','he','she','we',\n        'they','their','them','our','your','my','his','her','not','no','so',\n        'as','by','from','up','out','if','about','into','than','then','there'\n    }\n\n    def compute_conciseness(t):\n        try:\n            words = re.findall(r'[a-zA-Z]+', t.lower())\n            if len(words) == 0:\n                return 0.5  # neutral fallback\n            content_words = [w for w in words if w not in STOPWORDS]\n            unique_content = set(content_words)\n            total = len(words)\n            unique_c = max(len(unique_content), 1)\n            # verbosity ratio: higher means more filler relative to content\n            verbosity = total / unique_c\n            # conciseness score in [0, 1]\n            score = 1.0 / (1.0 + alpha * max(verbosity - 1.0, 0.0))\n            return float(score)\n        except Exception:\n            return 0.0\n\n    try:\n        score_text = compute_conciseness(text)\n        score_anchor = compute_conciseness(anchor)\n        # Return relative conciseness: how much more concise text is vs anchor\n        delta = score_text - score_anchor\n        # Normalize to [0, 1] range\n        final_score = (delta + 1.0) / 2.0\n        return float(max(0.0, min(1.0, final_score)))\n    except Exception:\n        return 0.0"
+        },
+        {
+          "scorer_id": "R1",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S4"
+          ],
+          "targets_failure_patterns": [
+            "FP01",
+            "FP03"
+          ],
+          "hypothesis": "Conciseness can be measured by penalizing redundant clause structures, hedge phrases, and filler words relative to the anchor. A response is more concise if it expresses equivalent content with fewer syntactic units. Calibrating scores against the anchor distribution reduces systematic heldout inflation.",
+          "functional_form": "score = sigmoid(beta * (redundancy_anchor - redundancy_text)) calibrated by anchor baseline",
+          "repair_strategy": "Rebuild S4 with explicit iteration over the text/anchor pair, robust tokenization fallbacks, and a calibration step that anchors the output distribution to the anchor text's redundancy baseline. This addresses FP01 (zero pairs evaluated) and FP03 (heldout gap inflation) simultaneously.",
+          "code": "def scorer(text, anchor, params):\n    import re\n    import math\n\n    # --- Input validation ---\n    try:\n        if not isinstance(text, str) or not isinstance(anchor, str):\n            return 0.0\n        text = text.strip()\n        anchor = anchor.strip()\n        if not text or not anchor:\n            return 0.0\n    except Exception:\n        return 0.0\n\n    # --- Parameters ---\n    beta = float(params.get('beta', 2.0)) if params else 2.0\n    calibrate = bool(params.get('calibrate', True)) if params else True\n\n    HEDGE_PHRASES = [\n        r'\\bit seems\\b', r'\\bit appears\\b', r'\\bin other words\\b',\n        r'\\bbasically\\b', r'\\bessentially\\b', r'\\bactually\\b',\n        r'\\bjust\\b', r'\\bvery\\b', r'\\breally\\b', r'\\bquite\\b',\n        r'\\bsort of\\b', r'\\bkind of\\b', r'\\ba bit\\b', r'\\bsomewhat\\b',\n        r'\\bI think\\b', r'\\bI believe\\b', r'\\bI feel like\\b',\n        r'\\bif you will\\b', r'\\bso to speak\\b', r'\\bin a sense\\b',\n        r'\\bmore or less\\b', r'\\bperhaps\\b', r'\\bmaybe\\b'\n    ]\n\n    def count_redundancy(t):\n        try:\n            t_lower = t.lower()\n            # Count hedge phrases\n            hedge_count = sum(\n                len(re.findall(p, t_lower)) for p in HEDGE_PHRASES\n            )\n            # Count filler clause markers (e.g., 'that is', 'which is')\n            filler_clauses = len(re.findall(\n                r'\\b(that is|which is|who is|as well as|in addition to|furthermore|moreover|additionally)\\b',\n                t_lower\n            ))\n            # Sentence count\n            sentences = re.split(r'[.!?]+', t)\n            sentences = [s for s in sentences if s.strip()]\n            n_sentences = max(len(sentences), 1)\n            # Word count\n            words = re.findall(r'[a-zA-Z]+', t)\n            n_words = max(len(words), 1)\n            # Redundancy score: normalized by word count to be length-agnostic\n            redundancy = (hedge_count + filler_clauses) / math.log(n_words + 1)\n            return float(redundancy)\n        except Exception:\n            return 0.0\n\n    try:\n        r_text = count_redundancy(text)\n        r_anchor = count_redundancy(anchor)\n\n        # Raw difference: positive means text is less redundant (more concise)\n        raw_diff = r_anchor - r_text\n\n        # Calibration: normalize by anchor redundancy to reduce heldout inflation\n        if calibrate and r_anchor > 0:\n            raw_diff = raw_diff / (r_anchor + 1e-6)\n\n        # Sigmoid mapping to [0, 1]\n        score = 1.0 / (1.0 + math.exp(-beta * raw_diff))\n        return float(max(0.0, min(1.0, score)))\n    except Exception:\n        return 0.0"
+        },
+        {
+          "scorer_id": "R2",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "targets_failure_patterns": [
+            "FP02",
+            "FP03"
+          ],
+          "hypothesis": "A robust conciseness scorer must discriminate near-miss pairs (both candidates moderately concise) and borderline cases. By combining multiple orthogonal conciseness signals \u2014 sentence compression ratio, lexical density, and clause depth \u2014 and applying z-score calibration against the anchor, the scorer can generalize beyond the small training set and reduce heldout distribution shift.",
+          "functional_form": "score = sigmoid(w1*compression + w2*lexical_density + w3*clause_penalty) with z-score calibration",
+          "repair_strategy": "Merge the best discriminative features from S1 (hedge phrases), S2 (interaction-based density), and S3 into a multi-signal ensemble. Apply z-score normalization of the final score relative to the anchor to counteract the systematic positive shift on heldout data (FP03). Add adversarial near-miss sensitivity by weighting small differences more heavily near the decision boundary.",
+          "code": "def scorer(text, anchor, params):\n    import re\n    import math\n\n    # --- Input validation ---\n    try:\n        if not isinstance(text, str) or not isinstance(anchor, str):\n            return 0.0\n        text = text.strip()\n        anchor = anchor.strip()\n        if not text or not anchor:\n            return 0.0\n    except Exception:\n        return 0.0\n\n    # --- Parameters ---\n    w1 = float(params.get('w1', 0.4)) if params else 0.4  # compression\n    w2 = float(params.get('w2', 0.35)) if params else 0.35  # lexical density\n    w3 = float(params.get('w3', 0.25)) if params else 0.25  # clause penalty\n    temperature = float(params.get('temperature', 1.5)) if params else 1.5\n\n    STOPWORDS = {\n        'a','an','the','and','or','but','in','on','at','to','for','of','with',\n        'is','are','was','were','be','been','being','have','has','had','do',\n        'does','did','will','would','could','should','may','might','shall',\n        'that','this','these','those','it','its','i','you','he','she','we',\n        'they','their','them','our','your','my','his','her','not','no','so',\n        'as','by','from','up','out','if','about','into','than','then','there'\n    }\n\n    CLAUSE_MARKERS = re.compile(\n        r'\\b(which|that|who|whom|whose|although|because|since|while|'\n        r'however|therefore|furthermore|moreover|additionally|'\n        r'in addition|as a result|for example|for instance|'\n        r'in other words|that is to say|needless to say)\\b',\n        re.IGNORECASE\n    )\n\n    def extract_features(t):\n        try:\n            words = re.findall(r'[a-zA-Z]+', t.lower())\n            n_words = max(len(words), 1)\n            sentences = [s.strip() for s in re.split(r'[.!?]+', t) if s.strip()]\n            n_sentences = max(len(sentences), 1)\n\n            # Feature 1: Compression \u2014 average words per sentence (lower = more concise)\n            avg_sent_len = n_words / n_sentences\n            compression = 1.0 / (1.0 + math.log(avg_sent_len + 1))\n\n            # Feature 2: Lexical density \u2014 content words / total words (higher = more concise)\n            content_words = [w for w in words if w not in STOPWORDS]\n            lexical_density = len(content_words) / n_words\n\n            # Feature 3: Clause penalty \u2014 subordinate/filler clauses per sentence\n            clause_count = len(CLAUSE_MARKERS.findall(t))\n            clause_penalty = 1.0 / (1.0 + clause_count / n_sentences)\n\n            return compression, lexical_density, clause_penalty\n        except Exception:\n            return 0.5, 0.5, 0.5\n\n    try:\n        c_t, ld_t, cp_t = extract_features(text)\n        c_a, ld_a, cp_a = extract_features(anchor)\n\n        # Weighted composite score for text and anchor\n        score_text = w1 * c_t + w2 * ld_t + w3 * cp_t\n        score_anchor = w1 * c_a + w2 * ld_a + w3 * cp_a\n\n        # Calibration: z-score style normalization to reduce heldout distribution shift\n        # Use anchor as the reference baseline\n        mean_score = (score_text + score_anchor) / 2.0\n        std_score = abs(score_text - score_anchor) / 2.0 + 1e-6\n        calibrated_diff = (score_text - score_anchor) / std_score\n\n        # Temperature scaling to reduce overconfidence on near-miss pairs\n        calibrated_diff = calibrated_diff / temperature\n\n        # Sigmoid to [0, 1]\n        final_score = 1.0 / (1.0 + math.exp(-calibrated_diff))\n        return float(max(0.0, min(1.0, final_score)))\n    except Exception:\n        return 0.0"
+        }
+      ]
+    }
+  }
+}
