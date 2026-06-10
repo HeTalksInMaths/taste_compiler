@@ -40,11 +40,11 @@ function Nav() {
           <a href="/marketplace" className="text-sm text-white/60 transition hover:text-white">
             Marketplace
           </a>
+          <a href="/create" className="text-sm text-purple-400/80 transition hover:text-purple-300">
+            Create Scorer ✨
+          </a>
           <a href="/methodology" className="text-sm text-white/60 transition hover:text-white">
             Methodology
-          </a>
-          <a href="/simulations" className="text-sm text-white/60 transition hover:text-white">
-            Simulations
           </a>
           <a href="/live-sim" className="text-sm text-amber-400/80 transition hover:text-amber-300">
             Live Sim ⚡
