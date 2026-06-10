@@ -6,3 +6,4 @@ out/
 .env*
 playwright-report/
 test-results/
+tests/e2e/screenshots.spec.ts-snapshots/
