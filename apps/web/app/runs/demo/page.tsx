@@ -1,4 +1,4 @@
-import demoData from '@/fixtures/demo_run_human.json';
+import demoData from '@/fixtures/demo_run_persuasive.json';
 import Link from 'next/link';
 
 type Scorer = { scorer_id: string; hypothesis: string; functional_form: string; text_features_used?: string[]; code?: string };
@@ -23,9 +23,9 @@ export default function DemoRunPage() {
           <div className="mb-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs" style={{ backgroundColor: 'rgba(16,185,129,0.1)', color: 'rgb(52,211,153)', border: '1px solid rgba(16,185,129,0.2)' }}>
             ✓ Completed Run
           </div>
-          <h1 className="text-2xl font-bold text-white">Demo Run: &ldquo;human&rdquo;</h1>
+          <h1 className="text-2xl font-bold text-white">Demo Run: &ldquo;persuasive&rdquo;</h1>
           <p className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            Quality target: make text sound more human (less AI-generated). 8 stages completed with real Bedrock + Exa search.
+            Quality target: make text more persuasive. 8 stages completed with real Bedrock + Exa search. Repair scorer R1 improved separation by +0.5 gap over the best original.
           </p>
         </div>
 

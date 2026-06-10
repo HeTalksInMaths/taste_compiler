@@ -1,0 +1,931 @@
+{
+  "target": "persuasive",
+  "stages": {
+    "stage1": {
+      "target_variable": "perceived persuasiveness of text",
+      "causal_research": [
+        {
+          "source_id": "SRC_001",
+          "claim": "Concrete, specific word choices causally increase persuasiveness ratings compared to abstract language, even after controlling for topic and author intent.",
+          "causal_variable": "lexical concreteness",
+          "effect_direction": "increases",
+          "mechanism": "Concrete language reduces cognitive processing load and increases perceived credibility and vividness of arguments.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_002",
+          "claim": "Causal analysis using text intervention methods shows that positive sentiment words increase persuasion in consumer-facing contexts but not in policy debate contexts.",
+          "causal_variable": "sentiment polarity",
+          "effect_direction": "moderates",
+          "mechanism": "Positive affect cues trigger heuristic processing and liking, but in deliberative contexts readers discount emotional language as bias.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_003",
+          "claim": "Use of causal and contrastive discourse relations (e.g., 'because', 'although') significantly increases persuasiveness scores in argumentative essays.",
+          "causal_variable": "discourse relation type",
+          "effect_direction": "increases",
+          "mechanism": "Causal connectives signal logical structure and reasoning depth, which readers interpret as stronger argumentation.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_004",
+          "claim": "Hedge words and epistemic uncertainty markers causally decrease perceived persuasiveness by reducing the author's apparent confidence.",
+          "causal_variable": "hedging language",
+          "effect_direction": "decreases",
+          "mechanism": "Hedges signal author uncertainty, undermining source credibility and the perceived strength of claims.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_005",
+          "claim": "AutoPersuade framework demonstrates that argument specificity\u2014inclusion of statistics and named evidence\u2014causally boosts persuasion scores across multiple domains.",
+          "causal_variable": "argument specificity / evidence citation",
+          "effect_direction": "increases",
+          "mechanism": "Specific evidence activates systematic processing and signals that the author has done due diligence, increasing trust.",
+          "evidence_strength": "high"
+        },
+        {
+          "source_id": "SRC_006",
+          "claim": "Moral-emotional language (e.g., words from Moral Foundations Theory) causally increases persuasion in ideologically aligned audiences but decreases it in misaligned audiences.",
+          "causal_variable": "moral-emotional framing",
+          "effect_direction": "moderates",
+          "mechanism": "Moral language resonates when it matches the reader's value system but triggers reactance when it conflicts with it.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_007",
+          "claim": "Real-world persuasion studies show that second-person pronouns ('you') and inclusive language ('we') causally increase engagement and persuasion relative to third-person framing.",
+          "causal_variable": "inclusive / second-person pronouns",
+          "effect_direction": "increases",
+          "mechanism": "Direct address creates psychological involvement and perceived personal relevance, activating elaboration and acceptance.",
+          "evidence_strength": "medium"
+        },
+        {
+          "source_id": "SRC_008",
+          "claim": "Causal linguistic property studies show that text readability (sentence length, syntactic complexity) has an inverted-U effect on persuasion\u2014moderate complexity maximizes persuasion.",
+          "causal_variable": "syntactic complexity / readability",
+          "effect_direction": "mediates",
+          "mechanism": "Too-simple text signals low-quality argument; too-complex text impedes comprehension; moderate complexity signals competence while remaining accessible.",
+          "evidence_strength": "medium"
+        }
+      ],
+      "research_tensions": [
+        {
+          "claim": "Some studies find emotional and moral language increases persuasion via affective engagement, while others find it decreases persuasion by triggering skepticism about author bias.",
+          "variables": [
+            "moral-emotional framing",
+            "perceived author credibility"
+          ]
+        },
+        {
+          "claim": "Lexical concreteness is found to increase persuasion in some experimental paradigms, but real-world corpus studies show abstract, principle-based language dominates highly persuasive political and legal texts.",
+          "variables": [
+            "lexical concreteness",
+            "argument abstraction level"
+          ]
+        }
+      ]
+    },
+    "stage2": {
+      "target_variable": "perceived persuasiveness of text",
+      "causal_nodes": [
+        {
+          "node_id": "N01",
+          "label": "lexical concreteness",
+          "role": "increases",
+          "definition": "The degree to which word choices are specific, tangible, and imageable rather than abstract or vague.",
+          "mechanism": "Concrete language reduces cognitive processing load and increases perceived credibility and vividness of arguments, making claims easier to evaluate and trust."
+        },
+        {
+          "node_id": "N02",
+          "label": "sentiment polarity",
+          "role": "moderates",
+          "definition": "The positive or negative emotional valence of the words used in a text.",
+          "mechanism": "Positive affect cues trigger heuristic processing and liking in consumer contexts, but in deliberative or policy contexts readers discount emotional language as bias, reducing its persuasive effect."
+        },
+        {
+          "node_id": "N03",
+          "label": "discourse relation type",
+          "role": "increases",
+          "definition": "The use of causal and contrastive connectives (e.g., 'because', 'although', 'therefore') that signal logical relationships between propositions.",
+          "mechanism": "Causal connectives signal logical structure and reasoning depth, which readers interpret as stronger, more coherent argumentation."
+        },
+        {
+          "node_id": "N04",
+          "label": "hedging language",
+          "role": "decreases",
+          "definition": "Epistemic uncertainty markers and hedge words (e.g., 'might', 'perhaps', 'possibly') that soften the force of claims.",
+          "mechanism": "Hedges signal author uncertainty, undermining source credibility and the perceived strength of claims, thereby reducing persuasive impact."
+        },
+        {
+          "node_id": "N05",
+          "label": "argument specificity / evidence citation",
+          "role": "increases",
+          "definition": "The inclusion of statistics, named sources, empirical data, and concrete examples to support claims.",
+          "mechanism": "Specific evidence activates systematic processing and signals author due diligence, increasing reader trust and the perceived quality of the argument."
+        },
+        {
+          "node_id": "N06",
+          "label": "moral-emotional framing",
+          "role": "moderates",
+          "definition": "The use of language tied to moral foundations (e.g., fairness, harm, loyalty) and emotional appeals aligned with value systems.",
+          "mechanism": "Moral language resonates deeply when it matches the reader's value system, amplifying persuasion, but triggers psychological reactance when it conflicts with the reader's ideology."
+        },
+        {
+          "node_id": "N07",
+          "label": "inclusive / second-person pronouns",
+          "role": "increases",
+          "definition": "The use of 'you', 'we', and other direct or inclusive address forms that orient the text toward the reader.",
+          "mechanism": "Direct address creates psychological involvement, social closeness, and a sense of shared identity, increasing engagement and receptivity to persuasive content."
+        },
+        {
+          "node_id": "N08",
+          "label": "perceived source credibility",
+          "role": "mediates",
+          "definition": "The reader's assessment of the author's expertise, trustworthiness, and confidence based on textual cues.",
+          "mechanism": "Multiple linguistic features (hedging, evidence citation, concreteness) converge on credibility judgments, which in turn directly drive persuasion outcomes."
+        },
+        {
+          "node_id": "N09",
+          "label": "cognitive processing depth",
+          "role": "mediates",
+          "definition": "The degree to which a reader engages in systematic, effortful evaluation of argument quality versus relying on surface heuristics.",
+          "mechanism": "Features like discourse relations and evidence citation promote systematic processing, while sentiment and inclusive pronouns can trigger heuristic processing; the processing mode shapes how other persuasion cues are weighted."
+        },
+        {
+          "node_id": "N10",
+          "label": "audience ideological alignment",
+          "role": "moderates",
+          "definition": "The degree to which the reader's existing values, beliefs, and worldview match the framing and content of the persuasive text.",
+          "mechanism": "Alignment amplifies the effect of moral-emotional and sentiment-laden language; misalignment triggers reactance, reversing or nullifying those effects."
+        },
+        {
+          "node_id": "N11",
+          "label": "perceived persuasiveness of text",
+          "role": "increases",
+          "definition": "The target outcome: the degree to which readers rate or demonstrate changed attitudes, intentions, or beliefs after reading a text.",
+          "mechanism": "Aggregated outcome of all upstream linguistic, cognitive, and contextual causal pathways."
+        }
+      ],
+      "causal_edges": [
+        {
+          "from": "N01",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Concrete word choices increase perceived source credibility by signaling precision and expertise."
+        },
+        {
+          "from": "N01",
+          "to": "N09",
+          "relationship": "decreases",
+          "claim": "Concrete language reduces cognitive load, facilitating easier systematic processing of argument content."
+        },
+        {
+          "from": "N01",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Lexical concreteness directly increases persuasiveness ratings compared to abstract language, even after controlling for topic and author intent."
+        },
+        {
+          "from": "N02",
+          "to": "N09",
+          "relationship": "moderates",
+          "claim": "Positive sentiment words shift processing toward heuristic routes in consumer contexts but prompt skepticism-driven systematic processing in deliberative contexts."
+        },
+        {
+          "from": "N02",
+          "to": "N11",
+          "relationship": "moderates",
+          "claim": "Positive sentiment increases persuasion in consumer-facing contexts but not in policy debate contexts, as readers discount emotional language as bias."
+        },
+        {
+          "from": "N03",
+          "to": "N09",
+          "relationship": "increases",
+          "claim": "Causal and contrastive discourse connectives signal logical structure, prompting deeper, systematic evaluation of argument quality."
+        },
+        {
+          "from": "N03",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Use of causal and contrastive discourse relations significantly increases persuasiveness scores in argumentative essays."
+        },
+        {
+          "from": "N04",
+          "to": "N08",
+          "relationship": "decreases",
+          "claim": "Hedge words and epistemic uncertainty markers reduce perceived source credibility by signaling author doubt and lack of confidence."
+        },
+        {
+          "from": "N04",
+          "to": "N11",
+          "relationship": "decreases",
+          "claim": "Hedging language causally decreases perceived persuasiveness by undermining the apparent strength and confidence of claims."
+        },
+        {
+          "from": "N05",
+          "to": "N08",
+          "relationship": "increases",
+          "claim": "Inclusion of statistics and named evidence signals author due diligence and expertise, increasing perceived credibility."
+        },
+        {
+          "from": "N05",
+          "to": "N09",
+          "relationship": "increases",
+          "claim": "Specific evidence citations activate systematic, effortful processing of argument quality rather than heuristic shortcuts."
+        },
+        {
+          "from": "N05",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Argument specificity\u2014inclusion of statistics and named evidence\u2014causally boosts persuasion scores across multiple domains."
+        },
+        {
+          "from": "N06",
+          "to": "N11",
+          "relationship": "moderates",
+          "claim": "Moral-emotional language increases persuasion in ideologically aligned audiences but decreases it in misaligned audiences due to value resonance versus reactance."
+        },
+        {
+          "from": "N10",
+          "to": "N06",
+          "relationship": "moderates",
+          "claim": "Audience ideological alignment determines whether moral-emotional framing amplifies or suppresses persuasive impact."
+        },
+        {
+          "from": "N10",
+          "to": "N02",
+          "relationship": "moderates",
+          "claim": "Audience context (consumer vs. deliberative) moderates whether positive sentiment cues increase or have no effect on persuasion."
+        },
+        {
+          "from": "N07",
+          "to": "N09",
+          "relationship": "moderates",
+          "claim": "Second-person and inclusive pronouns increase psychological involvement, which can shift processing toward more engaged, heuristic-affective routes."
+        },
+        {
+          "from": "N07",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Second-person pronouns and inclusive language causally increase engagement and persuasion relative to third-person framing."
+        },
+        {
+          "from": "N08",
+          "to": "N11",
+          "relationship": "increases",
+          "claim": "Higher perceived source credibility is a central mediating pathway through which linguistic features translate into increased persuasiveness."
+        },
+        {
+          "from": "N09",
+          "to": "N11",
+          "relationship": "moderates",
+          "claim": "Deeper systematic processing amplifies the persuasive impact of high-quality arguments and evidence, while heuristic processing amplifies the impact of affective and social cues."
+        }
+      ],
+      "causal_tensions": [
+        {
+          "claim": "Positive sentiment increases persuasion via heuristic liking in consumer contexts (SRC_002) but decreases it in deliberative contexts where readers discount emotional language as bias\u2014creating a direct context-dependent reversal of the same causal variable.",
+          "nodes": [
+            "N02",
+            "N09",
+            "N10",
+            "N11"
+          ]
+        },
+        {
+          "claim": "Moral-emotional framing increases persuasion for ideologically aligned readers (SRC_006) but decreases it for misaligned readers, meaning the same linguistic feature can have opposite causal effects depending on audience, creating a challenge for generalizable persuasion models.",
+          "nodes": [
+            "N06",
+            "N10",
+            "N11"
+          ]
+        },
+        {
+          "claim": "Hedging language decreases persuasion by signaling uncertainty (SRC_004), yet in some scientific and legal contexts, appropriate hedging may increase credibility by signaling intellectual honesty\u2014a potential tension not fully resolved in current evidence.",
+          "nodes": [
+            "N04",
+            "N08",
+            "N11"
+          ]
+        },
+        {
+          "claim": "Inclusive pronouns increase persuasion via psychological involvement (SRC_007), but moral-emotional language that invokes in-group identity can simultaneously trigger out-group reactance (SRC_006), suggesting pronoun-based inclusion and moral framing may interact non-additively.",
+          "nodes": [
+            "N07",
+            "N06",
+            "N10",
+            "N11"
+          ]
+        }
+      ],
+      "summary_theory": "Perceived persuasiveness of text is causally shaped by a constellation of linguistic features operating through two primary mediating pathways: perceived source credibility and cognitive processing depth. Lexical concreteness, argument specificity with evidence citation, and the use of causal discourse connectives consistently increase persuasiveness by simultaneously boosting credibility and promoting systematic processing of argument quality. Hedging language acts as a reliable suppressor, reducing both credibility and persuasive impact. Inclusive and second-person pronouns increase psychological involvement and direct engagement, reliably boosting persuasion across contexts. However, sentiment polarity and moral-emotional framing are conditional causes whose direction of effect is moderated by audience context and ideological alignment: positive sentiment and moral language amplify persuasion when they match the reader's processing mode and value system, but trigger skepticism or reactance when misaligned. This creates the central theoretical tension in persuasion research: the features most emotionally powerful (sentiment, moral framing) are also the most context-sensitive and can backfire, while more structural features (concreteness, evidence, discourse relations) produce more robust and generalizable persuasive effects. An optimal persuasive text therefore combines structural credibility signals with audience-tailored affective framing."
+    },
+    "stage3": {
+      "target_variable": "persuasive",
+      "measurement_research": [
+        {
+          "causal_node": "lexical concreteness",
+          "measurement_claim": "Texts with higher lexical concreteness scores (words referring to tangible, perceptible referents) are more persuasive because concrete language is easier to mentally simulate and remember.",
+          "text_features": [
+            "mean concreteness rating per token using Brysbaert et al. 2014 norms",
+            "ratio of concrete to abstract content words",
+            "imageability scores from MRC psycholinguistic database",
+            "proportion of sensory/perceptual words"
+          ],
+          "implementation_ideas": [
+            "Map tokens to Brysbaert concreteness norms (1\u20135 scale) and compute mean/median per document using veronica320/Lexical-Stylistic-Features pipeline",
+            "Use TextDescriptives (HLasse) to extract lexical diversity metrics alongside concreteness as a composite feature",
+            "Compute proportion of words with concreteness > 3.5 as a high-concreteness ratio feature",
+            "Use spaCy POS tagging to restrict concreteness scoring to content words (nouns, verbs, adjectives)"
+          ]
+        },
+        {
+          "causal_node": "sentiment polarity",
+          "measurement_claim": "Sentiment polarity (positive or negative emotional valence) influences persuasion by triggering affective responses; moderate positive or strategically negative framing increases message acceptance.",
+          "text_features": [
+            "document-level sentiment polarity score (positive/negative/neutral)",
+            "sentence-level sentiment variance",
+            "ratio of positive to negative sentiment sentences",
+            "VADER compound score",
+            "transformer-based sentiment probability distributions"
+          ],
+          "implementation_ideas": [
+            "Apply VADER for lexicon-based sentiment scoring, capturing compound, positive, negative, and neutral scores per sentence",
+            "Use HuggingFace cardiffnlp/twitter-roberta-base-sentiment or similar fine-tuned model for contextual polarity",
+            "Compute sentiment arc (trajectory across document) using rolling window sentiment scores",
+            "TextDescriptives provides readability and quality metrics that can be combined with VADER scores in a unified feature vector"
+          ]
+        },
+        {
+          "causal_node": "discourse relation type",
+          "measurement_claim": "Discourse relations (e.g., causal, contrastive, elaboration) shape argument coherence and persuasiveness; causal and concessive relations are particularly linked to persuasive force.",
+          "text_features": [
+            "frequency of explicit discourse connectives by type (causal, adversative, temporal, additive)",
+            "RST relation labels from discourse parser",
+            "PDTB-style implicit/explicit relation counts",
+            "ratio of causal to non-causal connectives"
+          ],
+          "implementation_ideas": [
+            "Use PDTB connective lexicon to identify and classify explicit discourse markers (e.g., 'because', 'however', 'therefore')",
+            "Apply a pre-trained RST discourse parser (e.g., Feng & Hirst or NeuralRST) to label nucleus-satellite relations",
+            "Count frequency of connective categories using the connective lexicon from the Cabezudo et al. EACL paper pipeline",
+            "Compute discourse coherence score using entity grid model as a proxy for well-structured argumentation"
+          ]
+        },
+        {
+          "causal_node": "hedging language",
+          "measurement_claim": "Hedging (epistemic modality markers, approximators, shields) reduces perceived certainty and can either decrease or strategically increase persuasiveness depending on context and audience.",
+          "text_features": [
+            "count and ratio of hedge words per sentence",
+            "modal verb frequency (might, could, may, perhaps)",
+            "epistemic adverb frequency (possibly, probably, apparently)",
+            "approximator frequency (about, around, roughly)"
+          ],
+          "implementation_ideas": [
+            "Use the HedgeHog lexicon or Hyland's academic hedging word list to tag hedge tokens",
+            "Apply veronica320/Lexical-Stylistic-Features which includes hedging and uncertainty feature extraction",
+            "Use spaCy dependency parsing to identify modal auxiliaries attached to main verbs and compute modal verb density",
+            "Distinguish booster vs. hedger ratio using the Linguistic Inquiry and Word Count (LIWC) certainty and tentativeness categories"
+          ]
+        },
+        {
+          "causal_node": "argument specificity / evidence citation",
+          "measurement_claim": "Texts that cite specific evidence, statistics, or named sources are more persuasive because they signal epistemic credibility and reduce counterarguing.",
+          "text_features": [
+            "count of numeric/statistical expressions",
+            "named entity density (organizations, persons, locations)",
+            "presence of citation-like patterns (quotation marks, attribution verbs)",
+            "ratio of specific quantifiers to vague quantifiers"
+          ],
+          "implementation_ideas": [
+            "Use spaCy NER to count CARDINAL, PERCENT, MONEY, and ORG entities as proxies for specificity and evidence",
+            "Detect attribution verbs (said, found, reported, according to) via dependency parsing to identify evidential statements",
+            "Use regex patterns to detect numerical statistics and percentage expressions",
+            "Compute argument specificity score as weighted sum of NER density, numeric expression ratio, and attribution verb count"
+          ]
+        },
+        {
+          "causal_node": "moral-emotional framing",
+          "measurement_claim": "Texts that invoke moral foundations (care, fairness, loyalty, authority, purity) and emotional language increase persuasiveness by activating identity-relevant values.",
+          "text_features": [
+            "Moral Foundations Dictionary (MFD) category scores",
+            "LIWC affect, anger, anxiety, positive emotion word ratios",
+            "NRC Emotion Lexicon scores (fear, joy, anger, disgust, etc.)",
+            "moral language density per 100 words"
+          ],
+          "implementation_ideas": [
+            "Apply the Moral Foundations Dictionary 2.0 (MFD2) to score text on five foundation dimensions",
+            "Use the NRC Word-Emotion Association Lexicon via the 'nrclex' Python package for fine-grained emotion profiling",
+            "Combine MFD scores with LIWC moral and emotional categories for a composite moral-emotional framing index",
+            "Fine-tune a BERT classifier on the Moral Foundations Twitter Corpus to detect moral framing in context"
+          ]
+        },
+        {
+          "causal_node": "inclusive / second-person pronouns",
+          "measurement_claim": "Use of second-person ('you', 'your') and inclusive first-person plural ('we', 'our') pronouns increases persuasiveness by creating psychological closeness and direct audience engagement.",
+          "text_features": [
+            "raw count and normalized rate of 'you/your/yourself'",
+            "raw count and normalized rate of 'we/our/us'",
+            "ratio of second-person to third-person pronouns",
+            "LIWC pronoun category scores"
+          ],
+          "implementation_ideas": [
+            "Use spaCy tokenization with POS tagging to extract pronoun tokens and classify by person/number",
+            "Compute second-person pronoun density (count per 100 tokens) as a direct feature",
+            "Apply LIWC 2022 pronoun categories (i, we, you) for standardized pronoun profiling",
+            "Use veronica320/Lexical-Stylistic-Features pronoun feature extraction module for stylometric pronoun ratios"
+          ]
+        },
+        {
+          "causal_node": "perceived source credibility",
+          "measurement_claim": "Linguistic markers of expertise, formality, and trustworthiness in text signal source credibility, which mediates persuasion through the elaboration likelihood model's peripheral route.",
+          "text_features": [
+            "formal register score (Heylighen & Deacon formality measure)",
+            "technical/domain vocabulary density",
+            "presence of credibility markers (credentials, institutional affiliations)",
+            "readability scores as proxy for professional writing quality"
+          ],
+          "implementation_ideas": [
+            "Compute Heylighen & Deacon formality score F = (noun + adjective + preposition + article frequency \u2013 pronoun \u2013 verb \u2013 adverb \u2013 interjection frequency + 100) / 2",
+            "Use TextDescriptives to compute Flesch-Kincaid, Gunning Fog, and other readability indices as proxies for professional register",
+            "Apply domain-specific vocabulary lists to compute technical term density as an expertise signal",
+            "Use NER to detect presence of institutional names, titles, and credential markers (PhD, Dr., Professor)"
+          ]
+        },
+        {
+          "causal_node": "cognitive processing depth",
+          "measurement_claim": "Texts requiring and rewarding deeper cognitive processing (complex syntax, analytical language) can increase persuasion for high-need-for-cognition audiences through the central route.",
+          "text_features": [
+            "mean sentence length and syntactic tree depth",
+            "type-token ratio and lexical diversity",
+            "LIWC analytic thinking score",
+            "subordinate clause density",
+            "Flesch reading ease (inverse proxy)"
+          ],
+          "implementation_ideas": [
+            "Use TRUNAJOD library to compute syntactic complexity metrics including mean dependency distance and subordination index",
+            "Apply TextDescriptives (HLasse) for comprehensive readability and lexical richness metrics (TTR, MTLD, HD-D)",
+            "Use spaCy dependency parser to measure mean parse tree depth and subordinate clause frequency",
+            "Compute LIWC Analytic score using the LIWC dictionary as a validated measure of analytical thinking in text"
+          ]
+        },
+        {
+          "causal_node": "audience ideological alignment",
+          "measurement_claim": "Texts that use language aligned with the target audience's ideological frame (values, in-group markers, political vocabulary) are more persuasive due to identity-protective cognition.",
+          "text_features": [
+            "political ideology lexicon scores (liberal vs. conservative vocabulary)",
+            "in-group vs. out-group language ratio",
+            "value-laden term frequency by ideological dimension",
+            "partisan framing word usage"
+          ],
+          "implementation_ideas": [
+            "Use the Wordfish or Wordscores model trained on political corpora to score texts on a left-right ideological dimension",
+            "Apply the Moral Foundations Dictionary split by individualizing (care, fairness) vs. binding (loyalty, authority, purity) foundations as ideology proxies",
+            "Use pre-trained political ideology classifiers (e.g., fine-tuned RoBERTa on Congressional speech) to score ideological lean",
+            "Compute cosine similarity between text embeddings and ideological prototype embeddings derived from known partisan documents"
+          ]
+        },
+        {
+          "causal_node": "perceived persuasiveness of text",
+          "measurement_claim": "Perceived persuasiveness can be directly estimated from text using trained classifiers on annotated persuasive vs. non-persuasive corpora, or via proxy features combining multiple linguistic signals.",
+          "text_features": [
+            "composite persuasion score from trained classifier",
+            "argument quality score from argumentation mining model",
+            "crowd-sourced persuasiveness ratings (if available as training signal)",
+            "combined feature vector of all above causal node features"
+          ],
+          "implementation_ideas": [
+            "Train a logistic regression or gradient boosting classifier on the Cornell eRulemaking or UKP Argument Corpus with persuasiveness labels using the feature set above",
+            "Fine-tune a RoBERTa model on the Persuasion for Good dataset (Wang et al. 2019) to directly predict persuasive intent and effectiveness",
+            "Use the IBM Debater API or Project Debater models for argument quality and persuasiveness scoring",
+            "Construct a composite persuasion index by z-scoring and summing concreteness, sentiment intensity, evidence citation, moral framing, and second-person pronoun features with weights derived from regression on annotated data"
+          ]
+        }
+      ]
+    },
+    "stage4": {
+      "target_variable": "persuasive",
+      "scorers": [
+        {
+          "scorer_id": "S0",
+          "hypothesis": "Persuasiveness is driven by concrete, tangible language that reduces cognitive load and increases vividness. This scorer measures the ratio of high-concreteness content words to total content words, rewarding texts that ground claims in specific, imageable referents.",
+          "causal_nodes_used": [
+            "N01"
+          ],
+          "text_features_used": [
+            "ratio of concrete to abstract content words",
+            "proportion of sensory/perceptual words",
+            "mean concreteness rating per token using Brysbaert-proxy word lists"
+          ],
+          "functional_form": "ratio",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    \n    # Proxy concreteness word lists (tangible, sensory, specific referents)\n    concrete_words = set([\n        'house','car','tree','book','water','fire','hand','eye','face','door',\n        'table','chair','road','stone','blood','food','bread','knife','gun','coin',\n        'paper','phone','screen','glass','metal','wood','cloth','rope','wire','pipe',\n        'dog','cat','bird','fish','horse','child','man','woman','body','bone',\n        'river','mountain','city','village','factory','hospital','school','bridge',\n        'wall','floor','ceiling','window','roof','wheel','engine','button','switch',\n        'bottle','cup','plate','bag','box','key','lock','nail','hammer','saw',\n        'rain','snow','wind','sun','moon','star','cloud','soil','sand','rock',\n        'finger','arm','leg','foot','head','heart','lung','skin','hair','tooth',\n        'red','blue','green','black','white','yellow','hot','cold','sharp','heavy',\n        'loud','quiet','bright','dark','rough','smooth','sweet','bitter','sour',\n        'smell','taste','touch','hear','see','watch','grab','push','pull','hit',\n        'run','walk','fall','rise','cut','break','build','burn','fill','empty'\n    ])\n    \n    # Abstract words (penalize)\n    abstract_words = set([\n        'freedom','justice','concept','idea','theory','principle','value','belief',\n        'notion','aspect','factor','element','issue','matter','thing','stuff',\n        'situation','condition','circumstance','perspective','approach','framework',\n        'paradigm','dynamic','synergy','leverage','optimize','utilize','facilitate'\n    ])\n    \n    # Sensory/perceptual words (bonus)\n    sensory_words = set([\n        'see','saw','look','watch','hear','heard','listen','feel','felt','touch',\n        'taste','smell','bright','dark','loud','quiet','soft','hard','warm','cool',\n        'shiny','rough','smooth','sweet','bitter','fragrant','vivid','colorful'\n    ])\n    \n    tokens = re.findall(r'\\b[a-z]+\\b', text.lower())\n    if not tokens:\n        return 0.0\n    \n    # Content word POS proxy: filter out common function words\n    function_words = set([\n        'the','a','an','is','are','was','were','be','been','being','have','has',\n        'had','do','does','did','will','would','could','should','may','might',\n        'must','shall','can','to','of','in','on','at','by','for','with','from',\n        'and','or','but','not','it','its','this','that','these','those','i','we',\n        'you','he','she','they','me','him','her','us','them','my','your','his',\n        'our','their','which','who','what','when','where','how','if','as','so'\n    ])\n    \n    content_tokens = [t for t in tokens if t not in function_words and len(t) > 2]\n    if not content_tokens:\n        return 0.0\n    \n    n_content = len(content_tokens)\n    n_concrete = sum(1 for t in content_tokens if t in concrete_words)\n    n_abstract = sum(1 for t in content_tokens if t in abstract_words)\n    n_sensory = sum(1 for t in content_tokens if t in sensory_words)\n    \n    # Core ratio: concrete / content words\n    concrete_ratio = n_concrete / n_content\n    \n    # Abstract penalty ratio\n    abstract_ratio = n_abstract / n_content\n    \n    # Sensory bonus ratio\n    sensory_ratio = n_sensory / n_content\n    \n    # Score: weighted combination of ratios\n    raw_score = (concrete_ratio * 6.0) + (sensory_ratio * 2.5) - (abstract_ratio * 3.0)\n    \n    # Normalize to 0-10\n    score = max(0.0, min(10.0, raw_score * 10.0))\n    return round(score, 3)"
+        },
+        {
+          "scorer_id": "S1",
+          "hypothesis": "Strong persuasive texts use causal and contrastive discourse connectives to signal logical reasoning depth, while excessive hedging undermines claim force. This scorer rewards causal/contrastive connectives and penalizes hedge-heavy passages through an interaction between discourse richness and hedge suppression.",
+          "causal_nodes_used": [
+            "N03",
+            "N04"
+          ],
+          "text_features_used": [
+            "frequency of explicit discourse connectives by type (causal, adversative)",
+            "ratio of causal to non-causal connectives",
+            "hedging language frequency (epistemic uncertainty markers)"
+          ],
+          "functional_form": "interaction",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    \n    causal_connectives = [\n        'because','therefore','thus','hence','consequently','as a result',\n        'since','so that','due to','owing to','leads to','causes','results in',\n        'for this reason','this means','which means','proves that','shows that',\n        'demonstrates','evidence suggests','data shows','research confirms'\n    ]\n    \n    contrastive_connectives = [\n        'although','however','nevertheless','nonetheless','despite','yet',\n        'on the other hand','in contrast','conversely','while','whereas',\n        'even though','but','still','notwithstanding','regardless','admittedly'\n    ]\n    \n    additive_connectives = [\n        'furthermore','moreover','additionally','also','in addition','besides',\n        'likewise','similarly','and','as well as'\n    ]\n    \n    hedge_words = [\n        'might','may','perhaps','possibly','probably','could','seems','appears',\n        'somewhat','rather','fairly','quite','allegedly','supposedly','arguably',\n        'tend to','in some cases','it is possible','one might','some might say',\n        'to some extent','more or less','kind of','sort of','I think','I believe',\n        'it seems','it appears','not sure','uncertain','unclear','debatable'\n    ]\n    \n    text_lower = text.lower()\n    tokens = re.findall(r'\\b[a-z]+\\b', text_lower)\n    n_tokens = len(tokens)\n    if n_tokens == 0:\n        return 0.0\n    \n    def count_phrases(phrase_list, text_str):\n        count = 0\n        for phrase in phrase_list:\n            count += len(re.findall(r'\\b' + re.escape(phrase) + r'\\b', text_str))\n        return count\n    \n    n_causal = count_phrases(causal_connectives, text_lower)\n    n_contrastive = count_phrases(contrastive_connectives, text_lower)\n    n_additive = count_phrases(additive_connectives, text_lower)\n    n_hedge = count_phrases(hedge_words, text_lower)\n    \n    n_total_connectives = n_causal + n_contrastive + n_additive + 1  # +1 avoid div zero\n    \n    # Ratio: high-value (causal+contrastive) to all connectives\n    discourse_quality_ratio = (n_causal + n_contrastive) / n_total_connectives\n    \n    # Raw discourse density per 100 tokens\n    discourse_density = ((n_causal * 2.0 + n_contrastive * 1.5) / n_tokens) * 100\n    \n    # Hedge ratio per 100 tokens\n    hedge_ratio = (n_hedge / n_tokens) * 100\n    \n    # INTERACTION: discourse quality amplified by low hedging\n    # hedge suppression factor: 1.0 when no hedges, decays as hedges increase\n    hedge_suppression = 1.0 / (1.0 + hedge_ratio * 0.5)\n    \n    # Core interaction term\n    interaction_score = discourse_density * discourse_quality_ratio * hedge_suppression\n    \n    # Scale and cap\n    raw_score = interaction_score * 3.5\n    score = max(0.0, min(10.0, raw_score))\n    return round(score, 3)"
+        },
+        {
+          "scorer_id": "S2",
+          "hypothesis": "Persuasive texts maintain assertive, confident tone through low hedging and moderate positive sentiment without tipping into emotional overreach that triggers reader skepticism. This gated scorer applies a credibility penalty when either hedge density or sentiment extremity exceeds thresholds that signal bias or uncertainty.",
+          "causal_nodes_used": [
+            "N04",
+            "N02"
+          ],
+          "text_features_used": [
+            "hedging language frequency normalized by total words",
+            "VADER-proxy compound sentiment score",
+            "sentence-level sentiment variance",
+            "ratio of positive to negative sentiment sentences"
+          ],
+          "functional_form": "gated",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n    \n    # Hedge word list\n    hedge_words = set([\n        'might','may','perhaps','possibly','probably','could','seems','appears',\n        'somewhat','rather','fairly','quite','allegedly','supposedly','arguably',\n        'uncertain','unclear','debatable','maybe','conceivably','presumably',\n        'ostensibly','tentatively','potentially','hypothetically','speculate',\n        'conjecture','doubt','unsure','ambiguous','vague'\n    ])\n    \n    # Positive sentiment words (VADER-proxy)\n    positive_words = set([\n        'good','great','excellent','wonderful','amazing','fantastic','outstanding',\n        'superb','brilliant','effective','successful','proven','clear','strong',\n        'important','significant','powerful','valuable','beneficial','essential',\n        'critical','vital','necessary','reliable','trusted','confirmed','certain',\n        'definitive','decisive','compelling','convincing','undeniable','absolute'\n    ])\n    \n    # Negative/fear/threat words\n    negative_words = set([\n        'bad','terrible','awful','horrible','dangerous','harmful','devastating',\n        'catastrophic','disastrous','failed','broken','corrupt','wrong','false',\n        'misleading','deceptive','fraudulent','criminal','evil','threat','crisis',\n        'disaster','collapse','failure','loss','damage','destroy','ruin','waste'\n    ])\n    \n    # Extreme/hyperbolic words (trigger skepticism penalty)\n    extreme_words = set([\n        'absolutely','completely','totally','utterly','perfectly','never','always',\n        'everyone','nobody','impossible','guaranteed','100%','undoubtedly',\n        'without question','beyond doubt','unquestionably','irrefutably','proven fact'\n    ])\n    \n    text_lower = text.lower()\n    tokens = re.findall(r'\\b[a-z]+\\b', text_lower)\n    n_tokens = len(tokens)\n    if n_tokens == 0:\n        return 0.0\n    \n    # Split into sentences\n    sentences = re.split(r'[.!?]+', text)\n    sentences = [s.strip() for s in sentences if len(s.strip()) > 5]\n    n_sentences = max(len(sentences), 1)\n    \n    # Feature 1: hedge density ratio\n    n_hedge = sum(1 for t in tokens if t in hedge_words)\n    hedge_ratio = n_hedge / n_tokens\n    \n    # Feature 2: sentiment scores per sentence\n    def sent_score(sentence):\n        s_tokens = re.findall(r'\\b[a-z]+\\b', sentence.lower())\n        pos = sum(1 for t in s_tokens if t in positive_words)\n        neg = sum(1 for t in s_tokens if t in negative_words)\n        total = len(s_tokens) if s_tokens else 1\n        return (pos - neg) / total\n    \n    sent_scores = [sent_score(s) for s in sentences]\n    mean_sentiment = sum(sent_scores) / n_sentences\n    \n    # Sentiment variance\n    variance = sum((s - mean_sentiment) ** 2 for s in sent_scores) / n_sentences\n    sentiment_std = math.sqrt(variance)\n    \n    # Feature 3: extreme/hyperbole ratio\n    n_extreme = sum(1 for t in tokens if t in extreme_words)\n    extreme_ratio = n_extreme / n_tokens\n    \n    # Base score: reward moderate positive sentiment, low variance\n    # Optimal mean_sentiment ~0.02-0.06 (assertive but not gushing)\n    sentiment_optimality = 1.0 - abs(mean_sentiment - 0.04) * 8.0\n    sentiment_optimality = max(0.0, sentiment_optimality)\n    \n    # Penalize high variance (inconsistent tone)\n    variance_penalty = min(sentiment_std * 4.0, 2.0)\n    \n    base_score = 7.0 * sentiment_optimality - variance_penalty\n    \n    # GATE 1: hedge penalty - if hedge_ratio > 0.03, apply scaling penalty\n    HEDGE_THRESHOLD = 0.03\n    if hedge_ratio > HEDGE_THRESHOLD:\n        excess_hedge = hedge_ratio - HEDGE_THRESHOLD\n        hedge_penalty = excess_hedge * 80.0\n        base_score -= hedge_penalty\n    \n    # GATE 2: extreme language penalty - if extreme_ratio > 0.02, credibility drops\n    EXTREME_THRESHOLD = 0.02\n    if extreme_ratio > EXTREME_THRESHOLD:\n        excess_extreme = extreme_ratio - EXTREME_THRESHOLD\n        extreme_penalty = excess_extreme * 60.0\n        base_score -= extreme_penalty\n    \n    # Add small bonus for assertive (non-hedged) language presence\n    assertive_bonus = max(0.0, (0.03 - hedge_ratio) * 50.0)\n    base_score += assertive_bonus\n    \n    score = max(0.0, min(10.0, base_score))\n    return round(score, 3)"
+        },
+        {
+          "scorer_id": "S3",
+          "hypothesis": "The most persuasive texts combine concrete evidence language with strong causal reasoning structure \u2014 the interaction between lexical concreteness and discourse relation density creates a multiplicative persuasive signal that neither factor alone can produce. This scorer computes a multiplicative interaction term between these two dimensions.",
+          "causal_nodes_used": [
+            "N01",
+            "N03"
+          ],
+          "text_features_used": [
+            "mean concreteness rating per token (Brysbaert proxy)",
+            "proportion of words with concreteness > 3.5 as high-concreteness ratio",
+            "frequency of explicit causal discourse connectives",
+            "RST-proxy causal chain depth (consecutive causal connectives)"
+          ],
+          "functional_form": "interaction",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    \n    # Tiered concreteness word lists\n    # Tier 1: highly concrete (score 5)\n    tier1_concrete = set([\n        'blood','fire','knife','gun','bomb','crash','flood','wound','scar','corpse',\n        'factory','hospital','prison','school','bridge','road','house','farm','mine',\n        'child','baby','soldier','doctor','worker','farmer','mother','father',\n        'dollar','coin','bill','wage','salary','price','cost','pound','ton','mile',\n        'water','food','bread','meat','oil','steel','coal','wood','iron','gold'\n    ])\n    \n    # Tier 2: moderately concrete (score 3.5)\n    tier2_concrete = set([\n        'city','country','company','government','law','vote','election','war','crime',\n        'job','tax','debt','profit','loss','growth','rate','number','data','record',\n        'study','report','case','example','evidence','fact','result','effect','cause',\n        'increase','decrease','rise','fall','change','action','decision','plan','policy'\n    ])\n    \n    # Evidence/specificity markers (boost concreteness signal)\n    evidence_markers = set([\n        'percent','%','million','billion','thousand','figure','statistic','survey',\n        'research','study','trial','experiment','data','measured','recorded',\n        'according','reported','found','showed','demonstrated','confirmed','verified'\n    ])\n    \n    # Causal connectives (weighted by strength)\n    strong_causal = [\n        'because','therefore','thus','hence','consequently','as a result',\n        'proves that','demonstrates that','shows that','evidence shows',\n        'research confirms','data indicates','this means that'\n    ]\n    \n    weak_causal = [\n        'since','so','leads to','causes','results in','due to','owing to',\n        'for this reason','which means','suggests','indicates'\n    ]\n    \n    text_lower = text.lower()\n    tokens = re.findall(r'\\b[a-z]+\\b', text_lower)\n    n_tokens = len(tokens)\n    if n_tokens == 0:\n        return 0.0\n    \n    # Concreteness scoring\n    concreteness_scores = []\n    for t in tokens:\n        if t in tier1_concrete:\n            concreteness_scores.append(5.0)\n        elif t in tier2_concrete:\n            concreteness_scores.append(3.5)\n        elif t in evidence_markers:\n            concreteness_scores.append(4.0)\n        else:\n            concreteness_scores.append(2.0)  # neutral/abstract default\n    \n    mean_concreteness = sum(concreteness_scores) / n_tokens\n    \n    # High-concreteness ratio (tokens scoring >= 3.5)\n    high_concrete_ratio = sum(1 for s in concreteness_scores if s >= 3.5) / n_tokens\n    \n    # Causal connective scoring\n    def count_phrases(phrase_list, text_str):\n        count = 0\n        for phrase in phrase_list:\n            count += len(re.findall(r'\\b' + re.escape(phrase) + r'\\b', text_str))\n        return count\n    \n    n_strong_causal = count_phrases(strong_causal, text_lower)\n    n_weak_causal = count_phrases(weak_causal, text_lower)\n    \n    # Weighted causal density per 100 tokens\n    causal_density = ((n_strong_causal * 2.0 + n_weak_causal * 1.0) / n_tokens) * 100\n    \n    # Causal chain depth: detect consecutive causal connectives in nearby sentences\n    sentences = re.split(r'[.!?]+', text_lower)\n    causal_chain_depth = 0\n    consecutive = 0\n    for sent in sentences:\n        has_causal = any(re.search(r'\\b' + re.escape(p) + r'\\b', sent)\n                        for p in strong_causal + weak_causal)\n        if has_causal:\n            consecutive += 1\n            causal_chain_depth = max(causal_chain_depth, consecutive)\n        else:\n            consecutive = 0\n    \n    # Normalize components to 0-1\n    concreteness_norm = (mean_concreteness - 2.0) / 3.0  # range 2-5 -> 0-1\n    concreteness_norm = max(0.0, min(1.0, concreteness_norm))\n    \n    causal_norm = min(causal_density / 5.0, 1.0)  # 5 per 100 tokens = max\n    \n    chain_bonus = min(causal_chain_depth * 0.1, 0.3)  # up to 0.3 bonus\n    \n    # INTERACTION: concreteness * causal_density (multiplicative)\n    interaction = concreteness_norm * causal_norm\n    \n    # Composite with chain depth bonus\n    raw_score = (interaction * 8.0) + (high_concrete_ratio * 1.5) + chain_bonus\n    \n    score = max(0.0, min(10.0, raw_score))\n    return round(score, 3)"
+        },
+        {
+          "scorer_id": "S4",
+          "hypothesis": "Comprehensive persuasive quality emerges from the synergy of four dimensions: concrete language, logical discourse structure, controlled sentiment (not extreme), and minimal hedging. This composite scorer integrates all four causal nodes with a penalty gate for texts that over-rely on any single dimension while neglecting others, rewarding balance and depth.",
+          "causal_nodes_used": [
+            "N01",
+            "N02",
+            "N03",
+            "N04"
+          ],
+          "text_features_used": [
+            "proportion of sensory/perceptual words",
+            "mean concreteness rating per token",
+            "frequency of causal and contrastive connectives",
+            "VADER compound score proxy",
+            "hedging language ratio",
+            "sentence-level sentiment variance",
+            "ratio of causal to non-causal connectives"
+          ],
+          "functional_form": "composite",
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n    \n    text_lower = text.lower()\n    tokens = re.findall(r'\\b[a-z]+\\b', text_lower)\n    n_tokens = len(tokens)\n    if n_tokens == 0:\n        return 0.0\n    \n    sentences = re.split(r'[.!?]+', text)\n    sentences = [s.strip() for s in sentences if len(s.strip()) > 5]\n    n_sentences = max(len(sentences), 1)\n    \n    # ---- DIMENSION 1: Lexical Concreteness ----\n    concrete_words = set([\n        'house','car','tree','book','water','fire','hand','eye','face','door',\n        'table','chair','road','stone','blood','food','bread','knife','gun','coin',\n        'paper','phone','screen','glass','metal','wood','cloth','rope','wire','pipe',\n        'dog','cat','bird','fish','horse','child','man','woman','body','bone',\n        'river','mountain','city','village','factory','hospital','school','bridge',\n        'dollar','percent','million','billion','number','figure','data','record',\n        'study','case','example','evidence','result','worker','soldier','farmer'\n    ])\n    sensory_words = set([\n        'see','saw','look','watch','hear','heard','listen','feel','felt','touch',\n        'taste','smell','bright','dark','loud','quiet','soft','hard','warm','cool',\n        'shiny','rough','smooth','sweet','bitter','vivid','colorful','visible'\n    ])\n    abstract_words = set([\n        'freedom','justice','concept','idea','theory','principle','value','notion',\n        'aspect','factor','element','issue','situation','condition','perspective',\n        'paradigm','dynamic','synergy','leverage','optimize','utilize','facilitate'\n    ])\n    \n    n_concrete = sum(1 for t in tokens if t in concrete_words)\n    n_sensory = sum(1 for t in tokens if t in sensory_words)\n    n_abstract = sum(1 for t in tokens if t in abstract_words)\n    \n    concreteness_score = ((n_concrete + n_sensory * 1.2) / n_tokens * 10.0) - (n_abstract / n_tokens * 3.0)\n    concreteness_score = max(0.0, min(10.0, concreteness_score * 8.0))\n    \n    # ---- DIMENSION 2: Discourse Relations ----\n    causal_terms = ['because','therefore','thus','hence','consequently','as a result',\n                    'since','leads to','causes','results in','due to','proves','demonstrates']\n    contrastive_terms = ['although','however','nevertheless','nonetheless','despite',\n                         'yet','on the other hand','in contrast','whereas','even though']\n    \n    def count_phrases(phrase_list, text_str):\n        count = 0\n        for phrase in phrase_list:\n            count += len(re.findall(r'\\b' + re.escape(phrase) + r'\\b', text_str))\n        return count\n    \n    n_causal = count_phrases(causal_terms, text_lower)\n    n_contrastive = count_phrases(contrastive_terms, text_lower)\n    n_discourse = n_causal + n_contrastive\n    \n    discourse_density = (n_discourse / n_tokens) * 100\n    causal_ratio = n_causal / max(n_discourse, 1)\n    discourse_score = min(10.0, discourse_density * 2.5 * (0.5 + causal_ratio * 0.5))\n    \n    # ---- DIMENSION 3: Sentiment Balance ----\n    positive_words = set(['good','great','effective','proven','clear','strong','important',\n                          'significant','powerful','valuable','essential','reliable',\n                          'confirmed','compelling','convincing','successful','beneficial'])\n    negative_words = set(['bad','terrible','dangerous','harmful','devastating','failed',\n                          'broken','corrupt','wrong','false','misleading','threat','crisis'])\n    \n    def sentence_sentiment(sent):\n        s_toks = re.findall(r'\\b[a-z]+\\b', sent.lower())\n        if not s_toks:\n            return 0.0\n        pos = sum(1 for t in s_toks if t in positive_words)\n        neg = sum(1 for t in s_toks if t in negative_words)\n        return (pos - neg) / len(s_toks)\n    \n    sent_scores = [sentence_sentiment(s) for s in sentences]\n    mean_sent = sum(sent_scores) / n_sentences\n    sent_variance = sum((s - mean_sent) ** 2 for s in sent_scores) / n_sentences\n    sent_std = math.sqrt(sent_variance)\n    \n    # Optimal: slight positive lean, low variance\n    sentiment_score = max(0.0, 10.0 - abs(mean_sent - 0.03) * 60.0 - sent_std * 15.0)\n    \n    # ---- DIMENSION 4: Hedge Suppression ----\n    hedge_words = set(['might','may','perhaps','possibly','probably','could','seems',\n                       'appears','somewhat','rather','arguably','uncertain','unclear',\n                       'maybe','conceivably','presumably','tentatively','potentially',\n                       'speculate','doubt','unsure','ambiguous','I think','I believe'])\n    \n    n_hedge = sum(1 for t in tokens if t in hedge_words)\n    hedge_ratio = n_hedge / n_tokens\n    hedge_score = max(0.0, 10.0 - hedge_ratio * 200.0)\n    \n    # ---- COMPOSITE INTEGRATION ----\n    # Weighted combination\n    weights = {'concreteness': 0.28, 'discourse': 0.30, 'sentiment': 0.20, 'hedge': 0.22}\n    \n    composite = (weights['concreteness'] * concreteness_score +\n                 weights['discourse'] * discourse_score +\n                 weights['sentiment'] * sentiment_score +\n                 weights['hedge'] * hedge_score)\n    \n    # PENALTY GATE: if any single dimension is critically weak (< 1.5),\n    # the text is unbalanced \u2014 apply a balance penalty\n    dim_scores = [concreteness_score, discourse_score, sentiment_score, hedge_score]\n    WEAK_THRESHOLD = 1.5\n    n_weak_dims = sum(1 for d in dim_scores if d < WEAK_THRESHOLD)\n    \n    if n_weak_dims >= 2:\n        # Two or more dimensions critically weak: severe penalty\n        balance_penalty = n_weak_dims * 1.5\n        composite -= balance_penalty\n    elif n_weak_dims == 1:\n        # One dimension critically weak: moderate penalty\n        composite -= 0.8\n    \n    # BONUS: reward texts where all dimensions are above 5.0 (well-rounded)\n    if all(d >= 5.0 for d in dim_scores):\n        composite += 0.5\n    \n    score = max(0.0, min(10.0, composite))\n    return round(score, 3)"
+        }
+      ]
+    },
+    "stage5": {
+      "pairs": [
+        {
+          "pair_id": "P001",
+          "anchor": "I grew my LinkedIn following last year. It took consistent effort and the results were positive. Many people have done similar things with their profiles.",
+          "positive": "I grew my LinkedIn following by 4,200 in 90 days. Daily posting drove 3x more recruiter messages. Most people who try this see measurable results within 30 days.",
+          "negative": "I grew my LinkedIn following over time. It required some effort and things generally improved. People who try this approach tend to see decent outcomes eventually.",
+          "split": "train",
+          "target_delta": "positive > anchor > negative on persuasiveness",
+          "causal_nodes_tested": [
+            "N01",
+            "N02"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P002",
+          "anchor": "Rewriting your LinkedIn profile can help with job searching. Using AI tools makes the process easier and recruiters may notice the difference.",
+          "positive": "Rewriting your LinkedIn with 5 targeted AI prompts transformed my profile. Within one week, 4 recruiters DM'd me \u2014 compared to zero in the previous month.",
+          "negative": "Updating your LinkedIn profile might be useful when job searching. AI tools could potentially assist with this and recruiters might respond somewhat more often.",
+          "split": "train",
+          "target_delta": "positive > anchor > negative on persuasiveness",
+          "causal_nodes_tested": [
+            "N01",
+            "N03"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P003",
+          "anchor": "Sharing a personal story on LinkedIn generated leads for my consulting business. Trust seems to matter when it comes to converting readers into clients.",
+          "positive": "One vulnerable LinkedIn post generated 22 inbound leads in a week. Authentic storytelling outperformed every polished case study I'd posted \u2014 because trust converts.",
+          "negative": "Posting a personal story on LinkedIn brought in some leads for my work. It seems like being genuine can be somewhat helpful when trying to attract clients.",
+          "split": "train",
+          "target_delta": "positive > anchor > negative on persuasiveness",
+          "causal_nodes_tested": [
+            "N02",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P004",
+          "anchor": "Getting promoted to Senior PM is possible with the right career narrative. Focusing on your story and positioning can speed up the process considerably.",
+          "positive": "I went from stuck to Senior PM in 97 days by rebuilding my career narrative. A clear, compelling story didn't just help \u2014 it was the only thing that moved the needle.",
+          "negative": "Moving into a Senior PM role can happen faster if you work on your career narrative. Having a good story about yourself may help speed things up a bit.",
+          "split": "validation",
+          "target_delta": "positive > anchor > negative on persuasiveness",
+          "causal_nodes_tested": [
+            "N01",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P005",
+          "anchor": "Old resume formats are less effective today. Modern formatting choices can improve your chances with recruiters who use applicant tracking systems.",
+          "positive": "Treating your resume like a 2010 archive is costing you interviews. Modern formatting isn't cosmetic \u2014 it's the difference between ATS rejection and a recruiter callback.",
+          "negative": "Using older resume styles may not work as well these days. Updating your formatting could potentially improve how recruiters and tracking systems view your application.",
+          "split": "validation",
+          "target_delta": "positive > anchor > negative on persuasiveness",
+          "causal_nodes_tested": [
+            "N02",
+            "N03"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        },
+        {
+          "pair_id": "P006",
+          "anchor": "Breaking conventional LinkedIn posting rules worked for me. Instead of posting seven times a week, I tried a different cadence and saw better engagement.",
+          "positive": "I broke the 7-post-per-week rule and engagement doubled. Quality over quantity isn't just advice \u2014 it's a measurable strategy that consistently outperforms volume posting.",
+          "negative": "Going against the usual LinkedIn posting advice seemed to work out for me. Posting less frequently than recommended might lead to somewhat better engagement for some people.",
+          "split": "test",
+          "target_delta": "positive > anchor > negative on persuasiveness",
+          "causal_nodes_tested": [
+            "N03",
+            "N04"
+          ],
+          "controlled_variables": [
+            "length",
+            "topic"
+          ]
+        }
+      ]
+    },
+    "stage6": {
+      "scorer_evaluations": [
+        {
+          "scorer_id": "S0",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S1",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S2",
+          "pairs_evaluated": 6,
+          "train_accuracy": 1,
+          "heldout_accuracy": 1,
+          "train_mean_gap": 5.3333,
+          "heldout_mean_gap": 4.3333,
+          "nonconstant": true,
+          "eligible": true,
+          "pareto_member": true
+        },
+        {
+          "scorer_id": "S3",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        },
+        {
+          "scorer_id": "S4",
+          "pairs_evaluated": 0,
+          "train_accuracy": 0,
+          "heldout_accuracy": 0,
+          "train_mean_gap": 0,
+          "heldout_mean_gap": 0,
+          "nonconstant": false,
+          "eligible": false,
+          "pareto_member": false
+        }
+      ],
+      "pareto_frontier": [
+        "S2"
+      ],
+      "summary": {
+        "total_evaluated": 5,
+        "eligible": 1,
+        "pareto_size": 1
+      }
+    },
+    "stage7": {
+      "failure_patterns": [
+        {
+          "pattern_id": "FP01",
+          "scorer_ids": [
+            "S0",
+            "S1",
+            "S3",
+            "S4"
+          ],
+          "reasoning_error": "Scorers evaluated zero pairs, producing no signal. These scorers failed to engage with the persuasive target dimension entirely \u2014 likely due to misconfigured rubrics, missing prompts, or inability to parse the evaluation input. With pairs_evaluated=0, all metrics default to zero and nonconstant=false, rendering them completely ineligible.",
+          "severity": "high"
+        },
+        {
+          "pattern_id": "FP02",
+          "scorer_ids": [
+            "S0",
+            "S1",
+            "S3",
+            "S4"
+          ],
+          "reasoning_error": "Zero-pair scorers produce constant output (nonconstant=false), indicating they may be outputting a fixed score or null response regardless of input. This suggests a rubric or scoring function that does not operationalize 'persuasiveness' in a discriminative way \u2014 possibly conflating it with fluency, factuality, or failing to define persuasive criteria (e.g., call-to-action strength, emotional appeal, logical argumentation, audience targeting).",
+          "severity": "high"
+        },
+        {
+          "pattern_id": "FP03",
+          "scorer_ids": [
+            "S2"
+          ],
+          "reasoning_error": "S2 is the sole Pareto member with perfect train and heldout accuracy (1.0) and strong mean gaps (5.33 train, 4.33 heldout). While this is positive, the heldout mean gap is notably lower than train mean gap, suggesting mild overfitting to training pair distributions. The persuasive scoring rubric in S2 may be tuned too closely to training examples and could degrade on more diverse or adversarial persuasive content.",
+          "severity": "low"
+        }
+      ],
+      "mutation_instructions": [
+        {
+          "instruction_id": "MI01",
+          "targets_failure_patterns": [
+            "FP01"
+          ],
+          "instruction": "Audit and repair S0, S1, S3, S4 scorer configurations. Verify that each scorer receives valid paired inputs in the expected format, that evaluation pipelines are not silently failing, and that scoring functions return non-null responses. Add explicit error logging for zero-pair outcomes. Re-run pair assignment to ensure each scorer receives at least 6 comparable pairs targeting the 'persuasive' dimension.",
+          "expected_metric_movement": "pairs_evaluated should increase from 0 to \u22656; nonconstant should become true; train_accuracy and heldout_accuracy should rise above 0.5 baseline."
+        },
+        {
+          "instruction_id": "MI02",
+          "targets_failure_patterns": [
+            "FP02"
+          ],
+          "instruction": "Rewrite rubrics for S0, S1, S3, S4 to explicitly operationalize persuasiveness with discriminative criteria: (1) presence and strength of a clear call-to-action, (2) use of emotional or rhetorical appeal, (3) logical argumentation with evidence, (4) audience awareness and tailored framing, (5) urgency or motivational language. Each criterion should map to a distinct score range to ensure non-constant output across varied inputs.",
+          "expected_metric_movement": "nonconstant should become true; mean_gap should rise above 2.0; accuracy should exceed 0.7 on held-out pairs."
+        },
+        {
+          "instruction_id": "MI03",
+          "targets_failure_patterns": [
+            "FP03"
+          ],
+          "instruction": "To reduce the train-to-heldout mean gap decay in S2 (5.33 \u2192 4.33), diversify the training pairs to include edge cases: weakly persuasive vs. moderately persuasive content (not just strong vs. weak contrasts), different persuasive domains (commercial, political, social), and varied rhetorical styles. Additionally, regularize S2's rubric by abstracting away domain-specific cues that may not generalize.",
+          "expected_metric_movement": "heldout_mean_gap should converge closer to train_mean_gap, targeting a gap ratio \u22650.90; heldout_accuracy should remain at or above 0.95."
+        }
+      ],
+      "heldout_aggregate": {
+        "best_accuracy": 1,
+        "mean_gap_range": "0.0 \u2013 4.3333"
+      }
+    },
+    "stage8": {
+      "repair_scorers": [
+        {
+          "scorer_id": "R0",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S0",
+            "S1"
+          ],
+          "targets_failure_patterns": [
+            "FP01",
+            "FP02"
+          ],
+          "hypothesis": "Persuasive texts combine concrete tangible language with explicit call-to-action phrases and urgency markers. The interaction between high lexical concreteness and direct audience-targeting language (second-person pronouns + imperative verbs) produces a discriminative persuasiveness signal that avoids the zero-pair failure of S0/S1.",
+          "functional_form": "weighted_sum(concreteness_ratio * cta_strength * urgency_boost + audience_targeting_score)",
+          "repair_strategy": "S0 failed due to incomplete word list truncation and no fallback return path. S1 failed similarly. R0 completely rewrites the scoring logic with: (1) a self-contained, fully defined concrete word set, (2) explicit call-to-action verb detection, (3) urgency/motivational language detection, (4) audience-targeting via second-person pronoun ratio, (5) a composite score with guaranteed non-null return. All lists are complete and the function always returns a float in [0,1].",
+          "text_features_used": [
+            "ratio of concrete nouns/adjectives to total content words",
+            "presence and density of imperative call-to-action verbs",
+            "urgency and motivational language density",
+            "second-person pronoun ratio as audience-targeting signal",
+            "interaction term: concreteness * cta_density"
+          ],
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n\n    if not text or not isinstance(text, str) or len(text.strip()) == 0:\n        return 0.0\n\n    tokens = re.findall(r'[a-zA-Z]+', text.lower())\n    if len(tokens) == 0:\n        return 0.0\n    n_tokens = len(tokens)\n\n    # --- Feature 1: Lexical Concreteness ---\n    # Concrete nouns and adjectives (tangible, perceptible referents)\n    concrete_words = {\n        'house', 'car', 'tree', 'book', 'water', 'food', 'child', 'hand',\n        'door', 'road', 'fire', 'stone', 'blood', 'body', 'face', 'eye',\n        'mouth', 'heart', 'bone', 'skin', 'hair', 'dog', 'cat', 'bird',\n        'fish', 'flower', 'grass', 'sun', 'moon', 'star', 'rain', 'snow',\n        'wind', 'mountain', 'river', 'ocean', 'city', 'village', 'school',\n        'hospital', 'money', 'phone', 'computer', 'table', 'chair', 'bed',\n        'window', 'wall', 'floor', 'roof', 'bridge', 'street', 'building',\n        'bottle', 'cup', 'plate', 'knife', 'gun', 'bomb', 'drug', 'pill',\n        'vaccine', 'child', 'baby', 'mother', 'father', 'family', 'soldier',\n        'worker', 'farmer', 'doctor', 'teacher', 'student', 'victim', 'death',\n        'life', 'home', 'land', 'earth', 'air', 'light', 'darkness', 'pain',\n        'hunger', 'poverty', 'wealth', 'job', 'wage', 'price', 'cost', 'tax',\n        'vote', 'law', 'crime', 'prison', 'war', 'peace', 'health', 'disease',\n        'cancer', 'virus', 'injury', 'accident', 'disaster', 'flood', 'fire',\n        'explosion', 'attack', 'protest', 'march', 'rally', 'election', 'bill',\n        'contract', 'letter', 'report', 'study', 'data', 'fact', 'number',\n        'percent', 'million', 'billion', 'thousand', 'hundred', 'dollar',\n        'pound', 'euro', 'year', 'day', 'hour', 'minute', 'second', 'week',\n        'month', 'century', 'decade', 'generation', 'community', 'nation',\n        'country', 'government', 'company', 'business', 'product', 'service'\n    }\n\n    concrete_count = sum(1 for t in tokens if t in concrete_words)\n    concreteness_ratio = concrete_count / n_tokens\n\n    # --- Feature 2: Call-to-Action Strength ---\n    # Imperative and action-directive verbs\n    cta_verbs = {\n        'join', 'sign', 'act', 'donate', 'support', 'vote', 'call', 'write',\n        'contact', 'share', 'spread', 'fight', 'demand', 'stop', 'start',\n        'change', 'protect', 'save', 'help', 'make', 'build', 'create',\n        'stand', 'rise', 'speak', 'tell', 'show', 'prove', 'choose', 'decide',\n        'commit', 'pledge', 'promise', 'ensure', 'secure', 'defend', 'resist',\n        'challenge', 'push', 'drive', 'lead', 'take', 'give', 'bring', 'send',\n        'buy', 'invest', 'subscribe', 'register', 'apply', 'attend', 'visit',\n        'click', 'download', 'try', 'use', 'get', 'learn', 'discover', 'find'\n    }\n    cta_count = sum(1 for t in tokens if t in cta_verbs)\n    cta_density = min(cta_count / n_tokens, 0.2) / 0.2  # normalize to [0,1] cap at 20%\n\n    # --- Feature 3: Urgency and Motivational Language ---\n    urgency_words = {\n        'now', 'today', 'immediately', 'urgent', 'critical', 'crucial',\n        'essential', 'vital', 'must', 'need', 'necessary', 'important',\n        'serious', 'severe', 'extreme', 'unprecedented', 'emergency',\n        'deadline', 'last', 'final', 'only', 'limited', 'never', 'always',\n        'every', 'all', 'everyone', 'nobody', 'nothing', 'everything',\n        'before', 'soon', 'quickly', 'fast', 'immediately', 'right',\n        'still', 'yet', 'already', 'enough', 'too', 'more', 'less',\n        'better', 'worse', 'best', 'worst', 'most', 'least', 'first', 'once'\n    }\n    urgency_count = sum(1 for t in tokens if t in urgency_words)\n    urgency_density = min(urgency_count / n_tokens, 0.15) / 0.15\n\n    # --- Feature 4: Audience Targeting (2nd person pronouns) ---\n    audience_words = {'you', 'your', 'yours', 'yourself', 'yourselves', 'we', 'our', 'us', 'ourselves'}\n    audience_count = sum(1 for t in tokens if t in audience_words)\n    audience_ratio = min(audience_count / n_tokens, 0.12) / 0.12\n\n    # --- Feature 5: Emotional Appeal Words ---\n    emotional_words = {\n        'afraid', 'fear', 'scared', 'terrified', 'hope', 'dream', 'proud',\n        'shame', 'guilty', 'angry', 'outraged', 'disgusted', 'shocked',\n        'worried', 'anxious', 'desperate', 'suffering', 'tragedy', 'crisis',\n        'injustice', 'unfair', 'wrong', 'right', 'justice', 'freedom',\n        'dignity', 'respect', 'love', 'hate', 'courage', 'brave', 'strong',\n        'weak', 'broken', 'lost', 'betrayed', 'forgotten', 'ignored',\n        'inspired', 'motivated', 'empowered', 'united', 'together', 'alone'\n    }\n    emotional_count = sum(1 for t in tokens if t in emotional_words)\n    emotional_density = min(emotional_count / n_tokens, 0.10) / 0.10\n\n    # --- Composite Score with Interaction ---\n    # Core persuasion = concreteness anchors + CTA drives action\n    core_interaction = concreteness_ratio * (1.0 + cta_density)\n    # Normalize core_interaction: max theoretical ~0.2 * 2.0 = 0.4, scale to [0,1]\n    core_normalized = min(core_interaction / 0.3, 1.0)\n\n    # Weighted combination\n    score = (\n        0.30 * core_normalized +\n        0.25 * cta_density +\n        0.20 * urgency_density +\n        0.15 * audience_ratio +\n        0.10 * emotional_density\n    )\n\n    return float(min(max(score, 0.0), 1.0))"
+        },
+        {
+          "scorer_id": "R1",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S3",
+            "S4"
+          ],
+          "targets_failure_patterns": [
+            "FP01",
+            "FP02"
+          ],
+          "hypothesis": "Persuasive texts deploy logical argumentation structures (evidence markers, causal connectives, statistical references) combined with rhetorical framing devices (contrast, antithesis, repetition). The ratio of evidence-backed claims to total sentences, combined with rhetorical device density, discriminates persuasive from non-persuasive text across diverse domains.",
+          "functional_form": "weighted_sum(evidence_ratio + rhetorical_device_density + logical_connective_density + statistical_reference_score)",
+          "repair_strategy": "S3 and S4 both evaluated zero pairs due to configuration failures. R1 addresses FP01 by implementing a fully self-contained scorer with no external dependencies, complete word lists, and guaranteed return. Addresses FP02 by operationalizing persuasiveness through logical argumentation features (evidence markers, statistics, causal connectives) and rhetorical devices (anaphora signals, contrast markers, tricolon patterns) \u2014 distinct from S0/S1's concreteness/causal approach and S2's hedge-based approach.",
+          "text_features_used": [
+            "density of evidence and citation markers",
+            "statistical and numerical reference density",
+            "logical connective and causal discourse marker density",
+            "rhetorical contrast and antithesis marker density",
+            "sentence-level argument structure: claim + evidence co-occurrence ratio"
+          ],
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n\n    if not text or not isinstance(text, str) or len(text.strip()) == 0:\n        return 0.0\n\n    text_lower = text.lower()\n    tokens = re.findall(r'[a-zA-Z]+', text_lower)\n    n_tokens = len(tokens)\n    if n_tokens == 0:\n        return 0.0\n\n    # Split into sentences for sentence-level features\n    sentences = re.split(r'[.!?]+', text)\n    sentences = [s.strip() for s in sentences if len(s.strip()) > 5]\n    n_sentences = max(len(sentences), 1)\n\n    # --- Feature 1: Evidence and Citation Markers ---\n    evidence_phrases = [\n        r'\\baccording to\\b', r'\\bstudies show\\b', r'\\bresearch shows\\b',\n        r'\\bevidence suggests\\b', r'\\bdata shows\\b', r'\\bdata indicates\\b',\n        r'\\bexperts say\\b', r'\\bscientists found\\b', r'\\breport shows\\b',\n        r'\\bproven\\b', r'\\bdemonstrated\\b', r'\\bdocumented\\b',\n        r'\\bshows that\\b', r'\\bfound that\\b', r'\\bconfirmed\\b',\n        r'\\bverified\\b', r'\\bestablished\\b', r'\\brecorded\\b',\n        r'\\bin fact\\b', r'\\bthe truth is\\b', r'\\bthe reality is\\b',\n        r'\\bstatistics show\\b', r'\\bsurveys show\\b', r'\\bpolls show\\b',\n        r'\\banalysis shows\\b', r'\\bfindings suggest\\b', r'\\bresults show\\b'\n    ]\n    evidence_count = sum(1 for p in evidence_phrases if re.search(p, text_lower))\n    evidence_score = min(evidence_count / 5.0, 1.0)\n\n    # --- Feature 2: Statistical and Numerical References ---\n    # Numbers with percent, dollar signs, or comparative magnitudes\n    stat_patterns = [\n        r'\\d+\\s*%', r'\\d+\\s*percent', r'\\$\\s*\\d+', r'\\d+\\s*million',\n        r'\\d+\\s*billion', r'\\d+\\s*thousand', r'\\d+\\s*times',\n        r'\\d+\\s*out of\\s*\\d+', r'\\d+\\s*in\\s*\\d+',\n        r'majority', r'minority', r'most', r'nearly all', r'almost half',\n        r'three times', r'twice as', r'doubled', r'tripled', r'increased by',\n        r'decreased by', r'reduced by', r'grown by', r'risen by'\n    ]\n    stat_count = sum(1 for p in stat_patterns if re.search(p, text_lower))\n    stat_score = min(stat_count / 4.0, 1.0)\n\n    # --- Feature 3: Logical and Causal Connectives ---\n    logical_connectives = [\n        'because', 'therefore', 'thus', 'hence', 'consequently',\n        'as a result', 'since', 'so that', 'due to', 'owing to',\n        'which means', 'this means', 'this shows', 'this proves',\n        'if', 'unless', 'provided that', 'given that', 'assuming that',\n        'furthermore', 'moreover', 'in addition', 'additionally',\n        'first', 'second', 'third', 'finally', 'in conclusion',\n        'to summarize', 'in summary', 'above all', 'most importantly',\n        'crucially', 'critically', 'significantly', 'notably'\n    ]\n    logical_count = sum(1 for phrase in logical_connectives\n                        if phrase in text_lower)\n    logical_density = min(logical_count / (n_sentences * 0.8), 1.0)\n\n    # --- Feature 4: Rhetorical Contrast and Antithesis Markers ---\n    contrast_markers = [\n        'however', 'but', 'yet', 'although', 'despite', 'in spite of',\n        'on the other hand', 'on the contrary', 'while', 'whereas',\n        'nevertheless', 'nonetheless', 'even though', 'instead',\n        'rather than', 'unlike', 'compared to', 'in contrast',\n        'not only', 'but also', 'either', 'or', 'neither', 'nor',\n        'without', 'unless', 'except', 'beyond', 'above', 'below'\n    ]\n    contrast_count = sum(1 for phrase in contrast_markers\n                         if phrase in text_lower)\n    contrast_density = min(contrast_count / (n_sentences * 1.0), 1.0)\n\n    # --- Feature 5: Claim-Framing Language ---\n    # Words that signal the author is making an assertive claim/position\n    claim_words = {\n        'must', 'should', 'need', 'require', 'demand', 'insist',\n        'believe', 'argue', 'claim', 'assert', 'contend', 'maintain',\n        'prove', 'show', 'demonstrate', 'illustrate', 'reveal',\n        'clear', 'obvious', 'evident', 'undeniable', 'certain',\n        'absolutely', 'definitely', 'certainly', 'clearly', 'plainly',\n        'simply', 'truly', 'really', 'actually', 'indeed', 'surely',\n        'without doubt', 'unquestionably', 'undoubtedly', 'beyond'\n    }\n    claim_count = sum(1 for t in tokens if t in claim_words)\n    claim_density = min(claim_count / n_tokens / 0.08, 1.0)\n\n    # --- Composite Score ---\n    # Evidence + stats interaction: both present = stronger signal\n    evidence_stat_interaction = (evidence_score + stat_score) / 2.0\n    if evidence_score > 0.3 and stat_score > 0.3:\n        evidence_stat_interaction = min(evidence_stat_interaction * 1.3, 1.0)\n\n    score = (\n        0.30 * evidence_stat_interaction +\n        0.25 * logical_density +\n        0.20 * claim_density +\n        0.15 * contrast_density +\n        0.10 * stat_score\n    )\n\n    return float(min(max(score, 0.0), 1.0))"
+        },
+        {
+          "scorer_id": "R2",
+          "lineage": "repair",
+          "parent_scorer_ids": [
+            "S2"
+          ],
+          "targets_failure_patterns": [
+            "FP03"
+          ],
+          "hypothesis": "S2's hedge-based assertiveness scorer overfits to training distributions because it relies on a single feature dimension. A generalized persuasiveness scorer combining assertive tone (low hedging), positive/negative emotional valence balance, audience-inclusive language, and domain-agnostic rhetorical intensity will generalize better across diverse persuasive domains (commercial, political, social) by capturing multiple independent persuasion pathways.",
+          "functional_form": "composite(hedge_penalty * assertiveness_boost + sentiment_polarity_signal + inclusive_framing + rhetorical_intensity) with domain-agnostic normalization",
+          "repair_strategy": "S2 showed mild overfitting (train gap 5.33 vs heldout gap 4.33). R2 addresses FP03 by: (1) retaining S2's hedge-word penalty but recalibrating it as one component among four, (2) adding sentiment polarity balance detection (not just positive/negative but strategic use of both), (3) incorporating inclusive 'we/our' framing as a social persuasion signal, (4) adding rhetorical intensity markers (superlatives, absolutes, intensifiers) that generalize across domains, (5) normalizing each sub-feature independently to prevent any single domain-specific feature from dominating.",
+          "text_features_used": [
+            "hedge word density as assertiveness penalty (from S2, recalibrated)",
+            "VADER-proxy sentiment polarity via positive/negative word ratio",
+            "inclusive collective pronoun density for social persuasion framing",
+            "superlative and absolute language density as rhetorical intensity",
+            "intensifier adverb density as confidence signal",
+            "interaction: low-hedge * high-intensity as assertive-confident composite"
+          ],
+          "code": "def scorer(text, anchor=None, params=None):\n    import re\n    import math\n\n    if not text or not isinstance(text, str) or len(text.strip()) == 0:\n        return 0.0\n\n    text_lower = text.lower()\n    tokens = re.findall(r'[a-zA-Z]+', text_lower)\n    n_tokens = len(tokens)\n    if n_tokens == 0:\n        return 0.0\n\n    # --- Feature 1: Hedge Word Penalty (Assertiveness) ---\n    # From S2 but recalibrated as partial component\n    hedge_words = {\n        'might', 'may', 'perhaps', 'possibly', 'probably', 'could',\n        'seems', 'appears', 'apparently', 'presumably', 'supposedly',\n        'allegedly', 'arguably', 'somewhat', 'rather', 'fairly',\n        'quite', 'sort of', 'kind of', 'more or less', 'to some extent',\n        'in some ways', 'generally', 'typically', 'usually', 'often',\n        'sometimes', 'occasionally', 'rarely', 'seldom', 'tend',\n        'suggest', 'indicate', 'imply', 'assume', 'guess', 'think',\n        'believe', 'feel', 'wonder', 'doubt', 'uncertain', 'unclear'\n    }\n    hedge_count = sum(1 for t in tokens if t in hedge_words)\n    hedge_rate = hedge_count / n_tokens\n    # Assertiveness = inverse of hedging, with smooth penalty\n    assertiveness = math.exp(-5.0 * hedge_rate)  # ranges ~1.0 (no hedges) to ~0.0 (many hedges)\n\n    # --- Feature 2: Sentiment Polarity Balance ---\n    # Strategic persuasion uses both positive appeal AND negative framing (problem + solution)\n    positive_words = {\n        'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'outstanding',\n        'brilliant', 'powerful', 'strong', 'effective', 'successful', 'proven',\n        'trusted', 'reliable', 'safe', 'secure', 'healthy', 'happy', 'better',\n        'best', 'perfect', 'ideal', 'superior', 'leading', 'top', 'first',\n        'innovative', 'revolutionary', 'transformative', 'inspiring', 'empowering',\n        'free', 'easy', 'simple', 'fast', 'affordable', 'valuable', 'benefit',\n        'gain', 'win', 'success', 'achieve', 'improve', 'grow', 'thrive',\n        'opportunity', 'advantage', 'reward', 'promise', 'hope', 'future'\n    }\n    negative_words = {\n        'bad', 'terrible', 'awful', 'dangerous', 'harmful', 'toxic', 'deadly',\n        'crisis', 'disaster', 'failure', 'problem', 'threat', 'risk', 'damage',\n        'destroy', 'lose', 'loss', 'suffer', 'pain', 'fear', 'worry', 'concern',\n        'urgent', 'critical', 'serious', 'severe', 'wrong', 'broken', 'failed',\n        'corrupt', 'unfair', 'unjust', 'inequality', 'poverty', 'violence',\n        'abuse', 'neglect', 'ignore', 'abandon', 'betray', 'exploit', 'manipulate',\n        'waste', 'cost', 'expensive', 'unaffordable', 'impossible', 'hopeless'\n    }\n    pos_count = sum(1 for t in tokens if t in positive_words)\n    neg_count = sum(1 for t in tokens if t in negative_words)\n    total_sentiment = pos_count + neg_count\n\n    if total_sentiment == 0:\n        sentiment_score = 0.1  # neutral text is weakly persuasive\n    else:\n        pos_ratio = pos_count / total_sentiment\n        neg_ratio = neg_count / total_sentiment\n        # Strategic persuasion uses both: problem framing (neg) + solution (pos)\n        # Penalize pure neutral, reward mixed or strong unidirectional\n        sentiment_density = min(total_sentiment / n_tokens / 0.10, 1.0)\n        # Balance bonus: texts with both pos and neg are more persuasively structured\n        balance_bonus = 1.0 + min(pos_ratio, neg_ratio)  # 1.0 to 1.5\n        sentiment_score = min(sentiment_density * balance_bonus / 1.5, 1.0)\n\n    # --- Feature 3: Inclusive Collective Framing ---\n    # 'We/our/us' creates in-group solidarity; domain-agnostic persuasion signal\n    inclusive_pronouns = {'we', 'our', 'us', 'ourselves', 'together', 'united',\n                          'community', 'everyone', 'all', 'each', 'every',\n                          'people', 'citizens', 'voters', 'consumers', 'families'}\n    inclusive_count = sum(1 for t in tokens if t in inclusive_pronouns)\n    inclusive_density = min(inclusive_count / n_tokens / 0.08, 1.0)\n\n    # --- Feature 4: Rhetorical Intensity (Superlatives + Absolutes) ---\n    # Domain-agnostic: works in commercial, political, social domains\n    intensity_words = {\n        'most', 'least', 'best', 'worst', 'greatest', 'largest', 'smallest',\n        'highest', 'lowest', 'fastest', 'slowest', 'strongest', 'weakest',\n        'never', 'always', 'every', 'all', 'none', 'nothing', 'everything',\n        'only', 'sole', 'unique', 'unprecedented', 'unmatched', 'unparalleled',\n        'absolute', 'total', 'complete', 'entire', 'whole', 'full', 'pure',\n        'ultimate', 'supreme', 'maximum', 'minimum', 'extreme', 'critical'\n    }\n    intensity_count = sum(1 for t in tokens if t in intensity_words)\n    intensity_density = min(intensity_count / n_tokens / 0.07, 1.0)\n\n    # --- Feature 5: Intensifier Adverbs (Confidence Signal) ---\n    intensifiers = {\n        'very', 'extremely', 'incredibly', 'absolutely', 'completely',\n        'totally', 'utterly', 'deeply', 'strongly', 'highly', 'greatly',\n        'significantly', 'substantially', 'dramatically', 'profoundly',\n        'remarkably', 'exceptionally', 'particularly', 'especially',\n        'critically', 'urgently', 'vitally', 'crucially', 'fundamentally'\n    }\n    intensifier_count = sum(1 for t in tokens if t in intensifiers)\n    intensifier_density = min(intensifier_count / n_tokens / 0.06, 1.0)\n\n    # --- Interaction: Assertive + Intense = Confident Persuasion ---\n    # This interaction generalizes: not domain-specific, captures rhetorical confidence\n    assertive_intense = assertiveness * (0.5 + 0.5 * intensity_density)\n\n    # --- Composite Score ---\n    score = (\n        0.28 * assertive_intense +\n        0.22 * sentiment_score +\n        0.20 * intensity_density +\n        0.17 * inclusive_density +\n        0.13 * intensifier_density\n    )\n\n    return float(min(max(score, 0.0), 1.0))"
+        }
+      ],
+      "repair_evaluations": [
+        {
+          "scorer_id": "R0",
+          "accuracy": 0,
+          "mean_gap": 0,
+          "pairs_evaluated": 0
+        },
+        {
+          "scorer_id": "R1",
+          "accuracy": 1,
+          "mean_gap": 4.83,
+          "pairs_evaluated": 6
+        },
+        {
+          "scorer_id": "R2",
+          "accuracy": 0,
+          "mean_gap": 0,
+          "pairs_evaluated": 0
+        }
+      ],
+      "comparison": {
+        "best_original": {
+          "scorer_id": "S2",
+          "accuracy": 1,
+          "gap": 4.3333
+        },
+        "best_repair": {
+          "scorer_id": "R1",
+          "accuracy": 1,
+          "gap": 4.83
+        },
+        "improvement": 0.5
+      }
+    }
+  }
+}

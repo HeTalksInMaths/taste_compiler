@@ -118,6 +118,21 @@ function parseJson(text: string): unknown {
   }
 }
 
+/** Call Bedrock and parse JSON result, retrying on parse failures (e.g. truncated output) */
+async function callBedrockParsed(system: string, user: string, maxTokens = 4096): Promise<unknown> {
+  const maxRetries = 2;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const raw = await callBedrockOnce(system, user, maxTokens);
+      return parseJson(raw);
+    } catch (e: unknown) {
+      if (attempt === maxRetries) throw e;
+      await new Promise(r => setTimeout(r, (attempt + 1) * 1000));
+    }
+  }
+  throw new Error('callBedrockParsed: exhausted retries');
+}
+
 export async function POST(request: Request) {
   try {
     const { target_variable, stage, previous_output, all_outputs } = await request.json();
@@ -168,8 +183,8 @@ export async function POST(request: Request) {
       // Stage 4: Scorer Hypotheses (LLM only) — grounded in measurement research
       const causalGraph = all_outputs?.stage2 ? JSON.stringify(all_outputs.stage2).slice(0, 1500) : '{}';
       const measurementResearch = previous_output ? JSON.stringify(previous_output).slice(0, 2500) : '{}';
-      const raw = await callBedrock(
-        'You are an NLP scorer architect. You design scoring functions that combine multiple measurable text features into a single quality score. Your scorers must be grounded in the measurement research — use the specific text features and implementation ideas provided. Return valid JSON only.',
+      result = await callBedrockParsed(
+        'You are an NLP scorer architect. You design scoring functions that combine multiple measurable text features into a single quality score. Your scorers must be grounded in the measurement research — use the specific text features and implementation ideas provided. Return valid JSON only. Keep code concise.',
         `Design 5 distinct, sophisticated scoring functions for: "${target_variable}"
 
 CAUSAL GRAPH (what drives ${target_variable}):
@@ -186,12 +201,12 @@ REQUIREMENTS:
 - Include at least one scorer with a PENALTY gate (if X exceeds threshold, apply penalty)
 - The code should be implementable with regex, word lists, and basic NLP (no external models needed)
 - Each scorer should produce meaningfully different scores on high-quality vs low-quality text
+- Keep code under 20 lines per scorer to avoid JSON truncation
 
 Return JSON:
 {"target_variable":"${target_variable}","scorers":[{"scorer_id":"S0","hypothesis":"1-2 sentences explaining the scoring theory","causal_nodes_used":["node1","node2"],"text_features_used":["specific feature from measurement research"],"functional_form":"additive|interaction|gated|penalty|composite","code":"def scorer(text, anchor=None, params=None):\\n    # Implementation using specific text features\\n    ...\\n    return score  # float 0-10"}]}`,
         8192
       );
-      result = parseJson(raw);
 
     } else if (stage === 5) {
       // Stage 5: Exa search for real content → Pair Generation
