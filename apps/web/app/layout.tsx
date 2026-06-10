@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Taste Compiler",
-  description: "Agents that learn what 'good' means",
+  description: "Turn subjective taste into executable scorers",
 };
 
 export default function RootLayout({
@@ -89,35 +89,21 @@ function Nav() {
             className="text-sm font-sans transition"
             style={{ color: "rgba(177,151,252,0.85)" }}
           >
-            Create Scorer ✨
+            Create Scorer
           </Link>
           <Link
-            href="/"
+            href="/stages"
             className="text-sm font-sans transition"
             style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            Runs
+            Live Pipeline
           </Link>
           <Link
             href="/market-dynamics"
             className="text-sm font-sans transition"
             style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            Market Dynamics
-          </Link>
-          <Link
-            href="/market-dynamics/live-sim"
-            className="text-sm font-sans transition"
-            style={{ color: "rgba(251,191,36,0.85)" }}
-          >
-            Live Sim ⚡
-          </Link>
-          <Link
-            href="/market-dynamics/dashboard"
-            className="text-sm font-sans transition"
-            style={{ color: "rgba(255,255,255,0.55)" }}
-          >
-            Dashboard
+            Market
           </Link>
         </div>
       </div>
