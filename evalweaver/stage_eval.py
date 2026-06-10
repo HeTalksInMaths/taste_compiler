@@ -433,3 +433,408 @@ def _compute_alignment(scorers: list) -> float:
         matches = sum(1 for t in terms if t in code)
         score_sum += matches / len(terms)
     return score_sum / len(scorers)
+
+
+# ─────────────────────────────────────────────────────────────────────
+# STAGE 5 EVAL
+# ─────────────────────────────────────────────────────────────────────
+
+_STAGE_5_REQUIRED_FIELDS = ["pair_id", "anchor", "positive", "negative", "split", "target_delta", "controlled_variables"]
+
+
+def _simple_text_similarity(a: str, b: str) -> float:
+    """Compute simple word-overlap Jaccard similarity between two texts."""
+    words_a = set(a.lower().split())
+    words_b = set(b.lower().split())
+    if not words_a or not words_b:
+        return 0.0
+    intersection = words_a & words_b
+    union = words_a | words_b
+    return len(intersection) / len(union) if union else 0.0
+
+
+def eval_stage_5(parsed_json: dict, pass_criteria: dict, stage2_nodes: list, max_words: int = 80) -> EvalResult:
+    """Evaluate Stage 5 (Evaluation Pair Generation) output."""
+    pairs = parsed_json.get("pairs", [])
+    node_ids = set(n.get("node_id", "") for n in stage2_nodes)
+
+    num_pairs = len(pairs)
+    heldout_count = sum(1 for p in pairs if p.get("split") == "heldout")
+
+    # pair_schema_completeness_rate
+    complete_count = sum(
+        1 for p in pairs
+        if all(p.get(f) not in (None, "", []) for f in _STAGE_5_REQUIRED_FIELDS)
+    )
+    pair_schema_completeness_rate = complete_count / max(num_pairs, 1)
+
+    # source_trace_rate
+    source_traced = sum(1 for p in pairs if p.get("source_trace") or p.get("source_id"))
+    source_trace_rate = source_traced / max(num_pairs, 1)
+
+    # causal_node_reference_validity_rate
+    valid_ref_count = 0
+    for p in pairs:
+        nodes_tested = p.get("causal_nodes_tested", [])
+        if nodes_tested and all(n in node_ids for n in nodes_tested):
+            valid_ref_count += 1
+        elif not nodes_tested:
+            # Empty causal_nodes_tested doesn't count as valid
+            pass
+    causal_node_reference_validity_rate = valid_ref_count / max(num_pairs, 1)
+
+    # length_balance_rate
+    balanced_count = 0
+    for p in pairs:
+        pos = p.get("positive", "")
+        neg = p.get("negative", "")
+        pos_words = len(pos.split())
+        neg_words = len(neg.split())
+        if abs(pos_words - neg_words) <= max_words * 0.3:
+            balanced_count += 1
+    length_balance_rate = balanced_count / max(num_pairs, 1)
+
+    # minimal_contrast_rate
+    minimal_count = 0
+    for p in pairs:
+        nodes_tested = p.get("causal_nodes_tested", [])
+        if len(nodes_tested) in (1, 2):
+            minimal_count += 1
+    minimal_contrast_rate = minimal_count / max(num_pairs, 1)
+
+    # target_direction_clarity_rate
+    clarity_count = sum(1 for p in pairs if p.get("label_contract"))
+    target_direction_clarity_rate = clarity_count / max(num_pairs, 1)
+
+    # controlled_variable_pass_rate
+    controlled_count = sum(1 for p in pairs if p.get("controlled_variables") and len(p["controlled_variables"]) > 0)
+    controlled_variable_pass_rate = controlled_count / max(num_pairs, 1)
+
+    # positive_policy_pass_rate
+    policy_pass_count = sum(1 for p in pairs if not p.get("policy_violations") or len(p["policy_violations"]) == 0)
+    positive_policy_pass_rate = policy_pass_count / max(num_pairs, 1)
+
+    # near_duplicate_pair_rate
+    anchors = [p.get("anchor", "") for p in pairs]
+    duplicate_count = 0
+    for i in range(len(anchors)):
+        for j in range(i + 1, len(anchors)):
+            if _simple_text_similarity(anchors[i], anchors[j]) > 0.8:
+                duplicate_count += 1
+                break  # count each pair only once
+    near_duplicate_pair_rate = duplicate_count / max(num_pairs, 1)
+
+    # heldout_leakage_risk: always 0.0 (checked at orchestrator level)
+    heldout_leakage_risk = 0.0
+
+    signals = {
+        "num_pairs": num_pairs,
+        "heldout_count": heldout_count,
+        "pair_schema_completeness_rate": pair_schema_completeness_rate,
+        "source_trace_rate": source_trace_rate,
+        "causal_node_reference_validity_rate": causal_node_reference_validity_rate,
+        "length_balance_rate": length_balance_rate,
+        "minimal_contrast_rate": minimal_contrast_rate,
+        "target_direction_clarity_rate": target_direction_clarity_rate,
+        "controlled_variable_pass_rate": controlled_variable_pass_rate,
+        "positive_policy_pass_rate": positive_policy_pass_rate,
+        "near_duplicate_pair_rate": near_duplicate_pair_rate,
+        "heldout_leakage_risk": heldout_leakage_risk,
+    }
+
+    passed, failures = check_pass_criteria(signals, pass_criteria)
+    return EvalResult(signals=signals, passed=passed, failures=failures)
+
+
+# ─────────────────────────────────────────────────────────────────────
+# STAGE 6 EVAL
+# ─────────────────────────────────────────────────────────────────────
+
+
+def eval_stage_6(scorer_summaries: list, pareto_frontier: list, eval_rows: dict, pass_criteria: dict) -> EvalResult:
+    """Evaluate Stage 6 (Scorer Evaluation) output quality."""
+    num_scorers_evaluated = len(scorer_summaries)
+
+    # execution_valid_rate: fraction of scorers with exec_error_rate == 0
+    exec_valid_count = sum(1 for s in scorer_summaries if s.get("exec_error_rate", 1) == 0)
+    execution_valid_rate = exec_valid_count / max(num_scorers_evaluated, 1)
+
+    # numeric_return_rate: fraction of scorers that returned numeric values (no exec errors)
+    numeric_count = sum(1 for s in scorer_summaries if s.get("exec_error_rate", 1) == 0)
+    numeric_return_rate = numeric_count / max(num_scorers_evaluated, 1)
+
+    # nonconstant_scorer_rate: fraction with nonconstant_rate > 0
+    nonconstant_count = sum(1 for s in scorer_summaries if s.get("nonconstant_rate", 0) > 0)
+    nonconstant_scorer_rate = nonconstant_count / max(num_scorers_evaluated, 1)
+
+    # score_range_valid_rate: fraction where score_spread > 0
+    range_valid_count = sum(1 for s in scorer_summaries if s.get("score_spread", 0) > 0)
+    score_range_valid_rate = range_valid_count / max(num_scorers_evaluated, 1)
+
+    # train_accuracy_presence_rate: fraction with defined train_accuracy
+    train_acc_count = sum(1 for s in scorer_summaries if s.get("train_accuracy") is not None)
+    train_accuracy_presence_rate = train_acc_count / max(num_scorers_evaluated, 1)
+
+    # heldout_accuracy_presence_rate: fraction with defined heldout_accuracy
+    heldout_acc_count = sum(1 for s in scorer_summaries if s.get("heldout_accuracy") is not None)
+    heldout_accuracy_presence_rate = heldout_acc_count / max(num_scorers_evaluated, 1)
+
+    # train_gap_presence_rate: fraction with defined train_mean_gap
+    train_gap_count = sum(1 for s in scorer_summaries if s.get("train_mean_gap") is not None)
+    train_gap_presence_rate = train_gap_count / max(num_scorers_evaluated, 1)
+
+    # heldout_gap_presence_rate: fraction with defined heldout_mean_gap
+    heldout_gap_count = sum(1 for s in scorer_summaries if s.get("heldout_mean_gap") is not None)
+    heldout_gap_presence_rate = heldout_gap_count / max(num_scorers_evaluated, 1)
+
+    # eligible_scorer_count
+    eligible_scorer_count = sum(1 for s in scorer_summaries if s.get("eligible", False))
+
+    # pareto_count
+    pareto_count = len(pareto_frontier)
+
+    # overfit_warning_count
+    overfit_warning_count = sum(
+        1 for s in scorer_summaries
+        if (s.get("train_accuracy") or 0) > (s.get("heldout_accuracy") or 0) + 0.2
+    )
+
+    signals = {
+        "num_scorers_evaluated": num_scorers_evaluated,
+        "execution_valid_rate": execution_valid_rate,
+        "numeric_return_rate": numeric_return_rate,
+        "nonconstant_scorer_rate": nonconstant_scorer_rate,
+        "score_range_valid_rate": score_range_valid_rate,
+        "train_accuracy_presence_rate": train_accuracy_presence_rate,
+        "heldout_accuracy_presence_rate": heldout_accuracy_presence_rate,
+        "train_gap_presence_rate": train_gap_presence_rate,
+        "heldout_gap_presence_rate": heldout_gap_presence_rate,
+        "eligible_scorer_count": eligible_scorer_count,
+        "pareto_count": pareto_count,
+        "overfit_warning_count": overfit_warning_count,
+    }
+
+    passed, failures = check_pass_criteria(signals, pass_criteria)
+    return EvalResult(signals=signals, passed=passed, failures=failures)
+
+
+# ─────────────────────────────────────────────────────────────────────
+# STAGE 7 EVAL
+# ─────────────────────────────────────────────────────────────────────
+
+_ACTION_VERBS = ["add", "remove", "replace", "combine", "split", "increase", "decrease", "weight", "gate", "normalize", "multiply"]
+
+
+def eval_stage_7(parsed_json: dict, pass_criteria: dict, heldout_pairs: list) -> EvalResult:
+    """Evaluate Stage 7 (Failure Packet) output."""
+    failure_patterns = parsed_json.get("failure_patterns", [])
+    mutation_instructions = parsed_json.get("mutation_instructions", [])
+
+    # failure_pattern_count
+    failure_pattern_count = len(failure_patterns)
+
+    # heldout_raw_text_leakage_count: scan raw_response (full parsed_json as text) for heldout text
+    raw_text = str(parsed_json)  # serialize to check for leakage
+    heldout_raw_text_leakage_count = 0
+    for p in heldout_pairs:
+        pos = p.get("positive", "")
+        neg = p.get("negative", "")
+        # Only check if the text is non-trivial (at least 10 chars to avoid false positives)
+        if pos and len(pos) >= 10 and pos in raw_text:
+            heldout_raw_text_leakage_count += 1
+        if neg and len(neg) >= 10 and neg in raw_text:
+            heldout_raw_text_leakage_count += 1
+
+    # top_scorer_coverage_rate: fraction of pareto scorers referenced in top_scorers
+    failure_packet = parsed_json.get("failure_packet", {})
+    top_scorers = failure_packet.get("top_scorers", [])
+    top_scorer_ids = set(s.get("scorer_id", "") for s in top_scorers)
+    # We treat this as coverage of pareto scorers; if no pareto info, use top_scorers presence
+    pareto_scorer_ids = set()
+    heldout_agg = parsed_json.get("heldout_aggregate_only", {})
+    if heldout_agg:
+        pareto_scorer_ids = set(heldout_agg.get("heldout_accuracy_by_scorer", {}).keys())
+    if pareto_scorer_ids:
+        covered = len(top_scorer_ids & pareto_scorer_ids)
+        top_scorer_coverage_rate = covered / max(len(pareto_scorer_ids), 1)
+    else:
+        top_scorer_coverage_rate = 1.0 if top_scorers else 0.0
+
+    # visible_failure_reference_rate: fraction of patterns referencing at least one visible_pair_id
+    visible_ref_count = sum(
+        1 for fp in failure_patterns
+        if fp.get("visible_pair_ids") and len(fp["visible_pair_ids"]) > 0
+    )
+    visible_failure_reference_rate = visible_ref_count / max(failure_pattern_count, 1)
+
+    # mutation_actionability_score: fraction of instructions containing action verbs
+    actionable_count = 0
+    for inst in mutation_instructions:
+        text = inst.get("instruction", "").lower()
+        if any(verb in text for verb in _ACTION_VERBS):
+            actionable_count += 1
+    mutation_actionability_score = actionable_count / max(len(mutation_instructions), 1)
+
+    # failure_pattern_specificity_score: patterns with non-empty scorer_ids AND visible_pair_ids AND causal_nodes_implicated AND reasoning_error
+    specific_count = 0
+    for fp in failure_patterns:
+        has_scorers = fp.get("scorer_ids") and len(fp["scorer_ids"]) > 0
+        has_pairs = fp.get("visible_pair_ids") and len(fp["visible_pair_ids"]) > 0
+        has_nodes = fp.get("causal_nodes_implicated") and len(fp["causal_nodes_implicated"]) > 0
+        has_error = bool(fp.get("reasoning_error"))
+        if has_scorers and has_pairs and has_nodes and has_error:
+            specific_count += 1
+    failure_pattern_specificity_score = specific_count / max(failure_pattern_count, 1)
+
+    # causal_reference_rate: fraction of patterns/instructions referencing causal nodes
+    all_items = list(failure_patterns) + list(mutation_instructions)
+    causal_ref_count = 0
+    for item in all_items:
+        # Check if the item references causal nodes
+        if item.get("causal_nodes_implicated") and len(item["causal_nodes_implicated"]) > 0:
+            causal_ref_count += 1
+        elif item.get("targets_failure_patterns"):
+            # Check if instruction text mentions causal-related terms
+            text = item.get("instruction", "").lower()
+            if any(term in text for term in ["causal", "node", "mechanism"]):
+                causal_ref_count += 1
+    causal_reference_rate = causal_ref_count / max(len(all_items), 1)
+
+    signals = {
+        "failure_pattern_count": failure_pattern_count,
+        "heldout_raw_text_leakage_count": heldout_raw_text_leakage_count,
+        "top_scorer_coverage_rate": top_scorer_coverage_rate,
+        "visible_failure_reference_rate": visible_failure_reference_rate,
+        "mutation_actionability_score": mutation_actionability_score,
+        "failure_pattern_specificity_score": failure_pattern_specificity_score,
+        "causal_reference_rate": causal_reference_rate,
+    }
+
+    passed, failures = check_pass_criteria(signals, pass_criteria)
+    return EvalResult(signals=signals, passed=passed, failures=failures)
+
+
+# ─────────────────────────────────────────────────────────────────────
+# STAGE 8 EVAL
+# ─────────────────────────────────────────────────────────────────────
+
+_UNSAFE_PATTERNS = [r'\bimport\b', r'open\(', r'exec\(', r'eval\(', r'\brequests\b', r'\burllib\b', r'\bsocket\b']
+
+
+def eval_stage_8(parsed_json: dict, pass_criteria: dict, stage2_nodes: list, stage7_patterns: list, smoke_texts: list, anchor: str) -> EvalResult:
+    """Evaluate Stage 8 (Repair Scorer Generation) output."""
+    repair_scorers = parsed_json.get("repair_scorers", [])
+    node_ids = set(n.get("node_id", "") for n in stage2_nodes)
+    pattern_ids = set(p.get("pattern_id", "") for p in stage7_patterns)
+
+    num_repair_scorers = len(repair_scorers)
+
+    # code_exec_rate: execute each via py_run_scorer on smoke_texts
+    exec_pass = 0
+    numeric_pass = 0
+    nonconstant_pass = 0
+    for s in repair_scorers:
+        code = s.get("code", "")
+        if not code:
+            continue
+        all_ok = True
+        all_numeric = True
+        results = []
+        for text in smoke_texts:
+            r = py_run_scorer(code, text, anchor)
+            if not r["ok"]:
+                all_ok = False
+                all_numeric = False
+                break
+            if r["raw_value"] is None:
+                all_numeric = False
+            else:
+                results.append(r["raw_value"])
+        if all_ok:
+            exec_pass += 1
+        if all_ok and all_numeric:
+            numeric_pass += 1
+        if len(results) >= 2 and len(set(round(v, 10) for v in results)) >= 2:
+            nonconstant_pass += 1
+
+    code_exec_rate = exec_pass / max(num_repair_scorers, 1)
+    numeric_return_rate = numeric_pass / max(num_repair_scorers, 1)
+    nonconstant_behavior_rate = nonconstant_pass / max(num_repair_scorers, 1)
+
+    # failure_pattern_target_rate: fraction referencing valid stage7 pattern_ids
+    pattern_target_count = 0
+    for s in repair_scorers:
+        targets = s.get("targets_failure_patterns", [])
+        if targets and any(t in pattern_ids for t in targets):
+            pattern_target_count += 1
+    failure_pattern_target_rate = pattern_target_count / max(num_repair_scorers, 1)
+
+    # causal_node_validity_rate: fraction of all referenced causal_nodes_used that exist in stage2 nodes
+    all_causal_refs = []
+    for s in repair_scorers:
+        all_causal_refs.extend(s.get("causal_nodes_used", []))
+    valid_causal = sum(1 for r in all_causal_refs if r in node_ids)
+    causal_node_validity_rate = valid_causal / max(len(all_causal_refs), 1) if all_causal_refs else 0.0
+
+    # measurement_reference_rate: fraction of scorers with non-empty measurement_ideas_used
+    measurement_count = sum(1 for s in repair_scorers if s.get("measurement_ideas_used") and len(s["measurement_ideas_used"]) > 0)
+    measurement_reference_rate = measurement_count / max(num_repair_scorers, 1)
+
+    # lineage_completeness_rate: fraction with lineage AND parent_scorer_ids
+    lineage_count = sum(1 for s in repair_scorers if s.get("lineage") and s.get("parent_scorer_ids") and len(s["parent_scorer_ids"]) > 0)
+    lineage_completeness_rate = lineage_count / max(num_repair_scorers, 1)
+
+    # functional_form_diversity: count unique functional_form values
+    forms = set(s.get("functional_form", "").lower() for s in repair_scorers if s.get("functional_form"))
+    functional_form_diversity = len(forms)
+
+    # unsafe_code_penalty: fraction containing import/open(/exec(/eval(/requests/urllib/socket
+    unsafe_count = 0
+    for s in repair_scorers:
+        code = s.get("code", "")
+        if any(re.search(pat, code) for pat in _UNSAFE_PATTERNS):
+            unsafe_count += 1
+    unsafe_code_penalty = unsafe_count / max(num_repair_scorers, 1)
+
+    # parent_distinctness_rate: fraction with different form or nodes than parent
+    # Since we don't have parent data directly, check if scorer has different functional_form
+    # or causal_nodes_used compared to what's in parent_scorer_ids (approximate by uniqueness)
+    distinct_count = 0
+    seen_combos = set()
+    for s in repair_scorers:
+        combo = (s.get("functional_form", ""), frozenset(s.get("causal_nodes_used", [])))
+        if combo not in seen_combos:
+            distinct_count += 1
+        seen_combos.add(combo)
+    parent_distinctness_rate = distinct_count / max(num_repair_scorers, 1)
+
+    # code_feature_map_completeness_rate: fraction with non-empty code_feature_map
+    feature_map_count = sum(1 for s in repair_scorers if s.get("code_feature_map") and len(s["code_feature_map"]) > 0)
+    code_feature_map_completeness_rate = feature_map_count / max(num_repair_scorers, 1)
+
+    # repair_strategy_specificity_score: fraction with non-empty repair_strategy containing action verbs
+    strategy_count = 0
+    for s in repair_scorers:
+        strategy = s.get("repair_strategy", "").lower()
+        if strategy and any(verb in strategy for verb in _ACTION_VERBS):
+            strategy_count += 1
+    repair_strategy_specificity_score = strategy_count / max(num_repair_scorers, 1)
+
+    signals = {
+        "num_repair_scorers": num_repair_scorers,
+        "code_exec_rate": code_exec_rate,
+        "numeric_return_rate": numeric_return_rate,
+        "nonconstant_behavior_rate": nonconstant_behavior_rate,
+        "failure_pattern_target_rate": failure_pattern_target_rate,
+        "causal_node_validity_rate": causal_node_validity_rate,
+        "measurement_reference_rate": measurement_reference_rate,
+        "lineage_completeness_rate": lineage_completeness_rate,
+        "functional_form_diversity": functional_form_diversity,
+        "unsafe_code_penalty": unsafe_code_penalty,
+        "parent_distinctness_rate": parent_distinctness_rate,
+        "code_feature_map_completeness_rate": code_feature_map_completeness_rate,
+        "repair_strategy_specificity_score": repair_strategy_specificity_score,
+    }
+
+    passed, failures = check_pass_criteria(signals, pass_criteria)
+    return EvalResult(signals=signals, passed=passed, failures=failures)

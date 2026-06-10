@@ -283,3 +283,178 @@ def check_soft_targets(signals: dict, targets: dict) -> list[dict]:
                 if value < target:
                     missed.append({"signal": signal_name, "value": value, "target": target, "direction": "higher_is_better"})
     return missed
+
+
+# ─────────────────────────────────────────────────────────────────────
+# STAGES 5–8: SCHEMA VALIDATION
+# ─────────────────────────────────────────────────────────────────────
+
+_STAGE_5_PAIR_REQUIRED = ["pair_id", "anchor", "positive", "negative", "split", "target_delta", "controlled_variables"]
+
+_STAGE_7_PATTERN_REQUIRED = ["pattern_id", "scorer_ids", "reasoning_error"]
+_STAGE_7_INSTRUCTION_REQUIRED = ["instruction_id", "instruction"]
+
+_STAGE_8_SCORER_REQUIRED = ["scorer_id", "hypothesis", "causal_nodes_used", "functional_form", "code"]
+
+
+def validate_stage_5_output(data: dict) -> list[str]:
+    """Validate Stage 5 output schema (pair suite). Returns list of errors (empty = valid)."""
+    errors = []
+    if "target_variable" not in data:
+        errors.append("missing top-level field: target_variable")
+    if "pairs" not in data:
+        errors.append("missing top-level field: pairs")
+    else:
+        pairs = data["pairs"]
+        if not isinstance(pairs, list):
+            errors.append("pairs must be a list")
+        else:
+            for i, p in enumerate(pairs):
+                for f in _STAGE_5_PAIR_REQUIRED:
+                    if f not in p or (not p[f] and p[f] != [] and p[f] != {}):
+                        errors.append(f"pairs[{i}] missing or empty: {f}")
+    return errors
+
+
+def validate_stage_6_output(data: dict) -> list[str]:
+    """Validate Stage 6 output schema (scorer evaluation). Returns list of errors (empty = valid)."""
+    errors = []
+    if "scorer_evaluations" not in data:
+        errors.append("missing top-level field: scorer_evaluations")
+    elif not isinstance(data["scorer_evaluations"], dict):
+        errors.append("scorer_evaluations must be a dict")
+    if "scorer_summaries" not in data:
+        errors.append("missing top-level field: scorer_summaries")
+    elif not isinstance(data["scorer_summaries"], list):
+        errors.append("scorer_summaries must be a list")
+    if "pareto_frontier" not in data:
+        errors.append("missing top-level field: pareto_frontier")
+    elif not isinstance(data["pareto_frontier"], list):
+        errors.append("pareto_frontier must be a list")
+    return errors
+
+
+def validate_stage_7_output(data: dict) -> list[str]:
+    """Validate Stage 7 output schema (failure packet). Returns list of errors (empty = valid)."""
+    errors = []
+    if "failure_patterns" not in data:
+        errors.append("missing top-level field: failure_patterns")
+    else:
+        patterns = data["failure_patterns"]
+        if not isinstance(patterns, list):
+            errors.append("failure_patterns must be a list")
+        else:
+            for i, p in enumerate(patterns):
+                for f in _STAGE_7_PATTERN_REQUIRED:
+                    if f not in p or (not p[f] and p[f] != []):
+                        errors.append(f"failure_patterns[{i}] missing or empty: {f}")
+    if "mutation_instructions" not in data:
+        errors.append("missing top-level field: mutation_instructions")
+    else:
+        instructions = data["mutation_instructions"]
+        if not isinstance(instructions, list):
+            errors.append("mutation_instructions must be a list")
+        else:
+            for i, inst in enumerate(instructions):
+                for f in _STAGE_7_INSTRUCTION_REQUIRED:
+                    if f not in inst or not inst[f]:
+                        errors.append(f"mutation_instructions[{i}] missing or empty: {f}")
+    if "heldout_aggregate_only" not in data:
+        errors.append("missing top-level field: heldout_aggregate_only")
+    return errors
+
+
+def validate_stage_8_output(data: dict) -> list[str]:
+    """Validate Stage 8 output schema (repair scorers). Returns list of errors (empty = valid)."""
+    errors = []
+    if "target_variable" not in data:
+        errors.append("missing top-level field: target_variable")
+    if "repair_scorers" not in data:
+        errors.append("missing top-level field: repair_scorers")
+    else:
+        scorers = data["repair_scorers"]
+        if not isinstance(scorers, list):
+            errors.append("repair_scorers must be a list")
+        else:
+            for i, s in enumerate(scorers):
+                for f in _STAGE_8_SCORER_REQUIRED:
+                    if f not in s or (not s[f] and s[f] != []):
+                        errors.append(f"repair_scorers[{i}] missing or empty: {f}")
+                # Check function signature in code
+                if "code" in s and s["code"]:
+                    if "def scorer(text, anchor, params)" not in s["code"]:
+                        errors.append(f"repair_scorers[{i}] code must define: def scorer(text, anchor, params)")
+    return errors
+
+
+# Update VALIDATE_FUNCS to include stages 5-8
+VALIDATE_FUNCS[5] = validate_stage_5_output
+VALIDATE_FUNCS[6] = validate_stage_6_output
+VALIDATE_FUNCS[7] = validate_stage_7_output
+VALIDATE_FUNCS[8] = validate_stage_8_output
+
+
+# ─────────────────────────────────────────────────────────────────────
+# STAGES 5–8: HARD GATES AND SOFT TARGETS
+# ─────────────────────────────────────────────────────────────────────
+
+STAGE_5_HARD_GATES = {
+    "num_pairs_min": 6,                        # need at least some pairs to evaluate scorers
+    "pair_schema_completeness_rate_min": 0.5,  # majority must have required fields
+}
+
+STAGE_6_HARD_GATES = {
+    "num_scorers_evaluated_min": 3,            # need at least some scorers evaluated
+    "execution_valid_rate_min": 0.3,           # at least 30% must execute without errors
+}
+
+STAGE_7_HARD_GATES = {
+    "failure_pattern_count_min": 1,            # need at least one failure pattern identified
+    "heldout_raw_text_leakage_count_max": 0,   # zero tolerance for heldout leakage
+}
+
+STAGE_8_HARD_GATES = {
+    "num_repair_scorers_min": 2,               # need at least some repair scorers
+    "code_exec_rate_min": 0.3,                 # at least 30% must execute
+}
+
+STAGE_5_SOFT_TARGETS = {
+    "source_trace_rate_target": 0.8,
+    "causal_node_reference_validity_rate_target": 0.8,
+    "controlled_variable_pass_rate_target": 0.7,
+    "length_balance_rate_target": 0.7,
+    "minimal_contrast_rate_target": 0.6,
+    "target_direction_clarity_rate_target": 0.8,
+    "positive_policy_pass_rate_target": 0.9,
+}
+
+STAGE_6_SOFT_TARGETS = {
+    "eligible_scorer_count_target": 3,
+    "pareto_count_target": 2,
+    "nonconstant_scorer_rate_target": 0.5,
+    "heldout_accuracy_presence_rate_target": 0.8,
+}
+
+STAGE_7_SOFT_TARGETS = {
+    "top_scorer_coverage_rate_target": 0.8,
+    "visible_failure_reference_rate_target": 0.5,
+    "failure_pattern_specificity_score_target": 0.6,
+    "mutation_actionability_score_target": 0.7,
+    "causal_reference_rate_target": 0.5,
+}
+
+STAGE_8_SOFT_TARGETS = {
+    "failure_pattern_target_rate_target": 0.8,
+    "lineage_completeness_rate_target": 0.9,
+    "causal_node_validity_rate_target": 0.8,
+    "measurement_reference_rate_target": 0.7,
+    "nonconstant_behavior_rate_target": 0.6,
+    "functional_form_diversity_target": 3,
+    "parent_distinctness_rate_target": 0.5,
+}
+
+# Legacy combined criteria (for backward compat)
+STAGE_5_PASS_CRITERIA = {**STAGE_5_HARD_GATES}
+STAGE_6_PASS_CRITERIA = {**STAGE_6_HARD_GATES}
+STAGE_7_PASS_CRITERIA = {**STAGE_7_HARD_GATES}
+STAGE_8_PASS_CRITERIA = {**STAGE_8_HARD_GATES}
