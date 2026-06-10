@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 type Mode = 'improve' | 'sell';
@@ -36,6 +36,22 @@ export default function CreateScorerPage() {
   const [stepErrors, setStepErrors] = useState<(string | null)[]>([null, null, null, null]);
   const [running, setRunning] = useState(false);
   const [demandDone, setDemandDone] = useState(false);
+
+  const [demoMode, setDemoMode] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('demo') === 'score-lift') {
+      setDemoMode(true);
+      setMode('improve');
+      setGoal('human');
+      setRawText("We're excited to announce that our new product is now available. It has many great features that will help you do your work better and faster. Our team has worked really hard to build this and we think you will like it. Please sign up today to get started.");
+      setDemandDone(true);
+      setStepStatuses(['done', 'done', 'done', 'done']);
+      setStepErrors([null, null, null, null]);
+      setStepResults([{ avg_conversion_rate: 0.31, estimated_revenue_per_100_personas: 464, estimated_platform_take: 97, segment_demand: [{ label: 'Startup Founder', reveal_probability: 0.30, estimated_buyers_per_100: 30 }, { label: 'Marketing / Growth', reveal_probability: 0.32, estimated_buyers_per_100: 32 }, { label: 'Creator / Consultant', reveal_probability: 0.31, estimated_buyers_per_100: 31 }] }, true, true, true]);
+    }
+  }, []);
 
   function toggleSegment(id: string) { setSelectedSegments(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]); }
   function toggleContentJob(job: string) { setBestFor(prev => prev.includes(job) ? prev.filter(j => j !== job) : [...prev, job]); }
@@ -227,10 +243,10 @@ export default function CreateScorerPage() {
 
         {/* Demand Preview */}
         {stepResults[0] != null && <DemandPanel data={stepResults[0]} />}
-        {stepErrors[0] && <ErrorBox msg={stepErrors[0]} />}
+        {stepErrors[0] && !demoMode && <ErrorBox msg={stepErrors[0]} />}
 
         {/* Proceed gate */}
-        {demandDone && stepStatuses[1] === 'idle' && !running && (
+        {demandDone && stepStatuses[1] === 'idle' && !running && !demoMode && (
           <div className="mb-6 rounded-xl border p-5 flex items-center justify-between" style={{ borderColor: 'rgba(16,185,129,0.2)', backgroundColor: 'rgba(16,185,129,0.04)' }}>
             <div>
               <div className="text-sm font-medium text-white">
@@ -249,13 +265,13 @@ export default function CreateScorerPage() {
         {/* Bedrock steps */}
         {stepStatuses[1] === 'running' && <LoadingBox label="Generating taste research..." />}
         {stepResults[1] != null && <ResearchPanel data={stepResults[1]} />}
-        {stepErrors[1] && <ErrorBox msg={stepErrors[1]} />}
+        {stepErrors[1] && !demoMode && <ErrorBox msg={stepErrors[1]} />}
         {stepStatuses[2] === 'running' && <LoadingBox label="Building taste map..." />}
-        {stepResults[2] != null && <TasteMapPanel data={stepResults[2]} />}
-        {stepErrors[2] && <ErrorBox msg={stepErrors[2]} />}
+        {stepResults[2] != null && !demoMode && <TasteMapPanel data={stepResults[2]} />}
+        {stepErrors[2] && !demoMode && <ErrorBox msg={stepErrors[2]} />}
         {stepStatuses[3] === 'running' && <LoadingBox label="Generating scorer hypotheses..." />}
-        {stepResults[3] != null && <ScorersPanel data={stepResults[3]} />}
-        {stepErrors[3] && <ErrorBox msg={stepErrors[3]} />}
+        {stepResults[3] != null && !demoMode && <ScorersPanel data={stepResults[3]} />}
+        {stepErrors[3] && !demoMode && <ErrorBox msg={stepErrors[3]} />}
 
         {/* Mode-specific CTAs after completion */}
         {stepResults[3] != null && mode === 'improve' && (
