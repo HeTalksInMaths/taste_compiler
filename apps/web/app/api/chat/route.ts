@@ -3,7 +3,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { buildSystemPrompt, type PageContext } from '@/lib/chat-system-prompt';
 
 const gateway = createOpenAI({
-  baseURL: process.env.AI_GATEWAY_URL,
+  baseURL: process.env.AI_GATEWAY_URL || 'https://ai-gateway.vercel.sh/v1',
   apiKey: process.env.AI_GATEWAY_API_KEY,
 });
 
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const systemPrompt = buildSystemPrompt(pageContext);
 
     const result = streamText({
-      model: gateway('gpt-4o-mini'),
+      model: gateway('anthropic/claude-sonnet-4-6'),
       system: systemPrompt,
       messages: body.messages,
     });
