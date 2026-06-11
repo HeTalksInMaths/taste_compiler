@@ -115,8 +115,22 @@ def main():
         help="Adversarial pairs added per generation (default: 6)",
     )
     evolve_parser.add_argument(
-        "--provider", type=str, choices=["mock", "bedrock"], default="mock",
-        help="mock = deterministic genome operators only; bedrock = also propose LLM mutations",
+        "--provider", type=str, choices=["mock", "bedrock", "claude"], default="mock",
+        help="mock = deterministic genome operators only; bedrock = live LLM mutations; "
+             "claude = file-exchange proposals filled by a Claude session between --step runs",
+    )
+    evolve_parser.add_argument(
+        "--exchange-dir", type=str, default=None,
+        help="Directory for --provider claude request/response files "
+             "(default: <output>/evolve_<goal>_seed<seed>/claude_exchange)",
+    )
+    evolve_parser.add_argument(
+        "--step", action="store_true", default=False,
+        help="Run exactly one generation, checkpoint, and exit (use with --resume to continue)",
+    )
+    evolve_parser.add_argument(
+        "--resume", action="store_true", default=False,
+        help="Resume from the checkpoint in the output directory",
     )
     evolve_parser.add_argument(
         "--model-id", type=str, default="us.anthropic.claude-sonnet-4-6",
@@ -125,6 +139,36 @@ def main():
     evolve_parser.add_argument(
         "--use-exa-search", action="store_true", default=False,
         help="Fetch real social media posts via Exa as pair anchors (requires EXA_API_KEY; falls back to built-in bank)",
+    )
+
+    # ── evolve-batch subcommand (scale experiments) ──
+    eb_parser = subparsers.add_parser(
+        "evolve-batch",
+        help="Run the evolutionary loop across many seeds × goals and aggregate scale statistics",
+    )
+    eb_parser.add_argument(
+        "--config", "-c", type=str, default="configs/persuasive.yaml",
+        help="Base YAML config (default: configs/persuasive.yaml)",
+    )
+    eb_parser.add_argument(
+        "--seeds", type=int, default=20,
+        help="Seeds per goal (default: 20)",
+    )
+    eb_parser.add_argument(
+        "--goals", type=str, nargs="+", default=None,
+        help="Goal keywords to sweep (default: the config's goal)",
+    )
+    eb_parser.add_argument(
+        "--generations", type=int, default=None,
+        help="Generations per run (default: 5)",
+    )
+    eb_parser.add_argument(
+        "--population", type=int, default=None,
+        help="Population size per run (default: 12)",
+    )
+    eb_parser.add_argument(
+        "--workers", type=int, default=1,
+        help="Parallel worker processes (default: 1)",
     )
 
     # ── experiment subcommand ──
@@ -315,16 +359,54 @@ def main():
                 from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
                 provider = BedrockClaudeProvider(model_id=args.model_id, aws_region=region)
                 print(f"Bedrock credentials valid: account={validation['account']} region={region}")
+        elif args.provider == "claude":
+            from evalweaver.providers.file_proposal_provider import FileProposalProvider
+            from evalweaver.artifacts import resolve_output_directory
+            exchange_dir = args.exchange_dir or os.path.join(
+                resolve_output_directory(),
+                f"evolve_{config['goal']}_seed{config['seed']}", "claude_exchange")
+            provider = FileProposalProvider(exchange_dir)
+            print(f"Claude file-exchange provider: {exchange_dir}")
+            if not args.step:
+                print("NOTE: --provider claude is designed for --step runs; without "
+                      "--step, proposal requests are written but responses are never "
+                      "read in the same invocation.")
 
-        result = run_evolution(config, provider=provider)
+        result = run_evolution(config, provider=provider,
+                               resume=args.resume, step=args.step)
         if result.get("success"):
-            print(f"\nEvolution complete: {result['generations_run']} generations, "
-                  f"best fitness {result['best_fitness']}.")
+            if result.get("complete"):
+                print(f"\nEvolution complete: {result['generations_run']} generations, "
+                      f"best fitness {result['best_fitness']}.")
+            else:
+                print(f"\nStepped: {result['generations_run']} generation(s) done. "
+                      "Fill the exchange responses (if any), then rerun with --resume --step.")
             print(f"Output: {result['output_dir']}")
             sys.exit(0)
         else:
             print(f"\nEvolution failed: {result.get('error', 'unknown error')}")
             sys.exit(1)
+
+    elif args.command == "evolve-batch":
+        from evalweaver.evolution import run_evolve_batch
+
+        config = load_config(args.config)
+        if args.generations is not None:
+            config["n_generations"] = args.generations
+        if args.population is not None:
+            config["population_size"] = args.population
+        config["use_exa_search"] = False
+
+        summary = run_evolve_batch(config, seeds=args.seeds, goals=args.goals,
+                                   workers=args.workers)
+        print(f"\nBatch complete: {summary['runs']} runs "
+              f"({len(summary['goals'])} goals × {summary['seeds_per_goal']} seeds)")
+        print(f"  improved_rate:          {summary['improved_rate']:.0%}")
+        print(f"  evolved_winner_rate:    {summary['evolved_winner_rate']:.0%}")
+        print(f"  mean/median improvement: {summary['mean_improvement']} / {summary['median_improvement']}")
+        print(f"  mean winner test acc:   {summary['mean_winner_test_accuracy']}")
+        print(f"  winner lineages:        {summary['winner_lineage_histogram']}")
+        sys.exit(0)
 
     elif args.command == "experiment":
         from evalweaver.experiment import run_experiment

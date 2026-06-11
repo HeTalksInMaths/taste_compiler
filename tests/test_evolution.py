@@ -159,9 +159,10 @@ def test_run_evolution_smoke(tmp_path, monkeypatch):
     for gen in range(3):
         for name in (f"gen{gen:02d}_summaries", f"gen{gen:02d}_pareto", f"gen{gen:02d}_population"):
             assert os.path.exists(os.path.join(out, f"{name}.json")), name
-    # failure packets + new pairs exist for non-final generations
+    # failure packets written at the end of non-final generations; the pairs
+    # they spawn are merged (and saved) at the start of the following one
     assert os.path.exists(os.path.join(out, "gen00_failure_packet.json"))
-    assert os.path.exists(os.path.join(out, "gen00_new_pairs.json"))
+    assert os.path.exists(os.path.join(out, "gen01_new_pairs.json"))
 
 
 def test_run_evolution_deterministic(tmp_path, monkeypatch):
@@ -327,6 +328,89 @@ def test_converse_tool_parses_forced_tool_use():
     assert tool_config["toolChoice"] == {"tool": {"name": "propose_scorers"}}
     schema = tool_config["tools"][0]["toolSpec"]["inputSchema"]["json"]
     assert schema["required"] == ["scorers"]
+
+
+def test_stepped_run_matches_full_run(tmp_path, monkeypatch):
+    """Step+resume must reproduce the single-process run exactly (rng state
+    and suite are checkpointed)."""
+    cfg = _small_config(tmp_path, n_generations=3)
+    monkeypatch.setenv("EVALWEAVER_OUTPUT_DIR", str(tmp_path / "full"))
+    full = run_evolution(dict(cfg))
+    h_full = json.load(open(os.path.join(full["output_dir"], "evolve_history.json")))
+
+    monkeypatch.setenv("EVALWEAVER_OUTPUT_DIR", str(tmp_path / "stepped"))
+    r = run_evolution(dict(cfg), step=True)
+    assert r["complete"] is False and r["generations_run"] == 1
+    r = run_evolution(dict(cfg), resume=True, step=True)
+    assert r["complete"] is False and r["generations_run"] == 2
+    r = run_evolution(dict(cfg), resume=True, step=True)
+    assert r["complete"] is True and r["generations_run"] == 3
+    h_step = json.load(open(os.path.join(r["output_dir"], "evolve_history.json")))
+    assert h_full == h_step
+
+    # resuming a complete run is a no-op
+    r2 = run_evolution(dict(cfg), resume=True, step=True)
+    assert r2["complete"] is True and r2["generations_run"] == 3
+
+
+def test_file_proposal_provider_roundtrip(tmp_path):
+    from evalweaver.providers.file_proposal_provider import FileProposalProvider
+
+    provider = FileProposalProvider(str(tmp_path))
+    ctx = {"generation": 2, "goal": "persuasive"}
+    # no response file yet → graceful empty
+    assert provider.propose_scorers(ctx, 3) == []
+    provider.prepare_requests(2, ctx, n_scorers=3, n_pairs=8)
+    request = json.load(open(tmp_path / "request_gen02.json"))
+    assert request["generation"] == 2
+    assert request["context"]["goal"] == "persuasive"
+    assert "scorers_format" in request["respond_with"]
+
+    # agent writes responses → consumed (dict or bare-list shape)
+    with open(tmp_path / "scorers_gen02.json", "w") as f:
+        json.dump({"scorers": [{"hypothesis": "h", "lineage": "mutation", "code": GOOD_LLM_CODE}]}, f)
+    with open(tmp_path / "pairs_gen02.json", "w") as f:
+        json.dump([{"anchor": "a", "positive": "p", "negative": "n", "pair_type": "hype_trap"}], f)
+    assert provider.propose_scorers(ctx, 3)[0]["hypothesis"] == "h"
+    assert provider.propose_adversarial_pairs(ctx, 8)[0]["pair_type"] == "hype_trap"
+
+
+def test_stepped_run_with_file_provider_consumes_proposals(tmp_path, monkeypatch):
+    from evalweaver.providers.file_proposal_provider import FileProposalProvider
+
+    monkeypatch.setenv("EVALWEAVER_OUTPUT_DIR", str(tmp_path))
+    cfg = _small_config(tmp_path, n_generations=2)
+    exchange = tmp_path / "exchange"
+    provider = FileProposalProvider(str(exchange))
+
+    r = run_evolution(dict(cfg), provider=provider, step=True)
+    assert r["complete"] is False
+    assert (exchange / "request_gen01.json").exists()
+
+    # play the agent: answer the request with one valid scorer
+    with open(exchange / "scorers_gen01.json", "w") as f:
+        json.dump({"scorers": [{"hypothesis": "agent-written scorer",
+                                "lineage": "novel_composition", "code": GOOD_LLM_CODE}]}, f)
+    r = run_evolution(dict(cfg), provider=provider, resume=True, step=True)
+    assert r["complete"] is True
+    summaries = json.load(open(os.path.join(r["output_dir"], "gen01_summaries.json")))
+    assert any(s["lineage"] == "llm_novel_composition" for s in summaries)
+
+
+def test_evolve_batch_aggregates(tmp_path, monkeypatch):
+    from evalweaver.evolution import run_evolve_batch
+
+    monkeypatch.setenv("EVALWEAVER_OUTPUT_DIR", str(tmp_path))
+    summary = run_evolve_batch(
+        {"goal": "persuasive", "n_generations": 2, "population_size": 6,
+         "n_adv_per_gen": 4, "n_adv_candidates": 16, "use_exa_search": False},
+        seeds=3)
+    assert summary["runs"] == 3
+    assert len(summary["per_run"]) == 3
+    assert {r["seed"] for r in summary["per_run"]} == {0, 1, 2}
+    assert 0.0 <= summary["improved_rate"] <= 1.0
+    assert "winner_lineage_histogram" in summary
+    assert os.path.exists(os.path.join(str(tmp_path), "evolve_batch_summary.json"))
 
 
 def test_converse_tool_falls_back_to_text_json():

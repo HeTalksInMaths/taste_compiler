@@ -39,6 +39,14 @@ python -m evalweaver batch --configs configs/*.yaml
 
 # Evolutionary loop: scorer population vs adversarial pairs across generations
 python -m evalweaver evolve --config configs/persuasive.yaml --generations 5 --population 12
+
+# Scale experiment: many seeds × goals, aggregated stats
+python -m evalweaver evolve-batch --config configs/persuasive.yaml --seeds 40 --goals persuasive trustworthy --workers 4
+
+# Claude-as-the-model (no AWS needed): stepped run + file-exchange proposals
+python -m evalweaver evolve --config configs/persuasive.yaml --provider claude --step
+# ... fill claude_exchange/scorers_genNN.json + pairs_genNN.json, then:
+python -m evalweaver evolve --config configs/persuasive.yaml --provider claude --resume --step
 ```
 
 ## Evolutionary loop (`evolve`)
@@ -63,6 +71,25 @@ evolutionary algorithm:
 Artifacts land in `$EVALWEAVER_OUTPUT_DIR/evolve_<goal>_seed<seed>/`:
 per-generation populations, Pareto frontiers, failure packets, new
 adversarial pairs, plus `evolve_history.json` and `evolve_best_scorers.json`.
+
+Runs are checkpointed (`evolve_state.json`): `--step` executes one
+generation per invocation and `--resume` continues exactly where it left
+off (stepped histories are byte-identical to single-process runs).
+
+**Providers.** `--provider bedrock` proposes scorer mutations and
+adversarial pairs via structured tool calls. `--provider claude` writes
+proposal *requests* into an exchange directory between stepped
+generations and reads back responses — letting an interactive Claude Code
+session (see `.claude/skills/claude-scorer-evolution/`) or a human play
+the model with no AWS credentials. All proposals pass the same
+validation: scorers must execute, stay in range, and separate validation
+pairs; pairs must pass source policy and survive hardest-first
+frontier-margin selection against template candidates.
+
+**Scale experiments.** `evolve-batch` sweeps seeds × goals (optionally in
+parallel with `--workers`) and writes `evolve_batch_summary.json` with
+improvement rate, evolved-winner rate, gain distribution, and winner
+lineage histogram.
 
 ## Configuration
 

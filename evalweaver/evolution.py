@@ -18,6 +18,7 @@ The whole loop is deterministic offline (mock mode, no API keys needed);
 Exa anchors and LLM mutation are graceful upgrades when credentials exist.
 """
 
+import json
 import os
 import random
 from collections import defaultdict
@@ -624,11 +625,53 @@ def breed(parents, rng, gen_idx, gap_probes, n_offspring, provider=None, llm_con
 
 
 # ─────────────────────────────────────────────────────────────────────
+# CHECKPOINT STATE (step / resume support)
+# ─────────────────────────────────────────────────────────────────────
+
+def _rng_state_to_json(rng):
+    st = rng.getstate()
+    return [st[0], list(st[1]), st[2]]
+
+
+def _rng_state_from_json(s):
+    return (s[0], tuple(s[1]), s[2])
+
+
+def _save_state(out_dir, state):
+    save("evolve_state", state, out_dir)
+
+
+def _load_state(out_dir):
+    path = os.path.join(out_dir, "evolve_state.json")
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        return json.load(f)
+
+
+# ─────────────────────────────────────────────────────────────────────
 # MAIN LOOP
 # ─────────────────────────────────────────────────────────────────────
 
-def run_evolution(config, provider=None):
-    """Run the evolutionary scorer-discovery loop. Returns a result dict."""
+def run_evolution(config, provider=None, resume=False, step=False):
+    """Run the evolutionary scorer-discovery loop.
+
+    Per-generation order (pairs and offspring integrate at the START of a
+    generation so that externally produced proposals — LLM tool calls or
+    file-exchange responses written between stepped invocations — are
+    consumed, not skipped):
+
+        merge adversarial pairs → add offspring → evaluate → select →
+        failure packet → write proposal requests → checkpoint
+
+    Args:
+        config: pipeline config dict (goal, seed, n_generations, ...).
+        provider: optional LLM provider (propose_scorers /
+            propose_adversarial_pairs / prepare_requests hooks).
+        resume: continue from the checkpoint in the output directory.
+        step: execute exactly one generation, checkpoint, and return
+            (result has complete=False until the final generation runs).
+    """
     goal = config.get("goal", "persuasive")
     seed = int(config.get("seed", 7))
     n_generations = int(config.get("n_generations", EVOLVE_DEFAULTS["n_generations"]))
@@ -642,37 +685,85 @@ def run_evolution(config, provider=None):
     base_dir = resolve_output_directory()
     out_dir = os.path.join(base_dir, f"evolve_{goal}_seed{seed}")
     os.makedirs(out_dir, exist_ok=True)
-
     load_probes(get_namespace())
-    log("evolve", f"Evolutionary loop: goal={goal} seed={seed} "
-                  f"generations={n_generations} population={pop_size}", "ok")
-    save("evolve_config", {**{k: config.get(k) for k in (
-        "goal", "seed", "use_exa_search")}, "n_generations": n_generations,
-        "population_size": pop_size, "n_adv_per_gen": n_adv,
-        "n_adv_candidates": n_cand, "patience": patience}, out_dir)
 
-    # 1. Anchors: social media posts (Exa or fallback bank)
-    anchors = collect_social_anchors(config, out_dir)
+    state = _load_state(out_dir) if resume else None
+    if state is not None:
+        rng.setstate(_rng_state_from_json(state["rng_state"]))
+        population = state["population"]
+        suite = {"train": state["suite_train"], "test": state["suite_test"]}
+        suite["all"] = suite["train"] + suite["test"]
+        history = state["history"]
+        prior_instructions = state["prior_instructions"]
+        best_fitness, stale = state["best_fitness"], state["stale"]
+        anchors = state["anchors"]
+        pending = state.get("pending")
+        start_gen = state["next_gen"]
+        if start_gen >= n_generations:
+            log("evolve", f"Run already complete ({start_gen} generations); "
+                          "raise n_generations to extend", "warn")
+            result_path = os.path.join(out_dir, "evolve_result.json")
+            if os.path.exists(result_path):
+                with open(result_path) as f:
+                    return json.load(f)
+            return {"success": True, "complete": True, "output_dir": out_dir,
+                    "generations_run": len(history), "goal": goal, "seed": seed}
+        log("evolve", f"Resuming at generation {start_gen} "
+                      f"(population={len(population)}, pairs={len(suite['all'])})", "ok")
+    else:
+        log("evolve", f"Evolutionary loop: goal={goal} seed={seed} "
+                      f"generations={n_generations} population={pop_size}", "ok")
+        save("evolve_config", {**{k: config.get(k) for k in (
+            "goal", "seed", "use_exa_search")}, "n_generations": n_generations,
+            "population_size": pop_size, "n_adv_per_gen": n_adv,
+            "n_adv_candidates": n_cand, "patience": patience}, out_dir)
 
-    # 2. Base pair suite (trap taxonomy) + an initial anchor-grounded batch
-    suite, _, _, _ = validate_and_split_pairs([dict(p) for p in ALL_PAIRS_R0], seed)
-    initial = synthesize_candidate_pairs(anchors, {}, rng, n_adv * 2)
-    for i, p in enumerate(initial[:n_adv]):
-        p["pair_id"] = f"G0_{'T' if i % 3 == 2 else 'A'}{i + 1:02d}"
-    suite, _, _, _, _ = merge_adversarial_pairs(suite, initial[:n_adv], seed, prefix_test="G0_T")
-    log("evolve", f"Initial suite: {len(suite['train'])} train / {len(suite['test'])} heldout "
-                  f"(incl. {min(n_adv, len(initial))} anchor-grounded pairs)", "ok")
+        # 1. Anchors: social media posts (Exa or fallback bank)
+        anchors = collect_social_anchors(config, out_dir)
 
-    # 3. Seed population
-    population = [_make_member(f"S_g0_{i + 1:03d}", random_genome(rng), "seed", [])
-                  for i in range(pop_size)]
+        # 2. Base pair suite (trap taxonomy) + an initial anchor-grounded batch
+        suite, _, _, _ = validate_and_split_pairs([dict(p) for p in ALL_PAIRS_R0], seed)
+        initial = synthesize_candidate_pairs(anchors, {}, rng, n_adv * 2)
+        for i, p in enumerate(initial[:n_adv]):
+            p["pair_id"] = f"G0_{'T' if i % 3 == 2 else 'A'}{i + 1:02d}"
+        suite, _, _, _, _ = merge_adversarial_pairs(suite, initial[:n_adv], seed, prefix_test="G0_T")
+        log("evolve", f"Initial suite: {len(suite['train'])} train / {len(suite['test'])} heldout "
+                      f"(incl. {min(n_adv, len(initial))} anchor-grounded pairs)", "ok")
 
-    history = []
-    prior_instructions = []
-    best_fitness, stale = float("-inf"), 0
+        # 3. Seed population
+        population = [_make_member(f"S_g0_{i + 1:03d}", random_genome(rng), "seed", [])
+                      for i in range(pop_size)]
+        history, prior_instructions = [], []
+        best_fitness, stale = float("-inf"), 0
+        pending, start_gen = None, 0
+
     summaries, pareto = [], []
+    done = False
+    gen = start_gen
 
-    for gen in range(n_generations):
+    for gen in range(start_gen, n_generations):
+        # ── Start of generation: integrate pending pairs and offspring ──
+        if pending:
+            context = pending["context"]
+            gap_probes = pending["gap_probes"]
+            frontier_code = pending["frontier_code"]
+            candidates = synthesize_candidate_pairs(anchors, pending["gap_counts"], rng, n_cand)
+            candidates += _llm_candidate_pairs(provider, context, anchors, rng, n_adv * 2)
+            new_pairs = select_adversarial_pairs(candidates, frontier_code, gen, n_adv, rng)
+            if new_pairs:
+                suite, _, _, _, _ = merge_adversarial_pairs(
+                    suite, new_pairs, seed + gen, prefix_test=f"G{gen}_T")
+            save(f"gen{gen:02d}_new_pairs", new_pairs, out_dir)
+            log("evolve", f"Gen {gen}: added {len(new_pairs)} adversarial pairs "
+                          f"(frontier mean margin on them: "
+                          f"{round(sum(p['frontier_margin_at_creation'] for p in new_pairs) / max(1, len(new_pairs)), 4)})",
+                "ok")
+            offspring = breed(population, rng, gen, gap_probes, pop_size,
+                              provider=provider, llm_context=context)
+            existing_codes = {m["code"] for m in population}
+            population += [m for m in offspring if m["code"] not in existing_codes]
+            pending = None
+
         # ── Evaluate everyone on the current suite ──
         eval_results, summaries, code_map = {}, [], {}
         hyps = [{"scorer_id": m["scorer_id"], "hypothesis": m["hypothesis"],
@@ -712,6 +803,7 @@ def run_evolution(config, provider=None):
             "best_test_accuracy": ranked[0]["test_accuracy"] if ranked else None,
             "best_test_margin": round(ranked[0]["test_margin"], 4) if ranked else None,
             "best_hypothesis": ranked[0]["hypothesis"] if ranked else None,
+            "best_lineage": ranked[0]["lineage"] if ranked else None,
         }
         history.append(entry)
         save(f"gen{gen:02d}_summaries", summaries, out_dir)
@@ -729,12 +821,14 @@ def run_evolution(config, provider=None):
         else:
             stale += 1
         if gen == n_generations - 1:
+            done = True
             break
         if stale >= patience:
             log("evolve", f"Early stop: no fitness improvement for {patience} generations", "warn")
+            done = True
             break
 
-        # ── Failure analysis on the frontier ──
+        # ── Failure analysis → context for the NEXT generation ──
         fp = build_failure_packet(gen, summaries, eval_results, suite, pareto,
                                   code_map, prior_instructions)
         prior_instructions.extend(fp["mutation_instructions"])
@@ -749,29 +843,39 @@ def run_evolution(config, provider=None):
         for t, _ in sorted(gap_counts.items(), key=lambda x: -x[1]):
             gap_probes.extend(GAP_PROBES.get(t, []))
 
-        # ── Adversarial pair generation exploiting frontier coverage gaps ──
         frontier_code = {s["scorer_id"]: code_map[s["scorer_id"]] for s in pareto[:3]}
         if not frontier_code and ranked:
             frontier_code = {ranked[0]["scorer_id"]: code_map[ranked[0]["scorer_id"]]}
-        llm_context = build_mutation_context(goal, fp, pareto, code_map, summaries)
-        candidates = synthesize_candidate_pairs(anchors, dict(gap_counts), rng, n_cand)
-        candidates += _llm_candidate_pairs(provider, llm_context, anchors, rng, n_adv * 2)
-        new_pairs = select_adversarial_pairs(candidates, frontier_code, gen + 1, n_adv, rng)
-        if new_pairs:
-            suite, _, _, _, _ = merge_adversarial_pairs(
-                suite, new_pairs, seed + gen + 1, prefix_test=f"G{gen + 1}_T")
-        save(f"gen{gen:02d}_new_pairs", new_pairs, out_dir)
-        log("evolve", f"Gen {gen}: added {len(new_pairs)} adversarial pairs "
-                      f"(frontier mean margin on them: "
-                      f"{round(sum(p['frontier_margin_at_creation'] for p in new_pairs) / max(1, len(new_pairs)), 4)})",
-            "ok")
+        context = {**build_mutation_context(goal, fp, pareto, code_map, summaries),
+                   "generation": gen + 1}
+        pending = {"context": context, "gap_probes": gap_probes,
+                   "gap_counts": dict(gap_counts), "frontier_code": frontier_code}
 
-        # ── Breed next generation ──
-        ranked_members = [by_id[s["scorer_id"]] for s in ranked if s["scorer_id"] in by_id]
-        offspring = breed(ranked_members or population, rng, gen + 1, gap_probes,
-                          pop_size, provider=provider, llm_context=llm_context)
-        existing_codes = {m["code"] for m in population}
-        population += [m for m in offspring if m["code"] not in existing_codes]
+        # Materialize proposal requests for file-exchange providers
+        if provider is not None and hasattr(provider, "prepare_requests"):
+            try:
+                provider.prepare_requests(gen + 1, context,
+                                          n_scorers=max(3, pop_size // 3),
+                                          n_pairs=n_adv * 2)
+            except Exception as e:
+                log("evolve", f"prepare_requests failed ({e})", "warn")
+
+        _save_state(out_dir, {
+            "next_gen": gen + 1,
+            "complete": False,
+            "rng_state": _rng_state_to_json(rng),
+            "population": population,
+            "suite_train": suite["train"],
+            "suite_test": suite["test"],
+            "history": history,
+            "prior_instructions": prior_instructions,
+            "best_fitness": best_fitness,
+            "stale": stale,
+            "anchors": anchors,
+            "pending": pending,
+        })
+        if step:
+            break
 
     # ── Final artifacts ──
     ranked = sorted(summaries, key=fitness, reverse=True)
@@ -795,17 +899,110 @@ def run_evolution(config, provider=None):
         })
     result = {
         "success": True,
+        "complete": done,
         "goal": goal,
         "seed": seed,
         "generations_run": len(history),
         "final_pareto_size": len(pareto),
         "final_n_pairs": history[-1]["n_pairs"] if history else 0,
-        "best_fitness": round(best_fitness, 4),
+        "best_fitness": round(best_fitness, 4) if history else None,
         "output_dir": out_dir,
     }
     save("evolve_history", history, out_dir)
     save("evolve_best_scorers", best, out_dir)
     save("evolve_result", result, out_dir)
-    log("evolve", f"Done: {len(history)} generations, best fitness {result['best_fitness']}, "
-                  f"artifacts in {out_dir}", "ok")
+    if done:
+        _save_state(out_dir, {**(_load_state(out_dir) or {}),
+                              "next_gen": gen + 1, "complete": True})
+        log("evolve", f"Done: {len(history)} generations, best fitness {result['best_fitness']}, "
+                      f"artifacts in {out_dir}", "ok")
+    else:
+        log("evolve", f"Stepped generation {gen} complete; resume with --resume --step "
+                      f"(state in {out_dir})", "ok")
     return result
+
+
+# ─────────────────────────────────────────────────────────────────────
+# BATCH EXPERIMENTS (scale assessment across seeds × goals)
+# ─────────────────────────────────────────────────────────────────────
+
+def _batch_worker(job_config):
+    """Run one evolution job and distill the metrics that matter for scale
+    assessment. Module-level so ProcessPoolExecutor can pickle it."""
+    result = run_evolution(job_config)
+    out = result["output_dir"]
+    with open(os.path.join(out, "evolve_history.json")) as f:
+        history = json.load(f)
+    with open(os.path.join(out, "evolve_best_scorers.json")) as f:
+        best = json.load(f)
+    top = best[0] if best else {}
+    return {
+        "goal": job_config.get("goal"),
+        "seed": job_config.get("seed"),
+        "generations": len(history),
+        "initial_best_fitness": history[0]["best_fitness"],
+        "final_best_fitness": history[-1]["best_fitness"],
+        "improvement": round(history[-1]["best_fitness"] - history[0]["best_fitness"], 4),
+        "winner_scorer_id": top.get("scorer_id"),
+        "winner_lineage": top.get("lineage"),
+        "winner_is_evolved": top.get("lineage") not in ("seed", None),
+        "winner_test_accuracy": top.get("test_accuracy"),
+        "winner_hypothesis": top.get("hypothesis", ""),
+        "final_pareto_size": history[-1]["pareto_size"],
+        "n_pairs_final": history[-1]["n_pairs"],
+        "n_heldout_final": history[-1]["n_heldout"],
+        "output_dir": out,
+    }
+
+
+def run_evolve_batch(base_config, seeds, goals=None, workers=1):
+    """Run evolution across seeds × goals and aggregate scale statistics:
+    how often evolution improves on the seed population, how often an evolved
+    (non-seed-lineage) scorer wins, and the size of the gains."""
+    import statistics
+    from collections import Counter
+
+    goals = goals or [base_config.get("goal", "persuasive")]
+    jobs = []
+    for goal in goals:
+        for s in range(int(seeds)):
+            cfg = dict(base_config)
+            cfg["goal"] = goal
+            cfg["seed"] = s
+            jobs.append(cfg)
+
+    log("evolve-batch", f"Running {len(jobs)} jobs "
+                        f"({len(goals)} goals × {seeds} seeds, workers={workers})", "ok")
+    if workers > 1:
+        from concurrent.futures import ProcessPoolExecutor
+        with ProcessPoolExecutor(max_workers=workers) as ex:
+            records = list(ex.map(_batch_worker, jobs))
+    else:
+        records = [_batch_worker(j) for j in jobs]
+
+    improvements = [r["improvement"] for r in records]
+    accuracies = [r["winner_test_accuracy"] for r in records if r["winner_test_accuracy"] is not None]
+    summary = {
+        "runs": len(records),
+        "goals": goals,
+        "seeds_per_goal": int(seeds),
+        "generations_per_run": records[0]["generations"] if records else 0,
+        "improved_rate": round(sum(1 for r in records if r["improvement"] > 1e-6) / len(records), 3),
+        "evolved_winner_rate": round(sum(1 for r in records if r["winner_is_evolved"]) / len(records), 3),
+        "mean_improvement": round(statistics.mean(improvements), 4),
+        "median_improvement": round(statistics.median(improvements), 4),
+        "max_improvement": round(max(improvements), 4),
+        "min_improvement": round(min(improvements), 4),
+        "mean_winner_test_accuracy": round(statistics.mean(accuracies), 4) if accuracies else None,
+        "min_winner_test_accuracy": round(min(accuracies), 4) if accuracies else None,
+        "winner_lineage_histogram": dict(Counter(r["winner_lineage"] for r in records)),
+        "mean_final_pareto_size": round(statistics.mean([r["final_pareto_size"] for r in records]), 2),
+        "mean_final_pairs": round(statistics.mean([r["n_pairs_final"] for r in records]), 1),
+        "per_run": records,
+    }
+    base_dir = resolve_output_directory()
+    save("evolve_batch_summary", summary, base_dir)
+    log("evolve-batch", f"Improved in {summary['improved_rate']:.0%} of runs; "
+                        f"evolved scorer wins in {summary['evolved_winner_rate']:.0%}; "
+                        f"mean fitness gain {summary['mean_improvement']}", "ok")
+    return summary
