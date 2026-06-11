@@ -86,7 +86,53 @@ frontier margins to −0.38). The adversarial half of the system can find
 exactly the holes the scorer half overfits to — offline, it just runs out
 of template vocabulary to express them.
 
-## Verdict
+## 6. CORRECTION (follow-up ablation): adoption ≠ function
+
+Two claims above need downgrading after leave-one-term-out ablation of all
+80 winners on their own heldouts:
+
+**The hype "discovery" re-derives a hand-made design decision.** On main,
+the hand-coded R0 scorers still used `persuasion_risk`/HYPE; the
+hand-repaired R1 set had already dropped it entirely. The loop's
+de-selection of hype independently reproduces the human R0→R1 repair —
+validation of the selection direction, not new knowledge.
+
+**Most convergent structure is neutral hitchhiking.** Removing the
+interaction term flips ranking decisions in 0/72 winners; forcing the
+"discovered" ~0.3 continuity blend back to the hand-coded 0.5 changes
+0/64. Term-level importance (mean Δaccuracy when the term is removed):
+
+| term | adoption | mean Δacc removed | load-bearing in |
+|---|---|---|---|
+| jargon gate | 85% | **+0.085** | 56/68 |
+| abstract_jargon_density (additive) | — | +0.060 | 12/24 |
+| epistemic_calibration | 98% | **+0.038** | 56/88 |
+| audience_relevance | 40% | +0.007 | 4/30 |
+| mechanism_result_alignment | 48% | +0.003 | 2/36 |
+| causal_density | 80% | +0.002 | 4/66 |
+| argument_progression | 100% | +0.001 | 4/92 |
+| specificity / spec_no_invent / persuasion_risk | — | 0.000 | 0 |
+| real_mechanism_quality | 30% | −0.005 | 0/22 |
+
+The functional anatomy of every winner is: **a jargon gate (hand-coded
+motif) plus a hedging detector (epistemic_calibration), wearing an
+ELM-shaped costume of inert terms.** `argument_progression` is adopted by
+100% of winners yet load-bearing in 4% — pure hitchhiking. And the one
+load-bearing semi-novel term, the additive hedging reward, is exactly the
+feature that collapses to 0.081 accuracy on hedge-stack traps (§5):
+in-distribution function, out-of-distribution inversion.
+
+**Why this happened:** fitness saturates (~0.95 with ties at the top), and
+the fitness function has no parsimony pressure, so selection has no
+gradient against neutral genes — they accumulate and make the auto-written
+hypothesis strings read as richer theory than the code enacts.
+
+**Fixes that would make surviving structure meaningful:**
+1. Complexity penalty in fitness (or rank ties by fewer terms).
+2. In-loop ablation pruning: a term must change at least one ranking
+   decision on the train split to survive a generation.
+3. A harder, externally-generated heldout so fitness doesn't saturate
+   (same as §Verdict items 1–4).
 
 The discovered scorers are interpretable, convergent, and structurally
 sensible — the recipe (hard-policy veto → jargon gate → argument-quality
