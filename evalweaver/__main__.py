@@ -85,6 +85,48 @@ def main():
         help="S3 bucket for artifact upload (default: TASTE_COMPILER_ARTIFACT_BUCKET env)",
     )
 
+    # ── evolve subcommand (multi-generation evolutionary loop) ──
+    evolve_parser = subparsers.add_parser(
+        "evolve",
+        help="Run the evolutionary scorer-discovery loop (adversarial pairs vs scorer population)",
+    )
+    evolve_parser.add_argument(
+        "--config", "-c", type=str, default="configs/persuasive.yaml",
+        help="Path to YAML config file (default: configs/persuasive.yaml)",
+    )
+    evolve_parser.add_argument(
+        "--goal", type=str, default=None,
+        help="Override the goal keyword from config (e.g. persuasive, trustworthy)",
+    )
+    evolve_parser.add_argument(
+        "--seed", type=int, default=None,
+        help="Override the random seed from config",
+    )
+    evolve_parser.add_argument(
+        "--generations", type=int, default=None,
+        help="Number of generations to run (default: 5)",
+    )
+    evolve_parser.add_argument(
+        "--population", type=int, default=None,
+        help="Scorer population size (default: 12)",
+    )
+    evolve_parser.add_argument(
+        "--adv-per-gen", type=int, default=None,
+        help="Adversarial pairs added per generation (default: 6)",
+    )
+    evolve_parser.add_argument(
+        "--provider", type=str, choices=["mock", "bedrock"], default="mock",
+        help="mock = deterministic genome operators only; bedrock = also propose LLM mutations",
+    )
+    evolve_parser.add_argument(
+        "--model-id", type=str, default="us.anthropic.claude-sonnet-4-6",
+        help="Model ID when --provider bedrock (default: us.anthropic.claude-sonnet-4-6)",
+    )
+    evolve_parser.add_argument(
+        "--use-exa-search", action="store_true", default=False,
+        help="Fetch real social media posts via Exa as pair anchors (requires EXA_API_KEY; falls back to built-in bank)",
+    )
+
     # ── experiment subcommand ──
     exp_parser = subparsers.add_parser(
         "experiment", help="Run multi-seed experiment for a single topic"
@@ -244,6 +286,44 @@ def main():
             sys.exit(0)
         else:
             print(f"\nPipeline failed: {result.get('error', 'unknown error')}")
+            sys.exit(1)
+
+    elif args.command == "evolve":
+        from evalweaver.evolution import run_evolution
+
+        config = load_config(args.config)
+        if args.goal is not None:
+            config["goal"] = args.goal
+        if args.seed is not None:
+            config["seed"] = args.seed
+        if args.generations is not None:
+            config["n_generations"] = args.generations
+        if args.population is not None:
+            config["population_size"] = args.population
+        if args.adv_per_gen is not None:
+            config["n_adv_per_gen"] = args.adv_per_gen
+        config["use_exa_search"] = args.use_exa_search
+
+        provider = None
+        if args.provider == "bedrock":
+            region = os.environ.get("AWS_REGION", "us-east-1")
+            validation = _validate_bedrock(args.model_id, region)
+            if not validation["passed"]:
+                print(f"WARNING: Bedrock validation failed ({validation['error']}); "
+                      "continuing with deterministic genome operators only.")
+            else:
+                from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+                provider = BedrockClaudeProvider(model_id=args.model_id, aws_region=region)
+                print(f"Bedrock credentials valid: account={validation['account']} region={region}")
+
+        result = run_evolution(config, provider=provider)
+        if result.get("success"):
+            print(f"\nEvolution complete: {result['generations_run']} generations, "
+                  f"best fitness {result['best_fitness']}.")
+            print(f"Output: {result['output_dir']}")
+            sys.exit(0)
+        else:
+            print(f"\nEvolution failed: {result.get('error', 'unknown error')}")
             sys.exit(1)
 
     elif args.command == "experiment":

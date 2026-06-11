@@ -36,7 +36,33 @@ python -m evalweaver experiment --config configs/persuasive.yaml --seeds 5
 
 # Batch (multiple topics)
 python -m evalweaver batch --configs configs/*.yaml
+
+# Evolutionary loop: scorer population vs adversarial pairs across generations
+python -m evalweaver evolve --config configs/persuasive.yaml --generations 5 --population 12
 ```
+
+## Evolutionary loop (`evolve`)
+
+`evolve` closes the discover→attack→repair cycle into a multi-generation
+evolutionary algorithm:
+
+- **Scorers are interpretable genomes** — weighted compositions of the NLP
+  probes rendered to plain Python scoring functions, evolved by mutation,
+  crossover, and gap-biased immigrants.
+- **Adversarial pairs exploit coverage gaps**: each generation, candidate
+  pairs are synthesized from social media post anchors and the ones the
+  current Pareto frontier separates *worst* are added to the suite (a slice
+  goes to the frozen heldout set).
+- **Dynamic goal keyword**: `--goal trustworthy` (or any config goal)
+  switches the subjective target without editing YAML.
+- Fully deterministic offline; `--use-exa-search` grounds anchors in real
+  LinkedIn/Twitter posts (needs `EXA_API_KEY`) and `--provider bedrock`
+  adds live LLM scorer mutations — both degrade gracefully to the
+  deterministic engine.
+
+Artifacts land in `$EVALWEAVER_OUTPUT_DIR/evolve_<goal>_seed<seed>/`:
+per-generation populations, Pareto frontiers, failure packets, new
+adversarial pairs, plus `evolve_history.json` and `evolve_best_scorers.json`.
 
 ## Configuration
 
