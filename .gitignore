@@ -32,6 +32,8 @@ htmlcov/
 /outputs/
 /ew_v51_outputs/
 /tmp/
+# agent-battery generated reports
+.agentbattery/
 
 # OS
 .DS_Store
