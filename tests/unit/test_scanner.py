@@ -127,12 +127,15 @@ class TestScanIncludeGlobs:
         """Scanner only returns files matching include globs."""
         (tmp_path / "code.py").write_text("# python")
         (tmp_path / "readme.md").write_text("# readme")
+        (tmp_path / "prompt.txt").write_text("You are an agent.")
         (tmp_path / "image.png").write_bytes(b"\x89PNG")
 
         result = scan(tmp_path)
         rel_paths = {f.relative_path for f in result.files}
         assert "code.py" in rel_paths
-        assert "readme.md" not in rel_paths
+        # .md/.txt are scanned by default: agent system prompts live there
+        assert "readme.md" in rel_paths
+        assert "prompt.txt" in rel_paths
         assert "image.png" not in rel_paths
 
     def test_scan_custom_include_globs(self, tmp_path: Path) -> None:

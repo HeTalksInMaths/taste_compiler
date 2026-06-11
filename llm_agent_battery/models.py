@@ -52,7 +52,8 @@ class ArchitectureStyle(str, Enum):
 
 class ScanConfig(BaseModel):
     include_globs: list[str] = Field(default_factory=lambda: [
-        "*.py", "*.ts", "*.js", "*.go", "*.rs", "*.yaml", "*.yml", "*.json"
+        "*.py", "*.ts", "*.js", "*.go", "*.rs", "*.yaml", "*.yml", "*.json",
+        "*.md", "*.txt", "*.toml", ".env*",
     ])
     exclude_globs: list[str] = Field(default_factory=lambda: [
         ".git", "__pycache__", "node_modules", ".venv", "venv",

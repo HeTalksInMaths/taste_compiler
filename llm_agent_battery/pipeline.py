@@ -48,12 +48,6 @@ async def run_pipeline(config: PipelineConfig) -> PipelineResult:
     from llm_agent_battery.chunker import chunk_files
     from llm_agent_battery.classifier import classify_files
     from llm_agent_battery.deduplicator import deduplicate_and_rank
-    from llm_agent_battery.heuristics import (
-        MissingConfirmationGateAnalyzer,
-        MissingErrorHandlingAnalyzer,
-        PromptInjectionAnalyzer,
-        UnguardedMutationAnalyzer,
-    )
     from llm_agent_battery.profiles import detect_architecture, load_profile
     from llm_agent_battery.reporter import generate_reports
     from llm_agent_battery.scanner import scan
@@ -172,24 +166,15 @@ async def run_pipeline(config: PipelineConfig) -> PipelineResult:
 
 
 def _run_heuristics(classified_files: list) -> list[Finding]:
-    """Run all four deterministic heuristic analyzers."""
-    from llm_agent_battery.heuristics import (
-        MissingConfirmationGateAnalyzer,
-        MissingErrorHandlingAnalyzer,
-        PromptInjectionAnalyzer,
-        UnguardedMutationAnalyzer,
-    )
-
-    analyzers = [
-        MissingErrorHandlingAnalyzer(),
-        UnguardedMutationAnalyzer(),
-        MissingConfirmationGateAnalyzer(),
-        PromptInjectionAnalyzer(),
-    ]
+    """Run the full deterministic heuristic battery."""
+    from llm_agent_battery.heuristics import ALL_HEURISTIC_ANALYZERS
 
     findings: list[Finding] = []
-    for analyzer in analyzers:
-        findings.extend(analyzer.analyze(classified_files))
+    for analyzer_cls in ALL_HEURISTIC_ANALYZERS:
+        try:
+            findings.extend(analyzer_cls().analyze(classified_files))
+        except Exception:
+            logger.exception("Heuristic analyzer %s failed", analyzer_cls.__name__)
     return findings
 
 
