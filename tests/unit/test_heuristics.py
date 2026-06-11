@@ -130,6 +130,50 @@ class TestMissingConfirmationGateAnalyzer:
         findings = analyzer.analyze([cf])
         assert len(findings) == 0
 
+    def test_no_false_positive_on_docstring_with_destructive_word(self):
+        # AnalyzerRegistry.clear docstring: "Remove all registered analyzers."
+        cf = _make_file(
+            'def clear(self):\n    """Remove all registered analyzers."""\n    self._items.clear()\n',
+            category=FileCategory.AGENT_LOGIC,
+        )
+        analyzer = MissingConfirmationGateAnalyzer()
+        findings = analyzer.analyze([cf])
+        assert findings == [], "Should not flag destructive words in docstrings"
+
+    def test_no_false_positive_on_regex_string_with_destructive_word(self):
+        # agent_patterns.py contains a regex string: r"...(delete|drop)..."
+        cf = _make_file(
+            'import re\n'
+            'PATTERN = re.compile(r"(delete|drop|remove)", re.IGNORECASE)\n'
+            'def _check_file(self, cf, content):\n'
+            '    return PATTERN.findall(content)\n',
+            category=FileCategory.AGENT_LOGIC,
+        )
+        analyzer = MissingConfirmationGateAnalyzer()
+        findings = analyzer.analyze([cf])
+        assert findings == [], "Should not flag destructive words in string literals/regex patterns"
+
+    def test_no_false_positive_on_finding_message_with_dropped(self):
+        # A finding description mentioning "dropped" should not fire
+        cf = _make_file(
+            'def warn(self):\n'
+            '    return "context overflows, causing API errors or silently dropped instructions"\n',
+            category=FileCategory.AGENT_LOGIC,
+        )
+        analyzer = MissingConfirmationGateAnalyzer()
+        findings = analyzer.analyze([cf])
+        assert findings == [], "Should not flag destructive words in return string literals"
+
+    def test_detects_method_call_delete(self):
+        # db.delete() is a real destructive call — should still fire
+        cf = _make_file(
+            "def remove_account(self, account_id):\n    self.db.delete(account_id)\n",
+            category=FileCategory.AGENT_LOGIC,
+        )
+        analyzer = MissingConfirmationGateAnalyzer()
+        findings = analyzer.analyze([cf])
+        assert len(findings) == 1
+
 
 class TestPromptInjectionAnalyzer:
     """Tests for PromptInjectionAnalyzer."""

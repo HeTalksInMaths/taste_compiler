@@ -257,16 +257,23 @@ class UnguardedMutationAnalyzer(BaseHeuristicAnalyzer):
 
 
 class MissingConfirmationGateAnalyzer(BaseHeuristicAnalyzer):
-    """Detects destructive operations (delete, remove, drop) without confirmation patterns."""
+    """Detects destructive *call* expressions without a confirmation pattern.
 
-    # Patterns that indicate a destructive operation
-    # Use word-start boundary only — destructive words may be prefixes (e.g. delete_records)
-    _DESTRUCTIVE_PATTERNS = re.compile(
-        r"\b(delete|remove|drop|destroy|purge|truncate|wipe|erase)",
+    Matches only on identifier names in AST Call nodes so string literals,
+    docstrings, comments, and regex pattern strings are never flagged.
+    Confirmation is still checked via text search on the function source
+    (catching any conditional/assignment form, not just calls).
+    """
+
+    # Matches the full call name (function or method) against destructive verbs.
+    # Anchored with ^ so only names that *start* with the verb match:
+    #   delete_records → match; db.delete → match (after splitting on '.')
+    _DESTRUCTIVE_VERBS = re.compile(
+        r"^(delete|remove|drop|destroy|purge|truncate|wipe|erase)",
         re.IGNORECASE,
     )
 
-    # Patterns that indicate a confirmation gate
+    # Any evidence of a confirmation gate anywhere in the function body.
     _CONFIRMATION_PATTERNS = re.compile(
         r"(confirm|approval|authorize|verify|prompt_user|ask_user|human_in_the_loop|gate|guard)",
         re.IGNORECASE,
@@ -274,7 +281,6 @@ class MissingConfirmationGateAnalyzer(BaseHeuristicAnalyzer):
 
     def analyze(self, files: list[ClassifiedFile]) -> list[Finding]:
         findings: list[Finding] = []
-        # Check all non-test files for destructive ops
         for cf in files:
             if cf.primary_category == FileCategory.TEST:
                 continue
@@ -284,11 +290,10 @@ class MissingConfirmationGateAnalyzer(BaseHeuristicAnalyzer):
             if content is None:
                 continue
             findings.extend(self._check_file(cf, content))
-
         return findings
 
     def _check_file(self, cf: ClassifiedFile, content: str) -> list[Finding]:
-        """Check for destructive operations without confirmation."""
+        """Check for destructive call expressions without confirmation."""
         findings: list[Finding] = []
         try:
             tree = ast.parse(content)
@@ -299,42 +304,65 @@ class MissingConfirmationGateAnalyzer(BaseHeuristicAnalyzer):
             if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 continue
 
-            # Get the source lines for this function
-            func_source = ast.get_source_segment(content, node)
-            if not func_source:
+            destructive_calls = self._find_destructive_calls(node)
+            if not destructive_calls:
                 continue
 
-            # Check if function contains destructive operations
-            if not self._DESTRUCTIVE_PATTERNS.search(func_source):
-                continue
-
-            # Check if function has a confirmation gate
+            # Only flag if the function body text has no confirmation signal
+            func_source = ast.get_source_segment(content, node) or ""
             if self._CONFIRMATION_PATTERNS.search(func_source):
                 continue
 
-            # Find specific destructive calls
-            destructive_calls = self._DESTRUCTIVE_PATTERNS.findall(func_source)
-            if destructive_calls:
-                findings.append(Finding(
-                    severity=Severity.HIGH,
-                    category=FindingCategory.SECURITY,
-                    file_path=cf.relative_path,
-                    location=node.name,
-                    title=f"Destructive operation without confirmation gate",
-                    description=(
-                        f"Function '{node.name}' performs destructive operations "
-                        f"({', '.join(set(c.lower() for c in destructive_calls[:3]))}) "
-                        f"without requiring explicit confirmation."
-                    ),
-                    impact="Accidental or unauthorized data deletion may occur without user consent.",
-                    remediation=(
-                        "Add a confirmation gate (user prompt, approval flag, or "
-                        "human-in-the-loop check) before executing destructive operations."
-                    ),
-                    source_layer="heuristic",
-                ))
+            names = ", ".join(sorted({c for c, _ in destructive_calls})[:3])
+            findings.append(Finding(
+                severity=Severity.HIGH,
+                category=FindingCategory.SECURITY,
+                file_path=cf.relative_path,
+                location=node.name,
+                title="Destructive operation without confirmation gate",
+                description=(
+                    f"Function '{node.name}' calls destructive operations ({names}) "
+                    f"without requiring explicit confirmation."
+                ),
+                impact="Accidental or unauthorized data deletion may occur without user consent.",
+                remediation=(
+                    "Add a confirmation gate (user prompt, approval flag, or "
+                    "human-in-the-loop check) before executing destructive operations."
+                ),
+                source_layer="heuristic",
+            ))
 
         return findings
+
+    def _find_destructive_calls(
+        self, func_node: ast.FunctionDef | ast.AsyncFunctionDef
+    ) -> list[tuple[str, int]]:
+        """Return (call_name, lineno) for every destructive Call node in the function.
+
+        Only Call nodes are examined — string literals, docstrings, comments,
+        and regex pattern strings are AST constants, never Call nodes, so they
+        are never matched.
+        """
+        results: list[tuple[str, int]] = []
+        for node in ast.walk(func_node):
+            if not isinstance(node, ast.Call):
+                continue
+            name = self._call_name(node)
+            if name and self._is_destructive(name):
+                results.append((name, node.lineno))
+        return results
+
+    @staticmethod
+    def _call_name(node: ast.Call) -> str | None:
+        """Return the bare name of the callee (last component of dotted path)."""
+        if isinstance(node.func, ast.Name):
+            return node.func.id
+        if isinstance(node.func, ast.Attribute):
+            return node.func.attr
+        return None
+
+    def _is_destructive(self, name: str) -> bool:
+        return bool(self._DESTRUCTIVE_VERBS.match(name))
 
 
 # ---------------------------------------------------------------------------
