@@ -194,6 +194,182 @@ class BedrockClaudeProvider:
         self._last_raw_response = response_text
         return response_text
 
+    def _converse_tool(self, system_prompt: str, user_message: str,
+                       tool_name: str, tool_description: str, schema: dict) -> dict:
+        """
+        Call Converse with a forced tool choice so the model MUST return
+        arguments conforming to the JSON schema. Returns the toolUse input dict.
+
+        This replaces "return JSON" prose instructions + markdown-fence parsing:
+        the API validates the shape, so truncated/preambled responses cannot
+        produce silent parse failures. Falls back to text JSON parsing if the
+        model returns no toolUse block (e.g. models without tool support).
+        """
+        client = self._get_client()
+        self._last_prompt = {"system": system_prompt, "user": user_message,
+                             "tool_name": tool_name}
+        start_time = time.time()
+        try:
+            response = client.converse(
+                modelId=self._model_id,
+                messages=[{"role": "user", "content": [{"text": user_message}]}],
+                system=[{"text": system_prompt}],
+                inferenceConfig={
+                    "maxTokens": self._max_tokens,
+                    "temperature": self._temperature,
+                },
+                toolConfig={
+                    "tools": [{
+                        "toolSpec": {
+                            "name": tool_name,
+                            "description": tool_description,
+                            "inputSchema": {"json": schema},
+                        }
+                    }],
+                    "toolChoice": {"tool": {"name": tool_name}},
+                },
+            )
+        except Exception as e:
+            self._last_call_meta = {
+                "latency_ms": round((time.time() - start_time) * 1000, 1),
+                "retry_mode": "standard", "max_attempts": 5,
+                "error": str(e), "tool_name": tool_name,
+            }
+            self._last_raw_response = None
+            raise
+        self._last_call_meta = {
+            "latency_ms": round((time.time() - start_time) * 1000, 1),
+            "retry_mode": "standard", "max_attempts": 5,
+            "error": None, "tool_name": tool_name,
+        }
+        content = response.get("output", {}).get("message", {}).get("content", [])
+        for block in content:
+            tool_use = block.get("toolUse")
+            if tool_use and tool_use.get("name") == tool_name:
+                self._last_raw_response = json.dumps(tool_use.get("input", {}))
+                return tool_use.get("input", {})
+        # Fallback: model answered in text despite forced tool choice
+        text = next((b["text"] for b in content if b.get("text")), "")
+        self._last_raw_response = text
+        return self._parse_json_response(text)
+
+    def propose_scorers(self, context: dict, count: int) -> list:
+        """
+        Single structured call that replaces the generate_mutations →
+        generate_scorer_code chain. The context (built by the caller, see
+        evalweaver.evolution.build_mutation_context) carries the probe
+        registry with semantics, the Pareto frontier's code and per-pair-type
+        coverage map, failed visible pairs, and the validity contract — so
+        hypothesis and code are produced together without losing the failure
+        analysis between calls.
+        """
+        system = (
+            "You are evolving interpretable text-quality scoring functions. "
+            "You see the current Pareto-frontier scorers, exactly where their "
+            "coverage gaps are (per-pair-type accuracy and failed examples), "
+            "and the registry of probe functions you may call. Propose new "
+            "scorers that close those gaps while staying simple and readable. "
+            "Each scorer must satisfy the validity contract in the context: "
+            "def scorer(text, anchor, params), return a float in [0.0, 1.0] "
+            "via _clamp(), call only registered probes and _clamp, no imports, "
+            "deterministic, and it must separate obviously-better from "
+            "obviously-worse rewrites (non-constant output)."
+        )
+        user = (
+            f"Context:\n{json.dumps(context, indent=2, default=str)}\n\n"
+            f"Propose {count} distinct scorers. Prioritise the pair types the "
+            "frontier fails on. Vary structure (gates, products, blends), do "
+            "not clone an existing frontier scorer."
+        )
+        schema = {
+            "type": "object",
+            "properties": {
+                "scorers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "hypothesis": {
+                                "type": "string",
+                                "description": "One-sentence interpretable claim: which probes, why they close the observed gap.",
+                            },
+                            "lineage": {
+                                "type": "string",
+                                "enum": ["mutation", "recombination", "novel_composition", "blind_node_repair"],
+                            },
+                            "targets_pair_types": {
+                                "type": "array", "items": {"type": "string"},
+                                "description": "Pair types from the coverage gaps this scorer is designed to fix.",
+                            },
+                            "code": {
+                                "type": "string",
+                                "description": "Complete Python source: def scorer(text, anchor, params): ... returning _clamp(...).",
+                            },
+                        },
+                        "required": ["hypothesis", "lineage", "code"],
+                    },
+                }
+            },
+            "required": ["scorers"],
+        }
+        result = self._converse_tool(
+            system, user, "propose_scorers",
+            "Submit the evolved scorer functions.", schema)
+        return result.get("scorers", [])
+
+    def propose_adversarial_pairs(self, context: dict, count: int) -> list:
+        """
+        Structured adversarial pair generation for the evolution loop.
+        Returns candidate pairs; the caller still applies source-policy
+        validation and frontier-margin selection, so these only enrich the
+        candidate pool — they cannot corrupt the suite.
+        """
+        system = (
+            "You design adversarial evaluation pairs that attack text-quality "
+            "scorers. You see the frontier scorers' code and where they fail. "
+            "Each pair: an anchor (a real social media post), a positive "
+            "(genuinely better rewrite: concrete mechanism + result, faithful "
+            "to the anchor, NO invented numbers/names/guarantees) and a "
+            "negative (sounds plausible but is hollow: hype, fake mechanism, "
+            "abstract jargon). The goal is pairs the frontier scorers will "
+            "score WRONG or with near-zero margin while a human would not."
+        )
+        user = (
+            f"Context:\n{json.dumps(context, indent=2, default=str)}\n\n"
+            f"Generate {count} pairs attacking the listed coverage gaps. "
+            "Use the provided anchors. The positive must not add numeric "
+            "claims, named entities, or guarantees absent from the anchor."
+        )
+        schema = {
+            "type": "object",
+            "properties": {
+                "pairs": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "anchor": {"type": "string"},
+                            "positive": {"type": "string"},
+                            "negative": {"type": "string"},
+                            "pair_type": {
+                                "type": "string",
+                                "enum": ["hype_trap", "fake_mechanism", "specificity_trap",
+                                         "subtle_quality_gap", "source_drift"],
+                            },
+                            "label_contract": {"type": "string"},
+                            "intended_trap": {"type": "string"},
+                        },
+                        "required": ["anchor", "positive", "negative", "pair_type"],
+                    },
+                }
+            },
+            "required": ["pairs"],
+        }
+        result = self._converse_tool(
+            system, user, "propose_adversarial_pairs",
+            "Submit the adversarial evaluation pairs.", schema)
+        return result.get("pairs", [])
+
     def _parse_json_response(self, response_text: str) -> dict:
         """Extract JSON from a model response (handles markdown code blocks)."""
         text = response_text.strip()

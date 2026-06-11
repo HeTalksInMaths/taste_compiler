@@ -15,6 +15,11 @@ from evalweaver.evolution import (
     GAP_PROBES,
     PENALTY_PROBES,
     PROBE_CALLS,
+    PROBE_SEMANTICS,
+    SCORER_CONTRACT,
+    _llm_candidate_pairs,
+    _llm_offspring,
+    build_mutation_context,
     crossover_genomes,
     genome_hypothesis,
     mutate_genome,
@@ -175,3 +180,165 @@ def test_run_evolution_goal_keyword_is_dynamic(tmp_path, monkeypatch):
     assert result["success"]
     assert result["goal"] == "trustworthy"
     assert "evolve_trustworthy_seed11" in result["output_dir"]
+
+
+# ─────────────────────────────────────────────────────────────────────
+# LLM context, structured offspring, and tool-use plumbing
+# ─────────────────────────────────────────────────────────────────────
+
+GOOD_LLM_CODE = """
+def scorer(text, anchor, params):
+    if violates_hard_source_policy(text, anchor):
+        return 0.0
+    base = 0.6 * probe_argument_progression(text)
+    base += 0.4 * _clamp(probe_real_mechanism_quality(text))
+    base -= 0.3 * probe_persuasion_risk(text)
+    return _clamp(base)
+"""
+
+
+class FakeStructuredProvider:
+    """Mimics BedrockClaudeProvider's structured interface offline."""
+
+    def __init__(self, scorers=None, pairs=None):
+        self.scorers = scorers or []
+        self.pairs = pairs or []
+        self.seen_contexts = []
+
+    def propose_scorers(self, context, count):
+        self.seen_contexts.append(context)
+        return self.scorers[:count]
+
+    def propose_adversarial_pairs(self, context, count):
+        self.seen_contexts.append(context)
+        return self.pairs[:count]
+
+
+def _fake_failure_packet():
+    return {
+        "failed_pair_type_counts": {"fake_mechanism": 2},
+        "heldout_aggregate_only": {"heldout_failures_by_pair_type": {"hype_trap": 1}},
+        "failed_visible_pairs": [{"pair_id": "R0_F01", "pair_type": "fake_mechanism"}],
+        "mutation_instructions": ["Detect fake mechanism explicitly."],
+        "score_collapse_warnings": [],
+    }
+
+
+def test_build_mutation_context_contents():
+    summaries = [{"scorer_id": "S_x", "hypothesis": "h", "test_accuracy": 0.9,
+                  "test_margin": 0.1, "pair_type_accuracy": {"hype_trap": 1.0}}]
+    pareto = [{"scorer_id": "S_x"}]
+    ctx = build_mutation_context("persuasive", _fake_failure_packet(), pareto,
+                                 {"S_x": "def scorer(...): ..."}, summaries)
+    assert ctx["goal"] == "persuasive"
+    assert ctx["scorer_contract"] == SCORER_CONTRACT
+    names = {p["name"] for p in ctx["probe_registry"]}
+    assert names == set(PROBE_CALLS)
+    assert all(p["semantics"] for p in ctx["probe_registry"])
+    assert ctx["frontier_scorers"][0]["code"] == "def scorer(...): ..."
+    assert ctx["frontier_scorers"][0]["pair_type_accuracy"] == {"hype_trap": 1.0}
+    assert ctx["coverage_gaps"]["failed_pair_type_counts_train"] == {"fake_mechanism": 2}
+    # anti-leakage: no raw heldout pair text fields anywhere
+    assert "heldout_pairs" not in ctx
+    assert PROBE_SEMANTICS["abstract_jargon_density"].startswith("PENALTY")
+
+
+def test_llm_offspring_validates_and_tags_lineage():
+    provider = FakeStructuredProvider(scorers=[
+        {"hypothesis": "good one", "lineage": "recombination", "code": GOOD_LLM_CODE},
+        {"hypothesis": "broken", "lineage": "mutation", "code": "def scorer(text, anchor, params):\n    return undefined_probe(text)\n"},
+        {"hypothesis": "constant", "lineage": "mutation", "code": "def scorer(text, anchor, params):\n    return 0.5\n"},
+    ])
+    members = _llm_offspring(provider, {"goal": "persuasive"}, 3, 2)
+    assert len(members) == 1
+    assert members[0]["lineage"] == "llm_recombination"
+    assert members[0]["scorer_id"].startswith("S_g2_llm")
+    assert provider.seen_contexts  # context actually reached the provider
+
+
+def test_llm_candidate_pairs_filtered_by_policy():
+    rng = random.Random(5)
+    anchors = _anchors()
+    stem = anchors[0]["anchor"].rstrip(".")
+    provider = FakeStructuredProvider(pairs=[
+        {"anchor": anchors[0]["anchor"],
+         "positive": stem + " — by flagging the accounts whose usage dropped, so reps call the right accounts first.",
+         "negative": stem + " with our revolutionary world-class platform.",
+         "pair_type": "hype_trap"},
+        {"anchor": anchors[0]["anchor"],
+         # positive invents a numeric claim → must be filtered out
+         "positive": stem + " — and it makes teams 10x faster within 30 days.",
+         "negative": stem + " with our amazing platform.",
+         "pair_type": "hype_trap"},
+        {"anchor": anchors[0]["anchor"], "positive": "", "negative": "x", "pair_type": "hype_trap"},
+    ])
+    pairs = _llm_candidate_pairs(provider, {"goal": "persuasive"}, anchors, rng, 5)
+    assert len(pairs) == 1
+    assert pairs[0]["generator"] == "llm"
+
+
+def test_llm_offspring_absent_provider_or_context_is_noop():
+    assert _llm_offspring(None, {"goal": "x"}, 3, 1) == []
+    assert _llm_offspring(FakeStructuredProvider(), None, 3, 1) == []
+
+
+def test_run_evolution_with_structured_provider(tmp_path, monkeypatch):
+    monkeypatch.setenv("EVALWEAVER_OUTPUT_DIR", str(tmp_path))
+    provider = FakeStructuredProvider(scorers=[
+        {"hypothesis": "llm scorer", "lineage": "novel_composition", "code": GOOD_LLM_CODE},
+    ])
+    result = run_evolution(_small_config(tmp_path, n_generations=2), provider=provider)
+    assert result["success"]
+    # the provider received the purpose-built context, not a raw artifact dump
+    ctx = provider.seen_contexts[0]
+    assert "probe_registry" in ctx and "scorer_contract" in ctx
+    pop = json.load(open(os.path.join(result["output_dir"], "gen01_population.json")))
+    summaries = json.load(open(os.path.join(result["output_dir"], "gen01_summaries.json")))
+    all_lineages = {m["lineage"] for m in pop} | {s["lineage"] for s in summaries}
+    assert any(l.startswith("llm_") for l in all_lineages)
+
+
+def test_converse_tool_parses_forced_tool_use():
+    from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+
+    class StubClient:
+        def __init__(self, response):
+            self.response = response
+            self.kwargs = None
+
+        def converse(self, **kwargs):
+            self.kwargs = kwargs
+            return self.response
+
+    provider = BedrockClaudeProvider(model_id="test-model")
+    stub = StubClient({
+        "output": {"message": {"content": [
+            {"toolUse": {"name": "propose_scorers",
+                         "input": {"scorers": [{"hypothesis": "h", "lineage": "mutation",
+                                                "code": "def scorer(text, anchor, params): return 0.1"}]}}},
+        ]}}
+    })
+    provider._client = stub
+    scorers = provider.propose_scorers({"goal": "persuasive"}, 1)
+    assert scorers == [{"hypothesis": "h", "lineage": "mutation",
+                        "code": "def scorer(text, anchor, params): return 0.1"}]
+    # the call forced the tool choice with a JSON schema
+    tool_config = stub.kwargs["toolConfig"]
+    assert tool_config["toolChoice"] == {"tool": {"name": "propose_scorers"}}
+    schema = tool_config["tools"][0]["toolSpec"]["inputSchema"]["json"]
+    assert schema["required"] == ["scorers"]
+
+
+def test_converse_tool_falls_back_to_text_json():
+    from evalweaver.providers.bedrock_claude_provider import BedrockClaudeProvider
+
+    class StubClient:
+        def converse(self, **kwargs):
+            return {"output": {"message": {"content": [
+                {"text": '```json\n{"pairs": [{"anchor": "a", "positive": "p", "negative": "n", "pair_type": "hype_trap"}]}\n```'},
+            ]}}}
+
+    provider = BedrockClaudeProvider(model_id="test-model")
+    provider._client = StubClient()
+    pairs = provider.propose_adversarial_pairs({"goal": "persuasive"}, 1)
+    assert pairs[0]["pair_type"] == "hype_trap"

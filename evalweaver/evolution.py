@@ -68,6 +68,29 @@ PROBE_CALLS = {
 PENALTY_PROBES = {"abstract_jargon_density", "persuasion_risk"}
 REWARD_PROBES = [p for p in PROBE_CALLS if p not in PENALTY_PROBES]
 
+# One-line semantics for each probe — passed to the LLM mutation context so
+# proposals are grounded in what each gene actually measures, not just names.
+PROBE_SEMANTICS = {
+    "argument_progression": "Detects problem→mechanism→result structure (1.0 = all three present).",
+    "real_mechanism_quality": "Causal markers followed by concrete objects score up; fake-mechanism jargon after 'by/through' scores down.",
+    "mechanism_result_alignment": "Mechanism clauses with concrete action+object, result clauses with concrete consequence; jargon-only clauses penalised.",
+    "causal_density": "Causal connective density per sentence — counts markers regardless of what follows them.",
+    "specificity_without_invention": "Concrete specificity (caps, action verbs) minus jargon; zeroes if hard source policy violated.",
+    "specificity": "General specificity: action verbs and named entities vs abstractions.",
+    "audience_relevance": "Before-state markers plus second-person pronoun density.",
+    "epistemic_calibration": "Hedge density vs superlative density — calibrated claims score higher.",
+    "abstract_jargon_density": "PENALTY: density of abstract jargon words (seamless, intelligent, platform...).",
+    "persuasion_risk": "PENALTY: hype/superlative density that triggers persuasion-knowledge backfire.",
+}
+
+SCORER_CONTRACT = (
+    "def scorer(text, anchor, params) returning float in [0.0, 1.0] via _clamp(); "
+    "call only the registered probe functions, violates_hard_source_policy, "
+    "probe_source_continuity, and _clamp; no imports; deterministic; "
+    "non-constant output across texts; typically veto with 'return 0.0' when "
+    "violates_hard_source_policy(text, anchor) is true."
+)
+
 # Which probes plausibly close a coverage gap on each pair type — used to
 # bias mutation and immigrant genomes toward the frontier's failure modes.
 GAP_PROBES = {
@@ -393,6 +416,40 @@ def synthesize_candidate_pairs(anchors, gap_type_weights, rng, n_candidates):
     return candidates
 
 
+def _llm_candidate_pairs(provider, llm_context, anchors, rng, n):
+    """Optional LLM-generated adversarial candidates. They enter the same
+    policy validation + frontier-margin selection as template candidates, so
+    a bad generation can only waste a call, never corrupt the suite."""
+    if provider is None or not hasattr(provider, "propose_adversarial_pairs"):
+        return []
+    try:
+        context = {**llm_context,
+                   "anchors": [a["anchor"] for a in rng.sample(anchors, min(6, len(anchors)))]}
+        proposals = provider.propose_adversarial_pairs(context, n) or []
+    except Exception as e:
+        log("evolve", f"LLM pair generation skipped ({e}); using templates", "warn")
+        return []
+    valid = []
+    for p in proposals[:n]:
+        if not all(p.get(k) for k in ("anchor", "positive", "negative", "pair_type")):
+            continue
+        pair = {
+            "anchor": p["anchor"],
+            "positive": p["positive"],
+            "negative": p["negative"],
+            "pair_type": p["pair_type"],
+            "source_policy": {**DEFAULT_SOURCE_POLICY},
+            "label_contract": p.get("label_contract", "LLM-generated adversarial pair."),
+            "intended_trap": p.get("intended_trap", "LLM-targeted frontier coverage gap."),
+            "generator": "llm",
+        }
+        if validate_pair_source_policy({**pair, "pair_id": "CAND"})["valid"]:
+            valid.append(pair)
+    if proposals:
+        log("evolve", f"LLM pairs: {len(valid)}/{len(proposals)} passed source policy", "ok")
+    return valid
+
+
 def select_adversarial_pairs(candidates, frontier_code, gen_idx, n_keep, rng):
     """Adversarial selection: keep the candidate pairs that the current Pareto
     frontier separates worst (lowest mean margin) — the coverage gap exploit."""
@@ -448,32 +505,87 @@ def fitness(summary):
     )
 
 
-def _llm_offspring(provider, failure_packet, n, gen_idx):
-    """Optional live LLM mutation via the Bedrock provider. Any failure falls
-    back silently to the deterministic genome operators."""
-    if provider is None or n <= 0:
+def build_mutation_context(goal, failure_packet, pareto, code_map, summaries):
+    """Compact, purpose-built context for LLM scorer proposals.
+
+    Carries exactly what a proposer needs — probe registry with semantics,
+    the frontier's code and per-pair-type coverage map, failed visible pairs,
+    accumulated mutation instructions, and the validity contract — instead of
+    dumping whole artifacts. Heldout pair text is never included (anti-leakage:
+    only aggregate heldout failure counts pass through the failure packet).
+    """
+    by_id = {s["scorer_id"]: s for s in summaries}
+    frontier = []
+    for p in pareto[:3]:
+        s = by_id.get(p["scorer_id"], p)
+        frontier.append({
+            "scorer_id": p["scorer_id"],
+            "hypothesis": s.get("hypothesis", ""),
+            "test_accuracy": s.get("test_accuracy"),
+            "test_margin": round(s.get("test_margin", 0), 4),
+            "pair_type_accuracy": s.get("pair_type_accuracy", {}),
+            "code": code_map.get(p["scorer_id"], ""),
+        })
+    return {
+        "goal": goal,
+        "scorer_contract": SCORER_CONTRACT,
+        "probe_registry": [
+            {"name": name, "call": PROBE_CALLS[name],
+             "semantics": PROBE_SEMANTICS.get(name, "")}
+            for name in PROBE_CALLS
+        ],
+        "frontier_scorers": frontier,
+        "coverage_gaps": {
+            "failed_pair_type_counts_train": failure_packet["failed_pair_type_counts"],
+            "heldout_failures_by_pair_type": failure_packet["heldout_aggregate_only"]["heldout_failures_by_pair_type"],
+        },
+        "failed_visible_pairs": failure_packet["failed_visible_pairs"],
+        "mutation_instructions": failure_packet["mutation_instructions"],
+        "score_collapse_warnings": failure_packet["score_collapse_warnings"],
+    }
+
+
+def _llm_offspring(provider, llm_context, n, gen_idx):
+    """Optional live LLM mutation. Prefers the structured propose_scorers tool
+    call (one call, schema-validated output); falls back to the legacy
+    generate_mutations chain, and to the deterministic genome operators on any
+    failure. Every proposal must pass scorer validation before joining the
+    population — invalid code is logged and dropped, never evaluated."""
+    if provider is None or n <= 0 or llm_context is None:
         return []
-    members = []
+    proposals = []
     try:
-        mutations = provider.generate_mutations(failure_packet, n) or []
-        for i, m in enumerate(mutations[:n]):
-            code = m.get("code") or provider.generate_scorer_code(m)
-            if not code or "def scorer" not in code:
-                continue
-            members.append({
-                "scorer_id": f"S_g{gen_idx}_llm{i + 1:02d}",
-                "genome": None,
-                "code": code,
-                "hypothesis": m.get("hypothesis", "LLM-proposed mutation from failure packet."),
-                "lineage": "llm_mutation",
-                "parents": [],
-            })
+        if hasattr(provider, "propose_scorers"):
+            proposals = provider.propose_scorers(llm_context, n) or []
+        else:
+            for m in provider.generate_mutations(llm_context, n) or []:
+                code = m.get("code") or provider.generate_scorer_code(m)
+                proposals.append({**m, "code": code})
     except Exception as e:
         log("evolve", f"LLM mutation skipped ({e}); using genome operators", "warn")
+        return []
+
+    members = []
+    for i, m in enumerate(proposals[:n]):
+        code = (m.get("code") or "").strip()
+        if "def scorer" not in code:
+            continue
+        validation = validate_scorer_on_pairs(code)
+        if not validation["valid"]:
+            log("evolve", f"LLM proposal {i + 1} rejected: {validation['reason']}", "warn")
+            continue
+        members.append({
+            "scorer_id": f"S_g{gen_idx}_llm{i + 1:02d}",
+            "genome": None,
+            "code": code,
+            "hypothesis": m.get("hypothesis", "LLM-proposed mutation from failure context."),
+            "lineage": f"llm_{m.get('lineage', 'mutation')}",
+            "parents": [],
+        })
     return members
 
 
-def breed(parents, rng, gen_idx, gap_probes, n_offspring, provider=None, failure_packet=None):
+def breed(parents, rng, gen_idx, gap_probes, n_offspring, provider=None, llm_context=None):
     """Produce the next generation's offspring: mutations of strong parents,
     crossovers, gap-biased immigrants, and optional LLM proposals."""
     offspring = []
@@ -484,8 +596,8 @@ def breed(parents, rng, gen_idx, gap_probes, n_offspring, provider=None, failure
         counter += 1
         return f"S_g{gen_idx}_{counter:03d}"
 
-    n_llm = min(2, n_offspring // 4) if provider is not None else 0
-    offspring.extend(_llm_offspring(provider, failure_packet, n_llm, gen_idx))
+    n_llm = min(3, n_offspring // 3) if provider is not None else 0
+    offspring.extend(_llm_offspring(provider, llm_context, n_llm, gen_idx))
 
     genome_parents = [p for p in parents if p.get("genome")]
     while len(offspring) < n_offspring:
@@ -641,7 +753,9 @@ def run_evolution(config, provider=None):
         frontier_code = {s["scorer_id"]: code_map[s["scorer_id"]] for s in pareto[:3]}
         if not frontier_code and ranked:
             frontier_code = {ranked[0]["scorer_id"]: code_map[ranked[0]["scorer_id"]]}
+        llm_context = build_mutation_context(goal, fp, pareto, code_map, summaries)
         candidates = synthesize_candidate_pairs(anchors, dict(gap_counts), rng, n_cand)
+        candidates += _llm_candidate_pairs(provider, llm_context, anchors, rng, n_adv * 2)
         new_pairs = select_adversarial_pairs(candidates, frontier_code, gen + 1, n_adv, rng)
         if new_pairs:
             suite, _, _, _, _ = merge_adversarial_pairs(
@@ -655,7 +769,7 @@ def run_evolution(config, provider=None):
         # ── Breed next generation ──
         ranked_members = [by_id[s["scorer_id"]] for s in ranked if s["scorer_id"] in by_id]
         offspring = breed(ranked_members or population, rng, gen + 1, gap_probes,
-                          pop_size, provider=provider, failure_packet=fp)
+                          pop_size, provider=provider, llm_context=llm_context)
         existing_codes = {m["code"] for m in population}
         population += [m for m in offspring if m["code"] not in existing_codes]
 
