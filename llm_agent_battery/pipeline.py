@@ -44,7 +44,6 @@ async def run_pipeline(config: PipelineConfig) -> PipelineResult:
     """
     from llm_agent_battery.analyzers.base import AnalyzerRegistry
     from llm_agent_battery.analyzers.code_review_analyzer import CodeReviewAnalyzer
-    from llm_agent_battery.bedrock_client import BedrockClient
     from llm_agent_battery.chunker import chunk_files
     from llm_agent_battery.classifier import classify_files
     from llm_agent_battery.deduplicator import deduplicate_and_rank
@@ -105,11 +104,8 @@ async def run_pipeline(config: PipelineConfig) -> PipelineResult:
             if profile:
                 console.print(f"  Auto-detected architecture: {detected_style.value}")
 
-        # Set up Bedrock client and analyzer registry
-        client = BedrockClient(
-            config=config.inference_config,
-            concurrency_config=config.concurrency_config,
-        )
+        # Set up the inference client (real Bedrock or offline mock) and registry
+        client = _make_client(config)
         registry = AnalyzerRegistry()
         registry.register(CodeReviewAnalyzer())
 
@@ -162,6 +158,29 @@ async def run_pipeline(config: PipelineConfig) -> PipelineResult:
         chunks_reviewed=len(chunks),
         token_usage=token_usage,
         elapsed_seconds=elapsed,
+    )
+
+
+def _make_client(config: PipelineConfig):
+    """Construct the inference client for the configured provider.
+
+    Returns a MockBedrockClient (offline, deterministic) when
+    ``config.provider == "mock"``, otherwise the real Bedrock client.
+    Both share the same public interface (``converse``/``total_usage``).
+    """
+    if config.provider == "mock":
+        from llm_agent_battery.mock_bedrock_client import MockBedrockClient
+
+        return MockBedrockClient(
+            config=config.inference_config,
+            concurrency_config=config.concurrency_config,
+        )
+
+    from llm_agent_battery.bedrock_client import BedrockClient
+
+    return BedrockClient(
+        config=config.inference_config,
+        concurrency_config=config.concurrency_config,
     )
 
 

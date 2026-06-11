@@ -86,6 +86,11 @@ def review(
         "--model-id",
         help="Bedrock model ID to use for LLM analysis.",
     ),
+    mock: bool = typer.Option(
+        False,
+        "--mock",
+        help="Use the offline mock provider instead of AWS Bedrock (no credentials/tokens).",
+    ),
 ) -> None:
     """Run full code review analysis on a target directory."""
     # Parse threshold severity
@@ -122,6 +127,7 @@ def review(
         concurrency_config=ConcurrencyConfig(),
         profile=loaded_profile,
         fast_mode=fast,
+        provider="mock" if mock else "bedrock",
         threshold=threshold_severity,
         output_dir=output_dir,
         ci_mode=ci,

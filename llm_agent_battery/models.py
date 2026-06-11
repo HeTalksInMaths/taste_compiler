@@ -154,6 +154,7 @@ class PipelineConfig(BaseModel):
     concurrency_config: ConcurrencyConfig = Field(default_factory=ConcurrencyConfig)
     profile: Optional[ReviewProfile] = None
     fast_mode: bool = False
+    provider: str = "bedrock"  # "bedrock" (real AWS) or "mock" (offline)
     threshold: Severity = Severity.HIGH
     output_dir: Optional[Path] = None
     ci_mode: bool = False
