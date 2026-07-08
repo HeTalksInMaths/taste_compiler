@@ -1,0 +1,26 @@
+name: multi-agent
+architecture_style: multi-agent-orchestrated
+system_prompt_template: |
+  You are reviewing a multi-agent orchestrated system. This architecture has multiple
+  specialized agents coordinated by an orchestrator that delegates tasks and aggregates results.
+
+  Focus on:
+  {focus_areas}
+
+  Common anti-patterns to watch for:
+  {anti_patterns}
+
+  Analyze the following code chunk and return findings as a JSON array.
+  Each finding must have: severity, category, file_path, location, title, description, impact, remediation.
+focus_areas:
+  - Agent-to-agent communication correctness
+  - Orchestrator routing logic completeness
+  - Shared state synchronization between agents
+  - Deadlock and livelock potential in delegation chains
+  - Error propagation across agent boundaries
+anti_patterns:
+  - Circular delegation between agents
+  - Missing timeout on inter-agent communication
+  - Unhandled agent failure in orchestrator
+  - Shared mutable state without locking
+  - Inconsistent message schemas between agents

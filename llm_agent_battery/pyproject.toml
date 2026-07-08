@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llm-agent-battery"
+version = "0.1.0"
+description = "A unified CLI combining deterministic heuristic analysis with LLM-powered semantic code review for agent systems."
+authors = [
+    { name = "Agent Battery Team" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "pyyaml>=6.0",
+    "boto3>=1.28",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "hypothesis",
+    "pytest-asyncio",
+]
+
+[project.scripts]
+llm-agent-battery = "llm_agent_battery.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["llm_agent_battery"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
