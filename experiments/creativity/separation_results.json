@@ -1,0 +1,779 @@
+{
+ "per_scorer": {
+  "S1_conjunctive": {
+   "hypothesis": "Judged creativity is CONJUNCTIVE in novelty and appropriateness (Runco & Jaeger 2012; Rastelli 2022): a text scores high only when it is bot...",
+   "graph_nodes_used": [
+    "lexical_rarity",
+    "surprisal(bigram proxy)",
+    "coherence",
+    "novelty*appropriateness"
+   ],
+   "accuracy_more_gt_less": 0.3,
+   "accuracy_monotonic": 0.15,
+   "ties": 0,
+   "mean_margin": -0.0515,
+   "median_margin": -0.0446,
+   "margin_std": 0.1082,
+   "score_spread": 0.487,
+   "worst_pairs_more_le_less": [
+    [
+     "CR01",
+     0.665,
+     0.732
+    ],
+    [
+     "CR03",
+     0.403,
+     0.725
+    ],
+    [
+     "CR05",
+     0.683,
+     0.707
+    ],
+    [
+     "CR06",
+     0.71,
+     0.766
+    ],
+    [
+     "CR07",
+     0.635,
+     0.663
+    ],
+    [
+     "CR08",
+     0.279,
+     0.553
+    ]
+   ]
+  },
+  "S2_divergent_integration": {
+   "hypothesis": "The strongest measured path to judged creativity is semantic distance integrated into a coherent whole (DSI, 72% of variance): creative text...",
+   "graph_nodes_used": [
+    "semantic_distance",
+    "coherence",
+    "remote_association",
+    "fluency_flexibility"
+   ],
+   "accuracy_more_gt_less": 0.4,
+   "accuracy_monotonic": 0.05,
+   "ties": 7,
+   "mean_margin": -0.0014,
+   "median_margin": 0.0,
+   "margin_std": 0.1181,
+   "score_spread": 0.541,
+   "worst_pairs_more_le_less": [
+    [
+     "CR01",
+     0.619,
+     0.746
+    ],
+    [
+     "CR03",
+     0.693,
+     0.704
+    ],
+    [
+     "CR13",
+     0.677,
+     0.696
+    ],
+    [
+     "CR16",
+     0.38,
+     0.701
+    ],
+    [
+     "CR20",
+     0.26,
+     0.5
+    ]
+   ]
+  },
+  "S3_antiformulaic": {
+   "hypothesis": "Creativity in edited text is primarily the ABSENCE of formulaicity: clich\u00e9s, high-coverage common bigrams, generic verbs, and stock intensif...",
+   "graph_nodes_used": [
+    "cliche_formulaicity",
+    "surprisal(inverse: predictability)"
+   ],
+   "accuracy_more_gt_less": 0.8,
+   "accuracy_monotonic": 0.5,
+   "ties": 0,
+   "mean_margin": 0.0283,
+   "median_margin": 0.0352,
+   "margin_std": 0.0674,
+   "score_spread": 0.298,
+   "worst_pairs_more_le_less": [
+    [
+     "CR12",
+     0.739,
+     0.742
+    ],
+    [
+     "CR14",
+     0.694,
+     0.804
+    ],
+    [
+     "CR17",
+     0.616,
+     0.764
+    ],
+    [
+     "CR18",
+     0.75,
+     0.775
+    ]
+   ]
+  },
+  "S4_figurative_contrast": {
+   "hypothesis": "Creative edits work through fresh figuration: an abstract idea grounded in a concrete image (the concreteness-contrast cue from metaphor det...",
+   "graph_nodes_used": [
+    "metaphor_novelty",
+    "concreteness_imageability",
+    "appropriateness(aptness gate)"
+   ],
+   "accuracy_more_gt_less": 0.25,
+   "accuracy_monotonic": 0.1,
+   "ties": 10,
+   "mean_margin": 0.0093,
+   "median_margin": 0.0,
+   "margin_std": 0.0631,
+   "score_spread": 0.257,
+   "worst_pairs_more_le_less": [
+    [
+     "CR01",
+     0.15,
+     0.189
+    ],
+    [
+     "CR02",
+     0.15,
+     0.257
+    ],
+    [
+     "CR06",
+     0.183,
+     0.186
+    ],
+    [
+     "CR17",
+     0.381,
+     0.384
+    ],
+    [
+     "CR19",
+     0.204,
+     0.208
+    ]
+   ]
+  },
+  "S5_residualized_combination": {
+   "hypothesis": "True creative novelty is fresh COMBINATIONS, not rare WORDS: after residualizing pairwise combination-freshness on word rarity (removing the...",
+   "graph_nodes_used": [
+    "novelty_vs_frequency_confound",
+    "surprisal(bigram proxy)",
+    "remote_association",
+    "coherence"
+   ],
+   "accuracy_more_gt_less": 0.4,
+   "accuracy_monotonic": 0.15,
+   "ties": 1,
+   "mean_margin": -0.0215,
+   "median_margin": -0.0013,
+   "margin_std": 0.0637,
+   "score_spread": 0.269,
+   "worst_pairs_more_le_less": [
+    [
+     "CR01",
+     0.506,
+     0.526
+    ],
+    [
+     "CR04",
+     0.514,
+     0.53
+    ],
+    [
+     "CR06",
+     0.538,
+     0.56
+    ],
+    [
+     "CR08",
+     0.5,
+     0.524
+    ],
+    [
+     "CR13",
+     0.522,
+     0.524
+    ],
+    [
+     "CR14",
+     0.317,
+     0.328
+    ]
+   ]
+  },
+  "_ensemble_majority_vote": {
+   "accuracy_more_gt_less": 0.45
+  },
+  "_cross_scorer_agreement": {
+   "S1_conjunctive vs S2_divergent_integration": 0.8,
+   "S1_conjunctive vs S3_antiformulaic": 0.4,
+   "S1_conjunctive vs S4_figurative_contrast": 0.45,
+   "S1_conjunctive vs S5_residualized_combination": 0.7,
+   "S2_divergent_integration vs S3_antiformulaic": 0.5,
+   "S2_divergent_integration vs S4_figurative_contrast": 0.65,
+   "S2_divergent_integration vs S5_residualized_combination": 0.6,
+   "S3_antiformulaic vs S4_figurative_contrast": 0.45,
+   "S3_antiformulaic vs S5_residualized_combination": 0.5,
+   "S4_figurative_contrast vs S5_residualized_combination": 0.55
+  },
+  "_n_pairs": 20
+ },
+ "per_pair_scores": {
+  "CR01": {
+   "S1_conjunctive": {
+    "more": 0.665,
+    "anchor": 0.76,
+    "less": 0.732
+   },
+   "S2_divergent_integration": {
+    "more": 0.619,
+    "anchor": 0.691,
+    "less": 0.746
+   },
+   "S3_antiformulaic": {
+    "more": 0.821,
+    "anchor": 0.699,
+    "less": 0.676
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.189
+   },
+   "S5_residualized_combination": {
+    "more": 0.506,
+    "anchor": 0.547,
+    "less": 0.526
+   }
+  },
+  "CR02": {
+   "S1_conjunctive": {
+    "more": 0.751,
+    "anchor": 0.681,
+    "less": 0.678
+   },
+   "S2_divergent_integration": {
+    "more": 0.585,
+    "anchor": 0.643,
+    "less": 0.538
+   },
+   "S3_antiformulaic": {
+    "more": 0.866,
+    "anchor": 0.568,
+    "less": 0.802
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.252,
+    "less": 0.257
+   },
+   "S5_residualized_combination": {
+    "more": 0.541,
+    "anchor": 0.515,
+    "less": 0.511
+   }
+  },
+  "CR03": {
+   "S1_conjunctive": {
+    "more": 0.403,
+    "anchor": 0.67,
+    "less": 0.725
+   },
+   "S2_divergent_integration": {
+    "more": 0.693,
+    "anchor": 0.696,
+    "less": 0.704
+   },
+   "S3_antiformulaic": {
+    "more": 0.769,
+    "anchor": 0.733,
+    "less": 0.716
+   },
+   "S4_figurative_contrast": {
+    "more": 0.189,
+    "anchor": 0.184,
+    "less": 0.185
+   },
+   "S5_residualized_combination": {
+    "more": 0.536,
+    "anchor": 0.514,
+    "less": 0.522
+   }
+  },
+  "CR04": {
+   "S1_conjunctive": {
+    "more": 0.669,
+    "anchor": 0.733,
+    "less": 0.557
+   },
+   "S2_divergent_integration": {
+    "more": 0.577,
+    "anchor": 0.69,
+    "less": 0.574
+   },
+   "S3_antiformulaic": {
+    "more": 0.787,
+    "anchor": 0.744,
+    "less": 0.751
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.179,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.514,
+    "anchor": 0.513,
+    "less": 0.53
+   }
+  },
+  "CR05": {
+   "S1_conjunctive": {
+    "more": 0.683,
+    "anchor": 0.649,
+    "less": 0.707
+   },
+   "S2_divergent_integration": {
+    "more": 0.62,
+    "anchor": 0.5,
+    "less": 0.5
+   },
+   "S3_antiformulaic": {
+    "more": 0.77,
+    "anchor": 0.742,
+    "less": 0.674
+   },
+   "S4_figurative_contrast": {
+    "more": 0.174,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.516,
+    "anchor": 0.506,
+    "less": 0.507
+   }
+  },
+  "CR06": {
+   "S1_conjunctive": {
+    "more": 0.71,
+    "anchor": 0.731,
+    "less": 0.766
+   },
+   "S2_divergent_integration": {
+    "more": 0.5,
+    "anchor": 0.5,
+    "less": 0.5
+   },
+   "S3_antiformulaic": {
+    "more": 0.748,
+    "anchor": 0.729,
+    "less": 0.685
+   },
+   "S4_figurative_contrast": {
+    "more": 0.183,
+    "anchor": 0.185,
+    "less": 0.186
+   },
+   "S5_residualized_combination": {
+    "more": 0.538,
+    "anchor": 0.564,
+    "less": 0.56
+   }
+  },
+  "CR07": {
+   "S1_conjunctive": {
+    "more": 0.635,
+    "anchor": 0.7,
+    "less": 0.663
+   },
+   "S2_divergent_integration": {
+    "more": 0.5,
+    "anchor": 0.26,
+    "less": 0.26
+   },
+   "S3_antiformulaic": {
+    "more": 0.72,
+    "anchor": 0.642,
+    "less": 0.716
+   },
+   "S4_figurative_contrast": {
+    "more": 0.407,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.3,
+    "anchor": 0.3,
+    "less": 0.3
+   }
+  },
+  "CR08": {
+   "S1_conjunctive": {
+    "more": 0.279,
+    "anchor": 0.491,
+    "less": 0.553
+   },
+   "S2_divergent_integration": {
+    "more": 0.728,
+    "anchor": 0.73,
+    "less": 0.619
+   },
+   "S3_antiformulaic": {
+    "more": 0.791,
+    "anchor": 0.756,
+    "less": 0.718
+   },
+   "S4_figurative_contrast": {
+    "more": 0.186,
+    "anchor": 0.179,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.5,
+    "anchor": 0.5,
+    "less": 0.524
+   }
+  },
+  "CR09": {
+   "S1_conjunctive": {
+    "more": 0.758,
+    "anchor": 0.738,
+    "less": 0.702
+   },
+   "S2_divergent_integration": {
+    "more": 0.26,
+    "anchor": 0.26,
+    "less": 0.26
+   },
+   "S3_antiformulaic": {
+    "more": 0.759,
+    "anchor": 0.727,
+    "less": 0.704
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.314,
+    "anchor": 0.314,
+    "less": 0.308
+   }
+  },
+  "CR10": {
+   "S1_conjunctive": {
+    "more": 0.706,
+    "anchor": 0.718,
+    "less": 0.676
+   },
+   "S2_divergent_integration": {
+    "more": 0.801,
+    "anchor": 0.789,
+    "less": 0.764
+   },
+   "S3_antiformulaic": {
+    "more": 0.738,
+    "anchor": 0.72,
+    "less": 0.698
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.52,
+    "anchor": 0.528,
+    "less": 0.511
+   }
+  },
+  "CR11": {
+   "S1_conjunctive": {
+    "more": 0.517,
+    "anchor": 0.689,
+    "less": 0.605
+   },
+   "S2_divergent_integration": {
+    "more": 0.38,
+    "anchor": 0.38,
+    "less": 0.38
+   },
+   "S3_antiformulaic": {
+    "more": 0.803,
+    "anchor": 0.723,
+    "less": 0.8
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.307,
+    "anchor": 0.33,
+    "less": 0.305
+   }
+  },
+  "CR12": {
+   "S1_conjunctive": {
+    "more": 0.65,
+    "anchor": 0.677,
+    "less": 0.682
+   },
+   "S2_divergent_integration": {
+    "more": 0.26,
+    "anchor": 0.26,
+    "less": 0.26
+   },
+   "S3_antiformulaic": {
+    "more": 0.739,
+    "anchor": 0.75,
+    "less": 0.742
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.314,
+    "anchor": 0.304,
+    "less": 0.295
+   }
+  },
+  "CR13": {
+   "S1_conjunctive": {
+    "more": 0.533,
+    "anchor": 0.542,
+    "less": 0.706
+   },
+   "S2_divergent_integration": {
+    "more": 0.677,
+    "anchor": 0.69,
+    "less": 0.696
+   },
+   "S3_antiformulaic": {
+    "more": 0.775,
+    "anchor": 0.759,
+    "less": 0.76
+   },
+   "S4_figurative_contrast": {
+    "more": 0.267,
+    "anchor": 0.25,
+    "less": 0.245
+   },
+   "S5_residualized_combination": {
+    "more": 0.522,
+    "anchor": 0.537,
+    "less": 0.524
+   }
+  },
+  "CR14": {
+   "S1_conjunctive": {
+    "more": 0.399,
+    "anchor": 0.405,
+    "less": 0.51
+   },
+   "S2_divergent_integration": {
+    "more": 0.5,
+    "anchor": 0.5,
+    "less": 0.5
+   },
+   "S3_antiformulaic": {
+    "more": 0.694,
+    "anchor": 0.693,
+    "less": 0.804
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.317,
+    "anchor": 0.317,
+    "less": 0.328
+   }
+  },
+  "CR15": {
+   "S1_conjunctive": {
+    "more": 0.683,
+    "anchor": 0.678,
+    "less": 0.682
+   },
+   "S2_divergent_integration": {
+    "more": 0.38,
+    "anchor": 0.26,
+    "less": 0.26
+   },
+   "S3_antiformulaic": {
+    "more": 0.694,
+    "anchor": 0.664,
+    "less": 0.68
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.315,
+    "anchor": 0.307,
+    "less": 0.306
+   }
+  },
+  "CR16": {
+   "S1_conjunctive": {
+    "more": 0.573,
+    "anchor": 0.551,
+    "less": 0.659
+   },
+   "S2_divergent_integration": {
+    "more": 0.38,
+    "anchor": 0.626,
+    "less": 0.701
+   },
+   "S3_antiformulaic": {
+    "more": 0.775,
+    "anchor": 0.757,
+    "less": 0.755
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.311,
+    "anchor": 0.52,
+    "less": 0.514
+   }
+  },
+  "CR17": {
+   "S1_conjunctive": {
+    "more": 0.578,
+    "anchor": 0.585,
+    "less": 0.647
+   },
+   "S2_divergent_integration": {
+    "more": 0.62,
+    "anchor": 0.62,
+    "less": 0.62
+   },
+   "S3_antiformulaic": {
+    "more": 0.616,
+    "anchor": 0.764,
+    "less": 0.764
+   },
+   "S4_figurative_contrast": {
+    "more": 0.381,
+    "anchor": 0.382,
+    "less": 0.384
+   },
+   "S5_residualized_combination": {
+    "more": 0.5,
+    "anchor": 0.512,
+    "less": 0.508
+   }
+  },
+  "CR18": {
+   "S1_conjunctive": {
+    "more": 0.554,
+    "anchor": 0.461,
+    "less": 0.455
+   },
+   "S2_divergent_integration": {
+    "more": 0.581,
+    "anchor": 0.564,
+    "less": 0.568
+   },
+   "S3_antiformulaic": {
+    "more": 0.75,
+    "anchor": 0.751,
+    "less": 0.775
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.524,
+    "anchor": 0.528,
+    "less": 0.524
+   }
+  },
+  "CR19": {
+   "S1_conjunctive": {
+    "more": 0.544,
+    "anchor": 0.519,
+    "less": 0.545
+   },
+   "S2_divergent_integration": {
+    "more": 0.5,
+    "anchor": 0.5,
+    "less": 0.5
+   },
+   "S3_antiformulaic": {
+    "more": 0.751,
+    "anchor": 0.745,
+    "less": 0.717
+   },
+   "S4_figurative_contrast": {
+    "more": 0.204,
+    "anchor": 0.211,
+    "less": 0.208
+   },
+   "S5_residualized_combination": {
+    "more": 0.5,
+    "anchor": 0.5,
+    "less": 0.507
+   }
+  },
+  "CR20": {
+   "S1_conjunctive": {
+    "more": 0.604,
+    "anchor": 0.675,
+    "less": 0.676
+   },
+   "S2_divergent_integration": {
+    "more": 0.26,
+    "anchor": 0.5,
+    "less": 0.5
+   },
+   "S3_antiformulaic": {
+    "more": 0.809,
+    "anchor": 0.673,
+    "less": 0.672
+   },
+   "S4_figurative_contrast": {
+    "more": 0.15,
+    "anchor": 0.15,
+    "less": 0.15
+   },
+   "S5_residualized_combination": {
+    "more": 0.3,
+    "anchor": 0.516,
+    "less": 0.513
+   }
+  }
+ }
+}

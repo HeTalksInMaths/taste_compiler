@@ -1,0 +1,89 @@
+{
+  "description": "Measurement map: how NLP/ML literature operationalized each text-observable causal-graph node, organized by the orchestrator from the phase-2 Sonnet search (22 queries, websearch snippets). runner_implementable = usable inside evalweaver's runner namespace (re, math, collections, string, statistics, unicodedata + embedded word lists; no imports, no models).",
+  "runner_constraints": "stdlib-only; embedded lexicons OK; embeddings/LMs/parsers NOT available — canonical embedding methods recorded as future_work.",
+  "nodes": {
+    "semantic_distance": {
+      "canonical": [
+        {"name": "SemDis (LSA/co-occurrence distance)", "feasibility": "needs_embeddings", "source": "Beaty & Johnson 2021"},
+        {"name": "DAT score (mean pairwise GloVe distance)", "feasibility": "needs_embeddings", "source": "Olson et al. 2021"},
+        {"name": "DSI (mean pairwise BERT distance, layers 6-7)", "feasibility": "needs_embeddings", "source": "Johnson et al. 2022", "note": "up to 72% variance in human ratings"}
+      ],
+      "runner_implementable": [
+        {"name": "TF/bag-of-words cosine or Jaccard distance between sentences", "recipe": "Counter over content tokens per sentence; cosine via dot/norms in math", "weakness": "ignores synonymy; lexical variation reads as semantic distance"},
+        {"name": "PMI-style co-occurrence distance", "recipe": "PMI = log2(P(x,y)/(P(x)P(y))) from an embedded count table", "weakness": "unstable at low counts"},
+        {"name": "semantic-field mixing", "recipe": "count distinct hand-listed semantic fields (nature/machine/body/food/domestic/weather...) touched by the text's nouns", "weakness": "coarse; coverage limited to listed fields"}
+      ]
+    },
+    "surprisal": {
+      "canonical": [{"name": "LM surprisal -log2 P(w|context)", "feasibility": "needs_lm"}],
+      "runner_implementable": [
+        {"name": "n-gram / bigram transition surprisal", "recipe": "P(w_t|w_{t-1}) from embedded bigram counts, Laplace smoothing; -log2", "weakness": "sparse; still frequency-correlated"},
+        {"name": "Zipf pseudo-surprisal", "recipe": "-log10 count-per-billion from embedded frequency tiers; mean over content words", "weakness": "context-blind — IS the frequency confound (see novelty_vs_frequency_confound)"}
+      ]
+    },
+    "metaphor_novelty": {
+      "canonical": [{"name": "Selectional preference violation (Fass met*; MisNet MIP+SPV)", "feasibility": "needs_parser"}],
+      "runner_implementable": [
+        {"name": "concreteness contrast topic-vs-vehicle", "recipe": "|concreteness(topic) - concreteness(vehicle)| via embedded concreteness lexicon; abstract-topic + concrete-vehicle asymmetry flags figurative use", "weakness": "topic/vehicle identification is heuristic without a parser"},
+        {"name": "context abstractness around concrete word", "recipe": "mean concreteness of window vs focal word", "weakness": "lexicon coverage gaps"},
+        {"name": "simile/copula markers + dead-vehicle list", "recipe": "regex 'like a|as if|as though|is a'; penalize vehicles from a dead-metaphor list (heart, journey, storm, rollercoaster...)", "weakness": "low recall for unmarked metaphor"}
+      ]
+    },
+    "cliche_formulaicity": {
+      "canonical": [
+        {"name": "PMI / t-score / Dice collocation strength vs reference corpus", "feasibility": "stdlib_with_wordlist", "source": "Gablasova et al. 2017; corpus stats methodology"},
+        {"name": "n-gram frequency vs Google Books/COCA", "feasibility": "stdlib_with_wordlist", "source": "orgtre/google-books-ngram-frequency"}
+      ],
+      "runner_implementable": [
+        {"name": "cliché lexicon matching", "recipe": "embedded list of stock phrases; hits per token", "weakness": "high precision, low recall — misses paraphrased clichés"},
+        {"name": "common-bigram coverage", "recipe": "share of adjacent word pairs found in embedded top-bigram table", "weakness": "subset covers only most common bigrams"},
+        {"name": "stock-intensifier + generic-verb density", "recipe": "very/really/extremely...; is/has/gets/makes... per content word", "weakness": "genre-sensitive"}
+      ]
+    },
+    "lexical_rarity": {
+      "canonical": [{"name": "Zipf scale (SUBTLEX), mean log frequency", "feasibility": "stdlib_with_wordlist", "source": "Brysbaert Zipf methodology"}],
+      "runner_implementable": [
+        {"name": "proportion of tokens outside top-N common list", "recipe": "1 - |tokens ∩ COMMON| / |tokens|", "weakness": "threshold arbitrary; OOV includes typos/names; rarity ≠ conceptual novelty (arXiv 2508.05470)"}
+      ]
+    },
+    "concreteness_imageability": {
+      "canonical": [
+        {"name": "Brysbaert 40k concreteness norms (mean/SD over text)", "feasibility": "stdlib_with_wordlist"},
+        {"name": "MRC imageability", "feasibility": "stdlib_with_wordlist", "note": "sparse coverage (~4.8k words)"}
+      ],
+      "runner_implementable": [
+        {"name": "mini concreteness lexicon mean + contrast", "recipe": "embedded concrete/abstract word sets; mean level and abstract-concrete co-presence (imagery grounding abstract ideas)", "weakness": "small lexicon coverage; direction on creativity is mixed per phase-1 graph"}
+      ]
+    },
+    "elaboration_detail": {
+      "canonical": [
+        {"name": "TTCT elaboration rubric", "feasibility": "manual", "note": "automated proxies conflate verbosity with detail — gameable"},
+        {"name": "dependency tree depth", "feasibility": "needs_parser"}
+      ],
+      "runner_implementable": [
+        {"name": "modifier density", "recipe": "-ly adverbs + embedded adjective list per clause (clauses via re split on punctuation/conjunctions)", "weakness": "suffix heuristics are noisy"},
+        {"name": "idea-unit count normalized by length", "recipe": "clause-boundary heuristic segments / word count", "weakness": "regex clause splitting unreliable"}
+      ]
+    },
+    "coherence": {
+      "canonical": [
+        {"name": "entity grid (Barzilay & Lapata 2008)", "feasibility": "needs_parser"},
+        {"name": "sentence-embedding adjacent similarity", "feasibility": "needs_embeddings"},
+        {"name": "TAACO overlap indices", "feasibility": "partially stdlib", "source": "Crossley et al. 2016"}
+      ],
+      "runner_implementable": [
+        {"name": "adjacent-sentence content-word overlap / TF-cosine", "recipe": "set intersection or Counter cosine between the two sentences", "weakness": "misses pronoun coreference and synonymy"},
+        {"name": "OPTIMAL-DISTANCE transform", "recipe": "score = 1 - |distance - optimal|/scale — creativity peaks at MODERATE divergence (sweet-spot finding); apply as the functional form on any distance signal instead of monotonic reward", "weakness": "optimal point needs calibration per domain", "source": "Orwig et al. CCN 2025; coherence-creativity trade-off literature"}
+      ]
+    },
+    "novelty_vs_frequency_confound": {
+      "canonical": [{"name": "multi-checkpoint surprisal-frequency trajectory analysis", "feasibility": "needs_lm", "source": "Momen & Zarrieß arXiv:2605.06506"}],
+      "runner_implementable": [
+        {"name": "frequency residualization", "recipe": "OLS of context-novelty signal on token rarity via closed-form sums (stdlib math); use residuals as frequency-independent novelty", "weakness": "removes only linear shared variance", "source": "residualization methodology + Momen & Zarrieß"},
+        {"name": "partial correlation", "recipe": "r_xy.z algebra with manual Pearson r", "weakness": "linearity assumptions; small-sample noise"}
+      ]
+    }
+  },
+  "future_work_requires_models": ["SemDis/DAT/DSI embeddings", "true LM surprisal", "dependency parsing for SPV metaphor detection and entity grids", "sentence embeddings for coherence"],
+  "provenance": {"phase2_agent": "sonnet subagent, 22 WebSearch queries, websearch snippets only (WebFetch 403)", "organized_by": "orchestrator (main session), 2026-07-10"}
+}
