@@ -57,6 +57,27 @@
    "adv": 0.5833333333333334,
    "all": 0.59375,
    "ties": 1
+  },
+  {
+   "metric": "metrics_gen5_beyond_rarity:phrase_novelty_divergence",
+   "orig": 0.9,
+   "adv": 0.75,
+   "all": 0.84375,
+   "ties": 1
+  },
+  {
+   "metric": "metrics_gen5_beyond_rarity:lexical_density",
+   "orig": 0.6,
+   "adv": 0.75,
+   "all": 0.65625,
+   "ties": 0
+  },
+  {
+   "metric": "metrics_gen5_beyond_rarity:lexical_density_delta",
+   "orig": 0.6,
+   "adv": 0.75,
+   "all": 0.65625,
+   "ties": 0
   }
  ]
 }
