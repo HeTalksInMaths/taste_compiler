@@ -1,0 +1,41 @@
+[
+ {
+  "gen": 0,
+  "n_pairs": 20,
+  "n_orig": 20,
+  "n_adv": 0,
+  "n_scorers": 5,
+  "best_id": "S3_antiformulaic",
+  "best_lineage": "initial",
+  "best_acc_all": 0.8,
+  "best_acc_orig": 0.8,
+  "best_acc_adv": null,
+  "all_scores": [
+   {
+    "id": "S3_antiformulaic",
+    "lineage": "initial",
+    "acc_all": 0.8
+   },
+   {
+    "id": "S2_divergent_integration",
+    "lineage": "initial",
+    "acc_all": 0.4
+   },
+   {
+    "id": "S5_residualized_combination",
+    "lineage": "initial",
+    "acc_all": 0.4
+   },
+   {
+    "id": "S1_conjunctive",
+    "lineage": "initial",
+    "acc_all": 0.3
+   },
+   {
+    "id": "S4_figurative_contrast",
+    "lineage": "initial",
+    "acc_all": 0.25
+   }
+  ]
+ }
+]

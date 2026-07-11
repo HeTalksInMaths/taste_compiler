@@ -1,0 +1,104 @@
+{
+ "goal": "Score how creative a 2-sentence text is, higher = more creative. A scorer is CORRECT on a pair when it gives more_creative a higher score than less_creative (same factual content, only freshness differs).",
+ "generation": 1,
+ "summary_stats": [
+  {
+   "scorer_id": "S3_antiformulaic",
+   "lineage": "initial",
+   "acc_all": 0.8,
+   "margin_all": 0.028287608906226874,
+   "acc_orig": 0.8,
+   "acc_adv": null
+  },
+  {
+   "scorer_id": "S2_divergent_integration",
+   "lineage": "initial",
+   "acc_all": 0.4,
+   "margin_all": -0.0014364223585750318,
+   "acc_orig": 0.4,
+   "acc_adv": null
+  },
+  {
+   "scorer_id": "S5_residualized_combination",
+   "lineage": "initial",
+   "acc_all": 0.4,
+   "margin_all": -0.021481257233705982,
+   "acc_orig": 0.4,
+   "acc_adv": null
+  },
+  {
+   "scorer_id": "S1_conjunctive",
+   "lineage": "initial",
+   "acc_all": 0.3,
+   "margin_all": -0.051480258810899925,
+   "acc_orig": 0.3,
+   "acc_adv": null
+  },
+  {
+   "scorer_id": "S4_figurative_contrast",
+   "lineage": "initial",
+   "acc_all": 0.25,
+   "margin_all": 0.009330702724230743,
+   "acc_orig": 0.25,
+   "acc_adv": null
+  }
+ ],
+ "best_scorer": {
+  "scorer_id": "S3_antiformulaic",
+  "code": "COMMON = set(['a', 'about', 'above', 'across', 'add', 'after', 'again', 'against', 'air', 'all', 'almost', 'along', 'also', 'always', 'an', 'and', 'animal', 'another', 'answer', 'any', 'are', 'area', 'around', 'as', 'ask', 'at', 'away', 'back', 'be', 'because', 'become', 'been', 'before', 'began', 'begin', 'being', 'below', 'best', 'better', 'between', 'big', 'birds', 'black', 'body', 'book', 'both', 'but', 'by', 'call', 'came', 'can', 'car', 'carry', 'certain', 'change', 'children', 'city', 'close', 'cold', 'color', 'come', 'complete', 'could', 'country', 'covered', 'cried', 'cut', 'day', 'did', \"didn't\", 'different', 'do', 'does', 'dog', 'door', 'down', 'draw', 'during', 'each', 'early', 'earth', 'easy', 'eat', 'end', 'enough', 'even', 'ever', 'every', 'example', 'eye', 'face', 'fall', 'family', 'far', 'farm', 'fast', 'father', 'feet', 'few', 'field', 'figure', 'find', 'fire', 'first', 'fish', 'five', 'follow', 'food', 'for', 'form', 'found', 'four', 'friends', 'from', 'get', 'girl', 'give', 'go', 'good', 'got', 'great', 'ground', 'group', 'grow', 'had', 'hand', 'happened', 'hard', 'has', 'have', 'he', 'head', 'hear', 'heard', 'help', 'her', 'here', 'high', 'him', 'himself', 'his', 'hold', 'home', 'horse', 'hours', 'house', 'how', 'however', 'hundred', 'i', \"i'll\", 'idea', 'if', 'important', 'in', 'into', 'is', 'it', 'its', 'just', 'keep', 'kind', 'king', 'knew', 'know', 'land', 'large', 'last', 'later', 'learn', 'leave', 'left', 'let', 'letter', 'life', 'light', 'like', 'line', 'list', 'listen', 'little', 'live', 'long', 'look', 'low', 'made', 'make', 'man', 'many', 'map', 'mark', 'may', 'me', 'mean', 'measure', 'might', 'mile', 'miss', 'money', 'more', 'morning', 'most', 'mother', 'mountain', 'move', 'much', 'music', 'must', 'my', 'name', 'near', 'need', 'never', 'new', 'next', 'night', 'no', 'north', 'not', 'notice', 'now', 'number', 'numeral', 'of', 'off', 'often', 'old', 'on', 'once', 'one', 'only', 'open', 'or', 'order', 'other', 'our', 'out', 'over', 'own', 'page', 'paper', 'part', 'passed', 'pattern', 'people', 'picture', 'piece', 'place', 'plan', 'plant', 'play', 'point', 'problem', 'products', 'pulled', 'put', 'question', 'reached', 'read', 'really', 'red', 'remember', 'right', 'river', 'rock', 'room', 'run', 'said', 'same', 'saw', 'say', 'school', 'sea', 'second', 'see', 'seem', 'seen', 'set', 'several', 'she', 'ship', 'short', 'should', 'show', 'side', 'since', 'sing', 'slowly', 'small', 'so', 'some', 'something', 'sometimes', 'song', 'soon', 'sound', 'south', 'space', 'stand', 'start', 'state', 'step', 'still', 'stop', 'story', 'study', 'such', 'sun', 'sure', 'table', 'take', 'talk', 'tell', 'than', 'that', 'the', 'their', 'them', 'then', 'there', 'these', 'they', 'thing', 'think', 'this', 'those', 'thought', 'three', 'through', 'time', 'to', 'today', 'together', 'told', 'too', 'took', 'top', 'toward', 'town', 'travel', 'tree', 'true', 'try', 'turn', 'two', 'under', 'unit', 'until', 'up', 'upon', 'us', 'use', 'usually', 'very', 'voice', 'vowel', 'walk', 'want', 'war', 'was', 'watch', 'water', 'waves', 'way', 'we', 'well', 'went', 'were', 'what', 'when', 'where', 'which', 'while', 'white', 'who', 'whole', 'why', 'will', 'wind', 'with', 'without', 'wood', 'word', 'work', 'world', 'would', 'write', 'year', 'you', 'young', 'your'])\ndef _toks(s):\n    return [t for t in re.findall(r\"[a-zA-Z']+\", (s or '').lower())]\ndef _content(s):\n    return [t for t in _toks(s) if t not in COMMON and len(t) > 2]\ndef _sents(s):\n    parts = [p.strip() for p in re.split(r'[.!?]+', s or '') if p.strip()]\n    return parts if parts else ['']\ndef _clamp01(x):\n    return max(0.0, min(1.0, x))\nCLICHES = ['a breath of fresh air', 'a double-edged sword', 'a feast for the eyes', 'a hidden gem', 'a must-have', 'a must-see', 'a perfect storm', \"a stone's throw\", 'a wide range of', 'a win-win', 'at the end of the day', 'at the heart of', 'believe it or not', 'boasts a', 'breathtaking views', 'bustling with', 'due to the fact', 'each and every', 'easier said than done', 'first and foremost', 'food for thought', 'game changer', 'hustle and bustle', 'in order to', 'in the nick of time', 'in this day and age', \"in today's world\", 'it goes without saying', 'last but not least', 'level playing field', 'like clockwork', 'melt in your mouth', 'moving forward', 'needless to say', 'nestled in', 'off the beaten path', 'on the same page', 'only a matter of time', 'packed with flavor', 'picture perfect', 'plays a vital role', 'plays an important role', 'recharge your batteries', 'second to none', 'sky is the limit', 'state of the art', 'stood the test of time', 'takes it to the next level', 'the best of both worlds', 'the big picture', 'the bottom line', 'the calm before the storm', 'the fact of the matter', 'think outside the box', 'time will tell', 'tip of the iceberg', 'took the world by storm', 'tried and true', 'when all is said and done']\nBIGRAMS = ['a bit', 'a few', 'a lot', 'a number', 'able to', 'according to', 'and a', 'and the', 'are not', 'as a', 'as well', 'as well as', 'at the', 'based on', 'by the', 'can be', 'did not', 'do not', 'does not', 'for example', 'for the', 'from the', 'going to', 'had been', 'has been', 'have been', 'have to', 'if you', 'in a', 'in addition', 'in fact', 'in terms', 'in the', 'into the', 'is a', 'is not', 'is the', 'it is', 'it was', 'known as', 'less than', 'lot of', 'more than', 'need to', 'number of', 'of a', 'of course', 'of the', 'on a', 'on the', 'one of', 'out of', 'over the', 'part of', 'such as', 'that is', 'that the', 'there are', 'there is', 'they are', 'this is', 'to a', 'to be', 'to the', 'trying to', 'under the', 'up to', 'used to', 'want to', 'was a', 'was not', 'we are', 'will be', 'with a', 'with the', 'would be', 'you are', 'you can']\nGENERIC_VERBS = set(['am', 'are', 'be', 'became', 'become', 'becomes', 'been', 'being', 'did', 'do', 'does', 'doing', 'get', 'gets', 'getting', 'go', 'goes', 'gone', 'got', 'had', 'has', 'have', 'is', 'made', 'make', 'makes', 'making', 'put', 'puts', 'said', 'say', 'says', 'seem', 'seemed', 'seems', 'take', 'taken', 'takes', 'took', 'use', 'used', 'uses', 'using', 'was', 'went', 'were'])\nINTENSIFIERS = set(['absolutely', 'completely', 'definitely', 'extremely', 'highly', 'incredibly', 'just', 'quite', 'really', 'simply', 'super', 'totally', 'truly', 'utterly', 'very'])\n\ndef _formulaicity(s):\n    low = \" \" + \" \".join(_toks(s)) + \" \"\n    toks = _toks(s)\n    if not toks:\n        return 1.0\n    cliche_hits = sum(1 for c in CLICHES if c in low)\n    pairs = [toks[i] + \" \" + toks[i + 1] for i in range(len(toks) - 1)]\n    bigram_cov = sum(1 for p in pairs if p in BIGRAMS) / max(1, len(pairs))\n    gverbs = sum(1 for t in toks if t in GENERIC_VERBS) / max(1, len(toks))\n    intens = sum(1 for t in toks if t in INTENSIFIERS)\n    return (min(1.0, cliche_hits * 0.45)\n            + min(1.0, bigram_cov / 0.35) * 0.5\n            + min(1.0, gverbs / 0.18) * 0.35\n            + min(1.0, intens * 0.30)) / 2.3\n\ndef scorer(text, anchor, params):\n    toks = _toks(text)\n    if len(toks) < 6:\n        return 0.0\n    f_text = _formulaicity(text)\n    f_anchor = _formulaicity(anchor) if anchor and _toks(anchor) else f_text\n    absolute = 1.0 - f_text\n    relative = 0.5 + (f_anchor - f_text)   # >0.5 means fresher than the anchor\n    return _clamp01(0.55 * absolute + 0.45 * _clamp01(relative))\n",
+  "acc_all": 0.8
+ },
+ "pairs_the_best_scorer_fails": [
+  {
+   "pair_id": "ADV06",
+   "anchor": "The phone battery lasts all day. It charges fully in about an hour.",
+   "more_creative": "The battery goes the distance, still running when most phones have long since flatlined. A single hour on the charger fills it back to the brim.",
+   "less_creative": "The battery continues working for a full day. It reaches a complete charge in roughly one hour.",
+   "best_scored_more": 0.66,
+   "best_scored_less": 0.775
+  },
+  {
+   "pair_id": "ADV07",
+   "anchor": "The garden was full of flowers in spring. Bees visited it often.",
+   "more_creative": "In spring the garden burst into bloom, a riot of color that seemed to arrive overnight. Bees came and went like a small, tireless workforce.",
+   "less_creative": "The garden had many flowers during spring. Bees came to it frequently throughout the season.",
+   "best_scored_more": 0.739,
+   "best_scored_less": 0.75
+  },
+  {
+   "pair_id": "ADV01",
+   "anchor": "The startup grew quickly in its first year. By December it had hired forty people.",
+   "more_creative": "The startup hit the ground running, and by December forty new faces had crowded into a space built for ten.",
+   "less_creative": "The startup expanded over its first year. By December it employed forty workers at the office.",
+   "best_scored_more": 0.758,
+   "best_scored_less": 0.759
+  },
+  {
+   "pair_id": "CR12",
+   "anchor": "Success in a long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit in advance also helps, since knowing when you'll see each other again makes the time apart pass faster.",
+   "more_creative": "A long-distance relationship lives or dies on trust and communication, right down to sharing the small, everyday things that would otherwise go unsaid. Penciling in your next visit helps too, since a date on the calendar makes the waiting shrink.",
+   "less_creative": "A long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit also helps, since knowing when you will see each other again makes the time apart go faster.",
+   "best_scored_more": 0.739,
+   "best_scored_less": 0.742
+  },
+  {
+   "pair_id": "CR14",
+   "anchor": "Jannik Sinner defeated seventh-seeded Novak Djokovic 6-4, 6-4, 6-4 in the Wimbledon semifinals, hitting 16 aces along the way. He finished the match with 40 winners to just 16 unforced errors, setting up a final against Alexander Zverev.",
+   "more_creative": "Jannik Sinner brushed past seventh-seeded Novak Djokovic 6-4, 6-4, 6-4 in the Wimbledon semifinal, firing 16 aces along the way. He closed out the match with 40 winners against just 16 unforced errors, booking a final date with Alexander Zverev.",
+   "less_creative": "Jannik Sinner beat seventh-seeded Novak Djokovic 6-4, 6-4, 6-4 in the Wimbledon semifinals, hitting 16 aces during the match. He finished with 40 winners and only 16 unforced errors, and will now play Alexander Zverev in the final.",
+   "best_scored_more": 0.694,
+   "best_scored_less": 0.804
+  },
+  {
+   "pair_id": "CR17",
+   "anchor": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in far worse shape than previously realized. Bleaching occurs when heat-stressed corals expel the symbiotic algae living in their tissues, the same algae that provide them with food and their vivid color.",
+   "more_creative": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in far shakier shape than anyone had realized. Bleaching sets in when heat-stressed corals evict the symbiotic algae living in their tissues, the very algae that feed them and paint them their vivid color.",
+   "less_creative": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in much worse condition than people thought. Bleaching happens when heat-stressed corals push out the symbiotic algae living in their tissues, the same algae that give them food and color.",
+   "best_scored_more": 0.616,
+   "best_scored_less": 0.764
+  }
+ ],
+ "n_new_scorers_wanted": 3,
+ "contract": "Write self-contained functions: def scorer(text, anchor, params) -> float in [0.0,1.0]. The namespace already provides: re, math, collections, string, statistics, unicodedata, and _clamp(x). NO import statements. Deterministic. Non-constant across texts. Embedded Python word lists/sets are allowed and encouraged. Return _clamp(...) of your expression. anchor is the original statement; text is the variant being scored.",
+ "instruction": "You are the mutation engine. Read the summary_stats (which scorers separate well vs at chance) and the pairs_the_best_scorer_fails. REASON about WHY the best scorer fails those pairs and what DIFFERENT signal could catch them, then write 3 NEW, diverse scorer functions that target the gap. Do not just re-tune the best scorer. Each must be genuinely different in what it measures."
+}
