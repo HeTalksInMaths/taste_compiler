@@ -1,11 +1,14 @@
 {
- "gen": 1,
+ "gen": 2,
  "used_adv": [
   "ADV06",
   "ADV07",
   "ADV01",
   "ADV05",
   "ADV12",
-  "ADV08"
+  "ADV08",
+  "ADV11",
+  "ADV03",
+  "ADV04"
  ]
 }

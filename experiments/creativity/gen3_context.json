@@ -1,0 +1,128 @@
+{
+ "goal": "Score how creative a 2-sentence text is, higher = more creative. A scorer is CORRECT on a pair when it gives more_creative a higher score than less_creative (same factual content, only freshness differs).",
+ "generation": 3,
+ "summary_stats": [
+  {
+   "scorer_id": "S_g2_llm01",
+   "lineage": "llm_gen2",
+   "acc_all": 0.9230769230769231,
+   "margin_all": 0.14588597782322565,
+   "acc_orig": 0.95,
+   "acc_adv": 0.8333333333333334
+  },
+  {
+   "scorer_id": "S3_antiformulaic",
+   "lineage": "initial",
+   "acc_all": 0.7307692307692307,
+   "margin_all": 0.019142763826189506,
+   "acc_orig": 0.8,
+   "acc_adv": 0.5
+  },
+  {
+   "scorer_id": "S_g1_llm03",
+   "lineage": "llm_gen1",
+   "acc_all": 0.6153846153846154,
+   "margin_all": 0.08202811870183235,
+   "acc_orig": 0.55,
+   "acc_adv": 0.8333333333333334
+  },
+  {
+   "scorer_id": "S_g2_llm02",
+   "lineage": "llm_gen2",
+   "acc_all": 0.5769230769230769,
+   "margin_all": 0.11455215407953673,
+   "acc_orig": 0.55,
+   "acc_adv": 0.6666666666666666
+  },
+  {
+   "scorer_id": "S_g1_llm01",
+   "lineage": "llm_gen1",
+   "acc_all": 0.38461538461538464,
+   "margin_all": 0.2887301437604068,
+   "acc_orig": 0.35,
+   "acc_adv": 0.5
+  },
+  {
+   "scorer_id": "S2_divergent_integration",
+   "lineage": "initial",
+   "acc_all": 0.38461538461538464,
+   "margin_all": -0.010335709506596171,
+   "acc_orig": 0.4,
+   "acc_adv": 0.3333333333333333
+  },
+  {
+   "scorer_id": "S5_residualized_combination",
+   "lineage": "initial",
+   "acc_all": 0.38461538461538464,
+   "margin_all": -0.022819151762064057,
+   "acc_orig": 0.4,
+   "acc_adv": 0.3333333333333333
+  },
+  {
+   "scorer_id": "S1_conjunctive",
+   "lineage": "initial",
+   "acc_all": 0.3076923076923077,
+   "margin_all": -0.03848657058073214,
+   "acc_orig": 0.3,
+   "acc_adv": 0.3333333333333333
+  },
+  {
+   "scorer_id": "S_g1_llm02",
+   "lineage": "llm_gen1",
+   "acc_all": 0.23076923076923078,
+   "margin_all": 0.10948717948717951,
+   "acc_orig": 0.1,
+   "acc_adv": 0.6666666666666666
+  },
+  {
+   "scorer_id": "S4_figurative_contrast",
+   "lineage": "initial",
+   "acc_all": 0.23076923076923078,
+   "margin_all": 0.00748468329608202,
+   "acc_orig": 0.25,
+   "acc_adv": 0.16666666666666666
+  }
+ ],
+ "best_scorer": {
+  "scorer_id": "S_g2_llm01",
+  "code": "GENERIC_VERBS = set(['is','are','was','were','be','been','being','am','do','does','did','doing','done','have','has','had','having','get','gets','got','getting','gotten','go','goes','went','gone','going','make','makes','made','making','take','takes','took','taken','taking','give','gives','gave','given','giving','put','puts','putting','say','says','said','saying','see','sees','saw','seen','seeing','come','comes','came','coming','want','wants','wanted','need','needs','needed','use','uses','used','using','show','shows','showed','shown','help','helps','helped','keep','keeps','kept','let','lets','letting','begin','begins','began','seem','seems','seemed','become','becomes','became','turn','turns','turned','move','moves','moved','play','plays','played','run','runs','ran','hold','holds','held','bring','brings','brought','happen','happens','happened','write','writes','wrote','call','calls','called','try','tries','tried','ask','asks','asked','feel','feels','felt','look','looks','looked','work','works','worked','finish','finishes','finished','defeat','defeats','defeated','beat','beats','beating','win','wins','won','grow','grows','grew','last','lasts','lasted','charge','charges','charged','expand','expands','expanded','continue','continues','continued','reach','reaches','reached','employ','employs','employed','set','sets','setting'])\nVIVID_VERBS = set(['burst','bursts','bursting','surge','surges','surged','plunge','plunges','plunged','erupt','erupts','erupted','blaze','blazes','blazed','roar','roars','roared','whisper','whispers','whispered','shatter','shatters','shattered','ignite','ignites','ignited','unravel','unravels','unraveled','ripple','ripples','rippled','gleam','gleams','gleamed','shimmer','shimmers','shimmered','flicker','flickers','flickered','blossom','blossoms','blossomed','wilt','wilts','wilted','drain','drains','drained','flood','floods','flooded','storm','storms','stormed','thunder','thunders','thundered','glide','glides','glided','swoop','swoops','swooped','plummet','plummets','plummeted','sprint','sprints','sprinted','dash','dashes','dashed','hurl','hurls','hurled','carve','carves','carved','forge','forges','forged','weave','weaves','wove','spark','sparks','sparked','crowd','crowds','crowded','evict','evicts','evicted','paint','paints','painted','brush','brushes','brushed','fire','fires','fired','book','books','booked','pencil','pencils','penciled','penciling','shrink','shrinks','shrank','flatline','flatlines','flatlined','tumble','tumbles','tumbled','dart','darts','darted','sway','sways','swayed','drift','drifts','drifted','hum','hums','hummed','buzz','buzzes','buzzed','hiss','hisses','hissed','crackle','crackles','crackled','blast','blasts','blasted','howl','howls','howled','wail','wails','wailed','gallop','gallops','galloped','vault','vaults','vaulted','leap','leaps','leapt','dive','dives','dived','dodge','dodges','dodged'])\n\ndef _v1toks(s):\n    return re.findall(r\"[a-zA-Z']+\", (s or '').lower())\n\ndef _v1gd(toks):\n    if not toks:\n        return 0.0\n    return sum(1 for t in toks if t in GENERIC_VERBS) / len(toks)\n\ndef _v1vd(toks):\n    if not toks:\n        return 0.0\n    return sum(1 for t in toks if t in VIVID_VERBS) / len(toks)\n\ndef _v1avglen(toks):\n    content = [t for t in toks if len(t) > 3 and t not in GENERIC_VERBS]\n    if not content:\n        return 0.0\n    return sum(len(t) for t in content) / len(content)\n\ndef scorer(text, anchor, params):\n    toks_t = _v1toks(text)\n    if len(toks_t) < 4:\n        return 0.0\n    toks_a = _v1toks(anchor) or toks_t\n    gd_t = _v1gd(toks_t)\n    gd_a = _v1gd(toks_a)\n    vd_t = _v1vd(toks_t)\n    len_t = _v1avglen(toks_t)\n    len_a = _v1avglen(toks_a)\n    gd_component = 0.5 + min(0.5, max(-0.5, (gd_a - gd_t) * 4.0))\n    vivid_component = min(1.0, vd_t * 12.0)\n    length_component = 0.5 + min(0.5, max(-0.5, (len_t - len_a) * 0.15))\n    raw = 0.45 * gd_component + 0.30 * vivid_component + 0.25 * length_component\n    return _clamp(raw)",
+  "acc_all": 0.9230769230769231
+ },
+ "pairs_the_best_scorer_fails": [
+  {
+   "pair_id": "ADV11",
+   "anchor": "The book explains economics simply. Beginners find it easy to follow.",
+   "more_creative": "The book breaks it down without dumbing it down, turning supply curves into something you can almost hold. Beginners slip through it like water finding the low ground.",
+   "less_creative": "The book describes economic ideas in a plain way. People new to the subject can understand it without difficulty.",
+   "best_scored_more": 0.401,
+   "best_scored_less": 0.571
+  },
+  {
+   "pair_id": "ADV03",
+   "anchor": "The city gets very cold in winter. Many people stay indoors during January.",
+   "more_creative": "The city turns bone-chilling in winter, the kind of cold that empties the streets. Come January, most people burrow indoors and wait it out.",
+   "less_creative": "The city reaches low temperatures in winter. During January a large number of residents remain inside their homes.",
+   "best_scored_more": 0.354,
+   "best_scored_less": 0.434
+  },
+  {
+   "pair_id": "ADV12",
+   "anchor": "The trail was steep and rocky. We reached the summit by noon.",
+   "more_creative": "The trail went straight up and mostly rock, and no pain, no gain, the mountain seemed to insist. We stood on the summit by noon, legs humming, the valley small below.",
+   "less_creative": "The trail had a steep grade and many rocks. We arrived at the top before midday.",
+   "best_scored_more": 0.55,
+   "best_scored_less": 0.552
+  },
+  {
+   "pair_id": "CR16",
+   "anchor": "A study surveying 442 adults found that people who preferred later sleep schedules reported higher levels of loneliness and anxiety. Separately, a large observational study found that irregular sleep-wake patterns are linked to a higher risk of overall mortality, including deaths from cancer and cardiovascular disease.",
+   "more_creative": "A study of 442 adults found that night owls tended to report more loneliness and anxiety than people who turned in earlier. Separately, a large observational study tied irregular sleep-wake patterns to a higher risk of dying overall, including deaths from cancer and heart disease.",
+   "less_creative": "A study of 442 adults found that people who preferred later sleep schedules reported more loneliness and anxiety. A large observational study also found that irregular sleep-wake patterns are linked to a higher risk of overall death, including from cancer and heart disease.",
+   "best_scored_more": 0.321,
+   "best_scored_less": 0.323
+  }
+ ],
+ "n_new_scorers_wanted": 3,
+ "contract": "Write self-contained functions: def scorer(text, anchor, params) -> float in [0.0,1.0]. The namespace already provides: re, math, collections, string, statistics, unicodedata, and _clamp(x). NO import statements. Deterministic. Non-constant across texts. Embedded Python word lists/sets are allowed and encouraged. Return _clamp(...) of your expression. anchor is the original statement; text is the variant being scored.",
+ "instruction": "You are the mutation engine. Read the summary_stats (which scorers separate well vs at chance) and the pairs_the_best_scorer_fails. REASON about WHY the best scorer fails those pairs and what DIFFERENT signal could catch them, then write 3 NEW, diverse scorer functions that target the gap. Do not just re-tune the best scorer. Each must be genuinely different in what it measures."
+}
