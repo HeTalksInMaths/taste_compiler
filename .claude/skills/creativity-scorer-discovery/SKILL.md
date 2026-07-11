@@ -143,30 +143,31 @@ The purpose is diagnostic, not to defeat the scorer for its own sake: if the
 winner collapses to ≤ chance here while human judgment still ranks
 more_creative > less_creative, the scorer was measuring cliché, not creativity.
 
-## Phase 7 — Merge best separators + test on the adversarial heldout
+## Phase 7 — Evolve the scorers (mutate/merge) on the growing adversarial set
 
-Expose the atomic sub-signals inside every proposed scorer as standalone
-feature probes (the merge alphabet). Then:
+Keep the moving parts minimal — the ONLY building blocks are the proposed
+scorers themselves. Do NOT decompose them into sub-features (that just adds
+variables you can't diagnose).
 
-1. **Scorer-level merge**: ensemble the best separators (mean of normalized
-   outputs, and majority vote); test on the adversarial set as a decoupled heldout.
-2. **Feature-level diagnostic**: report each atomic feature's more>less accuracy
-   on BOTH the original and the adversarial set — this reveals which raw signal,
-   if any, tracks creativity once the winning cue is neutralized.
-3. **Constrained merge search**: low-capacity, sign-fixed-by-theory combination
-   of features (e.g. subset selection with equal weights over z-scored features),
-   selected on the adversarial set, reported with leave-one-out cross-validation
-   so a tiny adversarial set cannot manufacture an overfit "win."
+- A **genome** is a weight vector over the N proposed scorers; a blended scorer
+  scores a text as the weighted average of the base scorer outputs.
+- **mutation** = jitter the weights; **merge** = average two genomes. The initial
+  population is the N pure scorers (unit vectors) plus a few random blends.
+- Each generation: rank the population by separation (more>less accuracy) on the
+  current eval set, keep elites, breed mutations/merges, then **grow the eval
+  set** by adding the adversarial pairs the current best genome separates WORST
+  (lowest margin) — stumping the current best.
 
-Report honestly: does any merge beat the collapsed winner on the adversarial
-heldout while holding up on the original? If yes, name the surviving signal and
-what graph node it came from. If no, state plainly that stdlib creativity
-scoring here reduces to cliché-detection, and that the surviving path (semantic
-distance / DSI) needs embeddings the runner does not have — i.e. the honest
-next step is real embeddings, not more feature engineering.
+Track per generation: eval-set size, the best genome and its separation (overall,
+and split into original vs adversarial-added), and the population mean. Report
+honestly whether any mutation/merge beats the single best starting scorer, and
+whether the growing adversarial set exposes a gap the scorer toolkit cannot
+close. If the best genome stays a single pure scorer, that is the finding: the
+other scorers carry no complementary signal, and closing the adversarial gap
+needs a NEW signal (embeddings), not reweighting the existing ones.
 
 ## Scope discipline
 
-This update ends at the merged-heldout report. Still OUT of scope: a full
-multi-generation genome evolution, embedding-backed probes, and any human-rating
-validation of the eval pairs (all flagged as future work in the report).
+This update ends at the evolution trajectory report. Still OUT of scope:
+embedding-backed scorers, and human-rating validation of the eval pairs (both
+flagged as future work).
