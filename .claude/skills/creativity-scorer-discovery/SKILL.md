@@ -143,28 +143,35 @@ The purpose is diagnostic, not to defeat the scorer for its own sake: if the
 winner collapses to ≤ chance here while human judgment still ranks
 more_creative > less_creative, the scorer was measuring cliché, not creativity.
 
-## Phase 7 — Evolve the scorers (mutate/merge) on the growing adversarial set
+## Phase 7 — Evolve the scorers as REAL NLP code (LLM coding-agent mutation)
 
-Keep the moving parts minimal — the ONLY building blocks are the proposed
-scorers themselves. Do NOT decompose them into sub-features (that just adds
-variables you can't diagnose).
+The mutation operator is an LLM CODING AGENT that writes/amends real NLP metric
+implementations — NOT weight blends, and NOT hand-typed word lists with eyeballed
+constants. Two rules make the result trustworthy:
 
-- A **genome** is a weight vector over the N proposed scorers; a blended scorer
-  scores a text as the weighted average of the base scorer outputs.
-- **mutation** = jitter the weights; **merge** = average two genomes. The initial
-  population is the N pure scorers (unit vectors) plus a few random blends.
-- Each generation: rank the population by separation (more>less accuracy) on the
-  current eval set, keep elites, breed mutations/merges, then **grow the eval
-  set** by adding the adversarial pairs the current best genome separates WORST
-  (lowest margin) — stumping the current best.
+1. **Real data / real algorithms, no fitted hyperparameters.** We have no
+   training set, so a scorer must be a single principled quantity computed from
+   real reference data (e.g. `wordfreq` corpus frequencies → surprisal/rarity;
+   sklearn TF-IDF → divergence; MTLD → lexical diversity) or a documented
+   parameter-free algorithm. If sub-signals are combined, standardize them
+   (z-score/rank within the pair) and combine with EQUAL weight — a uniform prior
+   is honest when nothing is trained. Reject scorers whose accuracy rides on
+   magic weights or a vocabulary list lifted from the visible pairs (check for
+   test-set leakage explicitly).
+2. **Amend known NLP, with reasoning.** Each generation the coding agent reads
+   the measurement stats and the pairs the best metric fails, REASONS about the
+   mechanism and confounds (e.g. context-free surprisal *is* the frequency
+   confound), then writes new real metrics that target a signal the current best
+   cannot capture. The prompt must state exactly which libraries/data are
+   reachable in the environment (downloads are often proxy-blocked) so the agent
+   builds on what actually loads, not what it wishes existed.
 
-Track per generation: eval-set size, the best genome and its separation (overall,
-and split into original vs adversarial-added), and the population mean. Report
-honestly whether any mutation/merge beats the single best starting scorer, and
-whether the growing adversarial set exposes a gap the scorer toolkit cannot
-close. If the best genome stays a single pure scorer, that is the finding: the
-other scorers carry no complementary signal, and closing the adversarial gap
-needs a NEW signal (embeddings), not reweighting the existing ones.
+Selection is by parameter-free separation (more>less accuracy); grow the
+adversarial set by the pairs the current best metric fails. Report honestly which
+real metric wins, and — critically — whether the winning signal is the *construct*
+(creativity) or a reachable proxy (e.g. lexical rarity). If every reachable real
+metric collapses to one axis, name the blocked resource (embeddings / concreteness
+norms / a parser) that the stronger literature signal would require.
 
 ## Scope discipline
 
