@@ -1,5 +1,5 @@
 {
- "gen": 2,
+ "gen": 3,
  "used_adv": [
   "ADV06",
   "ADV07",
@@ -9,6 +9,9 @@
   "ADV08",
   "ADV11",
   "ADV03",
-  "ADV04"
+  "ADV04",
+  "ADV09",
+  "ADV10",
+  "ADV02"
  ]
 }
