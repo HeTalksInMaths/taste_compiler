@@ -37,5 +37,59 @@
     "acc_all": 0.25
    }
   ]
+ },
+ {
+  "gen": 1,
+  "n_pairs": 23,
+  "n_orig": 20,
+  "n_adv": 3,
+  "n_scorers": 8,
+  "best_id": "S3_antiformulaic",
+  "best_lineage": "initial",
+  "best_acc_all": 0.696,
+  "best_acc_orig": 0.8,
+  "best_acc_adv": 0.0,
+  "all_scores": [
+   {
+    "id": "S3_antiformulaic",
+    "lineage": "initial",
+    "acc_all": 0.696
+   },
+   {
+    "id": "S_g1_llm03",
+    "lineage": "llm_gen1",
+    "acc_all": 0.609
+   },
+   {
+    "id": "S_g1_llm01",
+    "lineage": "llm_gen1",
+    "acc_all": 0.435
+   },
+   {
+    "id": "S5_residualized_combination",
+    "lineage": "initial",
+    "acc_all": 0.391
+   },
+   {
+    "id": "S2_divergent_integration",
+    "lineage": "initial",
+    "acc_all": 0.348
+   },
+   {
+    "id": "S1_conjunctive",
+    "lineage": "initial",
+    "acc_all": 0.304
+   },
+   {
+    "id": "S_g1_llm02",
+    "lineage": "llm_gen1",
+    "acc_all": 0.217
+   },
+   {
+    "id": "S4_figurative_contrast",
+    "lineage": "initial",
+    "acc_all": 0.217
+   }
+  ]
  }
 ]
