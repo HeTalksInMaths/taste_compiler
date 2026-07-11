@@ -122,9 +122,51 @@ Save `experiments/creativity/separation_results.json` and report the table
 plus an honest read: which hypothesis separated best, which failed, whether
 ties dominate (a probe firing on nothing is sparse, not anti-predictive).
 
+## Phase 6 — Adversarial pair growth (Opus, decouple the winning signal)
+
+After phase 5 identifies the best-separating scorer, the orchestrator (NOT a
+subagent — this is the reasoning-heavy step) grows the eval set with pairs
+designed to STUMP that scorer by decoupling its signal from true creativity.
+
+The design rule: find what the winner actually keys on, then build pairs where
+that cue points the WRONG way. For a cliché/formulaicity winner (S3), that means:
+- **creative-keeps-cliché**: a genuinely fresher, more vivid rewrite that
+  nonetheless contains a stock phrase or common collocation (winner penalizes it), and
+- **flat-avoids-cliché**: a duller, more generic rewrite that scrupulously uses
+  no idioms (winner sees nothing to penalize).
+Same factual content across all three versions, 2 sentences, subtle. Tag each
+with its trap type. Save `experiments/creativity/adversarial_pairs.json` with a
+`design_note` per pair stating which cue is inverted and why the more_creative
+version is still the more creative one.
+
+The purpose is diagnostic, not to defeat the scorer for its own sake: if the
+winner collapses to ≤ chance here while human judgment still ranks
+more_creative > less_creative, the scorer was measuring cliché, not creativity.
+
+## Phase 7 — Merge best separators + test on the adversarial heldout
+
+Expose the atomic sub-signals inside every proposed scorer as standalone
+feature probes (the merge alphabet). Then:
+
+1. **Scorer-level merge**: ensemble the best separators (mean of normalized
+   outputs, and majority vote); test on the adversarial set as a decoupled heldout.
+2. **Feature-level diagnostic**: report each atomic feature's more>less accuracy
+   on BOTH the original and the adversarial set — this reveals which raw signal,
+   if any, tracks creativity once the winning cue is neutralized.
+3. **Constrained merge search**: low-capacity, sign-fixed-by-theory combination
+   of features (e.g. subset selection with equal weights over z-scored features),
+   selected on the adversarial set, reported with leave-one-out cross-validation
+   so a tiny adversarial set cannot manufacture an overfit "win."
+
+Report honestly: does any merge beat the collapsed winner on the adversarial
+heldout while holding up on the original? If yes, name the surviving signal and
+what graph node it came from. If no, state plainly that stdlib creativity
+scoring here reduces to cliché-detection, and that the surviving path (semantic
+distance / DSI) needs embeddings the runner does not have — i.e. the honest
+next step is real embeddings, not more feature engineering.
+
 ## Scope discipline
 
-This skill ends at the separation report. Explicitly OUT of scope (a future
-update to this skill, only after these results are reviewed): merging/evolving
-the best-separating scorers, and adversarially growing the eval set with
-pairs that stump the best scorer.
+This update ends at the merged-heldout report. Still OUT of scope: a full
+multi-generation genome evolution, embedding-backed probes, and any human-rating
+validation of the eval pairs (all flagged as future work in the report).
