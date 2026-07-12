@@ -1,0 +1,438 @@
+{
+ "goal": "Score creativity of a 2-sentence rewrite vs its anchor. scorer(text, anchor) -> float in [0,1]. Correct on a pair when score(more_creative) > score(less_creative).",
+ "fitness": "SEP = mean(score over positives) - mean(score over negatives) on train; both distributions reported; selection (SEP, acc, -sd_margin).",
+ "contract": "Complete importable Python module exposing METRICS={name:fn}. Deterministic, values ALWAYS in [0,1] via principled squashing calibrated on REFERENCE stats (e.g. wordfreq lexicon), never on eval pairs. Allowed imports: wordfreq, numpy, scipy, sklearn, re, math, collections, statistics. Downloads BLOCKED. NO hand-typed content word lists (max 40 content tokens in literals; >=3 rare train-text tokens = auto-reject).",
+ "novelty_criteria": "Accepted as NOVEL only if: (1) |pearson r| of per-pair margin vector vs EVERY incumbent < 0.6; (2) it measures an uncovered/weakly-covered causal node with a real named mechanism; (3) leakage-clean.",
+ "causal_graph": {
+  "nodes": [
+   {
+    "id": "judged_creativity",
+    "definition": "Human judgment of how creative a text is (Consensual Assessment Technique / Likert)."
+   },
+   {
+    "id": "novelty",
+    "definition": "Originality / statistical rarity of the idea or expression relative to a reference population."
+   },
+   {
+    "id": "appropriateness",
+    "definition": "Effectiveness / fit: coherent, relevant, satisfying task constraints. Second necessary criterion."
+   },
+   {
+    "id": "semantic_distance",
+    "definition": "Embedding-space distance between concepts co-present in the text (SemDis; DSI = mean pairwise distance over all words)."
+   },
+   {
+    "id": "surprisal",
+    "definition": "Negative log probability of words given context under a language model; inverse of contextual predictability."
+   },
+   {
+    "id": "metaphor_novelty",
+    "definition": "Freshness of figurative expressions vs conventional/dead metaphor; aptness is the paired appropriateness condition."
+   },
+   {
+    "id": "cliche_formulaicity",
+    "definition": "Proportion of text built from high-frequency collocations, formulaic sequences, stock phrases."
+   },
+   {
+    "id": "lexical_rarity",
+    "definition": "Use of low-corpus-frequency words relative to norms."
+   },
+   {
+    "id": "concreteness_imageability",
+    "definition": "Tangibility / mental-image evocation of the words used (norm-based)."
+   },
+   {
+    "id": "elaboration_detail",
+    "definition": "Amount of descriptive development added to the core idea (TTCT elaboration)."
+   },
+   {
+    "id": "coherence",
+    "definition": "Internal consistency and topical unity; global coherence matters more than local transitions."
+   },
+   {
+    "id": "lexical_diversity_ttr",
+    "definition": "Type-token ratio. Weak and possibly INVERSE relation to judged creative quality; unreliable on 2-sentence texts."
+   },
+   {
+    "id": "remote_association",
+    "definition": "Capacity to connect distant concepts (Mednick flat associative hierarchies); observable footprint IS semantic_distance."
+   },
+   {
+    "id": "word_frequency_confound",
+    "definition": "Word frequency confounds surprisal-based novelty estimates: rarity inflates surprisal without conceptual novelty."
+   }
+  ],
+  "edges": [
+   {
+    "from": "novelty",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "One of two necessary criteria in the standard definition.",
+    "source": "Runco & Jaeger 2012"
+   },
+   {
+    "from": "novelty",
+    "to": "judged_creativity",
+    "sign": "inverted_U",
+    "confidence": "medium",
+    "evidence": "Wundt curve: preference and judged creativity peak at moderate novelty; maximal surprise reads as bizarre.",
+    "source": "Berlyne; Frontiers Hum Neurosci 2016"
+   },
+   {
+    "from": "appropriateness",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Novelty without appropriateness is judged bizarre, not creative (random condition: high novelty, low creativity).",
+    "source": "Rastelli et al. 2022 PNAS Nexus"
+   },
+   {
+    "from": "novelty*appropriateness",
+    "to": "judged_creativity",
+    "sign": "conjunctive",
+    "confidence": "high",
+    "evidence": "Creativity requires BOTH; appropriateness moderates the effect of novelty (adding appropriateness to unoriginal ideas can even lower ratings).",
+    "source": "Diedrich et al.; Rastelli et al. 2022"
+   },
+   {
+    "from": "semantic_distance",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "SemDis distances predict human originality ratings; DAT pairwise distance correlates with creativity batteries.",
+    "source": "Beaty & Johnson 2021; Olson et al. 2021"
+   },
+   {
+    "from": "semantic_distance",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "BERT-based DSI explains up to 72% of variance in human creativity ratings of short narratives.",
+    "source": "Johnson et al. 2022"
+   },
+   {
+    "from": "surprisal",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "medium",
+    "evidence": "LM surprisal moderately correlates with human novelty judgments of metaphors.",
+    "source": "surprisal/metaphor-novelty arXiv study"
+   },
+   {
+    "from": "word_frequency_confound",
+    "to": "surprisal",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Frequency is a stronger, partly independent predictor: surprisal partly re-encodes lexical rarity.",
+    "source": "frequency-confound arXiv study"
+   },
+   {
+    "from": "cliche_formulaicity",
+    "to": "novelty",
+    "sign": "-",
+    "confidence": "high",
+    "evidence": "Formulaic sequences are by definition high-frequency conventional co-occurrences.",
+    "source": "Gablasova et al. 2017"
+   },
+   {
+    "from": "cliche_formulaicity",
+    "to": "judged_creativity",
+    "sign": "-",
+    "confidence": "medium",
+    "evidence": "High predictability from clich\u00e9d constructions associates with lower quality/creativity scores.",
+    "source": "arXiv 2602.16162 cross-reference"
+   },
+   {
+    "from": "metaphor_novelty",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Novel metaphors require online meaning construction (N400/LPC evidence) \u2014 the signature of new conceptual combination.",
+    "source": "novel-metaphor ERP literature"
+   },
+   {
+    "from": "metaphor_novelty",
+    "to": "judged_creativity",
+    "sign": "+ (requires aptness)",
+    "confidence": "medium",
+    "evidence": "Aptness, not novelty alone, predicts positive quality ratings \u2014 mirrors novelty\u00d7appropriateness.",
+    "source": "PMC4251318; Frontiers 2018"
+   },
+   {
+    "from": "lexical_rarity",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "medium",
+    "evidence": "Rarer words associate with more original responses/higher-scored essays.",
+    "source": "cue-frequency literature"
+   },
+   {
+    "from": "lexical_rarity",
+    "to": "judged_creativity",
+    "sign": "weak/0",
+    "confidence": "medium",
+    "evidence": "Rarity signals uncommon phrasing, not conceptual novelty \u2014 unreliable alone.",
+    "source": "arXiv 2508.05470"
+   },
+   {
+    "from": "concreteness_imageability",
+    "to": "judged_creativity",
+    "sign": "mixed",
+    "confidence": "low",
+    "evidence": "Some studies favor abstract sophistication, others vivid imagery; direction context-dependent.",
+    "source": "imageability/writing-quality search findings"
+   },
+   {
+    "from": "elaboration_detail",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "medium",
+    "evidence": "TTCT scores elaboration; added detail raises expert quality judgments.",
+    "source": "TTCT; Olinghouse"
+   },
+   {
+    "from": "coherence",
+    "to": "appropriateness",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Incoherent text fails the appropriateness criterion regardless of novelty.",
+    "source": "Rastelli et al. 2022 (derived); TAACO quality studies"
+   },
+   {
+    "from": "remote_association",
+    "to": "semantic_distance",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Flat associative hierarchies produce remote associates; the textual footprint is distant concepts co-occurring.",
+    "source": "Mednick 1962; RAT review 2020"
+   },
+   {
+    "from": "lexical_diversity_ttr",
+    "to": "judged_creativity",
+    "sign": "- (weak)",
+    "confidence": "low",
+    "evidence": "One study found inverse TTR-creativity correlation; treat as caution against rewarding vocabulary spread per se.",
+    "source": "TTR search finding"
+   }
+  ],
+  "load_bearing_paths": [
+   "semantic_distance -> novelty -> judged_creativity (strongest measured path; DSI explains up to 72% variance)",
+   "cliche_formulaicity -> novelty(-) AND predictability -> judged_creativity(-) (the anti-creativity signal)",
+   "coherence -> appropriateness -> judged_creativity (the constraint side: novelty only counts when this holds)",
+   "novelty x appropriateness -> judged_creativity is CONJUNCTIVE: scorers should combine the two sides multiplicatively or with a gate, not additively",
+   "surprisal/lexical_rarity -> novelty are CONFOUNDED with each other via word frequency: a scorer should not double-count rarity and surprise as independent evidence"
+  ]
+ },
+ "node_coverage": {
+  "covered_by_population": [
+   "appropriateness(inverted-U)",
+   "coherence",
+   "elaboration_detail",
+   "lexical_rarity/surprisal",
+   "novelty*appropriateness",
+   "semantic_distance(collocational)"
+  ],
+  "uncovered_text_observable": [
+   "metaphor_novelty",
+   "cliche_formulaicity",
+   "concreteness_imageability",
+   "lexical_diversity_ttr",
+   "word_frequency_confound"
+  ]
+ },
+ "population_stats": [
+  {
+   "id": "S_g2_03_skeleton_preserved_inser",
+   "gen": 2,
+   "causal_node": "coherence",
+   "mechanism": "LCS (Wagner & Fischer 1974) skeleton preservation x insertion-only surprisal gate",
+   "SEP": 0.129,
+   "acc": 0.73,
+   "mean_pos": 0.298,
+   "sd_pos": 0.162,
+   "mean_neg": 0.169,
+   "sd_neg": 0.13,
+   "effect_d": 0.879,
+   "worst_margin": -0.53,
+   "sd_margin": 0.23,
+   "heldout_SEP": 0.161,
+   "core_SEP": 0.202
+  },
+  {
+   "id": "appropriateness_gate",
+   "gen": 0,
+   "causal_node": "appropriateness(inverted-U)",
+   "mechanism": "Wundt-curve overshoot decay",
+   "SEP": 0.028,
+   "acc": 0.081,
+   "mean_pos": 1.0,
+   "sd_pos": 0.0,
+   "mean_neg": 0.972,
+   "sd_neg": 0.119,
+   "effect_d": 0.329,
+   "worst_margin": 0.0,
+   "sd_margin": 0.119,
+   "heldout_SEP": 0.053,
+   "core_SEP": 0.0
+  },
+  {
+   "id": "conjunctive_creativity",
+   "gen": 0,
+   "causal_node": "novelty*appropriateness",
+   "mechanism": "conjunctive product of the above",
+   "SEP": 0.026,
+   "acc": 0.676,
+   "mean_pos": 0.767,
+   "sd_pos": 0.098,
+   "mean_neg": 0.741,
+   "sd_neg": 0.128,
+   "effect_d": 0.225,
+   "worst_margin": -0.367,
+   "sd_margin": 0.169,
+   "heldout_SEP": 0.044,
+   "core_SEP": 0.131
+  },
+  {
+   "id": "combinational_novelty",
+   "gen": 0,
+   "causal_node": "semantic_distance(collocational)",
+   "mechanism": "word n-gram TF-IDF divergence from anchor",
+   "SEP": 0.014,
+   "acc": 0.622,
+   "mean_pos": 0.825,
+   "sd_pos": 0.19,
+   "mean_neg": 0.811,
+   "sd_neg": 0.181,
+   "effect_d": 0.076,
+   "worst_margin": -0.682,
+   "sd_margin": 0.267,
+   "heldout_SEP": -0.002,
+   "core_SEP": 0.212
+  },
+  {
+   "id": "S_g1_02_syntactic_elaboration_de",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Hunt 1965 T-unit subordination; Ortega 2003 complexity indices",
+   "SEP": 0.011,
+   "acc": 0.459,
+   "mean_pos": 0.5,
+   "sd_pos": 0.095,
+   "mean_neg": 0.49,
+   "sd_neg": 0.11,
+   "effect_d": 0.103,
+   "worst_margin": -0.254,
+   "sd_margin": 0.112,
+   "heldout_SEP": 0.0,
+   "core_SEP": -0.003
+  },
+  {
+   "id": "lex_rarity_norm",
+   "gen": 0,
+   "causal_node": "lexical_rarity/surprisal",
+   "mechanism": "token surprisal vs lexicon reference (logistic)",
+   "SEP": -0.014,
+   "acc": 0.595,
+   "mean_pos": 0.708,
+   "sd_pos": 0.055,
+   "mean_neg": 0.722,
+   "sd_neg": 0.077,
+   "effect_d": -0.21,
+   "worst_margin": -0.222,
+   "sd_margin": 0.084,
+   "heldout_SEP": -0.007,
+   "core_SEP": 0.05
+  }
+ ],
+ "margin_correlations": {
+  "S_g2_03_skeleton_preserved_inser|appropriateness_gate": 0.17,
+  "S_g2_03_skeleton_preserved_inser|conjunctive_creativity": -0.39,
+  "S_g2_03_skeleton_preserved_inser|combinational_novelty": -0.59,
+  "S_g2_03_skeleton_preserved_inser|S_g1_02_syntactic_elaboration_de": 0.35,
+  "S_g2_03_skeleton_preserved_inser|lex_rarity_norm": -0.14,
+  "appropriateness_gate|conjunctive_creativity": 0.43,
+  "appropriateness_gate|combinational_novelty": -0.11,
+  "appropriateness_gate|S_g1_02_syntactic_elaboration_de": 0.25,
+  "appropriateness_gate|lex_rarity_norm": -0.52,
+  "conjunctive_creativity|combinational_novelty": 0.83,
+  "conjunctive_creativity|S_g1_02_syntactic_elaboration_de": -0.11,
+  "conjunctive_creativity|lex_rarity_norm": 0.26,
+  "combinational_novelty|S_g1_02_syntactic_elaboration_de": -0.2,
+  "combinational_novelty|lex_rarity_norm": 0.45,
+  "S_g1_02_syntactic_elaboration_de|lex_rarity_norm": -0.47
+ },
+ "champion": {
+  "id": "S_g2_03_skeleton_preserved_inser",
+  "code": "\"\"\"skeleton_preserved_insertion_novelty \u2014 coherence via preserved content-word\norder, gated by the novelty of only the inserted material.\n\nMechanism: coherence approximated as skeletal continuity \u2014 the LCS (Wagner &\nFischer 1974) ratio of the anchor's CONTENT-word sequence surviving in order in\nthe rewrite, after stripping closed grammatical classes (Quirk et al. 1985\nstyle inventory: pronouns, determiners, auxiliaries, conjunctions,\nprepositions, particles \u2014 not content words). Minimal apt edits keep the\nskeleton (ratio near 1); heavy relexicalization breaks content-word order.\nPreservation alone rewards doing nothing, so it is multiplied by a logistic\ngate on the mean surprisal of ONLY the unmatched (new) content words vs the\nwordfreq top-5000 reference mean: \"novelty of what is new, given you kept what\nworked\" \u2014 conjunctive, but from different primitives than the incumbent\nnovelty*appropriateness product.\n\"\"\"\n\nimport math\nimport re\nimport statistics\n\nfrom wordfreq import top_n_list, word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\n\n# Closed grammatical classes only (Quirk et al. 1985 inventory style).\n_PRONOUNS = frozenset(\n    \"i me my mine myself you your yours yourself yourselves he him his himself she her hers \"\n    \"herself it its itself we us our ours ourselves they them their theirs themselves this \"\n    \"that these those who whom whose which what someone something everyone everything nobody \"\n    \"nothing anybody anything anyone none one ones\".split()\n)\n_DETERMINERS = frozenset(\"a an the some any each every no all both either neither several\".split())\n_AUXILIARIES = frozenset(\n    \"be am is are was were been being have has had having do does did doing will would shall \"\n    \"should can could may might must ought\".split()\n)\n_CONJUNCTIONS = frozenset(\n    \"and but or nor for yet so although though because since unless while whereas if when \"\n    \"whenever before after until than as\".split()\n)\n_PREPOSITIONS = frozenset(\n    \"aboard about above across after against along amid among around at before behind below \"\n    \"beneath beside besides between beyond but by concerning despite down during except for \"\n    \"from in inside into like near of off on onto out outside over past since through \"\n    \"throughout till to toward towards under underneath until unto up upon with within without\"\n    .split()\n)\n_PARTICLES = frozenset(\n    \"not to there here very too also just only even quite rather more most less least own\".split()\n)\n\n_FUNCTION = _PRONOUNS | _DETERMINERS | _AUXILIARIES | _CONJUNCTIONS | _PREPOSITIONS | _PARTICLES\n\n\ndef _tokens(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _content_tokens(s):\n    return [t for t in _tokens(s) if t not in _FUNCTION]\n\n\ndef _surprisal(tok):\n    p = word_frequency(tok, \"en\")\n    if p <= 0:\n        p = 1e-9\n    return -math.log2(p)\n\n\ndef _reference_stats():\n    words = [w for w in top_n_list(\"en\", 5000) if w.isalpha()]\n    if not words:\n        return 10.0, 2.0\n    vals = [_surprisal(w) for w in words]\n    return sum(vals) / len(vals), (statistics.pstdev(vals) or 1.0)\n\n\n_REF_MEAN, _REF_STD = _reference_stats()\n_GATE_SPREAD = max(_REF_STD, 1e-3)\n\n\ndef _lcs_matched_b_indices(a, b):\n    n, m = len(a), len(b)\n    dp = [[0] * (m + 1) for _ in range(n + 1)]\n    for i in range(1, n + 1):\n        ai = a[i - 1]\n        row, prow = dp[i], dp[i - 1]\n        for j in range(1, m + 1):\n            if ai == b[j - 1]:\n                row[j] = prow[j - 1] + 1\n            else:\n                row[j] = row[j - 1] if row[j - 1] >= prow[j] else prow[j]\n    matched = set()\n    i, j = n, m\n    while i > 0 and j > 0:\n        if a[i - 1] == b[j - 1]:\n            matched.add(j - 1)\n            i -= 1\n            j -= 1\n        elif dp[i - 1][j] >= dp[i][j - 1]:\n            i -= 1\n        else:\n            j -= 1\n    return dp[n][m], matched\n\n\ndef skeleton_preserved_insertion_novelty(text, anchor):\n    if not text or not anchor:\n        return 0.05\n    a_c = _content_tokens(anchor)\n    b_c = _content_tokens(text)\n    if not a_c or not b_c:\n        return 0.05\n\n    lcs_len, matched_b = _lcs_matched_b_indices(a_c, b_c)\n    preservation = lcs_len / len(a_c)\n\n    novel = [b_c[j] for j in range(len(b_c)) if j not in matched_b]\n    if not novel:\n        return 0.0\n\n    mean_surp = sum(_surprisal(t) for t in novel) / len(novel)\n    z = (mean_surp - _REF_MEAN) / _GATE_SPREAD\n    gate = 1.0 / (1.0 + math.exp(-z))\n\n    score = preservation * gate\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\n    \"skeleton_preserved_insertion_novelty\": skeleton_preserved_insertion_novelty,\n}\n",
+  "metric_key": "skeleton_preserved_insertion_novelty",
+  "train_failures": [
+   {
+    "pair_id": "CR04",
+    "anchor": "For all work-from-home distractions, furry or not, Bose Headphones 700 give you powerful noise cancellation to help turn anywhere into the perfect place to get work done. Its hybrid adaptive ANC technology filters out background noise based on the environment, from busy offices to wind or traffic outdoors.",
+    "more_creative": "For every work-from-home distraction, furry or not, Bose Headphones 700 wrap you in quiet enough to turn any corner of the house into a real office. Its hybrid adaptive ANC reads the room and dials out whatever's competing for your ears, from a buzzing office to traffic outside.",
+    "less_creative": "For all work-from-home distractions, furry or not, Bose Headphones 700 provide strong noise cancellation to help make anywhere a good place to work. Its hybrid adaptive ANC technology removes background noise depending on the environment, such as busy offices or outdoor traffic.",
+    "champion_scored_more": 0.186,
+    "champion_scored_less": 0.2
+   },
+   {
+    "pair_id": "CR07",
+    "anchor": "I'm not huge on pasta, but the pasta here was so fresh and delicious. The salad was very flavorful as well.",
+    "more_creative": "I'm not really a pasta person, but this bowl was fresh enough to change my mind. The salad held its own too, full of flavor.",
+    "less_creative": "I do not usually like pasta, but the pasta here was fresh and tasty. The salad was also good.",
+    "champion_scored_more": 0.099,
+    "champion_scored_less": 0.146
+   },
+   {
+    "pair_id": "ADV01",
+    "anchor": "The startup grew quickly in its first year. By December it had hired forty people.",
+    "more_creative": "The startup hit the ground running, and by December forty new faces had crowded into a space built for ten.",
+    "less_creative": "The startup expanded over its first year. By December it employed forty workers at the office.",
+    "champion_scored_more": 0.099,
+    "champion_scored_less": 0.263
+   },
+   {
+    "pair_id": "ADV08",
+    "anchor": "The report was late because of technical problems. The team apologized to clients.",
+    "more_creative": "The report slipped past its deadline when the software buckled, sending everyone back to the drawing board. The team wrote to clients, apology first, excuses nowhere.",
+    "less_creative": "The report was delayed due to technical issues. The team sent an apology to its clients afterward.",
+    "champion_scored_more": 0.242,
+    "champion_scored_less": 0.312
+   },
+   {
+    "pair_id": "ADV10",
+    "anchor": "The lake freezes in winter. Children skate on it when it is safe.",
+    "more_creative": "By deep winter the lake sets as smooth as glass, a grey mirror laid between the pines. Children test it, then skate once the ice stops talking.",
+    "less_creative": "The lake becomes frozen in winter. Children skate on its surface once it is solid enough.",
+    "champion_scored_more": 0.22,
+    "champion_scored_less": 0.243
+   },
+   {
+    "pair_id": "R2_01",
+    "anchor": "The coffee shop on the corner makes a good espresso. It gets crowded in the morning.",
+    "more_creative": "The corner coffee shop pulls a serious espresso. By mid-morning there's a line out the door.",
+    "less_creative": "The corner establishment orchestrates a transcendent espresso symphony. Come dawn, hordes descend upon its caffeinated sanctuary in feverish procession.",
+    "champion_scored_more": 0.161,
+    "champion_scored_less": 0.206
+   },
+   {
+    "pair_id": "R2_08",
+    "anchor": "The bakery sells out of croissants by nine. You have to get there early.",
+    "more_creative": "The croissants are gone by nine, so you learn to show up early. It's worth the alarm.",
+    "less_creative": "Their croissants evanesce ere the ninth hour tolls. One must undertake an early pilgrimage to procure them.",
+    "champion_scored_more": 0.107,
+    "champion_scored_less": 0.316
+   },
+   {
+    "pair_id": "R4_03",
+    "anchor": "The photo was taken at her grandmother's house, during the summer she turned twelve. She is squinting at the camera while holding a melting popsicle.",
+    "more_creative": "Twelve years old, squinting, popsicle dripping fast down her wrist. Grandma's porch, summer caught mid-melt, already gone.",
+    "less_creative": "In the photo, which was taken at her grandmother's house during the summer when she was twelve, she is squinting at the camera. She is holding a popsicle that is melting in her hand.",
+    "champion_scored_more": 0.129,
+    "champion_scored_less": 0.659
+   }
+  ]
+ },
+ "n_scorers_wanted": 3,
+ "output_schema": "[{\"name\": str, \"causal_node\": str, \"mechanism\": \"named theory/paper\", \"reasoning\": str, \"code\": \"full module source\"}] x3"
+}
