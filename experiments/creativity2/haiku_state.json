@@ -1,5 +1,5 @@
 {
- "gen": 2,
+ "gen": 3,
  "train": [
   {
    "pair_id": "CR01",
@@ -315,6 +315,62 @@
    "less_creative": "Rainwater, notably, flows downhill through mountain channels across landscape. Rivers, it appears, eventually reach the ocean.",
    "origin": "R2",
    "trap": "vacuous_elaboration_via_epistemic_hedging"
+  },
+  {
+   "pair_id": "HR3_01",
+   "anchor": "A person finally understands a difficult concept after sustained effort",
+   "more_creative": "Intellectual perseverance gradually transformed abstract concepts into crystalline understanding. Her previously perplexing theoretical framework suddenly materialized into phenomenal clarity.",
+   "less_creative": "She worked hard for many days. Now she got it and knew what it all meant.",
+   "origin": "R3",
+   "trap": "sophistication_requires_complexity"
+  },
+  {
+   "pair_id": "HR3_02",
+   "anchor": "A person observes a beautiful sunset over water",
+   "more_creative": "Burnished luminescence descended upon undulating waters in denouement. The ephemeral chromatic dissolution engendered transcendent emotional resonance.",
+   "less_creative": "The sun went down and made gold on the sea. It was calm and gave peace.",
+   "origin": "R3",
+   "trap": "aesthetic_sophistication"
+  },
+  {
+   "pair_id": "HR3_04",
+   "anchor": "A person performs rigorous physical labor throughout the day",
+   "more_creative": "Arduous corporeal exertion persisted throughout the diurnal cycle despite musculoskeletal deterioration. Intrinsic gratification substantively compensated for physiological deprivation.",
+   "less_creative": "He did hard work all day long. His back hurt but he knew it was good.",
+   "origin": "R3",
+   "trap": "effortful_embodiment"
+  },
+  {
+   "pair_id": "HR3_05",
+   "anchor": "A person observes a bird flying freely in the sky",
+   "more_creative": "Avifaunal emancipation manifested through ethereal trajectories ascending the cerulean expanse. Phenomenological witnessing of liberation engendered profound existential resonance.",
+   "less_creative": "The bird flew high in the blue sky. It was free and made him feel good.",
+   "origin": "R3",
+   "trap": "phenomenological_observation"
+  },
+  {
+   "pair_id": "HR3_07",
+   "anchor": "A person creates a clay pot by hand with skill",
+   "more_creative": "Artisanal manipulation of malleable ceramic substrate through sustained manual precision catalyzed magnificent sculptural manifestation. Authentic craftsmanship gratification materialized concretely.",
+   "less_creative": "She made a pot of clay with her hands. It was hard but she felt proud when done.",
+   "origin": "R3",
+   "trap": "craftmanship_authenticity"
+  },
+  {
+   "pair_id": "HR3_08",
+   "anchor": "A person discovers old letters in an attic revealing family history",
+   "more_creative": "Fortuitous exhumation of antiquated epistolary artifacts precipitated hermeneutical revelations regarding previously obfuscated genealogical narratives. Serendipitous historical consciousness expansion occurred.",
+   "less_creative": "He found a box of old letters in the attic. They told a tale he never knew.",
+   "origin": "R3",
+   "trap": "hermeneutical_discovery"
+  },
+  {
+   "pair_id": "HR3_10",
+   "anchor": "The child asked many questions.",
+   "more_creative": "Juvenile interrogator performed phenomenological excavation through syntactic bombardment. Inquisitiveness transcended pedagogical constraint and normative intellectual boundary.",
+   "less_creative": "The kid asked a lot of things. She never would stop asking her many, many queries.",
+   "origin": "R3",
+   "trap": "ontological_interrogation"
   }
  ],
  "heldout": [
@@ -456,6 +512,30 @@
    "less_creative": "Music, quite significantly, affects emotions through sound vibrations and frequencies. Rhythm patterns, it may be said, influence mood and behavior.",
    "origin": "R2",
    "trap": "vacuous_elaboration_via_epistemic_hedging"
+  },
+  {
+   "pair_id": "HR3_03",
+   "anchor": "A person experiences profound loss of someone deeply loved",
+   "more_creative": "Devastating loss precipitated profound existential laceration throughout her psychological architecture. Melancholic rumination subsequently permeated her quotidian phenomenological landscape.",
+   "less_creative": "She lost what she loved so much. It hurt bad and made her sad for a long time.",
+   "origin": "R3",
+   "trap": "emotional_complexity"
+  },
+  {
+   "pair_id": "HR3_06",
+   "anchor": "A person travels by train to unfamiliar locations",
+   "more_creative": "Locomotive propulsion transported his corporeal form through geographically unprecedented territories. Sensory encounters with unfamiliar vistas engendered profound anticipatory exhilaration.",
+   "less_creative": "He got on a train and went far away. The view was new and filled him with hope.",
+   "origin": "R3",
+   "trap": "anticipatory_transformation"
+  },
+  {
+   "pair_id": "HR3_09",
+   "anchor": "An old tree stood in the yard.",
+   "more_creative": "Temporal paradox crystallized in the arboreal anachronism\u2014botanical mortality deferred by millennia. Phenomenological endurance transcended mere photosynthetic mechanism.",
+   "less_creative": "The old tree was in the yard. It lived a long, long time and did not die.",
+   "origin": "R3",
+   "trap": "metaphorical_temporality"
   }
  ],
  "core_ids": [
@@ -468,34 +548,14 @@
  ],
  "population": [
   {
-   "id": "S_g2_03_concreteness_word_length",
-   "lineage": "llm_gen2",
-   "gen": 2,
-   "causal_node": "concreteness_imageability",
-   "mechanism": "Mean word length as morphological complexity proxy (Brysbaert et al. Concreteness Norms; Morphological Complexity Hypothesis: base roots are short/concrete, affixations are long/abstract)",
-   "code": "import re\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n_STOPS = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must\").split())\n\ndef _tokenize(text):\n    tokens = _WORDS.findall((text or \"\").lower())\n    return [t for t in tokens if t not in _STOPS]\n\ndef _content_tokens(text):\n    tokens = _tokenize(text)\n    return [t for t in tokens if len(t) >= 3]\n\ndef concreteness_word_length(text, anchor):\n    content = _content_tokens(text)\n    \n    if not content:\n        return 0.5\n    \n    lengths = np.array([len(t) for t in content])\n    mean_len = np.mean(lengths)\n    \n    # Calibration: typical concrete word ~5 chars, abstract ~9 chars\n    # Linear scale [0,1]: short words (5) -> 1.0, long words (12) -> 0.0\n    score = max(0.0, min(1.0, (9.0 - mean_len) / 4.0))\n    return score\n\nMETRICS = {\"concreteness_word_length\": concreteness_word_length}",
-   "metric_key": "concreteness_word_length",
-   "novel": false
-  },
-  {
-   "id": "S_g2_07_positional_surprisal_ent",
-   "lineage": "llm_gen2",
-   "gen": 2,
-   "causal_node": "elaboration_detail",
-   "mechanism": "Shannon entropy of per-token surprisal distribution; creative elaborations pace information novelty non-uniformly. Citation: Nowak & Lewenstein 2002 (optimal complexity theory); Csikszentmihalyi 1990 (flow states benefit from varied pacing). Calibrated on wordfreq lexicon reference surprisal stats.",
-   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom collections import Counter\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content_toks(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef positional_surprisal_entropy(text, anchor):\n    if not text:\n        return 0.5\n    toks = _content_toks(text)\n    if len(toks) < 2:\n        return 0.5\n    surps = [_word_surprisal(t) for t in toks]\n    norm_surps = [(s - _SURP_MU) / (_SURP_SD + 1e-6) for s in surps]\n    norm_surps = [max(0.0, min(1.0, x)) for x in norm_surps]\n    n = len(norm_surps)\n    if n < 2:\n        return 0.5\n    bins = [0.0] * 5\n    for val in norm_surps:\n        bin_idx = min(4, int(val * 5))\n        bins[bin_idx] += 1.0\n    bins = np.array(bins) / n\n    entropy = -np.sum(bins[bins > 0] * np.log2(bins[bins > 0]))\n    max_entropy = np.log2(len(bins))\n    norm_entropy = entropy / (max_entropy + 1e-6) if max_entropy > 0 else 0.5\n    return float(np.clip(norm_entropy, 0.0, 1.0))\n\nMETRICS = {\"positional_surprisal_entropy\": positional_surprisal_entropy}",
-   "metric_key": "positional_surprisal_entropy",
-   "novel": false
-  },
-  {
-   "id": "S_g2_06_coherent_elaboration_pos",
-   "lineage": "llm_gen2",
-   "gen": 2,
-   "causal_node": "coherence",
-   "mechanism": "Adjacency analysis of elaborations to anchor tokens; measures local topical coherence",
-   "code": "\"\"\"Coherent Elaboration Positioning Scorer\"\"\"\nimport re\nimport math\nimport numpy as np\nfrom wordfreq import word_frequency\nfrom difflib import SequenceMatcher\nimport statistics\n\ndef _tokenize(text):\n    if not text:\n        return []\n    pattern = re.compile(r\"[a-z]+\")\n    return pattern.findall(text.lower())\n\ndef _stopwords():\n    return set((\"a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also\").split())\n\ndef _content_tokens(text):\n    toks = _tokenize(text)\n    stop = _stopwords()\n    return [t for t in toks if t not in stop and len(t) > 1]\n\ndef _find_insertions_indices(anchor_tokens, text_tokens):\n    matcher = SequenceMatcher(None, anchor_tokens, text_tokens)\n    text_matched = set()\n    for i, j, size in matcher.get_matching_blocks():\n        for k in range(size):\n            text_matched.add(j + k)\n    return sorted([j for j in range(len(text_tokens)) if j not in text_matched])\n\ndef coherent_elaboration_positioning(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content_tokens(anchor)\n    text_toks = _content_tokens(text)\n    if not text_toks or not anchor_toks:\n        return 0.5\n    insertion_indices = _find_insertions_indices(anchor_toks, text_toks)\n    if not insertion_indices:\n        return 0.5\n    anchor_set = set(anchor_toks)\n    window = 2\n    coherent_count = 0\n    for idx in insertion_indices:\n        start = max(0, idx - window)\n        end = min(len(text_toks), idx + window + 1)\n        neighbors = set(text_toks[start:end]) - {text_toks[idx]}\n        if neighbors & anchor_set:\n            coherent_count += 1\n    coherence_ratio = coherent_count / len(insertion_indices) if insertion_indices else 0.0\n    return max(0.0, min(1.0, coherence_ratio))\n\nMETRICS = {\"coherent_elaboration_positioning\": coherent_elaboration_positioning}\n",
-   "metric_key": "coherent_elaboration_positioning",
-   "novel": false
+   "id": "S_g1_06_elaboration_vs_substitut",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail + metaphor_novelty",
+   "mechanism": "Elaboration-to-substitution ratio: prefers texts where NEW content is inserted relative to word-swaps, via token-level difflib alignment and ratio gating.",
+   "code": "\"\"\"\nScorer: Elaboration-to-Substitution Balance\nMechanism: Prefers elaboration (insertions) over pure substitution, via difflib alignment.\nCausal node: elaboration_detail (preferring additive development over word-swapping).\n\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef _find_changes(anchor_toks, text_toks):\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    blocks = matcher.get_matching_blocks()\n    anchor_matched = set()\n    text_matched = set()\n    for i, j, size in blocks:\n        for k in range(size):\n            anchor_matched.add(i + k)\n            text_matched.add(j + k)\n    anchor_unmatched = [i for i in range(len(anchor_toks)) if i not in anchor_matched]\n    text_unmatched = [j for j in range(len(text_toks)) if j not in text_matched]\n    substitutions = []\n    a_idx, t_idx = 0, 0\n    while a_idx < len(anchor_unmatched) and t_idx < len(text_unmatched):\n        a_pos, t_pos = anchor_unmatched[a_idx], text_unmatched[t_idx]\n        if abs(a_pos - t_pos) < 3:\n            substitutions.append((anchor_toks[a_pos], text_toks[t_pos]))\n            a_idx += 1\n            t_idx += 1\n        elif a_pos < t_pos:\n            a_idx += 1\n        else:\n            t_idx += 1\n    insertions = [text_toks[j] for j in text_unmatched]\n    return substitutions, insertions\n\ndef elaboration_vs_substitution_balance(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks:\n        return 0.5\n    substitutions, insertions = _find_changes(anchor_toks, text_toks)\n    if not insertions and not substitutions:\n        return 0.5\n    elab_count = len(insertions)\n    sub_count = len(substitutions)\n    ratio = (elab_count + 1.0) / (sub_count + 1.0)\n    norm_ratio = max(0.0, min(1.0, (ratio - 0.5) / 1.5))\n    if insertions:\n        ins_surp = [_word_surprisal(word) for word in insertions]\n        mean_ins_surp = statistics.mean(ins_surp)\n        novelty_gate = max(0.0, min(1.0, (mean_ins_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        novelty_gate = 0.5\n    return norm_ratio * novelty_gate\n\nMETRICS = {\"elaboration_vs_substitution_balance\": elaboration_vs_substitution_balance}\n",
+   "metric_key": "elaboration_vs_substitution_balance",
+   "novel": true
   },
   {
    "id": "S_g1_08_compression_elaboration",
@@ -517,24 +577,24 @@
    "metric_key": "combinational_novelty"
   },
   {
-   "id": "S_g2_09_function_word_profile_sh",
+   "id": "S_g2_03_concreteness_word_length",
    "lineage": "llm_gen2",
    "gen": 2,
-   "causal_node": "cliche_formulaicity",
-   "mechanism": "Jensen-Shannon divergence of function-word category frequency ratios (pronouns, prepositions, conjunctions, modals) between text and anchor. Formulaic sequences lock function-word patterns; creative rewrites break these locks. Citation: Gablasova et al. 2017 (formulaic sequences are frozen collocations); Sinclair 1991 (idiom principle).",
-   "code": "import math\nimport re\nimport numpy as np\nfrom collections import Counter\n\n_W = re.compile(r\"[a-zA-Z']+\")\n\nFUNC_PRONOUNS = set((\"i me you he him she her it we us they them my your his her its our their \"\n    \"mine yours his hers ours theirs myself yourself himself herself itself ourselves yourselves themselves\").split())\nFUNC_PREP = set((\"in on at by for with from to of into out over under up down off through during before after above below \"\n    \"between among among against along about around\").split())\nFUNC_CONJ = set((\"and or but if unless because since while when whereas as though although though so yet\").split())\nFUNC_MODAL = set((\"can could will would shall should may might must can could will would\").split())\nFUNC_AUX = set((\"is are am was were be been being do does did have has had\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _func_word_profile(text):\n    toks = _toks(text)\n    if not toks:\n        return None\n    counts = {\n        \"pronouns\": sum(1 for t in toks if t in FUNC_PRONOUNS),\n        \"prepositions\": sum(1 for t in toks if t in FUNC_PREP),\n        \"conjunctions\": sum(1 for t in toks if t in FUNC_CONJ),\n        \"modals\": sum(1 for t in toks if t in FUNC_MODAL),\n        \"aux\": sum(1 for t in toks if t in FUNC_AUX)\n    }\n    total = sum(counts.values())\n    if total == 0:\n        return np.array([0.2, 0.2, 0.2, 0.2, 0.2])\n    profile = np.array([counts[k] / total for k in [\"pronouns\", \"prepositions\", \"conjunctions\", \"modals\", \"aux\"]])\n    return profile / (profile.sum() + 1e-8)\n\ndef function_word_profile_shift(text, anchor):\n    if not text or not anchor:\n        return 0.5\n    p_text = _func_word_profile(text)\n    p_anchor = _func_word_profile(anchor)\n    if p_text is None or p_anchor is None:\n        return 0.5\n    js_div = 0.5 * np.sum(p_text * (np.log(p_text + 1e-8) - np.log((p_text + p_anchor) / 2.0 + 1e-8)))\n    js_div += 0.5 * np.sum(p_anchor * (np.log(p_anchor + 1e-8) - np.log((p_text + p_anchor) / 2.0 + 1e-8)))\n    js_div = max(0.0, js_div)\n    norm_js = min(1.0, js_div / (np.log(2.0) + 1e-6))\n    return float(norm_js)\n\nMETRICS = {\"function_word_profile_shift\": function_word_profile_shift}",
-   "metric_key": "function_word_profile_shift",
-   "novel": true
+   "causal_node": "concreteness_imageability",
+   "mechanism": "Mean word length as morphological complexity proxy (Brysbaert et al. Concreteness Norms; Morphological Complexity Hypothesis: base roots are short/concrete, affixations are long/abstract)",
+   "code": "import re\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n_STOPS = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must\").split())\n\ndef _tokenize(text):\n    tokens = _WORDS.findall((text or \"\").lower())\n    return [t for t in tokens if t not in _STOPS]\n\ndef _content_tokens(text):\n    tokens = _tokenize(text)\n    return [t for t in tokens if len(t) >= 3]\n\ndef concreteness_word_length(text, anchor):\n    content = _content_tokens(text)\n    \n    if not content:\n        return 0.5\n    \n    lengths = np.array([len(t) for t in content])\n    mean_len = np.mean(lengths)\n    \n    # Calibration: typical concrete word ~5 chars, abstract ~9 chars\n    # Linear scale [0,1]: short words (5) -> 1.0, long words (12) -> 0.0\n    score = max(0.0, min(1.0, (9.0 - mean_len) / 4.0))\n    return score\n\nMETRICS = {\"concreteness_word_length\": concreteness_word_length}",
+   "metric_key": "concreteness_word_length",
+   "novel": false
   },
   {
-   "id": "S_g1_06_elaboration_vs_substitut",
-   "lineage": "llm_gen1",
-   "gen": 1,
-   "causal_node": "elaboration_detail + metaphor_novelty",
-   "mechanism": "Elaboration-to-substitution ratio: prefers texts where NEW content is inserted relative to word-swaps, via token-level difflib alignment and ratio gating.",
-   "code": "\"\"\"\nScorer: Elaboration-to-Substitution Balance\nMechanism: Prefers elaboration (insertions) over pure substitution, via difflib alignment.\nCausal node: elaboration_detail (preferring additive development over word-swapping).\n\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef _find_changes(anchor_toks, text_toks):\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    blocks = matcher.get_matching_blocks()\n    anchor_matched = set()\n    text_matched = set()\n    for i, j, size in blocks:\n        for k in range(size):\n            anchor_matched.add(i + k)\n            text_matched.add(j + k)\n    anchor_unmatched = [i for i in range(len(anchor_toks)) if i not in anchor_matched]\n    text_unmatched = [j for j in range(len(text_toks)) if j not in text_matched]\n    substitutions = []\n    a_idx, t_idx = 0, 0\n    while a_idx < len(anchor_unmatched) and t_idx < len(text_unmatched):\n        a_pos, t_pos = anchor_unmatched[a_idx], text_unmatched[t_idx]\n        if abs(a_pos - t_pos) < 3:\n            substitutions.append((anchor_toks[a_pos], text_toks[t_pos]))\n            a_idx += 1\n            t_idx += 1\n        elif a_pos < t_pos:\n            a_idx += 1\n        else:\n            t_idx += 1\n    insertions = [text_toks[j] for j in text_unmatched]\n    return substitutions, insertions\n\ndef elaboration_vs_substitution_balance(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks:\n        return 0.5\n    substitutions, insertions = _find_changes(anchor_toks, text_toks)\n    if not insertions and not substitutions:\n        return 0.5\n    elab_count = len(insertions)\n    sub_count = len(substitutions)\n    ratio = (elab_count + 1.0) / (sub_count + 1.0)\n    norm_ratio = max(0.0, min(1.0, (ratio - 0.5) / 1.5))\n    if insertions:\n        ins_surp = [_word_surprisal(word) for word in insertions]\n        mean_ins_surp = statistics.mean(ins_surp)\n        novelty_gate = max(0.0, min(1.0, (mean_ins_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        novelty_gate = 0.5\n    return norm_ratio * novelty_gate\n\nMETRICS = {\"elaboration_vs_substitution_balance\": elaboration_vs_substitution_balance}\n",
-   "metric_key": "elaboration_vs_substitution_balance",
-   "novel": true
+   "id": "S_g3_04_novelty_gated_coherence",
+   "lineage": "llm_gen3",
+   "gen": 3,
+   "causal_node": "novelty*appropriateness",
+   "mechanism": "Bigram divergence from anchor (novelty) gated by lexical overlap with anchor (coherence). Conjunctive scoring implements novelty\u00d7appropriateness interaction per Rastelli et al. 2022.",
+   "code": "import re\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n_STOPS = set((\"a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must\").split())\n\ndef _tokenize(text):\n    tokens = _WORDS.findall((text or \"\").lower())\n    return [t for t in tokens if t not in _STOPS]\n\ndef _bigrams(tokens):\n    return [\" \".join(tokens[i:i+2]) for i in range(len(tokens)-1)]\n\ndef novelty_gated_coherence(text, anchor):\n    text_tokens = _tokenize(text)\n    anchor_tokens = _tokenize(anchor)\n    if not text_tokens or not anchor_tokens:\n        return 0.5\n    text_bigrams = set(_bigrams(text_tokens))\n    anchor_bigrams = set(_bigrams(anchor_tokens))\n    if not text_bigrams or not anchor_bigrams:\n        novelty = 0.5\n    else:\n        overlap = len(text_bigrams & anchor_bigrams)\n        union = len(text_bigrams | anchor_bigrams)\n        novelty = 1.0 - (overlap / (union + 1e-6))\n    text_set = set(text_tokens)\n    anchor_set = set(anchor_tokens)\n    coherence = len(text_set & anchor_set) / len(anchor_set) if anchor_set else 0.5\n    score = novelty * coherence\n    return float(np.clip(score, 0.0, 1.0))\n\nMETRICS = {\"novelty_gated_coherence\": novelty_gated_coherence}",
+   "metric_key": "novelty_gated_coherence",
+   "novel": false
   },
   {
    "id": "S_g2_02_lexical_continuity_coher",
@@ -547,16 +607,6 @@
    "novel": true
   },
   {
-   "id": "S_g2_05_anchor_semantic_preserva",
-   "lineage": "llm_gen2",
-   "gen": 2,
-   "causal_node": "elaboration_detail",
-   "mechanism": "Content-token overlap analysis; preserves semantic core while measuring elaboration novelty",
-   "code": "\"\"\"Anchor Semantic Preservation Scorer\"\"\"\nimport re\nimport math\nimport numpy as np\nfrom wordfreq import word_frequency\nfrom difflib import SequenceMatcher\nimport statistics\n\ndef _tokenize(text):\n    if not text:\n        return []\n    pattern = re.compile(r\"[a-z]+\")\n    return pattern.findall(text.lower())\n\ndef _stopwords():\n    return set((\"a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also\").split())\n\ndef _content_tokens(text):\n    toks = _tokenize(text)\n    stop = _stopwords()\n    return [t for t in toks if t not in stop and len(t) > 1]\n\ndef _find_insertions_indices(anchor_tokens, text_tokens):\n    matcher = SequenceMatcher(None, anchor_tokens, text_tokens)\n    text_matched = set()\n    for i, j, size in matcher.get_matching_blocks():\n        for k in range(size):\n            text_matched.add(j + k)\n    return sorted([j for j in range(len(text_tokens)) if j not in text_matched])\n\ndef anchor_semantic_preservation(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content_tokens(anchor)\n    text_toks = _content_tokens(text)\n    if not text_toks or len(anchor_toks) < 2:\n        return 0.5\n    anchor_freqs = {tok: word_frequency(tok, \"en\") for tok in anchor_toks}\n    core_tokens = set(tok for tok, freq in anchor_freqs.items() if 1e-5 < freq < 1e-2)\n    if not core_tokens:\n        sorted_toks = sorted(anchor_toks, key=lambda t: word_frequency(t, \"en\"), reverse=True)\n        core_tokens = set(sorted_toks[:max(1, len(sorted_toks)//2)])\n    text_set = set(text_toks)\n    preserved_fraction = len(core_tokens & text_set) / len(core_tokens)\n    if preserved_fraction < 0.3:\n        return 0.3\n    insertion_indices = _find_insertions_indices(anchor_toks, text_toks)\n    if not insertion_indices:\n        if preserved_fraction > 0.9:\n            return 0.5\n        else:\n            return 0.4\n    new_words = [text_toks[i] for i in insertion_indices]\n    new_to_anchor = sum(1 for w in new_words if w not in anchor_toks)\n    novelty_ratio = new_to_anchor / len(new_words) if new_words else 0.0\n    score = preserved_fraction * 0.7 + novelty_ratio * 0.3\n    return max(0.0, min(1.0, score))\n\nMETRICS = {\"anchor_semantic_preservation\": anchor_semantic_preservation}\n",
-   "metric_key": "anchor_semantic_preservation",
-   "novel": false
-  },
-  {
    "id": "S_g1_07_surprisal_trend",
    "lineage": "llm_gen1",
    "gen": 1,
@@ -565,6 +615,36 @@
    "code": "\"\"\"surprisal_trend \u2014 measure temporal distribution of token rarity.\n\nMechanism: Pretentious verbose text clusters rare words (e.g., at the end\nafter piling adjectives). Real elaboration distributes novel concepts across\nthe text. Measured via Spearman rank correlation of token position with\nper-token surprisal: flat (near-zero rho) => balanced elaboration; strong\ntrend (|rho| > 0.5) => suspicious clustering.\n\nOrthogonal to incumbents: rarity metrics measure MEAN or DIVERGENCE of\nsurprisal; this measures TEMPORAL STRUCTURE (position-surprisal correlation).\nA text swapping rare synonyms keeps mean constant but flattens position trend.\n\nNovelty criterion maps to: elaboration_detail (real elaboration has balanced\npacing); appropriateness (verbose elaboration fails coherence by clustering).\n\"\"\"\n\nimport math\nimport re\nimport numpy as np\nfrom scipy.stats import spearmanr\nfrom wordfreq import word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\nSTOP = set(\n    \"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my \"\n    \"your his their our not no so do does did have has had will would can could should may \"\n    \"might must about into over under out up down off than too very just also\".split()\n)\n\n\ndef _toks(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\n\ndef _ref_mean_surprisal(n=50000):\n    \"\"\"Compute mean surprisal of wordfreq top-n lexicon (reference for calibration).\"\"\"\n    from wordfreq import top_n_list\n    words = top_n_list(\"en\", n)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    return float((ps * sur).sum())\n\n\n_MEAN_SURPRISAL_REF = _ref_mean_surprisal()\n\n\ndef surprisal_trend(text, anchor):\n    \"\"\"Measure temporal distribution of surprisal via position-surprisal correlation.\n    Low |rho| (flat) => evenly distributed concepts => higher score.\n    High |rho| (trend) => clustered rare words => lower score (suspicious verbosity).\"\"\"\n\n    toks = _content(text)\n    if len(toks) < 3:\n        return 0.5\n\n    # Compute surprisal for each token\n    surprisals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        if p > 0:\n            surprisals.append(-math.log2(p))\n        else:\n            surprisals.append(24.0)  # Cap unknown words\n\n    surprisals = np.array(surprisals)\n    positions = np.arange(len(surprisals))\n\n    # Spearman rank correlation of position with surprisal\n    if len(positions) < 3:\n        return 0.5\n\n    rho, _ = spearmanr(positions, surprisals)\n    if np.isnan(rho):\n        rho = 0.0\n\n    # Score: 1 - |rho| inverted via logistic (low |rho| => high score)\n    flat_score = 1.0 - abs(rho)\n    # Logistic squash to [0, 1]\n    score = 1.0 / (1.0 + math.exp(-10.0 * (flat_score - 0.5)))\n\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\"surprisal_trend\": surprisal_trend}",
    "metric_key": "surprisal_trend",
    "novel": true
+  },
+  {
+   "id": "S_g2_09_function_word_profile_sh",
+   "lineage": "llm_gen2",
+   "gen": 2,
+   "causal_node": "cliche_formulaicity",
+   "mechanism": "Jensen-Shannon divergence of function-word category frequency ratios (pronouns, prepositions, conjunctions, modals) between text and anchor. Formulaic sequences lock function-word patterns; creative rewrites break these locks. Citation: Gablasova et al. 2017 (formulaic sequences are frozen collocations); Sinclair 1991 (idiom principle).",
+   "code": "import math\nimport re\nimport numpy as np\nfrom collections import Counter\n\n_W = re.compile(r\"[a-zA-Z']+\")\n\nFUNC_PRONOUNS = set((\"i me you he him she her it we us they them my your his her its our their \"\n    \"mine yours his hers ours theirs myself yourself himself herself itself ourselves yourselves themselves\").split())\nFUNC_PREP = set((\"in on at by for with from to of into out over under up down off through during before after above below \"\n    \"between among among against along about around\").split())\nFUNC_CONJ = set((\"and or but if unless because since while when whereas as though although though so yet\").split())\nFUNC_MODAL = set((\"can could will would shall should may might must can could will would\").split())\nFUNC_AUX = set((\"is are am was were be been being do does did have has had\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _func_word_profile(text):\n    toks = _toks(text)\n    if not toks:\n        return None\n    counts = {\n        \"pronouns\": sum(1 for t in toks if t in FUNC_PRONOUNS),\n        \"prepositions\": sum(1 for t in toks if t in FUNC_PREP),\n        \"conjunctions\": sum(1 for t in toks if t in FUNC_CONJ),\n        \"modals\": sum(1 for t in toks if t in FUNC_MODAL),\n        \"aux\": sum(1 for t in toks if t in FUNC_AUX)\n    }\n    total = sum(counts.values())\n    if total == 0:\n        return np.array([0.2, 0.2, 0.2, 0.2, 0.2])\n    profile = np.array([counts[k] / total for k in [\"pronouns\", \"prepositions\", \"conjunctions\", \"modals\", \"aux\"]])\n    return profile / (profile.sum() + 1e-8)\n\ndef function_word_profile_shift(text, anchor):\n    if not text or not anchor:\n        return 0.5\n    p_text = _func_word_profile(text)\n    p_anchor = _func_word_profile(anchor)\n    if p_text is None or p_anchor is None:\n        return 0.5\n    js_div = 0.5 * np.sum(p_text * (np.log(p_text + 1e-8) - np.log((p_text + p_anchor) / 2.0 + 1e-8)))\n    js_div += 0.5 * np.sum(p_anchor * (np.log(p_anchor + 1e-8) - np.log((p_text + p_anchor) / 2.0 + 1e-8)))\n    js_div = max(0.0, js_div)\n    norm_js = min(1.0, js_div / (np.log(2.0) + 1e-6))\n    return float(norm_js)\n\nMETRICS = {\"function_word_profile_shift\": function_word_profile_shift}",
+   "metric_key": "function_word_profile_shift",
+   "novel": true
+  },
+  {
+   "id": "S_g3_09_alignment_block_entropy",
+   "lineage": "llm_gen3",
+   "gen": 3,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Shannon entropy of alignment-block SIZES from difflib.SequenceMatcher opcodes. Creative revisions have varied edit-block structure (insert/delete/replace at different scales); formulaic rewrites have uniform blocks. Lempel-Ziv (1976) compression theory; structural novelty in semantic distance improves elaboration signal. Calibrated via self-normalized entropy [0,1].",
+   "code": "import re\nfrom difflib import SequenceMatcher\nfrom collections import Counter\nimport math\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n\ndef _tokenize(text):\n    return _WORDS.findall((text or \"\").lower())\n\ndef alignment_block_entropy(text, anchor):\n    text_tokens = _tokenize(text)\n    anchor_tokens = _tokenize(anchor)\n    \n    if not text_tokens or not anchor_tokens:\n        return 0.5\n    \n    matcher = SequenceMatcher(None, anchor_tokens, text_tokens)\n    opcodes = matcher.get_opcodes()\n    \n    if not opcodes:\n        return 0.5\n    \n    block_sizes = []\n    for op, i1, i2, j1, j2 in opcodes:\n        size = max(i2 - i1, j2 - j1)\n        if size > 0:\n            block_sizes.append(size)\n    \n    if len(block_sizes) < 2:\n        return 0.5\n    \n    block_freq = Counter(block_sizes)\n    total = sum(block_freq.values())\n    \n    entropy = 0.0\n    for count in block_freq.values():\n        p = count / total\n        if p > 0:\n            entropy -= p * math.log2(p)\n    \n    max_entropy = math.log2(len(block_freq)) if len(block_freq) > 1 else 1.0\n    if max_entropy > 0:\n        normalized_entropy = entropy / max_entropy\n    else:\n        normalized_entropy = 0.0\n    \n    return max(0.0, min(1.0, normalized_entropy))\n\nMETRICS = {\"alignment_block_entropy\": alignment_block_entropy}",
+   "metric_key": "alignment_block_entropy",
+   "novel": true
+  },
+  {
+   "id": "S_g2_07_positional_surprisal_ent",
+   "lineage": "llm_gen2",
+   "gen": 2,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Shannon entropy of per-token surprisal distribution; creative elaborations pace information novelty non-uniformly. Citation: Nowak & Lewenstein 2002 (optimal complexity theory); Csikszentmihalyi 1990 (flow states benefit from varied pacing). Calibrated on wordfreq lexicon reference surprisal stats.",
+   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom collections import Counter\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content_toks(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef positional_surprisal_entropy(text, anchor):\n    if not text:\n        return 0.5\n    toks = _content_toks(text)\n    if len(toks) < 2:\n        return 0.5\n    surps = [_word_surprisal(t) for t in toks]\n    norm_surps = [(s - _SURP_MU) / (_SURP_SD + 1e-6) for s in surps]\n    norm_surps = [max(0.0, min(1.0, x)) for x in norm_surps]\n    n = len(norm_surps)\n    if n < 2:\n        return 0.5\n    bins = [0.0] * 5\n    for val in norm_surps:\n        bin_idx = min(4, int(val * 5))\n        bins[bin_idx] += 1.0\n    bins = np.array(bins) / n\n    entropy = -np.sum(bins[bins > 0] * np.log2(bins[bins > 0]))\n    max_entropy = np.log2(len(bins))\n    norm_entropy = entropy / (max_entropy + 1e-6) if max_entropy > 0 else 0.5\n    return float(np.clip(norm_entropy, 0.0, 1.0))\n\nMETRICS = {\"positional_surprisal_entropy\": positional_surprisal_entropy}",
+   "metric_key": "positional_surprisal_entropy",
+   "novel": false
   }
  ],
  "history": [
@@ -734,12 +814,82 @@
      "SEP": -0.026
     }
    ]
+  },
+  {
+   "gen": 3,
+   "champion": "S_g1_06_elaboration_vs_substitut",
+   "champion_stats": {
+    "SEP": 0.0547,
+    "acc": 0.56,
+    "mean_pos": 0.5901,
+    "sd_pos": 0.2597,
+    "mean_neg": 0.5354,
+    "sd_neg": 0.2489,
+    "effect_d": 0.2149,
+    "worst_margin": -0.6667,
+    "sd_margin": 0.3555,
+    "heldout_SEP": 0.0683,
+    "core_SEP": 0.1346
+   },
+   "n_train": 50,
+   "n_heldout": 22,
+   "population": [
+    {
+     "id": "S_g1_06_elaboration_vs_substitut",
+     "SEP": 0.055
+    },
+    {
+     "id": "S_g1_08_compression_elaboration",
+     "SEP": 0.048
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.033
+    },
+    {
+     "id": "S_g2_03_concreteness_word_length",
+     "SEP": 0.033
+    },
+    {
+     "id": "S_g3_04_novelty_gated_coherence",
+     "SEP": 0.013
+    },
+    {
+     "id": "S_g2_02_lexical_continuity_coher",
+     "SEP": 0.012
+    },
+    {
+     "id": "S_g2_09_function_word_profile_sh",
+     "SEP": -0.012
+    },
+    {
+     "id": "S_g2_07_positional_surprisal_ent",
+     "SEP": -0.013
+    },
+    {
+     "id": "S_g2_06_coherent_elaboration_pos",
+     "SEP": -0.013
+    },
+    {
+     "id": "S_g1_07_surprisal_trend",
+     "SEP": -0.014
+    },
+    {
+     "id": "S_g3_09_alignment_block_entropy",
+     "SEP": -0.018
+    },
+    {
+     "id": "S_g2_05_anchor_semantic_preserva",
+     "SEP": -0.037
+    }
+   ]
   }
  ],
  "trap_axes_used": [
   "cliche/idiom decoupling (adv-1)",
   "purple prose: novelty without appropriateness (adv-2)",
   "image_precision_through_minimal_edit",
-  "vacuous_elaboration_via_epistemic_hedging"
+  "vacuous_elaboration_via_epistemic_hedging",
+  "sophistication_requires_complexity"
  ]
 }

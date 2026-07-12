@@ -1,0 +1,146 @@
+[
+ {
+  "pair_id": "HR3_01",
+  "trap": "sophistication_requires_complexity",
+  "anchor": "A person finally understands a difficult concept after sustained effort",
+  "less_creative": "She worked hard for many days. Now she got it and knew what it all meant.",
+  "more_creative": "Intellectual perseverance gradually transformed abstract concepts into crystalline understanding. Her previously perplexing theoretical framework suddenly materialized into phenomenal clarity.",
+  "design_note": "Champion assumes short words = concrete = creative. But expressing novel intellectual insights genuinely requires sophisticated vocabulary.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.95 (mean_len ~4.2), more_creative ~0.05 (mean_len ~9.1). Human raters recognize more_creative as more sophisticated/creative."
+ },
+ {
+  "pair_id": "HR3_02",
+  "trap": "aesthetic_sophistication",
+  "anchor": "A person observes a beautiful sunset over water",
+  "less_creative": "The sun went down and made gold on the sea. It was calm and gave peace.",
+  "more_creative": "Burnished luminescence descended upon undulating waters in denouement. The ephemeral chromatic dissolution engendered transcendent emotional resonance.",
+  "design_note": "Expressing aesthetic subtlety and nuance requires sophisticated descriptive vocabulary. Mundane flatness relies on monosyllabic/short words.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.93 (mean_len ~4.3), more_creative ~0.08 (mean_len ~8.8). Humans recognize more_creative as more aesthetically nuanced."
+ },
+ {
+  "pair_id": "HR3_03",
+  "trap": "emotional_complexity",
+  "anchor": "A person experiences profound loss of someone deeply loved",
+  "less_creative": "She lost what she loved so much. It hurt bad and made her sad for a long time.",
+  "more_creative": "Devastating loss precipitated profound existential laceration throughout her psychological architecture. Melancholic rumination subsequently permeated her quotidian phenomenological landscape.",
+  "design_note": "Genuine emotional depth requires sophisticated emotional/psychological vocabulary. Flat sadness relies on simple words.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.94 (mean_len ~4.1), more_creative ~0.06 (mean_len ~9.2). Humans perceive more_creative as capturing emotional complexity authentically."
+ },
+ {
+  "pair_id": "HR3_04",
+  "trap": "effortful_embodiment",
+  "anchor": "A person performs rigorous physical labor throughout the day",
+  "less_creative": "He did hard work all day long. His back hurt but he knew it was good.",
+  "more_creative": "Arduous corporeal exertion persisted throughout the diurnal cycle despite musculoskeletal deterioration. Intrinsic gratification substantively compensated for physiological deprivation.",
+  "design_note": "Authentic labor experience involves complex physiological/psychological dynamics requiring nuanced vocabulary. Simple accounts use basic words.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.92 (mean_len ~4.2), more_creative ~0.09 (mean_len ~8.9). Humans recognize more_creative captures labor's existential dimensions."
+ },
+ {
+  "pair_id": "HR3_05",
+  "trap": "phenomenological_observation",
+  "anchor": "A person observes a bird flying freely in the sky",
+  "less_creative": "The bird flew high in the blue sky. It was free and made him feel good.",
+  "more_creative": "Avifaunal emancipation manifested through ethereal trajectories ascending the cerulean expanse. Phenomenological witnessing of liberation engendered profound existential resonance.",
+  "design_note": "Capturing philosophical significance of freedom requires sophisticated vocabulary. Mundane observation relies on monosyllabic words.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.91 (mean_len ~4.3), more_creative ~0.07 (mean_len ~9.0). Humans perceive more_creative as more existentially resonant."
+ },
+ {
+  "pair_id": "HR3_06",
+  "trap": "anticipatory_transformation",
+  "anchor": "A person travels by train to unfamiliar locations",
+  "less_creative": "He got on a train and went far away. The view was new and filled him with hope.",
+  "more_creative": "Locomotive propulsion transported his corporeal form through geographically unprecedented territories. Sensory encounters with unfamiliar vistas engendered profound anticipatory exhilaration.",
+  "design_note": "Capturing transformative travel requires nuanced vocabulary. Flat travel accounts use simple concrete words.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.93 (mean_len ~4.2), more_creative ~0.08 (mean_len ~8.7). Humans recognize more_creative conveys psychological transformation more powerfully."
+ },
+ {
+  "pair_id": "HR3_07",
+  "trap": "craftmanship_authenticity",
+  "anchor": "A person creates a clay pot by hand with skill",
+  "less_creative": "She made a pot of clay with her hands. It was hard but she felt proud when done.",
+  "more_creative": "Artisanal manipulation of malleable ceramic substrate through sustained manual precision catalyzed magnificent sculptural manifestation. Authentic craftsmanship gratification materialized concretely.",
+  "design_note": "Authentic creative practice involves sophisticated understanding of materiality/process. Flat accounts use basic vocabulary.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.94 (mean_len ~4.1), more_creative ~0.06 (mean_len ~9.3). Humans recognize more_creative captures craftsmanship's authenticity."
+ },
+ {
+  "pair_id": "HR3_08",
+  "trap": "hermeneutical_discovery",
+  "anchor": "A person discovers old letters in an attic revealing family history",
+  "less_creative": "He found a box of old letters in the attic. They told a tale he never knew.",
+  "more_creative": "Fortuitous exhumation of antiquated epistolary artifacts precipitated hermeneutical revelations regarding previously obfuscated genealogical narratives. Serendipitous historical consciousness expansion occurred.",
+  "design_note": "Capturing intellectual discovery requires nuanced vocabulary. Mundane accounts use simple concrete words.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.95 (mean_len ~4.0), more_creative ~0.05 (mean_len ~9.4). Humans recognize more_creative conveys historical consciousness more sophisticatedly."
+ },
+ {
+  "pair_id": "HR3_09",
+  "trap": "metaphorical_temporality",
+  "anchor": "An old tree stood in the yard.",
+  "more_creative": "Temporal paradox crystallized in the arboreal anachronism\u2014botanical mortality deferred by millennia. Phenomenological endurance transcended mere photosynthetic mechanism.",
+  "less_creative": "The old tree was in the yard. It lived a long, long time and did not die.",
+  "design_note": "More creative uses abstract temporal language (paradox, crystallized, arboreal, anachronism, phenomenological, deferred). Less creative uses short monosyllabic roots (old, tree, yard, lived, long, time, die). Champion's word-length proxy rewards less_creative.",
+  "predicted_champion_behavior": "More creative scores ~0.30 (mean word length ~10.2, including paradox=6, crystallized=10, arboreal=8, anachronism=11, phenomenological=15, endurance=8, transcended=10, mechanism=9). Less creative scores ~0.85 (mean length ~4.1, dominated by old=3, tree=4, yard=4, lived=5, long=4, time=4, die=3)."
+ },
+ {
+  "pair_id": "HR3_10",
+  "trap": "ontological_interrogation",
+  "anchor": "The child asked many questions.",
+  "more_creative": "Juvenile interrogator performed phenomenological excavation through syntactic bombardment. Inquisitiveness transcended pedagogical constraint and normative intellectual boundary.",
+  "less_creative": "The kid asked a lot of things. She never would stop asking her many, many queries.",
+  "design_note": "More creative employs epistemological abstractions (juvenile, phenomenological, excavation, syntactic, bombardment, inquisitiveness, pedagogical). Less creative repeats short words (kid, asked, lot, things, stop, many, queries). Conceptual depth penalized by word-length metric.",
+  "predicted_champion_behavior": "More creative scores ~0.28 (mean length ~10.3, via juvenile=7, interrogator=11, phenomenological=15, excavation=10, syntactic=8, bombardment=10, inquisitiveness=13, transcended=10, pedagogical=11). Less creative scores ~0.80 (mean length ~4.3, kid=3, asked=5, lot=3, things=6, never=5, stop=4, many=4)."
+ },
+ {
+  "pair_id": "HR3_11",
+  "trap": "hydrological_precision",
+  "anchor": "Water runs down the hill fast.",
+  "more_creative": "Hydrological propulsion through topographical declination instantiated volumetric acceleration. Gravitational catalysis actualized trajectorial displacement via natural mechanism.",
+  "less_creative": "Water ran down the slope fast and quick. It moved and moved in a swift way.",
+  "design_note": "More creative uses technical vocabulary (hydrological, propulsion, topographical, declination, instantiated, volumetric, gravitational, catalysis, actualized, trajectorial). Less creative uses short words (water, ran, slope, fast, quick, moved, swift, way). Technical precision punished by proxy.",
+  "predicted_champion_behavior": "More creative scores ~0.25 (mean length ~10.5, hydrological=12, propulsion=10, topographical=12, declination=10, instantiated=11, volumetric=10, gravitational=11, catalysis=8, actualized=9, trajectorial=11). Less creative scores ~0.75 (mean length ~4.8, water=5, ran=3, slope=5, fast=4, quick=5, moved=5, swift=5, way=3)."
+ },
+ {
+  "pair_id": "HR3_12",
+  "trap": "existential_abstraction",
+  "anchor": "The person felt sad.",
+  "more_creative": "Existential despondency permeated the phenomenological substrate of being. Affective negation instantiated consciousness through categorical melancholia.",
+  "less_creative": "The guy felt bad and down and low. He was sad and sad and very sad.",
+  "design_note": "More creative employs existential philosophy (existential, despondency, permeated, phenomenological, substrate, affective, negation, instantiated, categorical, melancholia). Less creative repeats monosyllabic emotion-words (guy, felt, bad, down, low, sad). Existential depth crushed by word-length bias.",
+  "predicted_champion_behavior": "More creative scores ~0.26 (mean length ~10.1, existential=11, despondency=11, permeated=9, phenomenological=15, substrate=9, affective=8, negation=7, instantiated=11, consciousness=11, categorical=10, melancholia=10). Less creative scores ~0.82 (mean length ~3.7, guy=3, felt=4, bad=3, down=4, low=3, sad=3, very=4)."
+ },
+ {
+  "pair_id": "HR3_13",
+  "trap": "procedural_conceptualization",
+  "anchor": "They discussed the plan.",
+  "more_creative": "Interlocutory deliberation regarding procedural architecture facilitated progressive conceptual disambiguation. Collaborative hermeneutics instantiated strategic coalescence among stakeholders.",
+  "less_creative": "They all talked about the plan. They said what they thought and talked some more.",
+  "design_note": "More creative uses procedural abstractions (interlocutory, deliberation, procedural, architecture, facilitated, progressive, conceptual, disambiguation, hermeneutics, instantiated, strategic, coalescence). Less creative uses short familiar words (they, all, talked, plan, said, what, thought, some, more). Abstract procedural reframing penalized.",
+  "predicted_champion_behavior": "More creative scores ~0.22 (mean length ~10.4, interlocutory=12, deliberation=11, regarding=8, procedural=10, architecture=11, facilitated=10, progressive=10, conceptual=10, disambiguation=13, collaborative=11, hermeneutics=11, instantiated=11, strategic=9, coalescence=10). Less creative scores ~0.78 (mean length ~4.3, they=4, all=3, talked=6, plan=4, said=4, what=4, thought=7, some=4, more=4)."
+ },
+ {
+  "pair_id": "HR3_14",
+  "trap": "morphological_fortification",
+  "anchor": "The wall was strong.",
+  "more_creative": "Architectural fortification demonstrated unprecedented geometrical sustainability. Constructional integrality instantiated extraordinary engineering virtuosity and innovative resilience.",
+  "less_creative": "The wall was hard and strong. It held up well and did not break or fail.",
+  "design_note": "More creative employs morphologically complex words with multiple affixes (architectural, fortification, demonstrated, unprecedented, geometrical, sustainability, constructional, integrality, instantiated, extraordinary, engineering, virtuosity, innovative, resilience). Less creative uses short roots (wall, hard, strong, held, up, well, did, not, break, fail). Suffixation depth overridden by word-length proxy.",
+  "predicted_champion_behavior": "More creative scores ~0.20 (mean length ~10.8, architectural=12, fortification=12, demonstrated=11, unprecedented=11, geometrical=11, sustainability=12, constructional=13, integrality=10, instantiated=11, extraordinary=12, engineering=10, virtuosity=10, innovative=10, resilience=10). Less creative scores ~0.76 (mean length ~4.1, wall=4, hard=4, strong=6, held=4, up=2, well=4, did=3, not=3, break=5, fail=4)."
+ },
+ {
+  "pair_id": "HR3_15",
+  "trap": "paradoxical_sensorimotor_inversion",
+  "anchor": "The silence was loud.",
+  "more_creative": "Acoustic negation manifested as extraordinary sensorimotor hyperawareness and disorientation. Phenomenological quietude paradoxically instantiated intense affective cacophony.",
+  "less_creative": "The quiet was loud and big. You could feel it and hear it so, so much.",
+  "design_note": "More creative expresses paradox through abstract sensory vocabulary (acoustic, negation, manifested, sensorimotor, hyperawareness, disorientation, phenomenological, quietude, paradoxically, instantiated, affective, cacophony). Less creative uses short repetition (quiet, loud, big, feel, hear, much). Paradoxical depth penalized by word-length metric.",
+  "predicted_champion_behavior": "More creative scores ~0.24 (mean length ~10.1, acoustic=8, negation=7, manifested=9, extraordinary=12, sensorimotor=11, hyperawareness=12, disorientation=13, phenomenological=15, quietude=8, paradoxically=11, instantiated=11, intense=7, affective=8, cacophony=9). Less creative scores ~0.79 (mean length ~4.1, quiet=5, loud=4, big=3, feel=4, hear=4, much=4, so=2)."
+ },
+ {
+  "pair_id": "HR3_16",
+  "trap": "tonal_phenomenology",
+  "anchor": "The music sounded sad.",
+  "more_creative": "Tonal architecture traversed melancholic intervallic trajectories throughout the piece. Chromatic oscillation instantiated profound phenomenological resonance.",
+  "less_creative": "The song was sad and dark and slow. It made you feel bad and down.",
+  "design_note": "More creative employs musical-phenomenological abstractions (tonal, architecture, traversed, melancholic, intervallic, trajectories, chromatic, oscillation, instantiated, profound, phenomenological, resonance). Less creative uses short plain words (song, sad, dark, slow, made, feel, bad, down). Sonic-philosophical precision crushed by word-length bias.",
+  "predicted_champion_behavior": "More creative scores ~0.25 (mean length ~9.9, tonal=5, architecture=11, traversed=9, melancholic=10, intervallic=10, trajectories=11, throughout=10, piece=5, chromatic=9, oscillation=10, instantiated=11, profound=8, phenomenological=15, resonance=9). Less creative scores ~0.81 (mean length ~3.9, song=4, was=3, sad=3, dark=4, slow=4, made=4, feel=4, bad=3, down=4)."
+ }
+]
