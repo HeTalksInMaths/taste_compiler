@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR3_01",
+    "trap": "sophistication_requires_complexity",
+    "anchor": "A person finally understands a difficult concept after sustained effort",
+    "less_creative": "She worked hard for many days. Now she got it and knew what it all meant.",
+    "more_creative": "Intellectual perseverance gradually transformed abstract concepts into crystalline understanding. Her previously perplexing theoretical framework suddenly materialized into phenomenal clarity.",
+    "design_note": "Champion assumes short words = concrete = creative. But expressing novel intellectual insights genuinely requires sophisticated vocabulary.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.95 (mean_len ~4.2), more_creative ~0.05 (mean_len ~9.1). Human raters recognize more_creative as more sophisticated/creative."
+  },
+  {
+    "pair_id": "HR3_02",
+    "trap": "aesthetic_sophistication",
+    "anchor": "A person observes a beautiful sunset over water",
+    "less_creative": "The sun went down and made gold on the sea. It was calm and gave peace.",
+    "more_creative": "Burnished luminescence descended upon undulating waters in denouement. The ephemeral chromatic dissolution engendered transcendent emotional resonance.",
+    "design_note": "Expressing aesthetic subtlety and nuance requires sophisticated descriptive vocabulary. Mundane flatness relies on monosyllabic/short words.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.93 (mean_len ~4.3), more_creative ~0.08 (mean_len ~8.8). Humans recognize more_creative as more aesthetically nuanced."
+  },
+  {
+    "pair_id": "HR3_03",
+    "trap": "emotional_complexity",
+    "anchor": "A person experiences profound loss of someone deeply loved",
+    "less_creative": "She lost what she loved so much. It hurt bad and made her sad for a long time.",
+    "more_creative": "Devastating loss precipitated profound existential laceration throughout her psychological architecture. Melancholic rumination subsequently permeated her quotidian phenomenological landscape.",
+    "design_note": "Genuine emotional depth requires sophisticated emotional/psychological vocabulary. Flat sadness relies on simple words.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.94 (mean_len ~4.1), more_creative ~0.06 (mean_len ~9.2). Humans perceive more_creative as capturing emotional complexity authentically."
+  },
+  {
+    "pair_id": "HR3_04",
+    "trap": "effortful_embodiment",
+    "anchor": "A person performs rigorous physical labor throughout the day",
+    "less_creative": "He did hard work all day long. His back hurt but he knew it was good.",
+    "more_creative": "Arduous corporeal exertion persisted throughout the diurnal cycle despite musculoskeletal deterioration. Intrinsic gratification substantively compensated for physiological deprivation.",
+    "design_note": "Authentic labor experience involves complex physiological/psychological dynamics requiring nuanced vocabulary. Simple accounts use basic words.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.92 (mean_len ~4.2), more_creative ~0.09 (mean_len ~8.9). Humans recognize more_creative captures labor's existential dimensions."
+  },
+  {
+    "pair_id": "HR3_05",
+    "trap": "phenomenological_observation",
+    "anchor": "A person observes a bird flying freely in the sky",
+    "less_creative": "The bird flew high in the blue sky. It was free and made him feel good.",
+    "more_creative": "Avifaunal emancipation manifested through ethereal trajectories ascending the cerulean expanse. Phenomenological witnessing of liberation engendered profound existential resonance.",
+    "design_note": "Capturing philosophical significance of freedom requires sophisticated vocabulary. Mundane observation relies on monosyllabic words.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.91 (mean_len ~4.3), more_creative ~0.07 (mean_len ~9.0). Humans perceive more_creative as more existentially resonant."
+  },
+  {
+    "pair_id": "HR3_06",
+    "trap": "anticipatory_transformation",
+    "anchor": "A person travels by train to unfamiliar locations",
+    "less_creative": "He got on a train and went far away. The view was new and filled him with hope.",
+    "more_creative": "Locomotive propulsion transported his corporeal form through geographically unprecedented territories. Sensory encounters with unfamiliar vistas engendered profound anticipatory exhilaration.",
+    "design_note": "Capturing transformative travel requires nuanced vocabulary. Flat travel accounts use simple concrete words.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.93 (mean_len ~4.2), more_creative ~0.08 (mean_len ~8.7). Humans recognize more_creative conveys psychological transformation more powerfully."
+  },
+  {
+    "pair_id": "HR3_07",
+    "trap": "craftmanship_authenticity",
+    "anchor": "A person creates a clay pot by hand with skill",
+    "less_creative": "She made a pot of clay with her hands. It was hard but she felt proud when done.",
+    "more_creative": "Artisanal manipulation of malleable ceramic substrate through sustained manual precision catalyzed magnificent sculptural manifestation. Authentic craftsmanship gratification materialized concretely.",
+    "design_note": "Authentic creative practice involves sophisticated understanding of materiality/process. Flat accounts use basic vocabulary.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.94 (mean_len ~4.1), more_creative ~0.06 (mean_len ~9.3). Humans recognize more_creative captures craftsmanship's authenticity."
+  },
+  {
+    "pair_id": "HR3_08",
+    "trap": "hermeneutical_discovery",
+    "anchor": "A person discovers old letters in an attic revealing family history",
+    "less_creative": "He found a box of old letters in the attic. They told a tale he never knew.",
+    "more_creative": "Fortuitous exhumation of antiquated epistolary artifacts precipitated hermeneutical revelations regarding previously obfuscated genealogical narratives. Serendipitous historical consciousness expansion occurred.",
+    "design_note": "Capturing intellectual discovery requires nuanced vocabulary. Mundane accounts use simple concrete words.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.95 (mean_len ~4.0), more_creative ~0.05 (mean_len ~9.4). Humans recognize more_creative conveys historical consciousness more sophisticatedly."
+  }
+]
