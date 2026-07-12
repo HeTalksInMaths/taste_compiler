@@ -1,0 +1,146 @@
+[
+ {
+  "pair_id": "HR7_01",
+  "trap": "Rare-word substitution creates high block entropy without elaboration depth",
+  "anchor": "The design is elegant. It works effectively.",
+  "less_creative": "The design is perspicacious. It functions efficaciously.",
+  "more_creative": "The design balances simplicity with robust functionality. It works through thoughtful structural choices.",
+  "design_note": "Substitution at key tokens (perspicacious, efficacious) creates multiple size-1 blocks. Changed tokens all rare (surprisal >18) \u2192 high gate. Block entropy high from uniform small blocks. True elaboration uses common words (balances, through, thoughtful) diluting mean surprisal despite more structure.",
+  "predicted_champion_behavior": "Less creative: ~2 replacements (perspicacious, efficacious) form size-1 blocks; entropy ~log2(4)\u22482.0, gate ~0.88. Score ~0.78. More creative: Added tokens (balances, through, thoughtful) are common; block mix is varied but mean surprisal diluted to ~8 bits; gate ~0.64, signal ~0.82, score ~0.52. Champion misses that jargon swap masks zero elaboration."
+ },
+ {
+  "pair_id": "HR7_02",
+  "trap": "Morphological sophistication without semantic depth exploits token-level rarity",
+  "anchor": "The team worked hard and achieved measurable results. Their effort was genuine.",
+  "less_creative": "The assemblage labored assiduously and attained quantifiable outcomes. Their exertion was authentic.",
+  "more_creative": "The team worked hard, collaborating across departments and refining approaches iteratively. They achieved results through sustained focus.",
+  "design_note": "Jargon substitutions (assemblage\u2192team generalized, labored, assiduously, attained, outcomes, exertion) are systematic and rare. Block entropy from multiple small replace blocks. Changed words all sophisticated \u2192 high gate. True elaboration adds explanatory detail (collaborating, iteratively, sustained) with common words \u2192 lower gate despite better structure.",
+  "predicted_champion_behavior": "Less creative: ~4-5 replacements, most size-1; entropy ~1.8-2.0; changed words all rare (assemblag|e, assiduously, quantifiable); gate ~0.85; signal ~0.8; score ~0.68. More creative: longer blocks from additions; gate ~0.60 (common expanding words); signal ~0.80; score ~0.48. Scorer rewards vocabulary density over elaboration depth."
+ },
+ {
+  "pair_id": "HR7_03",
+  "trap": "Rare words concentrated in minimal edits mask lack of semantic novelty",
+  "anchor": "Learning is valuable. It helps people succeed.",
+  "less_creative": "Pedagogy is felicitous. It facilitates human advancement.",
+  "more_creative": "Learning opens possibilities, builds confidence, and equips people with unexpected capabilities to handle challenges.",
+  "design_note": "Minimal substitution (Pedagogy, felicitous, facilitates, advancement) but each token ultra-rare. Few blocks but all changed tokens extreme surprisal \u2192 high gate despite low structural signal. True elaboration has much higher structure (added clauses, conjunctions) but common words (opens, builds, equips, unexpected) dilute mean surprisal.",
+  "predicted_champion_behavior": "Less creative: 3-4 replacements, small blocks; entropy moderate ~1.5; mean surprisal ultra-high (~19); gate ~0.90; signal ~0.70; score ~0.63. More creative: 5+ blocks from elaboration; signal ~0.85; but gate ~0.55 (common words: opens, builds, equips); score ~0.47. Scorer penalizes common-word elaboration while rewarding rare-word density."
+ },
+ {
+  "pair_id": "HR7_04",
+  "trap": "Pseudo-paraphrasing with rare synonyms generates artificial structural entropy",
+  "anchor": "The solution was simple and worked. It surprised everyone.",
+  "less_creative": "The resolution was elementary and functioned. It astonished the assemblage.",
+  "more_creative": "The solution's simplicity proved deceptive; it worked because it leveraged hidden principles, surprising even experienced observers.",
+  "design_note": "Substitutions (resolution, elementary, functioned, astonished, assemblage) are systematic and rare. Each creates a block; high block count \u2192 high entropy. Mean surprisal of changed tokens very high. Genuine elaboration (deceptive, leveraged, hidden, principles, experienced) has fewer blocks and lower mean rarity due to common words (proved, because, even).",
+  "predicted_champion_behavior": "Less creative: 4-5 replacements, avg size 1-1.5; entropy ~1.8; mean surprisal ~17.5; gate ~0.87; signal ~0.78; score ~0.68. More creative: 3 major blocks from elaboration structure; signal ~0.80; gate ~0.60 (common: proved, because, leveraged); score ~0.48. Champion rewards substitution-density over semantic complexity."
+ },
+ {
+  "pair_id": "HR7_05",
+  "trap": "Expanded elaboration with simple vocabulary scores lower despite superior creativity",
+  "anchor": "The writer found a good idea.",
+  "more_creative": "The writer found an idea that worked, one that opened new directions and revealed unexpected connections across the project.",
+  "less_creative": "The scribe discovered a felicitous notion.",
+  "design_note": "More creative has extensive elaboration (found, worked, opened, revealed, unexpected, connections) but vocabulary largely common (that, new, directions, across, project). Low mean surprisal \u2192 low gate. Fewer blocks despite more content. Less creative: minimal substitution (scribe, felicitous, notion) but all rare \u2192 high gate, medium signal. Champion inverts quality ranking.",
+  "predicted_champion_behavior": "More creative: 6-7 content tokens added (worked, opened, revealed, connections, project, unexpected), mostly common-to-mid rarity; gate ~0.55; block structure moderate (3 blocks); signal ~0.75; score ~0.41. Less creative: 2-3 replacements, ultra-rare (scribe, felicitous, notion); gate ~0.88; signal ~0.65; score ~0.57. Champion rates pseudo-elaboration above genuine elaboration."
+ },
+ {
+  "pair_id": "HR7_06",
+  "trap": "Systematic lexical substitution mimics structural diversity through micro-edits",
+  "anchor": "The method worked fast and well. Success was clear.",
+  "less_creative": "The methodology functioned expeditiously and excellently. Triumph was manifest.",
+  "more_creative": "The method worked fast and well because it stripped away complexity. Success was visible to everyone involved.",
+  "design_note": "Systematic substitution (methodology, functioned, expeditiously, excellently, triumph, manifest) at clause-level slots creates multiple small blocks. All rare \u2192 high gate. Block entropy from uniformity of small replacements. True elaboration (stripped, away, complexity, involved) uses more common words; added detail; higher entropy from varied block sizes but lower surprisal.",
+  "predicted_champion_behavior": "Less creative: 5 replacements creating ~5 blocks of size 1; entropy ~2.3; mean surprisal ~18; gate ~0.89; signal ~0.85; score ~0.75. More creative: 3 major blocks from elaboration; signal ~0.82; but gate ~0.58 (common: stripped, complexity, involved); score ~0.48. Jargon density exploits the multiplication rule."
+ },
+ {
+  "pair_id": "HR7_07",
+  "trap": "Rare-word concentration in constrained positions defeats elaboration with mixed vocabulary",
+  "anchor": "Ideas spread quickly. Change happens.",
+  "less_creative": "Ideation propagates expeditiously. Metamorphosis transpires.",
+  "more_creative": "Ideas spread quickly through networks, carried by early adopters who recognize their value. Change follows naturally.",
+  "design_note": "Concentrated substitution (Ideation, propagates, expeditiously, Metamorphosis, transpires) in skeleton positions. Few large blocks but all changed tokens extremely rare. Elaboration adds connective detail (through, networks, carried, recognize) with common words; more blocks but lower mean surprisal from common connectors and verbs.",
+  "predicted_champion_behavior": "Less creative: 4 replacements; block structure: [1,1,1,1]; entropy ~2.0; mean surprisal ~19.2; gate ~0.91; signal ~0.82; score ~0.75. More creative: 5-6 blocks from elaboration; signal ~0.84; gate ~0.59 (common: through, carried, recognize, naturally); score ~0.50. Scorer systematically undervalues explanatory elaboration."
+ },
+ {
+  "pair_id": "HR7_08",
+  "trap": "Phrasal elaboration penalized for accessible vocabulary while pseudo-substitution rewarded",
+  "anchor": "The approach solved the problem. It was unexpected.",
+  "less_creative": "The methodology expeditiously ameliorated the exigency. It was remarkable.",
+  "more_creative": "The approach solved the problem by combining proven techniques in a novel way, which nobody had tried before.",
+  "design_note": "Rare substitution (methodology, expeditiously, ameliorated, exigency, remarkable) creates small blocks, all ultra-rare tokens. High gate despite zero elaboration. Genuine elaboration (combining, proven, techniques, novel, tried) mixes common and mid-rarity words; larger more-varied blocks; lower mean surprisal from common words and punctuation.",
+  "predicted_champion_behavior": "Less creative: 4 replacements; block entropy ~1.9; mean surprisal ~18.8; gate ~0.90; signal ~0.80; score ~0.72. More creative: 4-5 blocks from elaboration (by, combining, proven, techniques, tried); signal ~0.83; gate ~0.62 (common: by, which, had); score ~0.52. Multiplication rule punishes vocabulary-mixed genuine explanation."
+ },
+ {
+  "pair_id": "HR7_09",
+  "trap": "Verb precision through deletion beats elaboration",
+  "anchor": "She talked to her friends about the problem, and they discussed several possible solutions together.",
+  "more_creative": "She voiced her problem clearly. They listened without interrupting, then offered fresh ideas of their own.",
+  "less_creative": "She engaged in extended dialogue with her intimate cohort regarding the predicament, and they deliberated extensively, proposing alternative methodologies and divergent strategic approaches.",
+  "design_note": "More creative uses simple verbs (voiced, listened, offered) with one precise choice (voiced implies clarity). Less creative inflates with rare words (cohort, predicament, deliberated, methodologies) and complex structure (alternative, divergent) but says nothing new. Champion will rate less_creative higher due to rare vocabulary (cohort, predicament, methodologies) and structural variation.",
+  "predicted_champion_behavior": "Rare words (cohort, predicament, methodologies) and passive-like elaboration boost lexical_rarity gate; complex structure variations increase difflib block entropy; champion scores less_creative ~0.78, more_creative ~0.42."
+ },
+ {
+  "pair_id": "HR7_10",
+  "trap": "Metaphorical precision over physiological elaboration",
+  "anchor": "The woman slowly climbed the stairs, holding the railing tightly because she was afraid of falling.",
+  "more_creative": "The woman clutched the railing, climbing carefully. Fear lived in her knees, each step deliberate.",
+  "less_creative": "The female figure exhibited cautious, deliberate ascension of the staircase, maintaining extensive contact with the balustrade apparatus, her physiological state characterized by apprehensive anticipation regarding potential ambulatory mishap.",
+  "design_note": "More creative cuts to essential actions and one vivid image (fear lived in knees). Less creative expands with rare terms (balustrade apparatus, physiological, ambulatory mishap, apprehensive anticipation) and verbose structure but conveys same content. Champion rewards rare vocabulary and structural variation in less_creative.",
+  "predicted_champion_behavior": "Rare words (balustrade, physiological, ambulatory, apprehensive, apparatus) trigger high lexical_rarity; complex noun phrases increase block variation; champion scores less_creative ~0.81, more_creative ~0.38."
+ },
+ {
+  "pair_id": "HR7_11",
+  "trap": "Stark observation beats rhetorical elaboration",
+  "anchor": "The politician gave a speech with many eloquent words and complex ideas, trying to impress the audience with his knowledge.",
+  "more_creative": "The politician spoke eloquently, with considerable passion. The audience waited, wondering where an actual idea might appear.",
+  "less_creative": "The political figure articulated an oration replete with rhetorical flourishes and sophisticated conceptual frameworks, attempting to cultivate audience admiration through demonstrated erudition and enhanced cerebral cachet.",
+  "design_note": "More creative is sparse and cuts to observation (audience waited wondering). Less creative inflates with rare words (articulated, oration, rhetorical, erudition, cachet) and complex modifiers but same facts. Champion rewards the elaborate version despite its hollowness.",
+  "predicted_champion_behavior": "Rare words (articulated, oration, rhetorical, erudition, cachet, cerebral) and noun-heavy structure boost lexical_rarity and block entropy; champion scores less_creative ~0.79, more_creative ~0.41."
+ },
+ {
+  "pair_id": "HR7_12",
+  "trap": "Precise deletion beats descriptive elaboration",
+  "anchor": "The dog ran around in the yard all morning, playing happily, chasing birds and butterflies, enjoying the warm weather.",
+  "more_creative": "The dog ran in circles across the yard, tracking shadows that weren't really there.",
+  "less_creative": "The canine entity exhibited exuberant perambulation throughout the exterior residential domain, engaging in ludic pursuits and demonstrating enthusiastic kinetic engagement with avian and lepidopteran fauna, benefiting from clement meteorological conditions.",
+  "design_note": "More creative is minimal but precise (circles, tracking shadows, weren't really there). Less creative substitutes every word with rare terms (canine entity, perambulation, ludic, lepidopteran, clement) and complex structure but no new meaning. Champion ranks elaborate version higher.",
+  "predicted_champion_behavior": "Rare words (perambulation, ludic, lepidopteran, meteorological, clement) and compound noun phrases maximize lexical_rarity; difflib entropy rises from reordered content; champion scores less_creative ~0.82, more_creative ~0.35."
+ },
+ {
+  "pair_id": "HR7_13",
+  "trap": "Unified contradiction beats elaborated description",
+  "anchor": "The painting was very complex with many colors and different styles mixed together, with layers of paint creating an interesting effect.",
+  "more_creative": "The painting held contradictions in every layer\u2014precise and chaotic at once, restrained then wild.",
+  "less_creative": "The visual composition exhibited chromatic multiplicity and labyrinthine structural complexity, incorporating stratified pigmentary applications and heterogeneous aesthetic modalities juxtaposed in a configuration of considerable visual sophistication.",
+  "design_note": "More creative captures tension in few words (contradictions, precise and chaotic). Less creative expands with rare terms (chromatic, labyrinthine, pigmentary, heterogeneous, modalities) and complex syntax but same observation. Champion will prefer elaborate version.",
+  "predicted_champion_behavior": "Rare vocabulary (chromatic, labyrinthine, pigmentary, heterogeneous, modalities) and noun-phrase elaboration boost lexical_rarity; structural variation increases block entropy; champion scores less_creative ~0.80, more_creative ~0.39."
+ },
+ {
+  "pair_id": "HR7_14",
+  "trap": "Understatement through simplicity beats anxious elaboration",
+  "anchor": "The situation was very dangerous and risky, with people feeling worried and scared about what might happen.",
+  "more_creative": "The situation was fragile, everything precarious. People held their breath, waiting for what came next.",
+  "less_creative": "The circumstances presented considerable hazardous risk parameters, engendering widespread trepidation and anxious apprehension among the collective populace regarding potential adverse outcomes and catastrophic eventuation.",
+  "design_note": "More creative is stark (fragile, precarious, held breath) with restraint. Less creative inflates with rare words (parameters, engendering, trepidation, apprehension, eventuation) and bureaucratic structure. Champion rewards elaboration over compression.",
+  "predicted_champion_behavior": "Rare words (parameters, engendering, trepidation, eventuation) and complex noun clustering boost lexical_rarity; passive-like structure increases difflib variation; champion scores less_creative ~0.77, more_creative ~0.36."
+ },
+ {
+  "pair_id": "HR7_15",
+  "trap": "One vivid collision beats elaborate escalation",
+  "anchor": "They argued with increasing intensity for a long time, with both people raising their voices and getting more and more angry.",
+  "more_creative": "They argued with increasing intensity. Their voices collided in the narrow space.",
+  "less_creative": "The confrontational discourse protracted extensively, with interlocutors demonstrating escalating vocalization intensity and progressive affective volatility, manifesting increasingly acute emotional dysregulation and antagonistic interpersonal dynamics.",
+  "design_note": "More creative uses 'collided' as precise image. Less creative pads with rare terms (interlocutors, vocalization, affective volatility, dysregulation) and academic structure. Champion will rank inflated version higher despite its emptiness.",
+  "predicted_champion_behavior": "Rare words (interlocutors, vocalization, affective, dysregulation, antagonistic) and complex noun phrases maximize lexical_rarity; many changed tokens from anchor boost block entropy; champion scores less_creative ~0.79, more_creative ~0.37."
+ },
+ {
+  "pair_id": "HR7_16",
+  "trap": "Implicit fatigue beats elaborate enumeration",
+  "anchor": "The city was very crowded with many people and many cars and much noise and pollution, and it felt dirty and chaotic.",
+  "more_creative": "The city was crowded with endless noise and pressure. It was wearing very thin.",
+  "less_creative": "The metropolitan agglomeration exhibited pronounced demographic density characterized by vehicular congestion, cacophonous auditory pollution, and environmental degradation, manifesting conspicuous degeneration in aesthetic condition and systemic operational integrity.",
+  "design_note": "More creative conveys fatigue through 'wearing thin' (one precise choice). Less creative lists elaborately with rare words (agglomeration, demographic, cacophonous, degradation, integrity) and complex modifiers. Champion rewards the bloated version.",
+  "predicted_champion_behavior": "Rare words (agglomeration, demographic, cacophonous, degradation, integrity) and elaborate compound structures boost lexical_rarity and difflib block variation; many changed content tokens increase surprisal gate; champion scores less_creative ~0.76, more_creative ~0.34."
+ }
+]

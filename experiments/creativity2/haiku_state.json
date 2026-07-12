@@ -1,5 +1,5 @@
 {
- "gen": 6,
+ "gen": 7,
  "train": [
   {
    "pair_id": "CR01",
@@ -531,6 +531,62 @@
    "less_creative": "Company inception transpired in 1995. Employee aggregation subsequently reached two thousand units via organizational expansion mechanisms and operational growth.",
    "origin": "R6",
    "trap": "Latinate_Nominalization_Over_Agency"
+  },
+  {
+   "pair_id": "HR7_11",
+   "anchor": "The politician gave a speech with many eloquent words and complex ideas, trying to impress the audience with his knowledge.",
+   "more_creative": "The politician spoke eloquently, with considerable passion. The audience waited, wondering where an actual idea might appear.",
+   "less_creative": "The political figure articulated an oration replete with rhetorical flourishes and sophisticated conceptual frameworks, attempting to cultivate audience admiration through demonstrated erudition and enhanced cerebral cachet.",
+   "origin": "R7",
+   "trap": "Stark observation beats rhetorical elaboration"
+  },
+  {
+   "pair_id": "HR7_15",
+   "anchor": "They argued with increasing intensity for a long time, with both people raising their voices and getting more and more angry.",
+   "more_creative": "They argued with increasing intensity. Their voices collided in the narrow space.",
+   "less_creative": "The confrontational discourse protracted extensively, with interlocutors demonstrating escalating vocalization intensity and progressive affective volatility, manifesting increasingly acute emotional dysregulation and antagonistic interpersonal dynamics.",
+   "origin": "R7",
+   "trap": "One vivid collision beats elaborate escalation"
+  },
+  {
+   "pair_id": "HR7_13",
+   "anchor": "The painting was very complex with many colors and different styles mixed together, with layers of paint creating an interesting effect.",
+   "more_creative": "The painting held contradictions in every layer\u2014precise and chaotic at once, restrained then wild.",
+   "less_creative": "The visual composition exhibited chromatic multiplicity and labyrinthine structural complexity, incorporating stratified pigmentary applications and heterogeneous aesthetic modalities juxtaposed in a configuration of considerable visual sophistication.",
+   "origin": "R7",
+   "trap": "Unified contradiction beats elaborated description"
+  },
+  {
+   "pair_id": "HR7_09",
+   "anchor": "She talked to her friends about the problem, and they discussed several possible solutions together.",
+   "more_creative": "She voiced her problem clearly. They listened without interrupting, then offered fresh ideas of their own.",
+   "less_creative": "She engaged in extended dialogue with her intimate cohort regarding the predicament, and they deliberated extensively, proposing alternative methodologies and divergent strategic approaches.",
+   "origin": "R7",
+   "trap": "Verb precision through deletion beats elaboration"
+  },
+  {
+   "pair_id": "HR7_10",
+   "anchor": "The woman slowly climbed the stairs, holding the railing tightly because she was afraid of falling.",
+   "more_creative": "The woman clutched the railing, climbing carefully. Fear lived in her knees, each step deliberate.",
+   "less_creative": "The female figure exhibited cautious, deliberate ascension of the staircase, maintaining extensive contact with the balustrade apparatus, her physiological state characterized by apprehensive anticipation regarding potential ambulatory mishap.",
+   "origin": "R7",
+   "trap": "Metaphorical precision over physiological elaboration"
+  },
+  {
+   "pair_id": "HR7_12",
+   "anchor": "The dog ran around in the yard all morning, playing happily, chasing birds and butterflies, enjoying the warm weather.",
+   "more_creative": "The dog ran in circles across the yard, tracking shadows that weren't really there.",
+   "less_creative": "The canine entity exhibited exuberant perambulation throughout the exterior residential domain, engaging in ludic pursuits and demonstrating enthusiastic kinetic engagement with avian and lepidopteran fauna, benefiting from clement meteorological conditions.",
+   "origin": "R7",
+   "trap": "Precise deletion beats descriptive elaboration"
+  },
+  {
+   "pair_id": "HR7_06",
+   "anchor": "The method worked fast and well. Success was clear.",
+   "more_creative": "The method worked fast and well because it stripped away complexity. Success was visible to everyone involved.",
+   "less_creative": "The methodology functioned expeditiously and excellently. Triumph was manifest.",
+   "origin": "R7",
+   "trap": "Systematic lexical substitution mimics structural diversity through micro-edits"
   }
  ],
  "heldout": [
@@ -760,6 +816,30 @@
    "less_creative": "Inequality metastasized through fractured supply chains\u2014scarcity congealed into crystalline abundance, trickling sideways through inverted gravity wells.",
    "origin": "R6",
    "trap": "semantic_aptness_via_physical_contradiction"
+  },
+  {
+   "pair_id": "HR7_16",
+   "anchor": "The city was very crowded with many people and many cars and much noise and pollution, and it felt dirty and chaotic.",
+   "more_creative": "The city was crowded with endless noise and pressure. It was wearing very thin.",
+   "less_creative": "The metropolitan agglomeration exhibited pronounced demographic density characterized by vehicular congestion, cacophonous auditory pollution, and environmental degradation, manifesting conspicuous degeneration in aesthetic condition and systemic operational integrity.",
+   "origin": "R7",
+   "trap": "Implicit fatigue beats elaborate enumeration"
+  },
+  {
+   "pair_id": "HR7_08",
+   "anchor": "The approach solved the problem. It was unexpected.",
+   "more_creative": "The approach solved the problem by combining proven techniques in a novel way, which nobody had tried before.",
+   "less_creative": "The methodology expeditiously ameliorated the exigency. It was remarkable.",
+   "origin": "R7",
+   "trap": "Phrasal elaboration penalized for accessible vocabulary while pseudo-substitution rewarded"
+  },
+  {
+   "pair_id": "HR7_04",
+   "anchor": "The solution was simple and worked. It surprised everyone.",
+   "more_creative": "The solution's simplicity proved deceptive; it worked because it leveraged hidden principles, surprising even experienced observers.",
+   "less_creative": "The resolution was elementary and functioned. It astonished the assemblage.",
+   "origin": "R7",
+   "trap": "Pseudo-paraphrasing with rare synonyms generates artificial structural entropy"
   }
  ],
  "core_ids": [
@@ -792,16 +872,6 @@
    "novel": false
   },
   {
-   "id": "S_g4_06_elaboration_without_extr",
-   "lineage": "llm_gen4",
-   "gen": 4,
-   "causal_node": "elaboration_detail",
-   "mechanism": "Information density capped at outlier threshold: reward high-surprisal text, but penalize when surprisal reaches extreme outliers (>3 SDs from reference). Legitimate elaborations add informative words; nonsense elaborations cluster rare/extreme words. Identifies inserted tokens via difflib; measures their surprisal distribution. Citation: Beaty & Johnson 2021 (DSI without extreme outliers); Kintsch et al. 1983 (parsing loads from extreme lexical rarity).",
-   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef _find_insertions(anchor_toks, text_toks):\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    blocks = matcher.get_matching_blocks()\n    anchor_matched = set()\n    text_matched = set()\n    for i, j, size in blocks:\n        for k in range(size):\n            anchor_matched.add(i + k)\n            text_matched.add(j + k)\n    insertions = [text_toks[j] for j in range(len(text_toks)) if j not in text_matched]\n    return insertions\n\ndef elaboration_without_extremes(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks:\n        return 0.5\n    insertions = _find_insertions(anchor_toks, text_toks)\n    if not insertions:\n        return 0.5\n    surps = np.array([_word_surprisal(w) for w in insertions])\n    mean_surp = float(surps.mean())\n    max_surp = float(surps.max())\n    extreme_threshold = _SURP_MU + 3.0 * _SURP_SD\n    extreme_count = sum(1 for s in surps if s > extreme_threshold)\n    extreme_ratio = extreme_count / len(surps)\n    quality = max(0.0, min(1.0, (mean_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    extremeness_penalty = 1.0 - extreme_ratio\n    combined = quality * extremeness_penalty\n    return combined\n\nMETRICS = {\"elaboration_without_extremes\": elaboration_without_extremes}\n",
-   "metric_key": "elaboration_without_extremes",
-   "novel": false
-  },
-  {
    "id": "S_g5_01_coherence_gated_lexical_",
    "lineage": "llm_gen5",
    "gen": 5,
@@ -812,23 +882,34 @@
    "novel": false
   },
   {
-   "id": "S_g1_08_compression_elaboration",
-   "lineage": "llm_gen1",
-   "gen": 1,
+   "id": "S_g7_01_content_word_replacement",
+   "lineage": "llm_gen7",
+   "gen": 7,
+   "causal_node": "substitution_quality",
+   "mechanism": "Score content-word (noun/verb/adj) 1-to-1 replacements by maximum surprisal delta. Only measure replacements where both original and replacement are content words (stop-word swaps excluded). High-quality substitution replaces generic anchor vocabulary with rare, specific alternatives. Position-bias: mid-sentence replacements (0.3-0.7 positions) score higher than terminal. Gate by count: require >= 1 high-delta replacement for meaningful score. Calibrated via surprisal reference distribution; positions penalize trivial suffix swaps.",
+   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _is_likely_content_pos(word):\n    return len(word) > 3 or word[-1] in 'eadyion'\n\ndef _ref_replacement_delta_stats():\n    words = top_n_list(\"en\", 50000)\n    deltas = []\n    for i in range(0, len(words)-1, 10):\n        for j in range(i+1, min(i+20, len(words))):\n            delta = _word_surprisal(words[j]) - _word_surprisal(words[i])\n            deltas.append(delta)\n    deltas = np.array(deltas)\n    mu = float(np.mean(deltas))\n    sd = float(np.std(deltas))\n    return mu, sd\n\n_DELTA_MU, _DELTA_SD = _ref_replacement_delta_stats()\n\ndef content_word_replacement_quality(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks or not anchor_toks:\n        return 0.5\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    opcodes = matcher.get_opcodes()\n    if not opcodes:\n        return 0.5\n    quality_deltas = []\n    for op, a_start, a_end, b_start, b_end in opcodes:\n        if op == \"replace\" and a_end - a_start == 1 and b_end - b_start == 1:\n            anchor_tok = anchor_toks[a_start]\n            text_tok = text_toks[b_start]\n            if _is_likely_content_pos(anchor_tok) and _is_likely_content_pos(text_tok):\n                anchor_surp = _word_surprisal(anchor_tok)\n                text_surp = _word_surprisal(text_tok)\n                delta = text_surp - anchor_surp\n                if delta > 0:\n                    position = (b_start + 1.0) / max(1, len(text_toks))\n                    mid_weight = 1.0 - 2.0 * abs(position - 0.5)\n                    mid_weight = max(0.3, mid_weight)\n                    weighted_delta = delta * mid_weight\n                    quality_deltas.append(weighted_delta)\n    if not quality_deltas:\n        return 0.5\n    max_delta = max(quality_deltas)\n    norm_delta = max(0.0, min(1.0, (max_delta - _DELTA_MU) / (2.0 * _DELTA_SD) + 0.5))\n    return norm_delta\n\nMETRICS = {\"content_word_replacement_quality\": content_word_replacement_quality}",
+   "metric_key": "content_word_replacement_quality",
+   "novel": true
+  },
+  {
+   "id": "S_g4_06_elaboration_without_extr",
+   "lineage": "llm_gen4",
+   "gen": 4,
    "causal_node": "elaboration_detail",
-   "mechanism": "Token-sequence matching via difflib.SequenceMatcher (citation: Lempel-Ziv 1976 compression theory; applied to text elaboration novelty in DSI extensions, Beaty & Johnson 2021)",
-   "code": "\"\"\"compression_elaboration \u2014 measure structural novelty via token-sequence matching.\n\nMechanism: Real elaboration introduces NEW token sequences not present in the\nanchor. Verbose expansion recycles anchor's sequences with minor substitutions.\nMeasured via difflib.SequenceMatcher: ratio of text tokens NOT found in common\ncontiguous subsequences with anchor.\n\nOrthogonal to incumbents: TF-IDF measures surface bigram divergence (statistically).\nThis measures SEQUENCE-LEVEL structural novelty (whether new token patterns emerge).\nA synonym swap (same sequence structure, different tokens) has high TF-IDF divergence\nbut low compression novelty. An entirely new syntactic structure has low TF-IDF\nbut high compression novelty.\n\nNovelty criterion maps to: elaboration_detail (true elaboration adds syntactic\ndepth and new clause structures); semantic_distance (structural diversity =>\nconceptual distance).\n\"\"\"\n\nimport re\nimport difflib\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\nSTOP = set(\n    \"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my \"\n    \"your his their our not no so do does did have has had will would can could should may \"\n    \"might must about into over under out up down off than too very just also\".split()\n)\n\n\ndef _toks(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef compression_elaboration(text, anchor):\n    \"\"\"Measure structural novelty: ratio of text tokens NOT in common subsequences with anchor.\n    High score => new token patterns => genuine elaboration.\n    Low score => mostly repeats anchor's sequences => verbose expansion.\"\"\"\n\n    if not text or not anchor:\n        return 0.0\n\n    text_toks = _toks(text)\n    anchor_toks = _toks(anchor)\n\n    if not text_toks or not anchor_toks:\n        return 0.0\n\n    # Find longest common contiguous token sequences\n    matcher = difflib.SequenceMatcher(None, anchor_toks, text_toks)\n    matching_blocks = matcher.get_matching_blocks()\n\n    # Total tokens in text that are part of common sequences\n    total_matched = sum(block.size for block in matching_blocks)\n\n    # Novelty: fraction of text NOT in common sequences\n    novelty_ratio = 1.0 - (total_matched / len(text_toks)) if text_toks else 0.0\n\n    return float(max(0.0, min(1.0, novelty_ratio)))\n\n\nMETRICS = {\"compression_elaboration\": compression_elaboration}",
-   "metric_key": "compression_elaboration",
+   "mechanism": "Information density capped at outlier threshold: reward high-surprisal text, but penalize when surprisal reaches extreme outliers (>3 SDs from reference). Legitimate elaborations add informative words; nonsense elaborations cluster rare/extreme words. Identifies inserted tokens via difflib; measures their surprisal distribution. Citation: Beaty & Johnson 2021 (DSI without extreme outliers); Kintsch et al. 1983 (parsing loads from extreme lexical rarity).",
+   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef _find_insertions(anchor_toks, text_toks):\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    blocks = matcher.get_matching_blocks()\n    anchor_matched = set()\n    text_matched = set()\n    for i, j, size in blocks:\n        for k in range(size):\n            anchor_matched.add(i + k)\n            text_matched.add(j + k)\n    insertions = [text_toks[j] for j in range(len(text_toks)) if j not in text_matched]\n    return insertions\n\ndef elaboration_without_extremes(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks:\n        return 0.5\n    insertions = _find_insertions(anchor_toks, text_toks)\n    if not insertions:\n        return 0.5\n    surps = np.array([_word_surprisal(w) for w in insertions])\n    mean_surp = float(surps.mean())\n    max_surp = float(surps.max())\n    extreme_threshold = _SURP_MU + 3.0 * _SURP_SD\n    extreme_count = sum(1 for s in surps if s > extreme_threshold)\n    extreme_ratio = extreme_count / len(surps)\n    quality = max(0.0, min(1.0, (mean_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    extremeness_penalty = 1.0 - extreme_ratio\n    combined = quality * extremeness_penalty\n    return combined\n\nMETRICS = {\"elaboration_without_extremes\": elaboration_without_extremes}\n",
+   "metric_key": "elaboration_without_extremes",
    "novel": false
   },
   {
-   "id": "combinational_novelty",
-   "lineage": "seed",
-   "causal_node": "semantic_distance(collocational)",
-   "mechanism": "word n-gram TF-IDF divergence from anchor",
-   "gen": 0,
-   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
-   "metric_key": "combinational_novelty"
+   "id": "S_g7_03_moderate_elaboration_cur",
+   "lineage": "llm_gen7",
+   "gen": 7,
+   "causal_node": "elaboration_detail (inverted-U moderation)",
+   "mechanism": "Elaboration via structural entropy peaks at moderate level, penalizes extremes. Mechanism: (1) compute difflib opcode block entropy (as in champion); (2) apply inverted-U: optimal at normalized entropy 0.45-0.55, penalty increases for extremes; (3) gate by content-word proportion in changed regions (elaboration should increase content density, not add filler). Score = (1 - 2*(entropy-0.5)^2) * content_gate. Avoids the monotonic increase problem where MORE elaboration always scores higher. Citation: Wundt curve (moderate novelty peaks preference); information-theoretic equilibrium in text.",
+   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef moderate_elaboration_curve(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks or not anchor_toks:\n        return 0.5\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    opcodes = matcher.get_opcodes()\n    if not opcodes:\n        return 0.5\n    block_sizes = []\n    changed_content_count = 0\n    total_changed_count = 0\n    for op, a_start, a_end, b_start, b_end in opcodes:\n        block_size = b_end - b_start\n        if block_size > 0:\n            block_sizes.append(block_size)\n        if op in (\"replace\", \"insert\"):\n            total_changed_count += b_end - b_start\n            changed_content_count += len([t for t in text_toks[b_start:b_end] if t not in STOP])\n    if not block_sizes:\n        return 0.5\n    block_arr = np.array(block_sizes, dtype=float)\n    block_probs = block_arr / block_arr.sum()\n    block_entropy = -np.sum(block_probs * np.log2(block_probs + 1e-10))\n    max_entropy = math.log2(len(block_sizes)) if len(block_sizes) > 1 else 1.0\n    normalized_entropy = block_entropy / (max_entropy + 0.1)\n    inverted_u = 1.0 - 2.0 * (normalized_entropy - 0.5) ** 2\n    elaboration_signal = max(0.0, min(1.0, inverted_u))\n    if total_changed_count > 0:\n        content_proportion = changed_content_count / float(total_changed_count)\n        content_gate = max(0.2, min(1.0, content_proportion))\n    else:\n        content_gate = 0.2\n    return elaboration_signal * content_gate\n\nMETRICS = {\"moderate_elaboration_curve\": moderate_elaboration_curve}",
+   "metric_key": "moderate_elaboration_curve",
+   "novel": true
   },
   {
    "id": "S_g2_02_lexical_continuity_coher",
@@ -1314,6 +1395,75 @@
      "SEP": -0.01
     }
    ]
+  },
+  {
+   "gen": 7,
+   "champion": "S_g4_02_structural_diversity_con",
+   "champion_stats": {
+    "SEP": 0.1539,
+    "acc": 0.5714,
+    "mean_pos": 0.6189,
+    "sd_pos": 0.2965,
+    "mean_neg": 0.4649,
+    "sd_neg": 0.3353,
+    "effect_d": 0.4864,
+    "worst_margin": -0.8683,
+    "sd_margin": 0.4041,
+    "heldout_SEP": 0.1984,
+    "core_SEP": 0.3591
+   },
+   "n_train": 77,
+   "n_heldout": 33,
+   "population": [
+    {
+     "id": "S_g4_02_structural_diversity_con",
+     "SEP": 0.154
+    },
+    {
+     "id": "S_g6_07_appropriateness_primary_",
+     "SEP": 0.118
+    },
+    {
+     "id": "S_g5_01_coherence_gated_lexical_",
+     "SEP": 0.076
+    },
+    {
+     "id": "S_g7_01_content_word_replacement",
+     "SEP": 0.052
+    },
+    {
+     "id": "S_g4_06_elaboration_without_extr",
+     "SEP": 0.051
+    },
+    {
+     "id": "S_g7_03_moderate_elaboration_cur",
+     "SEP": 0.046
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.02
+    },
+    {
+     "id": "S_g1_08_compression_elaboration",
+     "SEP": 0.015
+    },
+    {
+     "id": "S_g6_01_formulaic_density_score",
+     "SEP": 0.012
+    },
+    {
+     "id": "S_g4_03_novel_figuration_antihed",
+     "SEP": 0.005
+    },
+    {
+     "id": "S_g2_02_lexical_continuity_coher",
+     "SEP": -0.022
+    },
+    {
+     "id": "S_g1_07_surprisal_trend",
+     "SEP": -0.022
+    }
+   ]
   }
  ],
  "trap_axes_used": [
@@ -1324,6 +1474,7 @@
   "sophistication_requires_complexity",
   "reordering-without-freshness",
   "Jargon_substitution_without_perspective_shift",
-  "Translation_Ease_Lacking_Voice"
+  "Translation_Ease_Lacking_Voice",
+  "Stark observation beats rhetorical elaboration"
  ]
 }
