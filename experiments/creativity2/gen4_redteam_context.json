@@ -1,0 +1,32 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "coherence \u2014 LCS (Wagner & Fischer 1974) skeleton preservation x insertion-only surprisal gate",
+  "code": "\"\"\"skeleton_preserved_insertion_novelty \u2014 coherence via preserved content-word\norder, gated by the novelty of only the inserted material.\n\nMechanism: coherence approximated as skeletal continuity \u2014 the LCS (Wagner &\nFischer 1974) ratio of the anchor's CONTENT-word sequence surviving in order in\nthe rewrite, after stripping closed grammatical classes (Quirk et al. 1985\nstyle inventory: pronouns, determiners, auxiliaries, conjunctions,\nprepositions, particles \u2014 not content words). Minimal apt edits keep the\nskeleton (ratio near 1); heavy relexicalization breaks content-word order.\nPreservation alone rewards doing nothing, so it is multiplied by a logistic\ngate on the mean surprisal of ONLY the unmatched (new) content words vs the\nwordfreq top-5000 reference mean: \"novelty of what is new, given you kept what\nworked\" \u2014 conjunctive, but from different primitives than the incumbent\nnovelty*appropriateness product.\n\"\"\"\n\nimport math\nimport re\nimport statistics\n\nfrom wordfreq import top_n_list, word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\n\n# Closed grammatical classes only (Quirk et al. 1985 inventory style).\n_PRONOUNS = frozenset(\n    \"i me my mine myself you your yours yourself yourselves he him his himself she her hers \"\n    \"herself it its itself we us our ours ourselves they them their theirs themselves this \"\n    \"that these those who whom whose which what someone something everyone everything nobody \"\n    \"nothing anybody anything anyone none one ones\".split()\n)\n_DETERMINERS = frozenset(\"a an the some any each every no all both either neither several\".split())\n_AUXILIARIES = frozenset(\n    \"be am is are was were been being have has had having do does did doing will would shall \"\n    \"should can could may might must ought\".split()\n)\n_CONJUNCTIONS = frozenset(\n    \"and but or nor for yet so although though because since unless while whereas if when \"\n    \"whenever before after until than as\".split()\n)\n_PREPOSITIONS = frozenset(\n    \"aboard about above across after against along amid among around at before behind below \"\n    \"beneath beside besides between beyond but by concerning despite down during except for \"\n    \"from in inside into like near of off on onto out outside over past since through \"\n    \"throughout till to toward towards under underneath until unto up upon with within without\"\n    .split()\n)\n_PARTICLES = frozenset(\n    \"not to there here very too also just only even quite rather more most less least own\".split()\n)\n\n_FUNCTION = _PRONOUNS | _DETERMINERS | _AUXILIARIES | _CONJUNCTIONS | _PREPOSITIONS | _PARTICLES\n\n\ndef _tokens(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _content_tokens(s):\n    return [t for t in _tokens(s) if t not in _FUNCTION]\n\n\ndef _surprisal(tok):\n    p = word_frequency(tok, \"en\")\n    if p <= 0:\n        p = 1e-9\n    return -math.log2(p)\n\n\ndef _reference_stats():\n    words = [w for w in top_n_list(\"en\", 5000) if w.isalpha()]\n    if not words:\n        return 10.0, 2.0\n    vals = [_surprisal(w) for w in words]\n    return sum(vals) / len(vals), (statistics.pstdev(vals) or 1.0)\n\n\n_REF_MEAN, _REF_STD = _reference_stats()\n_GATE_SPREAD = max(_REF_STD, 1e-3)\n\n\ndef _lcs_matched_b_indices(a, b):\n    n, m = len(a), len(b)\n    dp = [[0] * (m + 1) for _ in range(n + 1)]\n    for i in range(1, n + 1):\n        ai = a[i - 1]\n        row, prow = dp[i], dp[i - 1]\n        for j in range(1, m + 1):\n            if ai == b[j - 1]:\n                row[j] = prow[j - 1] + 1\n            else:\n                row[j] = row[j - 1] if row[j - 1] >= prow[j] else prow[j]\n    matched = set()\n    i, j = n, m\n    while i > 0 and j > 0:\n        if a[i - 1] == b[j - 1]:\n            matched.add(j - 1)\n            i -= 1\n            j -= 1\n        elif dp[i - 1][j] >= dp[i][j - 1]:\n            i -= 1\n        else:\n            j -= 1\n    return dp[n][m], matched\n\n\ndef skeleton_preserved_insertion_novelty(text, anchor):\n    if not text or not anchor:\n        return 0.05\n    a_c = _content_tokens(anchor)\n    b_c = _content_tokens(text)\n    if not a_c or not b_c:\n        return 0.05\n\n    lcs_len, matched_b = _lcs_matched_b_indices(a_c, b_c)\n    preservation = lcs_len / len(a_c)\n\n    novel = [b_c[j] for j in range(len(b_c)) if j not in matched_b]\n    if not novel:\n        return 0.0\n\n    mean_surp = sum(_surprisal(t) for t in novel) / len(novel)\n    z = (mean_surp - _REF_MEAN) / _GATE_SPREAD\n    gate = 1.0 / (1.0 + math.exp(-z))\n\n    score = preservation * gate\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\n    \"skeleton_preserved_insertion_novelty\": skeleton_preserved_insertion_novelty,\n}\n"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "synonym-churn confound",
+  "syntactic padding vs creative compression",
+  "register-rarity confound / restructuring penalty"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}

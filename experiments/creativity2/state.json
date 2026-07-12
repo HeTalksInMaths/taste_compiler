@@ -1,5 +1,5 @@
 {
- "gen": 2,
+ "gen": 3,
  "train": [
   {
    "pair_id": "CR01",
@@ -267,6 +267,38 @@
    "less_creative": "Because of an ongoing disagreement about money that had been building for weeks, she left the apartment one night. Despite promising that she would call, she never got back in touch with him.",
    "origin": "R2",
    "trap": "syntactic padding vs creative compression"
+  },
+  {
+   "pair_id": "R5_06",
+   "anchor": "She lay awake staring at the ceiling at 3 a.m. The clock ticked steadily in the dark room.",
+   "more_creative": "At 3 a.m. the ceiling became the only thing still willing to keep her company, blank and patient above the bed. Somewhere in the dark, the clock kept counting what she couldn't stop thinking.",
+   "less_creative": "She subsequently lay awake, staring at the ceiling at approximately 3 a.m. The clock ticked steadily and incessantly within the ostensibly darkened room.",
+   "origin": "R3",
+   "trap": "register-rarity confound / restructuring penalty"
+  },
+  {
+   "pair_id": "R5_04",
+   "anchor": "Traffic stopped on the bridge for twenty minutes. She turned off the engine and watched the river below.",
+   "more_creative": "For twenty minutes the bridge held every car still, as if the whole afternoon had paused to think. She cut the engine and let the river do the moving instead.",
+   "less_creative": "Traffic subsequently halted on the bridge for approximately twenty minutes, ostensibly due to a preliminary obstruction. She deactivated the engine and observed the river underneath.",
+   "origin": "R3",
+   "trap": "register-rarity confound / restructuring penalty"
+  },
+  {
+   "pair_id": "R5_07",
+   "anchor": "He cleared out his desk on his last day at the office. Photos and old memos went into a single cardboard box.",
+   "more_creative": "He cleared out his desk on his last day at the office, and thirty years folded themselves down to fit inside one small box. The photos and old memos settled in together like people who finally had time to sit still.",
+   "less_creative": "He subsequently cleared out his desk on his terminal day at the office. Photographs and archival memos were consolidated into a singular cardboard receptacle.",
+   "origin": "R3",
+   "trap": "common-word-image gate failure"
+  },
+  {
+   "pair_id": "R5_03",
+   "anchor": "The pond had frozen overnight. Children stood at its edge, testing the ice with their boots.",
+   "more_creative": "The pond had frozen overnight, and under its skin the fish went quiet, as if listening for something. Children stood at its edge, tapping the ice with their boots to hear if the pond would answer.",
+   "less_creative": "The pond had reportedly frozen overnight, subsequent to a preliminary drop in ambient temperature. Children congregated at its perimeter, provisionally testing the ice with their boots.",
+   "origin": "R3",
+   "trap": "common-word-image gate failure"
   }
  ],
  "heldout": [
@@ -392,6 +424,22 @@
    "less_creative": "During the meeting, which ran long because the client kept raising new concerns about the budget, everyone in the room grew quiet. They stared down at the table in front of them, saying nothing.",
    "origin": "R2",
    "trap": "syntactic padding vs creative compression"
+  },
+  {
+   "pair_id": "R5_08",
+   "anchor": "She watered the garden before the sun got too hot. The tomato plants leaned toward the fence for support.",
+   "more_creative": "Before the heat could claim the morning, she gave the garden what it needed to survive the day. Along the fence, the tomato plants leaned like they were listening for permission to grow taller.",
+   "less_creative": "She subsequently watered the garden prior to the ambient temperature becoming excessively elevated. The tomato plants reportedly leaned toward the fence for structural support.",
+   "origin": "R3",
+   "trap": "register-rarity confound / restructuring penalty"
+  },
+  {
+   "pair_id": "R5_02",
+   "anchor": "He ground the coffee beans and poured hot water over them. Steam rose from the cup as he waited for it to cool.",
+   "more_creative": "He crushed the beans until they surrendered, and let the water argue itself into bitterness. Steam wrote something illegible above the cup while he waited for it to cool.",
+   "less_creative": "He subsequently ground the coffee beans and administered hot water thereupon in a preliminary infusion. Steam ascended incrementally from the receptacle whilst he awaited its cooling.",
+   "origin": "R3",
+   "trap": "register-rarity confound"
   }
  ],
  "core_ids": [
@@ -421,6 +469,16 @@
    "gen": 0,
    "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
    "metric_key": "appropriateness_gate"
+  },
+  {
+   "id": "S_g3_02_restructuring_vs_churn",
+   "lineage": "llm_gen3",
+   "gen": 3,
+   "causal_node": "novelty(combinational)",
+   "mechanism": "Jaccard set overlap x Kendall-tau order decorrelation of content words",
+   "code": "\"\"\"restructuring_vs_churn \u2014 perspective-shifting rewrites vs synonym churn.\n\nMechanism: Boden 1990 combinational/exploratory creativity \u2014 rearranging\nexisting elements into a new configuration is genuine originality. Strip closed\ngrammatical classes; compute (1) Jaccard overlap (Jaccard 1912) of the two\ncontent-word SETS and (2) Kendall's tau (Kendall 1938) between anchor-position\nand rewrite-position of shared content words. High set overlap + low order\nagreement = the same ideas re-SEEN from a new vantage (voice/agency flips\nsurface automatically); low set overlap = lexical churn, not rewarded. Score =\njaccard * (1 - |tau|). Complements the champion, whose LCS mechanism treats\nreordering as broken coherence.\n\"\"\"\n\nimport re\n\nfrom scipy.stats import kendalltau\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\n\n_PRONOUNS = frozenset(\n    \"i me my mine myself you your yours yourself yourselves he him his himself she her hers \"\n    \"herself it its itself we us our ours ourselves they them their theirs themselves this \"\n    \"that these those who whom whose which what someone something everyone everything nobody \"\n    \"nothing anybody anything anyone none one ones\".split()\n)\n_DETERMINERS = frozenset(\"a an the some any each every no all both either neither several\".split())\n_AUXILIARIES = frozenset(\n    \"be am is are was were been being have has had having do does did doing will would shall \"\n    \"should can could may might must ought\".split()\n)\n_CONJUNCTIONS = frozenset(\n    \"and but or nor for yet so although though because since unless while whereas if when \"\n    \"whenever before after until than as\".split()\n)\n_PREPOSITIONS = frozenset(\n    \"aboard about above across after against along amid among around at before behind below \"\n    \"beneath beside besides between beyond but by concerning despite down during except for \"\n    \"from in inside into like near of off on onto out outside over past since through \"\n    \"throughout till to toward towards under underneath until unto up upon with within without\"\n    .split()\n)\n_PARTICLES = frozenset(\n    \"not to there here very too also just only even quite rather more most less least own\".split()\n)\n\n_FUNCTION = _PRONOUNS | _DETERMINERS | _AUXILIARIES | _CONJUNCTIONS | _PREPOSITIONS | _PARTICLES\n\n\ndef _tokens(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _content_tokens(s):\n    return [t for t in _tokens(s) if t not in _FUNCTION]\n\n\ndef _order_positions(a_c, b_c):\n    \"\"\"Nth occurrence of each shared content-word type in anchor matched to\n    Nth occurrence in rewrite; returns parallel position arrays.\"\"\"\n    a_pos_by_type = {}\n    for idx, tok in enumerate(a_c):\n        a_pos_by_type.setdefault(tok, []).append(idx)\n    b_pos_by_type = {}\n    for idx, tok in enumerate(b_c):\n        b_pos_by_type.setdefault(tok, []).append(idx)\n\n    pos_a, pos_b = [], []\n    for tok, a_positions in a_pos_by_type.items():\n        b_positions = b_pos_by_type.get(tok)\n        if not b_positions:\n            continue\n        for pa, pb in zip(a_positions, b_positions):\n            pos_a.append(pa)\n            pos_b.append(pb)\n    return pos_a, pos_b\n\n\ndef restructuring_vs_churn(text, anchor):\n    if not text or not anchor:\n        return 0.05\n    a_c = _content_tokens(anchor)\n    b_c = _content_tokens(text)\n    if not a_c or not b_c:\n        return 0.05\n\n    set_a, set_b = set(a_c), set(b_c)\n    union = set_a | set_b\n    if not union:\n        return 0.05\n    jaccard = len(set_a & set_b) / len(union)\n\n    pos_a, pos_b = _order_positions(a_c, b_c)\n    if len(pos_a) >= 2:\n        tau, _ = kendalltau(pos_a, pos_b)\n        if tau != tau:  # NaN guard\n            tau = 1.0\n        reorder_degree = 1.0 - abs(tau)\n    else:\n        reorder_degree = 0.0\n\n    score = jaccard * reorder_degree\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\n    \"restructuring_vs_churn\": restructuring_vs_churn,\n}\n",
+   "metric_key": "restructuring_vs_churn",
+   "novel": true
   },
   {
    "id": "conjunctive_creativity",
@@ -583,12 +641,62 @@
      "SEP": -0.014
     }
    ]
+  },
+  {
+   "gen": 3,
+   "champion": "S_g2_03_skeleton_preserved_inser",
+   "champion_stats": {
+    "SEP": 0.0745,
+    "acc": 0.6585,
+    "mean_pos": 0.2877,
+    "sd_pos": 0.1632,
+    "mean_neg": 0.2132,
+    "sd_neg": 0.1878,
+    "effect_d": 0.4233,
+    "worst_margin": -0.7646,
+    "sd_margin": 0.2822,
+    "heldout_SEP": 0.1209,
+    "core_SEP": 0.2024
+   },
+   "n_train": 41,
+   "n_heldout": 19,
+   "population": [
+    {
+     "id": "S_g2_03_skeleton_preserved_inser",
+     "SEP": 0.074
+    },
+    {
+     "id": "appropriateness_gate",
+     "SEP": 0.025
+    },
+    {
+     "id": "S_g3_02_restructuring_vs_churn",
+     "SEP": 0.023
+    },
+    {
+     "id": "conjunctive_creativity",
+     "SEP": 0.017
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.015
+    },
+    {
+     "id": "S_g1_02_syntactic_elaboration_de",
+     "SEP": 0.013
+    },
+    {
+     "id": "lex_rarity_norm",
+     "SEP": -0.026
+    }
+   ]
   }
  ],
  "trap_axes_used": [
   "cliche/idiom decoupling (adv-1)",
   "purple prose: novelty without appropriateness (adv-2)",
   "synonym-churn confound",
-  "syntactic padding vs creative compression"
+  "syntactic padding vs creative compression",
+  "register-rarity confound / restructuring penalty"
  ]
 }
