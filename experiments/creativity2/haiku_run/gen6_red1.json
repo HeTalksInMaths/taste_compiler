@@ -12,7 +12,7 @@
     "pair_id": "HR6_02",
     "trap": "Passive_Elaboration_Obscuring_Specificity",
     "anchor": "The disease spread quickly through the region. Doctors worked hard to contain and stop it.",
-    "more_creative": "It spread fast through the community. Doctors fought hard against it. They won containment.",
+    "more_creative": "It spread fast through the community, but doctors fought hard against it daily. They won containment.",
     "less_creative": "Disease dissemination transpired with accelerated velocity throughout affected regions. Medical practitioners engaged in comprehensive containment operations and interventions.",
     "design_note": "Less_creative achieves rarity (dissemination, velocity, practitioners, comprehensive, interventions) and high block entropy through elaboration without added meaning. More_creative uses fragments and rhythm with common words to create narrative momentum.",
     "predicted_champion_behavior": "HIGH on less_creative (rare surprisal + complex nominalized compounds). LOW on more_creative (common short clauses) despite stronger narrative structure."
@@ -20,54 +20,54 @@
   {
     "pair_id": "HR6_03",
     "trap": "Institutional_Formality_Erasing_Moment",
-    "anchor": "The student learned quickly. Her teacher was impressed.",
-    "more_creative": "She learned fast—so fast the teacher paused, then smiled.",
-    "less_creative": "Cognitive acquisition was manifested at accelerated rates. Pedagogical observation by the instructor was characterized by manifest approval.",
+    "anchor": "The student learned the material quickly and easily. Her teacher watched and felt impressed by her progress.",
+    "more_creative": "She learned so fast the teacher had to pause, watching her work carefully. Then smiled.",
+    "less_creative": "Cognitive acquisition was manifested at accelerated rates throughout pedagogical engagement. Observation by the instructor was characterized by manifest approval.",
     "design_note": "Less_creative uses nominalizations (acquisition, pedagogical, observation, manifested, approval) to inflate rarity and structure while flattening emotion. More_creative captures a vivid moment with common vocabulary and active voice.",
     "predicted_champion_behavior": "HIGH on less_creative (rare tokens + high entropy from nominalized NP structure). LOW on more_creative (active verbs, common words) despite vivid emotional specificity."
   },
   {
     "pair_id": "HR6_04",
     "trap": "Translation_Ease_Lacking_Voice",
-    "anchor": "The music was beautiful. People listened intently.",
-    "more_creative": "Beautiful music stopped us cold. We couldn't stop listening.",
-    "less_creative": "Musical aesthetic qualities were considerable and manifest. Auditory engagement by the audience was sustained throughout and characterized by attentiveness.",
+    "anchor": "The music that played was very beautiful and moving. People in the audience listened intently the whole time.",
+    "more_creative": "The beautiful music stopped us cold in our tracks. We couldn't stop listening at all.",
+    "less_creative": "Musical aesthetic qualities were considerable and manifest throughout the performance. Auditory engagement by the audience was sustained and characterized by attentiveness.",
     "design_note": "Less_creative achieves rarity (aesthetic, considerable, auditory, engagement, sustained, characterized) and structure through passive elaboration. More_creative shifts to active voice and causal logic ('stopped us cold') using simple words.",
     "predicted_champion_behavior": "HIGH on less_creative (rare tokens: aesthetic, considerable, auditory; high block entropy). LOW on more_creative (simple active vocabulary, simpler structure) despite genuine added insight."
   },
   {
     "pair_id": "HR6_05",
     "trap": "Botanical_Latinity_Over_Paradox",
-    "anchor": "The plant grew well. It needed water constantly.",
-    "more_creative": "It thrived but thirsted—we poured water endlessly and it still wanted more.",
-    "less_creative": "Botanical proliferation occurred with propitious outcomes. Hydration constituted a prerequisite for continued viability and sustained metabolic function.",
+    "anchor": "The plant grew very well in our care. It needed water constantly and regularly every single day.",
+    "more_creative": "It thrived but thirsted terribly—we poured water endlessly and it still wanted more each day.",
+    "less_creative": "Botanical proliferation occurred with propitious outcomes throughout the growing cycle. Hydration constituted a prerequisite for continued viability and sustained metabolic function.",
     "design_note": "Less_creative uses Latinate terms (botanical, proliferation, propitious, hydration, viability, metabolic) and nominalization to inflate rarity and block diversity. More_creative creates paradox (thirsted despite water) with common vocabulary and active structure.",
     "predicted_champion_behavior": "HIGH on less_creative (rare surprisal: botanical, proliferation, hydration, viability; high structural entropy). LOW on more_creative (common words, active clauses) despite the poetic paradox."
   },
   {
     "pair_id": "HR6_06",
     "trap": "Archaic_Nominalization_Erasing_Collective_Will",
-    "anchor": "The problem was difficult. We solved it together.",
-    "more_creative": "Hard to solve. But we as a team turned it around.",
-    "less_creative": "Quandary of considerable magnitude was encountered. Collaborative resolution mechanisms were instituted and culminated in efficacious closure.",
+    "anchor": "The problem we faced was difficult and complex. We worked together and eventually solved it.",
+    "more_creative": "Hard to solve, really hard. But we as a team worked together and turned it around.",
+    "less_creative": "Quandary of considerable magnitude was encountered by the group. Collaborative resolution mechanisms were instituted and culminated in efficacious closure.",
     "design_note": "Less_creative inflates rarity (quandary, magnitude, collaborative, mechanisms, instituted, efficacious) and structure through passive voice and embedded clauses, erasing 'we'. More_creative restores human agency with common vocabulary and simpler structure.",
     "predicted_champion_behavior": "HIGH on less_creative (rare tokens + high block entropy from nominalized dependencies). LOW on more_creative (simple active verbs, direct 'we') despite the restored agency making it more creative."
   },
   {
     "pair_id": "HR6_07",
     "trap": "Critical_Hedging_Masquerading_as_Detail",
-    "anchor": "The film was excellent. Critics unanimously praised it.",
-    "more_creative": "Excellent film. Critics loved it—extraordinary, how they agreed without hedging.",
-    "less_creative": "Cinematic artistry demonstrated manifest excellence. Critical evaluation engendered responses of considerable approbation and universal endorsement.",
+    "anchor": "The film turned out to be excellent in every way. Critics unanimously praised it and loved it.",
+    "more_creative": "Excellent film, genuinely. Critics loved it—extraordinary, how they agreed without a single hedging word.",
+    "less_creative": "Cinematic artistry demonstrated manifest excellence and sophistication. Critical evaluation engendered responses of considerable approbation and universal endorsement.",
     "design_note": "Less_creative achieves rarity (cinematic, artistry, manifest, approbation, endorsement) and structure through defensive nominalization. More_creative adds meta-insight ('extraordinary, how they agreed') making the claim more interesting, using active voice and common words.",
     "predicted_champion_behavior": "HIGH on less_creative (rare tokens + complex NP structures). LOW on more_creative (common vocabulary, simpler structure) despite the added layer of genuine insight."
   },
   {
     "pair_id": "HR6_08",
     "trap": "Meteorological_Formality_Versus_Immediacy",
-    "anchor": "The weather changed suddenly. Everyone noticed it immediately.",
-    "more_creative": "The sky shifted. You felt it—couldn't look away.",
-    "less_creative": "Meteorological parameters underwent considerable modification with temporal acceleration. Observational cognition on the part of the populace was nearly universal.",
+    "anchor": "The weather changed suddenly and noticeably. Everyone in the area noticed it immediately without exception.",
+    "more_creative": "The sky shifted right before us. You felt it in your gut—couldn't look away.",
+    "less_creative": "Meteorological parameters underwent considerable modification with temporal acceleration and abruptness. Observational cognition on the part of the populace was nearly universal.",
     "design_note": "Less_creative inflates rarity (meteorological, parameters, modification, observational, cognition, populace) and block diversity through institutional nominalization and passive voice. More_creative uses second-person directness and sensory immediacy with common words.",
     "predicted_champion_behavior": "HIGH on less_creative (rare surprisal: meteorological, parameters, modification, cognition; high structural entropy). LOW on more_creative (common active vocabulary, simple structure) despite the immediacy and second-person address creating stronger creative effect."
   }
