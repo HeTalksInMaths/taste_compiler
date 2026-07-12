@@ -1,0 +1,74 @@
+[
+ {
+  "pair_id": "HR5_01",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Rain helps plants grow because they need water to survive. Without it, they wilt and die.",
+  "less_creative": "Aqueous precipitation facilitates optimal phytophysiological development through enhanced osmoregulatory function and nutrient bioavailability enhancement mechanisms. Hydric stress mitigation engenders superior biomass accumulation trajectories across botanical specimens.",
+  "more_creative": "Plants are thirsty and they drink from rain eagerly. The sky is simply watering them.",
+  "design_note": "Less_creative uses domain-specific lexicon (phytophysiological, osmoregulatory, bioavailability, hydric stress) with varied sentence structure, but merely restates simple fact. More_creative uses minimal rewording and simple language but adds vivid perspective shift (sky watering).",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.72 (high structural entropy from complex medical-grade terminology; high surprisal from 'aqueous', 'phytophysiological', 'osmoregulatory', 'bioavailability'). More_creative scores ~0.28 (minimal structural change, mostly simple words; 'thirsty' metaphor is rare in context)."
+ },
+ {
+  "pair_id": "HR5_02",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "We forget things over time because our memory naturally fades. This is how brains work.",
+  "less_creative": "Mnemonic consolidation mechanisms undergo progressive deterioration via temporal succession, mediated through synaptic pruning phenomena and interference-induced reconsolidation cascades. Neurobiological encoding substrates demonstrate marked susceptibility to retroactive inhibition protocols.",
+  "more_creative": "Your brain forgets on purpose because remembering everything would break you completely. That's how it protects itself.",
+  "design_note": "Less_creative employs neuroscience jargon (mnemonic consolidation, synaptic pruning, reconsolidation cascades, retroactive inhibition) with substantial structural variation. More_creative contradicts intuition minimally but reframes forgetting as adaptive self-protection rather than failure.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.68 (high structural entropy; high surprisal from 'mnemonic', 'consolidation', 'synaptic', 'pruning', 'reconsolidation', 'retroactive inhibition'). More_creative scores ~0.22 (minimal structural change, common words)."
+ },
+ {
+  "pair_id": "HR5_03",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Kids learn through play and hands-on experience because discovery is natural. Playing develops all their skills.",
+  "less_creative": "Ludic engagement modalities facilitate enhanced cognitive architecture instantiation via experiential scaffolding deployment and situated learning paradigm operationalization. Pedagogical research demonstrates superior neuroplasticity trajectories relative to didactic instructional frameworks.",
+  "more_creative": "Play is how children discover things by doing them. Without it, they only memorize facts.",
+  "design_note": "Less_creative uses education/psychology jargon (ludic, scaffolding, pedagogical, neuroplasticity, didactic) with highly varied structure. More_creative is simple, nearly parallel structure, but emphasizes discovery vs. memorization\u2014a fresh angle.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.71 (high structural entropy from alternating technical phrases; high surprisal from 'ludic', 'scaffolding', 'pedagogical', 'neuroplasticity', 'didactic'). More_creative scores ~0.24 (minimal structural change, only 'discover' is moderately rare)."
+ },
+ {
+  "pair_id": "HR5_04",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Habits are hard to change because they become automatic over time. You repeat them without thinking.",
+  "less_creative": "Behavioral habitualization mechanisms exhibit pronounced resistance to extinction protocols owing to deep striatal pathway embedding and customary response pattern persistence elevation. Neural circuit remodeling demonstrates substantial refractory quotient following prolonged contingency exposure.",
+  "more_creative": "You cannot think your way out of a habit because your muscles remember it instead. They ignore your brain.",
+  "design_note": "Less_creative is pure neurobiology jargon (habitualization, striatal pathway, contingency, refractory quotient) with varied sentence structure. More_creative uses minimal rewording but shifts locus from mind to body\u2014embodied insight.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.70 (high structural entropy; high surprisal from 'habitualization', 'extinction protocols', 'striatal', 'contingency', 'refractory'). More_creative scores ~0.20 (minimal structural change, all common words)."
+ },
+ {
+  "pair_id": "HR5_05",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Good stories have conflict and tension because struggle matters. They keep readers invested until the end.",
+  "less_creative": "Narrative structures demonstrate optimal affective resonance and sustained audience engagement maintenance through strategic introduction of oppositional force matrices and tension-inducing impedance phenomena. Archetypal conflict instantiation engenders enhanced emotional salience modulation.",
+  "more_creative": "Stories without trouble bore you quickly because nothing matters. You need someone to lose something.",
+  "design_note": "Less_creative employs literary/psychology jargon (affective resonance, impedance phenomena, archetypal, salience modulation) with complex alternating structure. More_creative is short rewording but identifies core emotional truth about narrative importance.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.69 (high structural entropy from complex technical phrases; high surprisal from 'affective', 'resonance', 'impedance', 'archetypal', 'salience'). More_creative scores ~0.20 (minimal structural change, all common words)."
+ },
+ {
+  "pair_id": "HR5_06",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Sleep is necessary for your health because your body repairs itself during rest. Without it, you get sick.",
+  "less_creative": "Circadian rhythm homeostasis requires adequate somatic restitution periods to facilitate optimal neuroendocrine synchronization and metabolic equilibrium maintenance. Prolonged sleep deprivation engenders cascading pathophysiological dysfunction affecting immunological competence preservation.",
+  "more_creative": "Your body repairs itself while you sleep, rebuilding everything broken. Skip sleep, and you're just building on broken foundations.",
+  "design_note": "Less_creative uses medical/endocrine jargon (circadian homeostasis, neuroendocrine, pathophysiological, immunological competence) with substantial structural variation. More_creative is simple and minimal rewording but uses metaphor (broken foundations) to reframe sleep deprivation as systemic undermining.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.72 (high structural entropy; high surprisal from 'circadian', 'homeostasis', 'neuroendocrine', 'pathophysiological', 'immunological', 'competence'). More_creative scores ~0.32 (minimal structural change, common words; metaphor is fresh but grounded in common language)."
+ },
+ {
+  "pair_id": "HR5_07",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Your surroundings influence who you are and how you behave constantly. Environment shapes your personality deeply.",
+  "less_creative": "Environmental contextual variables exert substantial causal leverage upon behavioral phenotypic manifestations via sensory stimulus modulation and attributional framing deployment. Ecological psychology frameworks demonstrate that situational affordance structures engender predictable modification of executive decision-making parameters.",
+  "more_creative": "Your room shapes who you are right now. Move somewhere new, and you become someone completely different.",
+  "design_note": "Less_creative uses psychology/ecology jargon (phenotypic manifestations, attributional framing, affordance structures, executive decision-making parameters) with complex structural variation. More_creative is parallel structure to anchor with minimal rewording but asserts causal direction as emotional truth.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.71 (high structural entropy from nested technical phrases; high surprisal from 'phenotypic', 'attributional', 'affordance', 'parameters'). More_creative scores ~0.22 (minimal structural change, all common words)."
+ },
+ {
+  "pair_id": "HR5_08",
+  "trap": "Jargon_substitution_without_perspective_shift",
+  "anchor": "Criticism helps you improve because it identifies your mistakes clearly. Praise feels good but teaches nothing.",
+  "less_creative": "Evaluative feedback mechanisms facilitate enhanced performance metrics through negative reinforcement paradigm instantiation and metacognitive error-correction processing deployment. Adversarial input modalities engender superior skill acquisition trajectories relative to unilateral affirmation-based learning structures.",
+  "more_creative": "Criticism stings, then teaches you something real. Praise feels good for a moment, then disappears.",
+  "design_note": "Less_creative employs educational psychology jargon (negative reinforcement paradigm, metacognitive, adversarial input modalities, acquisition trajectories) with highly varied structure. More_creative uses minimal rewording but contrasts feeling vs. learning outcome\u2014a fresh insight into mechanism.",
+  "predicted_champion_behavior": "Champion likely scores less_creative ~0.70 (high structural entropy; high surprisal from 'evaluative', 'metrics', 'reinforcement paradigm', 'metacognitive', 'adversarial', 'trajectories'). More_creative scores ~0.26 (minimal structural change; emotion-sequence framing is fresh despite common words)."
+ }
+]
