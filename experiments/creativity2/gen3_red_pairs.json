@@ -1,0 +1,66 @@
+[
+ {
+  "pair_id": "R5_01",
+  "trap": "register-rarity confound / restructuring penalty",
+  "anchor": "Rain started while she was walking home from work. She opened her umbrella and kept walking without slowing down.",
+  "more_creative": "Halfway home from work, the sky seemed to change its mind and rain arrived without warning. She lifted the umbrella like a small roof over her decision to keep moving.",
+  "less_creative": "Rain commenced while she was perambulating homeward from her workplace, ostensibly without preliminary warning. She subsequently deployed her umbrella and continued ambulating forthwith.",
+  "design_note": "rare Latinate swaps on intact skeleton vs genuine reframing that reorders the skeleton."
+ },
+ {
+  "pair_id": "R5_02",
+  "trap": "register-rarity confound",
+  "anchor": "He ground the coffee beans and poured hot water over them. Steam rose from the cup as he waited for it to cool.",
+  "more_creative": "He crushed the beans until they surrendered, and let the water argue itself into bitterness. Steam wrote something illegible above the cup while he waited for it to cool.",
+  "less_creative": "He subsequently ground the coffee beans and administered hot water thereupon in a preliminary infusion. Steam ascended incrementally from the receptacle whilst he awaited its cooling.",
+  "design_note": "bureaucratic rare words, verbatim skeleton vs negotiation/argument reframing."
+ },
+ {
+  "pair_id": "R5_03",
+  "trap": "common-word-image gate failure",
+  "anchor": "The pond had frozen overnight. Children stood at its edge, testing the ice with their boots.",
+  "more_creative": "The pond had frozen overnight, and under its skin the fish went quiet, as if listening for something. Children stood at its edge, tapping the ice with their boots to hear if the pond would answer.",
+  "less_creative": "The pond had reportedly frozen overnight, subsequent to a preliminary drop in ambient temperature. Children congregated at its perimeter, provisionally testing the ice with their boots.",
+  "design_note": "personification from common words (gate stays shut) vs rare weather-memo filler (gate opens)."
+ },
+ {
+  "pair_id": "R5_04",
+  "trap": "register-rarity confound / restructuring penalty",
+  "anchor": "Traffic stopped on the bridge for twenty minutes. She turned off the engine and watched the river below.",
+  "more_creative": "For twenty minutes the bridge held every car still, as if the whole afternoon had paused to think. She cut the engine and let the river do the moving instead.",
+  "less_creative": "Traffic subsequently halted on the bridge for approximately twenty minutes, ostensibly due to a preliminary obstruction. She deactivated the engine and observed the river underneath.",
+  "design_note": "hedge-word stitching vs agency flip (bridge holds, river moves)."
+ },
+ {
+  "pair_id": "R5_05",
+  "trap": "common-word-image gate failure",
+  "anchor": "She sorted through her mother's closet after the funeral. Each dress still smelled faintly of her perfume.",
+  "more_creative": "She sorted through her mother's closet after the funeral, and the dresses hung there like sentences her mother hadn't finished saying. Each one still smelled faintly of her, as if the perfume were waiting for someone to answer it.",
+  "less_creative": "She subsequently sorted through her mother's closet following the funeral proceedings. Each garment reportedly retained a residual trace of her preliminary perfume.",
+  "design_note": "moving simile in everyday words vs clinical inventory-of-grief register."
+ },
+ {
+  "pair_id": "R5_06",
+  "trap": "register-rarity confound / restructuring penalty",
+  "anchor": "She lay awake staring at the ceiling at 3 a.m. The clock ticked steadily in the dark room.",
+  "more_creative": "At 3 a.m. the ceiling became the only thing still willing to keep her company, blank and patient above the bed. Somewhere in the dark, the clock kept counting what she couldn't stop thinking.",
+  "less_creative": "She subsequently lay awake, staring at the ceiling at approximately 3 a.m. The clock ticked steadily and incessantly within the ostensibly darkened room.",
+  "design_note": "hedge-adverb bolting vs ceiling/clock promoted to active subjects."
+ },
+ {
+  "pair_id": "R5_07",
+  "trap": "common-word-image gate failure",
+  "anchor": "He cleared out his desk on his last day at the office. Photos and old memos went into a single cardboard box.",
+  "more_creative": "He cleared out his desk on his last day at the office, and thirty years folded themselves down to fit inside one small box. The photos and old memos settled in together like people who finally had time to sit still.",
+  "less_creative": "He subsequently cleared out his desk on his terminal day at the office. Photographs and archival memos were consolidated into a singular cardboard receptacle.",
+  "design_note": "tender compression image in common words vs filing-memo Latinate synonyms."
+ },
+ {
+  "pair_id": "R5_08",
+  "trap": "register-rarity confound / restructuring penalty",
+  "anchor": "She watered the garden before the sun got too hot. The tomato plants leaned toward the fence for support.",
+  "more_creative": "Before the heat could claim the morning, she gave the garden what it needed to survive the day. Along the fence, the tomato plants leaned like they were listening for permission to grow taller.",
+  "less_creative": "She subsequently watered the garden prior to the ambient temperature becoming excessively elevated. The tomato plants reportedly leaned toward the fence for structural support.",
+  "design_note": "technical filler vs heat-as-antagonist reframing."
+ }
+]
