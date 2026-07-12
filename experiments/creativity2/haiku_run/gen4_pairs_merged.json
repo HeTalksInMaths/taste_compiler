@@ -1,0 +1,146 @@
+[
+ {
+  "pair_id": "HR4_01",
+  "trap": "reordering-without-freshness",
+  "anchor": "The team delivered the project on schedule despite tight deadlines. Management expressed satisfaction with the timely completion.",
+  "more_creative": "Under crushing pressure, the team forged not just punctuality but excellence, delivering work that transcended initial expectations. Their achievement inspired confidence and redefined what the team was capable of.",
+  "less_creative": "The team delivered on schedule despite tight deadlines; management expressed satisfaction with the delivery. The timely delivery of the project satisfied management during the scheduled timeline.",
+  "design_note": "Paraphrasing (delivery/timely delivery) combined with clause rearrangement creates token variance while maintaining identical facts.",
+  "predicted_champion_behavior": "Champion scores less_creative higher (~0.68) due to token-level rearrangement creating insertion illusions via difflib. Scores more_creative lower (~0.45) as semantic compression reduces visible token insertions."
+ },
+ {
+  "pair_id": "HR4_02",
+  "trap": "reordering-without-freshness",
+  "anchor": "Young children learned most effectively through play and exploration. Teachers actively encouraged creative engagement and natural curiosity.",
+  "more_creative": "Playful discovery became pedagogy itself\u2014children's instinctive curiosity unfettered and channeled by teachers who grasped that wonder births wisdom. The classroom transformed into a laboratory of possibility.",
+  "less_creative": "Through play and exploration, children learned with encouragement. Teachers encouraged creative engagement and curiosity through active playful learning.",
+  "design_note": "Rearrangement of learning/play/exploration/encouragement tokens without adding new conceptual content; presents as elaboration via token repositioning.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.66 (high) as clause fronting and token rearrangement appear as insertions. Scores more_creative ~0.38 (low) as integrated metaphor reduces raw token-insertion count."
+ },
+ {
+  "pair_id": "HR4_03",
+  "trap": "reordering-without-freshness",
+  "anchor": "The river flowed through the valley with constant motion. Wildlife thrived in this rich ecosystem.",
+  "more_creative": "The river's ceaseless current carved a sanctuary where life flourished\u2014each species intricate, interdependent, entwined in a web of mutual survival. Abundance became the valley's defining signature.",
+  "less_creative": "Through the valley, the river flowed with constant motion. In the rich ecosystem, wildlife thrived among abundant resources.",
+  "design_note": "Fronting of prepositional phrases and token repositioning (river/flowed, valley, wildlife/thrived) mimics elaboration without semantic novelty.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.64 (high) due to phrase reordering generating token mismatches in difflib alignment. Scores more_creative ~0.40 (low)."
+ },
+ {
+  "pair_id": "HR4_04",
+  "trap": "reordering-without-freshness",
+  "anchor": "She worked hard throughout the project with dedication and effort. The result was impressive and exceeded initial goals.",
+  "more_creative": "Through relentless effort, she transmuted labor into mastery\u2014the result showcased her ability to exceed every bar set and revealed reserves of skill even she had not anticipated. Success became a door to possibility.",
+  "less_creative": "Hard throughout the project she worked with dedication and effort. The impressive result exceeded initial goals and the result was impressive.",
+  "design_note": "Token repetition (impressive/result) combined with heavy reordering tricks champion into counting recycled tokens as insertions.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.70 (high) from repetition + reordering creating insertion signals. Scores more_creative ~0.39 (low) as narrative integration reduces observable insertions."
+ },
+ {
+  "pair_id": "HR4_05",
+  "trap": "reordering-without-freshness",
+  "anchor": "The old house stood completely empty and abandoned for years. Birds nested inside the weathered rafters.",
+  "more_creative": "Emptiness became richness\u2014neglected rooms reshaped by wings and song into a sanctuary where nature and abandonment merged into unexpected grace. Life reclaimed what humans had surrendered.",
+  "less_creative": "The old house stood abandoned and empty. In the rafters, birds nested inside the abandoned structure.",
+  "design_note": "Genuine metaphor compressed into fewer tokens; champion misses novelty as insertion count drops despite semantic depth.",
+  "predicted_champion_behavior": "Champion scores more_creative ~0.35 (low) as conceptual density reduces token-level insertions. Scores less_creative ~0.61 (high) from repetition creating false insertion signals."
+ },
+ {
+  "pair_id": "HR4_06",
+  "trap": "reordering-without-freshness",
+  "anchor": "The meeting proved remarkably productive and collaborative in tone. All stakeholders reached clear agreement quite quickly.",
+  "more_creative": "When disparate agendas converged into consensus, the meeting became a fulcrum\u2014a moment whose ripples shifted organizational trajectory in ways none anticipated, where efficiency married to insight. Alignment emerged as possibility.",
+  "less_creative": "Productive and collaborative, the meeting was; all stakeholders reached agreement quickly. The meeting's collaborative productivity and quick stakeholder agreement demonstrated the collaborative productivity.",
+  "design_note": "Predicative fronting and lexical recycling (collaborative, productivity) create token variance champion interprets as elaboration.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.70 (high) from recycled tokens appearing as insertions. Scores more_creative ~0.39 (low) as integrated narrative compresses expression."
+ },
+ {
+  "pair_id": "HR4_07",
+  "trap": "reordering-without-freshness",
+  "anchor": "Winter arrived unexpectedly early in the season. Crops were severely damaged by the unseasonable frost.",
+  "more_creative": "Unseasonable frost became climatic betrayal\u2014it shattered months of agricultural hope and scattered careful stewardship into economic ruin. Farming communities reeled, their futures suddenly uncertain.",
+  "less_creative": "Early in the season, winter arrived unexpectedly. Crops were severely damaged by the unseasonable frost.",
+  "design_note": "Phrase inversion (winter/arrived, frost/crops) and rearrangement without factual expansion; champion scores based on token-position changes.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.65 (high) from insertion illusions via reordering. Scores more_creative ~0.41 (low)."
+ },
+ {
+  "pair_id": "HR4_08",
+  "trap": "reordering-without-freshness",
+  "anchor": "The comprehensive study examined patient outcomes carefully and systematically throughout treatment. Recovery rates improved significantly.",
+  "more_creative": "Rigorous analysis revealed that targeted intervention precipitated measurable healing trajectories, validating an approach that reframed recovery not as chance but engineered transformation. Patients experienced not survival but flourishing.",
+  "less_creative": "Carefully and systematically, the study examined patient outcomes. Patient recovery rates improved significantly through the study's systematic approach.",
+  "design_note": "Adverbial fronting and token repositioning (study/examined, patient/outcomes, recovery/rates/improved) presents as elaboration via difflib misalignment.",
+  "predicted_champion_behavior": "Champion scores less_creative ~0.68 (high) from token-sequence variance created by reordering. Scores more_creative ~0.37 (low) from semantic compression."
+ },
+ {
+  "pair_id": "HR4_09",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The library was always crowded with eager visitors seeking knowledge. It made everyone who entered feel truly welcome and at home.",
+  "more_creative": "The library was always crowded with eager visitors seeking knowledge. It embraced everyone who entered through its welcoming doors.",
+  "less_creative": "The library was always crowded with eager visitors seeking knowledge. It scolded everyone who entered through its cold doors.",
+  "design_note": "Embraced perfectly captures welcome atmosphere\u2014apt. Scolded contradicts warmth\u2014inept. Both use ordinary verb insertions with identical statistical properties; champion cannot distinguish.",
+  "predicted_champion_behavior": "Champion rates both equally: single ordinary verb substitution, same word-frequency band. Semantic opposition remains invisible to lexical metrics."
+ },
+ {
+  "pair_id": "HR4_10",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The old car struggled slowly up the steep hill during the drive. It never broke down no matter what difficulties came.",
+  "more_creative": "The old car struggled slowly up the steep hill during the drive. It persisted against all odds, never surrendering once.",
+  "less_creative": "The old car struggled slowly up the steep hill during the drive. It collapsed easily, never surrendering no matter what.",
+  "design_note": "Persisted aligns with reliability\u2014apt. Collapsed contradicts not breaking down\u2014inept. Identical insertion of ordinary verbs; champion sees no difference.",
+  "predicted_champion_behavior": "Lexical scorer equates them\u2014same insertion pattern and surprisal. Misses that collapsed falsifies the 'never broke down' fact."
+ },
+ {
+  "pair_id": "HR4_11",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The curious child asked endless questions throughout the day. The patient parent answered every single one with care.",
+  "more_creative": "The curious child asked endless questions throughout the day. The patient parent received each curiosity with genuine grace.",
+  "less_creative": "The curious child asked endless questions throughout the day. The patient parent dismissed each curiosity with genuine indifference.",
+  "design_note": "Received echoes answering\u2014apt. Dismissed contradicts patience\u2014inept. Both use ordinary verbs; lexical rarity identical.",
+  "predicted_champion_behavior": "Champion cannot distinguish\u2014identical verb substitution structure and word frequency. Semantic contradiction to anchor stays hidden."
+ },
+ {
+  "pair_id": "HR4_12",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The innovative proposal faced strong resistance from stakeholders. The team pushed it through with absolute determination and courage.",
+  "more_creative": "The innovative proposal faced strong resistance from stakeholders. The team carried it forward with absolute determination and courage.",
+  "less_creative": "The innovative proposal faced strong resistance from stakeholders. The team abandoned it with absolute determination and resolve.",
+  "design_note": "Carried forward extends pushing through\u2014apt. Abandoned contradicts the achievement\u2014inept. Both insertions are ordinary verbs, statistically parallel.",
+  "predicted_champion_behavior": "Identical verb insertion defeats lexical analysis. Champion rates equally despite abandoned falsifying the push-through fact."
+ },
+ {
+  "pair_id": "HR4_13",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The golden sunset was beautiful and moving to watch carefully. It calmed everyone who viewed it from the distance.",
+  "more_creative": "The golden sunset was beautiful and moving to watch carefully. It soothed everyone who gazed quietly at the horizon.",
+  "less_creative": "The golden sunset was beautiful and moving to watch carefully. It unsettled everyone who gazed quietly at the horizon.",
+  "design_note": "Soothed matches calmed perfectly\u2014apt. Unsettled opposes calming effect\u2014inept. Both substitute ordinary verbs with parallel structure.",
+  "predicted_champion_behavior": "Lexical metrics identical\u2014champion equates them. Semantic incoherence in less_creative remains undetected by frequency-based scoring."
+ },
+ {
+  "pair_id": "HR4_14",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The shocking news arrived suddenly without any prior warning. Everyone there reacted with profound distress and concern.",
+  "more_creative": "The shocking news arrived suddenly without any prior warning. Everyone there reeled from its tremendous impact and force.",
+  "less_creative": "The shocking news arrived suddenly without any prior warning. Everyone there rejoiced at its tremendous impact and significance.",
+  "design_note": "Reeled matches shock perfectly\u2014apt. Rejoiced contradicts distress\u2014inept. Both insertions are ordinary verbs with identical word-frequency properties.",
+  "predicted_champion_behavior": "Champion sees only lexical insertion\u2014fails to detect rejoiced contradicts shock. Rates equally due to statistical similarity."
+ },
+ {
+  "pair_id": "HR4_15",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The dedicated student studied diligently for weeks before the exam. Her hard effort paid off very abundantly afterwards.",
+  "more_creative": "The dedicated student studied diligently for weeks before the exam. Her diligence was rewarded very abundantly afterwards.",
+  "less_creative": "The dedicated student studied diligently for weeks before the exam. Her negligence was rewarded very abundantly afterwards.",
+  "design_note": "Diligence reinforces study effort\u2014apt. Negligence contradicts dedication\u2014inept. Both substitute nouns with identical surprisal; champion cannot discern semantic opposition.",
+  "predicted_champion_behavior": "Lexical scorer equates them\u2014identical noun substitution in same position. Cannot detect negligence contradicts diligent study stated in anchor."
+ },
+ {
+  "pair_id": "HR4_16",
+  "trap": "semantic_appropriateness_decoupling",
+  "anchor": "The passionate musician played with deep feeling and intensity. The audience listened intently throughout the entire performance.",
+  "more_creative": "The passionate musician played with deep feeling and intensity. The audience drank in every single note carefully.",
+  "less_creative": "The passionate musician played with deep feeling and intensity. The audience ignored every single note completely.",
+  "design_note": "Drank in captures rapt attention\u2014apt. Ignored contradicts intense listening\u2014inept. Both use ordinary verbs; lexical properties are statistically parallel.",
+  "predicted_champion_behavior": "Champion cannot distinguish\u2014identical verb substitution defeats lexical analysis. Semantic appropriateness to anchor facts remains invisible to frequency-based metrics."
+ }
+]

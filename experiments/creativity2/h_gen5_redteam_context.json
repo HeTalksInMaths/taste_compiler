@@ -1,0 +1,33 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "elaboration_detail \u00d7 lexical_rarity \u2014 Varied alignment-block structure (entropy of difflib opcode block sizes) gated by mean surprisal of changed content tokens. Structural diversity alone is cheap (just reorder/replace); structural diversity with novel content signals real creative elaboration. Avoids word-length inversion by making signal structural, gate lexical.",
+  "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef structural_diversity_content_gated(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks or not anchor_toks:\n        return 0.5\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    opcodes = matcher.get_opcodes()\n    if not opcodes:\n        return 0.5\n    block_sizes = []\n    changed_tokens = []\n    for op, a_start, a_end, b_start, b_end in opcodes:\n        block_size = b_end - b_start\n        if block_size > 0:\n            block_sizes.append(block_size)\n        if op in (\"replace\", \"insert\"):\n            changed_tokens.extend(text_toks[b_start:b_end])\n    if block_sizes:\n        block_arr = np.array(block_sizes, dtype=float)\n        block_probs = block_arr / block_arr.sum()\n        block_entropy = -np.sum(block_probs * np.log2(block_probs + 1e-10))\n        max_entropy = math.log2(len(block_sizes)) if len(block_sizes) > 1 else 1.0\n        structural_signal = max(0.0, min(1.0, block_entropy / (max_entropy + 0.1)))\n    else:\n        structural_signal = 0.5\n    if changed_tokens:\n        changed_surp = [_word_surprisal(w) for w in changed_tokens]\n        mean_changed_surp = statistics.mean(changed_surp)\n        content_gate = max(0.0, min(1.0, (mean_changed_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        content_gate = 0.0\n    return structural_signal * content_gate\n\nMETRICS = {\"structural_diversity_content_gated\": structural_diversity_content_gated}"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "image_precision_through_minimal_edit",
+  "vacuous_elaboration_via_epistemic_hedging",
+  "sophistication_requires_complexity",
+  "reordering-without-freshness"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}
