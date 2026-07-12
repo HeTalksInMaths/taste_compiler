@@ -1,0 +1,66 @@
+[
+ {
+  "pair_id": "R3_01",
+  "trap": "synonym-churn confound (paraphrase magnitude vs freshness)",
+  "anchor": "Every morning she brews a pot of coffee and drinks it slowly while the kitchen wakes up around her. The steam curls past the window as the neighborhood starts its day.",
+  "more_creative": "Every morning she brews a pot of coffee and drinks it slowly while the kitchen coughs itself awake around her. The steam curls past the window like a question the neighborhood hasn't answered yet.",
+  "less_creative": "At the start of each day, a full pot gets brewed by her, and she sips it unhurried as the household stirs into motion around her presence. Past the glass, vapor drifts upward while the district around them begins its daily routine.",
+  "design_note": "less_creative swaps nearly every content word and flips to passive, maximizing n-gram distance with zero imagery; more_creative keeps anchor bigrams and lands two fresh images."
+ },
+ {
+  "pair_id": "R3_02",
+  "trap": "synonym-churn confound",
+  "anchor": "The rain hit the window in steady sheets while she watched the street lights blur into halos. She hadn't moved from the couch in an hour.",
+  "more_creative": "The rain hit the window in steady sheets, like a drummer who'd forgotten how to stop, while she watched the street lights blur into halos. She hadn't moved from the couch in an hour, only inward.",
+  "less_creative": "Steady sheets of precipitation struck the glass as the streetlamps' glow smeared into rings before her eyes. For sixty minutes she remained fixed on the sofa without shifting position.",
+  "design_note": "clinical relexicalization vs one drumming simile plus 'only inward'."
+ },
+ {
+  "pair_id": "R3_03",
+  "trap": "synonym-churn confound",
+  "anchor": "After thirty years in the classroom, Mr. Alvarez cleaned out his desk and took one last look at the empty rows of chairs. He locked the door behind him without looking back.",
+  "more_creative": "After thirty years in the classroom, Mr. Alvarez cleaned out his desk and took one last look at the empty rows of chairs, each one still holding the shape of a kid who'd left. He locked the door behind him without looking back, just a small change in the building's pulse.",
+  "less_creative": "Following three decades of teaching, the desk was emptied out by Mr. Alvarez, who gazed briefly at the vacant seating before departing the room. He shut the door on his way out and did not glance backward.",
+  "design_note": "passive + generic synonyms scatter n-grams without any image; more_creative inserts two apt images verbatim into anchor clauses."
+ },
+ {
+  "pair_id": "R3_04",
+  "trap": "synonym-churn confound",
+  "anchor": "Traffic crawled to a stop on the bridge, and horns started up in scattered bursts. Somewhere ahead, a driver leaned out of his window to see what was wrong.",
+  "more_creative": "Traffic crawled to a stop on the bridge, and horns started up in scattered bursts, like a choir warming up for a performance nobody wanted. Somewhere ahead, a driver leaned out of his window to read the holdup like weather.",
+  "less_creative": "Vehicles came to a halt on the overpass as intermittent honking broke out among the stalled cars. Up front, one motorist stuck his head out to determine the source of the delay.",
+  "design_note": "report-speak relexicalization vs choir simile + 'read the holdup like weather'."
+ },
+ {
+  "pair_id": "R3_05",
+  "trap": "synonym-churn confound",
+  "anchor": "By August the tomato plants had gone brown and brittle, and she stopped watering them altogether. The garden sat there, done with itself, until the first frost took the rest.",
+  "more_creative": "By August the tomato plants had gone brown and brittle, and she stopped watering them altogether, the way you stop calling someone who's already gone. The garden sat there, done with itself, until the first frost took the rest, tidying up what she couldn't.",
+  "less_creative": "The tomato vines had turned dry and brown by the eighth month, prompting her to cease all irrigation. The plot remained abandoned in its own resignation before the initial freeze finished the job.",
+  "design_note": "Latinate renaming of every element vs one analogy + closing turn on unchanged anchor text."
+ },
+ {
+  "pair_id": "R3_06",
+  "trap": "synonym-churn confound",
+  "anchor": "The first snow fell overnight, and by morning the whole block was covered in white. Kids were already out sledding down the hill before the plows arrived.",
+  "more_creative": "The first snow fell overnight, and by morning the whole block wore it like a clean shirt it hadn't earned yet. Kids were already out sledding down the hill before the plows arrived to ruin the evidence.",
+  "less_creative": "Overnight snowfall blanketed the entire block in white by the time morning arrived. Children were sledding down the slope well before the snowplows showed up.",
+  "design_note": "reorder+synonyms vs clothing metaphor and wry close."
+ },
+ {
+  "pair_id": "R3_07",
+  "trap": "synonym-churn confound",
+  "anchor": "She found the photograph tucked inside an old book, faded but still recognizable after all these years. Her grandmother's smile looked exactly the same as she remembered it.",
+  "more_creative": "She found the photograph tucked inside an old book, faded but still recognizable, like a voice you'd know even through a wall. Her grandmother's smile looked exactly the same as she remembered it, stubbornly unaged by all the years between them.",
+  "less_creative": "Inside a dated book she came across the picture, worn yet identifiable despite the passage of time. The grin on her grandmother's face matched precisely the way she recalled it.",
+  "design_note": "inverted word order + near-synonyms vs one resonant simile."
+ },
+ {
+  "pair_id": "R3_08",
+  "trap": "synonym-churn confound",
+  "anchor": "He crossed the finish line and immediately sat down on the pavement, too exhausted to celebrate. The crowd cheered anyway, and someone draped a foil blanket over his shoulders.",
+  "more_creative": "He crossed the finish line and immediately sat down on the pavement, too exhausted to celebrate, his legs finally handing in their resignation. The crowd cheered anyway, and someone draped a foil blanket over his shoulders like a small, silver apology.",
+  "less_creative": "Upon reaching the finish, he lowered himself onto the ground at once, lacking the energy for any celebration. Despite this, onlookers applauded, and a foil covering was placed around him by a bystander.",
+  "design_note": "formal/passive register churn vs two compact images."
+ }
+]
