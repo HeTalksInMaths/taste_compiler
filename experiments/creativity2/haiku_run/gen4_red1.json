@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR4_01",
+    "trap": "reordering-without-freshness",
+    "anchor": "The team delivered the project on schedule despite tight deadlines. Management expressed satisfaction with the timely completion.",
+    "more_creative": "Under crushing pressure, the team forged not just punctuality but excellence, delivering work that transcended initial expectations. Their achievement inspired confidence and redefined what the team was capable of.",
+    "less_creative": "The team delivered on schedule despite tight deadlines; management expressed satisfaction with the delivery. The timely delivery of the project satisfied management during the scheduled timeline.",
+    "design_note": "Paraphrasing (delivery/timely delivery) combined with clause rearrangement creates token variance while maintaining identical facts.",
+    "predicted_champion_behavior": "Champion scores less_creative higher (~0.68) due to token-level rearrangement creating insertion illusions via difflib. Scores more_creative lower (~0.45) as semantic compression reduces visible token insertions."
+  },
+  {
+    "pair_id": "HR4_02",
+    "trap": "reordering-without-freshness",
+    "anchor": "Young children learned most effectively through play and exploration. Teachers actively encouraged creative engagement and natural curiosity.",
+    "more_creative": "Playful discovery became pedagogy itself—children's instinctive curiosity unfettered and channeled by teachers who grasped that wonder births wisdom. The classroom transformed into a laboratory of possibility.",
+    "less_creative": "Through play and exploration, children learned with encouragement. Teachers encouraged creative engagement and curiosity through active playful learning.",
+    "design_note": "Rearrangement of learning/play/exploration/encouragement tokens without adding new conceptual content; presents as elaboration via token repositioning.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.66 (high) as clause fronting and token rearrangement appear as insertions. Scores more_creative ~0.38 (low) as integrated metaphor reduces raw token-insertion count."
+  },
+  {
+    "pair_id": "HR4_03",
+    "trap": "reordering-without-freshness",
+    "anchor": "The river flowed through the valley with constant motion. Wildlife thrived in this rich ecosystem.",
+    "more_creative": "The river's ceaseless current carved a sanctuary where life flourished—each species intricate, interdependent, entwined in a web of mutual survival. Abundance became the valley's defining signature.",
+    "less_creative": "Through the valley, the river flowed with constant motion. In the rich ecosystem, wildlife thrived among abundant resources.",
+    "design_note": "Fronting of prepositional phrases and token repositioning (river/flowed, valley, wildlife/thrived) mimics elaboration without semantic novelty.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.64 (high) due to phrase reordering generating token mismatches in difflib alignment. Scores more_creative ~0.40 (low)."
+  },
+  {
+    "pair_id": "HR4_04",
+    "trap": "reordering-without-freshness",
+    "anchor": "She worked hard throughout the project with dedication and effort. The result was impressive and exceeded initial goals.",
+    "more_creative": "Through relentless effort, she transmuted labor into mastery—the result showcased her ability to exceed every bar set and revealed reserves of skill even she had not anticipated. Success became a door to possibility.",
+    "less_creative": "Hard throughout the project she worked with dedication and effort. The impressive result exceeded initial goals and the result was impressive.",
+    "design_note": "Token repetition (impressive/result) combined with heavy reordering tricks champion into counting recycled tokens as insertions.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.70 (high) from repetition + reordering creating insertion signals. Scores more_creative ~0.39 (low) as narrative integration reduces observable insertions."
+  },
+  {
+    "pair_id": "HR4_05",
+    "trap": "reordering-without-freshness",
+    "anchor": "The old house stood completely empty and abandoned for years. Birds nested inside the weathered rafters.",
+    "more_creative": "Emptiness became richness—neglected rooms reshaped by wings and song into a sanctuary where nature and abandonment merged into unexpected grace. Life reclaimed what humans had surrendered.",
+    "less_creative": "The old house stood abandoned and empty. In the rafters, birds nested inside the abandoned structure.",
+    "design_note": "Genuine metaphor compressed into fewer tokens; champion misses novelty as insertion count drops despite semantic depth.",
+    "predicted_champion_behavior": "Champion scores more_creative ~0.35 (low) as conceptual density reduces token-level insertions. Scores less_creative ~0.61 (high) from repetition creating false insertion signals."
+  },
+  {
+    "pair_id": "HR4_06",
+    "trap": "reordering-without-freshness",
+    "anchor": "The meeting proved remarkably productive and collaborative in tone. All stakeholders reached clear agreement quite quickly.",
+    "more_creative": "When disparate agendas converged into consensus, the meeting became a fulcrum—a moment whose ripples shifted organizational trajectory in ways none anticipated, where efficiency married to insight. Alignment emerged as possibility.",
+    "less_creative": "Productive and collaborative, the meeting was; all stakeholders reached agreement quickly. The meeting's collaborative productivity and quick stakeholder agreement demonstrated the collaborative productivity.",
+    "design_note": "Predicative fronting and lexical recycling (collaborative, productivity) create token variance champion interprets as elaboration.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.70 (high) from recycled tokens appearing as insertions. Scores more_creative ~0.39 (low) as integrated narrative compresses expression."
+  },
+  {
+    "pair_id": "HR4_07",
+    "trap": "reordering-without-freshness",
+    "anchor": "Winter arrived unexpectedly early in the season. Crops were severely damaged by the unseasonable frost.",
+    "more_creative": "Unseasonable frost became climatic betrayal—it shattered months of agricultural hope and scattered careful stewardship into economic ruin. Farming communities reeled, their futures suddenly uncertain.",
+    "less_creative": "Early in the season, winter arrived unexpectedly. Crops were severely damaged by the unseasonable frost.",
+    "design_note": "Phrase inversion (winter/arrived, frost/crops) and rearrangement without factual expansion; champion scores based on token-position changes.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.65 (high) from insertion illusions via reordering. Scores more_creative ~0.41 (low)."
+  },
+  {
+    "pair_id": "HR4_08",
+    "trap": "reordering-without-freshness",
+    "anchor": "The comprehensive study examined patient outcomes carefully and systematically throughout treatment. Recovery rates improved significantly.",
+    "more_creative": "Rigorous analysis revealed that targeted intervention precipitated measurable healing trajectories, validating an approach that reframed recovery not as chance but engineered transformation. Patients experienced not survival but flourishing.",
+    "less_creative": "Carefully and systematically, the study examined patient outcomes. Patient recovery rates improved significantly through the study's systematic approach.",
+    "design_note": "Adverbial fronting and token repositioning (study/examined, patient/outcomes, recovery/rates/improved) presents as elaboration via difflib misalignment.",
+    "predicted_champion_behavior": "Champion scores less_creative ~0.68 (high) from token-sequence variance created by reordering. Scores more_creative ~0.37 (low) from semantic compression."
+  }
+]

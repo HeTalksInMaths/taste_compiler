@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR4_09",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The library was always crowded with eager visitors. It made everyone feel truly welcome.",
+    "more_creative": "The library was always crowded with eager visitors. It embraced everyone who came.",
+    "less_creative": "The library was always crowded with eager visitors. It scolded everyone who came.",
+    "design_note": "Embraced perfectly captures welcome atmosphere—apt. Scolded contradicts warmth—inept. Both use ordinary verb insertions with identical statistical properties; champion cannot distinguish.",
+    "predicted_champion_behavior": "Champion rates both equally: single ordinary verb substitution, same word-frequency band. Semantic opposition remains invisible to lexical metrics."
+  },
+  {
+    "pair_id": "HR4_10",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The old car struggled up the steep hill. It never broke down despite everything.",
+    "more_creative": "The old car struggled up the steep hill. It persisted, never surrendering once.",
+    "less_creative": "The old car struggled up the steep hill. It collapsed, never surrendering once.",
+    "design_note": "Persisted aligns with reliability—apt. Collapsed contradicts not breaking down—inept. Identical insertion of ordinary verbs; champion sees no difference.",
+    "predicted_champion_behavior": "Lexical scorer equates them—same insertion pattern and surprisal. Misses that collapsed falsifies the 'never broke down' fact."
+  },
+  {
+    "pair_id": "HR4_11",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The curious child asked endless questions. The patient parent answered every single one.",
+    "more_creative": "The curious child asked endless questions. The patient parent received each with grace.",
+    "less_creative": "The curious child asked endless questions. The patient parent dismissed each with grace.",
+    "design_note": "Received echoes answering—apt. Dismissed contradicts patience—inept. Both use ordinary verbs; lexical rarity identical.",
+    "predicted_champion_behavior": "Champion cannot distinguish—identical verb substitution structure and word frequency. Semantic contradiction to anchor stays hidden."
+  },
+  {
+    "pair_id": "HR4_12",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The innovative proposal faced strong resistance. The team pushed it through with determination.",
+    "more_creative": "The innovative proposal faced strong resistance. The team carried it forward with determination.",
+    "less_creative": "The innovative proposal faced strong resistance. The team abandoned it with determination.",
+    "design_note": "Carried forward extends pushing through—apt. Abandoned contradicts the achievement—inept. Both insertions are ordinary verbs, statistically parallel.",
+    "predicted_champion_behavior": "Identical verb insertion defeats lexical analysis. Champion rates equally despite abandoned falsifying the push-through fact."
+  },
+  {
+    "pair_id": "HR4_13",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The golden sunset was beautiful to watch. It calmed everyone who viewed it.",
+    "more_creative": "The golden sunset was beautiful to watch. It soothed everyone who gazed quietly.",
+    "less_creative": "The golden sunset was beautiful to watch. It unsettled everyone who gazed quietly.",
+    "design_note": "Soothed matches calmed perfectly—apt. Unsettled opposes calming effect—inept. Both substitute ordinary verbs with parallel structure.",
+    "predicted_champion_behavior": "Lexical metrics identical—champion equates them. Semantic incoherence in less_creative remains undetected by frequency-based scoring."
+  },
+  {
+    "pair_id": "HR4_14",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The shocking news arrived without warning. Everyone reacted with profound distress.",
+    "more_creative": "The shocking news arrived without warning. Everyone reeled from its tremendous impact.",
+    "less_creative": "The shocking news arrived without warning. Everyone rejoiced at its tremendous impact.",
+    "design_note": "Reeled matches shock perfectly—apt. Rejoiced contradicts distress—inept. Both insertions are ordinary verbs with identical word-frequency properties.",
+    "predicted_champion_behavior": "Champion sees only lexical insertion—fails to detect rejoiced contradicts shock. Rates equally due to statistical similarity."
+  },
+  {
+    "pair_id": "HR4_15",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The dedicated student studied diligently before the exam. Her effort paid off abundantly.",
+    "more_creative": "The dedicated student studied diligently before the exam. Her diligence was rewarded abundantly.",
+    "less_creative": "The dedicated student studied diligently before the exam. Her negligence was rewarded abundantly.",
+    "design_note": "Diligence reinforces study effort—apt. Negligence contradicts dedication—inept. Both substitute nouns with identical surprisal; champion cannot discern semantic opposition.",
+    "predicted_champion_behavior": "Lexical scorer equates them—identical noun substitution in same position. Cannot detect negligence contradicts diligent study stated in anchor."
+  },
+  {
+    "pair_id": "HR4_16",
+    "trap": "semantic_appropriateness_decoupling",
+    "anchor": "The passionate musician played with deep feeling. The audience listened intently throughout.",
+    "more_creative": "The passionate musician played with deep feeling. The audience drank in every note.",
+    "less_creative": "The passionate musician played with deep feeling. The audience ignored every note.",
+    "design_note": "Drank in captures rapt attention—apt. Ignored contradicts intense listening—inept. Both use ordinary verbs; lexical properties are statistically parallel.",
+    "predicted_champion_behavior": "Champion cannot distinguish—identical verb substitution defeats lexical analysis. Semantic appropriateness to anchor facts remains invisible to frequency-based metrics."
+  }
+]
