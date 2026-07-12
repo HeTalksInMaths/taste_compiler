@@ -1,0 +1,29 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "semantic_distance(collocational) \u2014 word n-gram TF-IDF divergence from anchor",
+  "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}
