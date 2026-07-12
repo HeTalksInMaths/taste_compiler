@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR1_01",
+    "trap": "Mechanical synonym & passivity substitution",
+    "anchor": "The committee met yesterday to discuss proposed budget cuts affecting departments. They reached no agreement despite extended debate.",
+    "more_creative": "Yesterday's heated budget meeting fractured the committee along ideological lines, with members bitterly divided over which departments to sacrifice.",
+    "less_creative": "A meeting was held by the committee yesterday regarding proposed budgetary allocations and cuts affecting divisions. No accord was reached by the assembled participants despite prolonged discourse.",
+    "design_note": "Passive voice (held by, was reached) + synonym chains (proposed→proposed, cuts→allocations and cuts, departments→divisions, debate→discourse) maximize n-gram divergence without semantic gain.",
+    "predicted_champion_behavior": "High TF-IDF divergence from passive auxiliaries and synonym bigrams; appropriateness_gate remains satisfied; champion ranks hollow rewrite highly."
+  },
+  {
+    "pair_id": "HR1_02",
+    "trap": "Clause reordering with synonym inflation",
+    "anchor": "Rain fell hard on the city streets this morning, causing flooding. The crowds hurried desperately to nearby shelter.",
+    "more_creative": "Torrential downpour hammered pavement, forcing urban dwellers to bolt beneath awnings and recessed doorways in scrambling exodus.",
+    "less_creative": "The streets of the city this morning experienced heavy precipitation with significant intensity. Rushing rapidly to attain protection, the assembled masses moved with hastened velocity into available sheltered locations.",
+    "design_note": "Reordered subject-verb structure (streets experienced / masses moved) + thesaurus swaps (fell→experienced, hard→heavy, city→city) create trigram divergence without perspective.",
+    "predicted_champion_behavior": "Structural reordering breaks bigram matches; synonym multiplication increases divergence; appropriateness gate passes since vocabulary remains calibrated."
+  },
+  {
+    "pair_id": "HR1_03",
+    "trap": "Passive cascade with elaboration filler",
+    "anchor": "The artist finished her painting after months of intensive work. It hung in the downtown gallery for several weeks.",
+    "more_creative": "After months of distillation, her brushwork crystallized into a meditation on form and impermanence that held gallery visitors transfixed.",
+    "less_creative": "A painting was completed by the artist in question after months of dedicated labor. The work was placed by staff members upon the gallery's walls and was observed by many patrons across several consecutive weeks.",
+    "design_note": "Multiple passives (was completed by, was placed by, was observed by) + filler (in question, by staff members, across consecutive) maximize trigram shuffling while hollowing content.",
+    "predicted_champion_behavior": "Passive auxiliary chains (was placed, was observed) generate novel bigrams; gate passes because core words anchor surprisal; champion misfires."
+  },
+  {
+    "pair_id": "HR1_04",
+    "trap": "Thesaurus-heavy substitution without conceptual depth",
+    "anchor": "The old man walked slowly through the park this afternoon. He felt surprisingly at peace with himself.",
+    "more_creative": "Ambling the overgrown pathways with deliberate pauses, the weathered wanderer rediscovered the layered quiet of late-afternoon solitude.",
+    "less_creative": "The venerable individual ambulated in leisurely fashion via the recreational green expanse during the afternoon period. A sensation of tranquility was experienced by his consciousness in profound measure.",
+    "design_note": "Rare-synonym substitution (old→venerable, walked→ambulated, slowly→leisurely, park→green expanse, felt→experienced by consciousness) inflates n-gram divergence without freshness.",
+    "predicted_champion_behavior": "Synonym multiplicity and passive construction (was experienced) increase bigram divergence; lex_rarity rises from rare words but stays within appropriateness gate; champion ranks high."
+  },
+  {
+    "pair_id": "HR1_05",
+    "trap": "Voice + tense shifting with semantic flattening",
+    "anchor": "The musician composed a new song last month after experimental sessions. Critics praised it widely and enthusiastically.",
+    "more_creative": "Last month's composition emerged from creative crisis, breaking the musician's previous constraints into something raw, unguarded, and visceral.",
+    "less_creative": "A novel musical composition was created by the musician during the preceding month following experimental endeavor. Widespread praise was extended to it by various critics and reviewers of considerable note.",
+    "design_note": "Passive voice (was created by, was extended to) + inversion (critics→extended to it) + elaboration (of considerable note) maximize trigram dissimilarity without semantic richness.",
+    "predicted_champion_behavior": "Passive auxiliaries and inverted word order generate n-gram mismatches; rare-word insertion (extended, considerable note) boosts lex_rarity; gate open; champion ranks soulless version high."
+  },
+  {
+    "pair_id": "HR1_06",
+    "trap": "Fronting + lexical elaboration without insight",
+    "anchor": "The storm destroyed the century-old bridge in the valley. Nobody expected it to collapse so suddenly.",
+    "more_creative": "When the unprecedented deluge hit, the bridge's decades-old concrete failed catastrophically—a sudden collapse nobody in the county had remotely predicted.",
+    "less_creative": "Destruction of the aged bridge in the valley was occasioned by the inclement storm system. The collapse was an occurrence that no individual had anticipated within such a compressed temporal window of deterioration.",
+    "design_note": "Fronted prepositional phrase (Destruction of) + passive (was occasioned) + abstraction (occurrence, temporal window) create bigram divergence while draining specificity.",
+    "predicted_champion_behavior": "Fronting and passivization disrupt bigram continuity; rare-word insertion (occasioned, temporal window) raises lex_rarity within gate; champion ranks hollow version high."
+  },
+  {
+    "pair_id": "HR1_07",
+    "trap": "Synonym clustering with passive voice nesting",
+    "anchor": "She wrote her inaugural book in complete isolation over five years. It captured her most guarded thoughts.",
+    "more_creative": "Sequestered five years, she birthed something raw and uncompromising—a debut that channeled her most protected uncertainties into hard-won prose.",
+    "less_creative": "Her inaugural literary work was authored in seclusion by her own sustained efforts spanning five years of intensive labor. Embodiment of her most carefully guarded consciousness was achieved through the completion of this manuscript.",
+    "design_note": "Layered passives (was authored, was achieved) + synonyms (wrote→authored, book→literary work, five years→spanning five years, captured→embodiment achieved through) fragment bigrams without adding depth.",
+    "predicted_champion_behavior": "Nested passive structures (was authored by, was achieved through) and synonym chains maximize TF-IDF divergence; appropriateness gate open; champion assigns high false-positive score."
+  },
+  {
+    "pair_id": "HR1_08",
+    "trap": "Adjective-noun inversion + gerund elaboration",
+    "anchor": "The detective solved the complex case quickly despite skeptical colleagues. Everyone was surprised by her remarkable insight and determination.",
+    "more_creative": "Her sideways-thinking crack of the case—arriving within days where partners stalled for months—left the precinct quietly humbled and reassessing their methods.",
+    "less_creative": "Resolution of the complex case was accomplished by the detective in expeditious fashion despite considerable skepticism. Surprise was occasioned among all parties by the exhibition of her acuity and remarkable insight in such decisive manner.",
+    "design_note": "Inversion (resolution of / accomplished by) + gerund substitution (solved→resolution / exhibition) + elaboration (in such manner, considerable skepticism) create trigram divergence without perspective shift.",
+    "predicted_champion_behavior": "Gerund nominalization (resolution, exhibition) + passivity (was accomplished, was occasioned) + adverbial elaboration boost bigram divergence; gate satisfied; champion misfires on soulless version."
+  }
+]

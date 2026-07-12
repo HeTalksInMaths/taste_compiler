@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR1_09",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "The old photographs captured forgotten moments from decades past. They held time suspended within their faded frames.",
+    "more_creative": "The old photographs caught forgotten moments from decades past. They held time like amber, crystalline and preserved.",
+    "less_creative": "The aged pictures documented abandoned instances from prior eras. These images preserved temporal stasis within their rectangular boundaries.",
+    "design_note": "Minimal substitution (caught for captured, like amber simile) creates precise compression; less_creative rewrites heavily with abstract terms (documented, temporal stasis, rectangular boundaries).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct bigrams/trigrams (aged/old, documented/captured, abandoned/forgotten, temporal/time, stasis/suspended)."
+  },
+  {
+    "pair_id": "HR1_10",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "The storm approached the coast with dark urgency. Rain would soon flood and fill the narrow streets below.",
+    "more_creative": "The storm approached the coast with dark urgency. Rain would soon flood the streets like veins filling with blood.",
+    "less_creative": "Meteorological systems advanced toward the shoreline with considerable force. Precipitation would inundate and saturate the urban pathways thoroughly.",
+    "design_note": "One vivid image appended (veins filling with blood); less_creative rewrites wholly with technical vocabulary (meteorological systems, inundate, saturate, pathways).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to TF-IDF divergence: meteorological/the, systems/storm, advanced/approached, shoreline/coast, inundate/flood, saturate/fill."
+  },
+  {
+    "pair_id": "HR1_11",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "She couldn't remember why she had arrived at that place. The reason had slipped away into some forgotten corner.",
+    "more_creative": "She couldn't remember why she had arrived at that place. The reason had evaporated like morning mist.",
+    "less_creative": "She lacked recollection of her arrival rationale or justification. Her motivational foundation had dissipated completely from her consciousness.",
+    "design_note": "One precise verb swap (evaporated for slipped) plus apt simile; less_creative restructures entirely with abstract terminology (lacked recollection, rationale, dissipated, consciousness).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to higher bigram/trigram divergence (lacked/couldn't, recollection/remember, justification/arrived, consciousness/place)."
+  },
+  {
+    "pair_id": "HR1_12",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "The coffee was cold and bitter in his mouth. It reminded him sharply of winter mornings long ago.",
+    "more_creative": "The coffee was cold and bitter in his mouth. It tasted like winter mornings, brittle and crystalline.",
+    "less_creative": "The caffeinated beverage possessed low thermal content with acerbic characteristics. The experience evoked seasonal meteorological conditions from his past.",
+    "design_note": "Minimal addition (brittle and crystalline); less_creative uses systematic technical substitution (caffeinated, thermal, acerbic, meteorological, evoked seasonal).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct ngrams (caffeinated/the, beverage/coffee, thermal/cold, acerbic/bitter, seasonal/winter)."
+  },
+  {
+    "pair_id": "HR1_13",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "Green leaves spread across the garden in dense profusion. New life was beginning its emergence into the world.",
+    "more_creative": "Green leaves unfolded across the garden in dense profusion. Life was writing itself in the language of growth.",
+    "less_creative": "Verdant foliage proliferated throughout the cultivated landscape quite abundantly. Novel biological processes were commencing their initiation throughout nature.",
+    "design_note": "Minimal verbs (unfolded, writing itself); less_creative uses technical botanical/biological language (verdant, proliferated, cultivated, commencing, initiation).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to higher TF-IDF divergence (verdant/green, foliage/leaves, proliferated/spread, commencing/beginning, initiation/emergence)."
+  },
+  {
+    "pair_id": "HR1_14",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "She walked through the crowded room with quiet purpose. People moved around her, creating small gaps in their formation.",
+    "more_creative": "She walked through the crowded room with quiet purpose. People flowed around her like water parting.",
+    "less_creative": "She navigated the densely populated interior space with measured steps. Individuals repositioned themselves peripherally relative to her established trajectory.",
+    "design_note": "One precise verb (flowed for moved) and apt simile; less_creative uses bureaucratic re-encoding (navigated, densely, repositioned, peripherally, trajectory).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct ngrams (navigated/she, densely/crowded, interior/the, repositioned/moved, peripherally/around)."
+  },
+  {
+    "pair_id": "HR1_15",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "His smile faded slowly from his exhausted face. The happiness disappeared from his features, replaced by something darker.",
+    "more_creative": "His smile faded slowly from his exhausted face. Happiness bled from his features, replaced by something darker.",
+    "less_creative": "His facial expression of positive affect diminished progressively throughout the scene. His emotional state transitioned from satisfaction toward dissatisfaction.",
+    "design_note": "One visceral verb (bled for disappeared); less_creative abstracts to psychological terminology (facial expression, positive affect, emotional state, transitioned).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to higher bigram divergence (facial/his, expression/smile, positive/the, affect/happiness, emotional/features)."
+  },
+  {
+    "pair_id": "HR1_16",
+    "trap": "image_precision_through_minimal_edit",
+    "anchor": "The music stopped playing abruptly in the concert hall. Silence filled the room and expanded throughout the space.",
+    "more_creative": "The music stopped playing abruptly in the concert hall. Silence spilled in like light through an open door.",
+    "less_creative": "Acoustic stimuli ceased propagating throughout the performance environment. The environmental space became devoid of all auditory phenomena and sensation.",
+    "design_note": "One vivid simile (spilled in like light); less_creative uses technical acoustic/spatial terminology (acoustic stimuli, propagating, auditory phenomena, sensation).",
+    "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct ngrams (acoustic/the, stimuli/music, propagating/playing, auditory/silence, phenomena/filled)."
+  }
+]
