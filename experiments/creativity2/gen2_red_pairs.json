@@ -1,0 +1,66 @@
+[
+ {
+  "pair_id": "R4_01",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "She made coffee before leaving for work. It was strong, and she drank it fast.",
+  "more_creative": "She brewed a cup black as an eight ball. She knocked it back before she'd even sat down.",
+  "less_creative": "In the course of getting ready for work, she made a cup of coffee that was strong. She drank it quickly before she had to leave for the office.",
+  "design_note": "hollow PPs inflate marker density; freshness lives in a compact simile with few markers."
+ },
+ {
+  "pair_id": "R4_02",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "The storm arrived late at night. Trees fell and the power went out across town.",
+  "more_creative": "Night cracked open into a storm. Trees toppled like dominoes, and the lights guttered out.",
+  "less_creative": "During the course of the night, a storm that had been building for hours finally arrived. As a result, trees fell over while the power went out across the neighborhood.",
+  "design_note": "connective stacking vs purely lexical/imagistic freshness."
+ },
+ {
+  "pair_id": "R4_03",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "The photo was taken at her grandmother's house, during the summer she turned twelve. She is squinting at the camera while holding a melting popsicle.",
+  "more_creative": "Twelve years old, squinting, popsicle dripping fast down her wrist. Grandma's porch, summer caught mid-melt, already gone.",
+  "less_creative": "In the photo, which was taken at her grandmother's house during the summer when she was twelve, she is squinting at the camera. She is holding a popsicle that is melting in her hand.",
+  "design_note": "creative compression = sharply negative marker delta; flat near-verbatim restatement = neutral delta."
+ },
+ {
+  "pair_id": "R4_04",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "The meeting ran long because the client kept raising new concerns. Everyone grew quiet and stared at the table.",
+  "more_creative": "The meeting dragged as concerns piled up. The room went silent, all eyes fixed to the table.",
+  "less_creative": "During the meeting, which ran long because the client kept raising new concerns about the budget, everyone in the room grew quiet. They stared down at the table in front of them, saying nothing.",
+  "design_note": "re-elaborated subordinate structure without new facts vs punchy independent clauses."
+ },
+ {
+  "pair_id": "R4_05",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "He walked home slowly in the rain. His shoes got soaked and he was cold.",
+  "more_creative": "He sloshed home through a cold gray drizzle. His shoes went to sponges, teeth chattering hard.",
+  "less_creative": "Because it was raining, he walked all the way home in the rain. By the time he got there, his shoes had become soaked through and he was cold from the weather.",
+  "design_note": "causal/prepositional scaffolding multiplied vs one vivid metaphor losing markers."
+ },
+ {
+  "pair_id": "R4_06",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "Her mother had planted the rose before she passed away. It bloomed again this spring despite the frost that had killed everything else.",
+  "more_creative": "Mother's rose came back. Frost took the rest of the garden, but not that one.",
+  "less_creative": "The rose, which had been planted by her mother before she passed away, bloomed again this spring. Even though the frost had killed nearly everything else in the yard that year, this one came through.",
+  "design_note": "short declaratives with contrastive punch vs near-verbatim clause reproduction."
+ },
+ {
+  "pair_id": "R4_07",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "They argued bitterly about money for weeks on end. She left one night and never called back.",
+  "more_creative": "Money split them clean down the middle, like a fault line. She walked out one night and went silent for good.",
+  "less_creative": "Because of an ongoing disagreement about money that had been building for weeks, she left the apartment one night. Despite promising that she would call, she never got back in touch with him.",
+  "design_note": "inert circumstantial phrasing vs one extended metaphor carried by few function words."
+ },
+ {
+  "pair_id": "R4_08",
+  "trap": "syntactic padding vs creative compression",
+  "anchor": "She had left the bread to rise overnight on the counter beside the window. By morning it had overflowed the bowl because the yeast was so active.",
+  "more_creative": "By morning the dough had escaped its bowl entirely. It sat there yeast-drunk, reaching for the window.",
+  "less_creative": "She had left the bread to rise overnight on the counter beside the window. By the time morning came, it had spilled over the sides of the bowl because the yeast had been so active.",
+  "design_note": "repeats the anchor's own prepositional chain + adds one more vs compact personification."
+ }
+]
