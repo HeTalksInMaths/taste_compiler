@@ -1,5 +1,5 @@
 {
- "gen": 0,
+ "gen": 1,
  "train": [
   {
    "pair_id": "CR01",
@@ -203,6 +203,62 @@
    "more_creative": "The startup burned through the last of its cash and closed the doors. The founders scattered to new jobs.",
    "less_creative": "The fledgling enterprise exhausted its pecuniary reserves and ceased operations. The progenitors migrated to alternative vocations.",
    "origin": "A2"
+  },
+  {
+   "pair_id": "HR1_15",
+   "anchor": "His smile faded slowly from his exhausted face. The happiness disappeared from his features, replaced by something darker.",
+   "more_creative": "His smile faded slowly from his exhausted face. Happiness bled from his features, replaced by something darker.",
+   "less_creative": "His facial expression of positive affect diminished progressively throughout the scene. His emotional state transitioned from satisfaction toward dissatisfaction.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_11",
+   "anchor": "She couldn't remember why she had arrived at that place. The reason had slipped away into some forgotten corner.",
+   "more_creative": "She couldn't remember why she had arrived at that place. The reason had evaporated like morning mist.",
+   "less_creative": "She lacked recollection of her arrival rationale or justification. Her motivational foundation had dissipated completely from her consciousness.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_14",
+   "anchor": "She walked through the crowded room with quiet purpose. People moved around her, creating small gaps in their formation.",
+   "more_creative": "She walked through the crowded room with quiet purpose. People flowed around her like water parting.",
+   "less_creative": "She navigated the densely populated interior space with measured steps. Individuals repositioned themselves peripherally relative to her established trajectory.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_12",
+   "anchor": "The coffee was cold and bitter in his mouth. It reminded him sharply of winter mornings long ago.",
+   "more_creative": "The coffee was cold and bitter in his mouth. It tasted like winter mornings, brittle and crystalline.",
+   "less_creative": "The caffeinated beverage possessed low thermal content with acerbic characteristics. The experience evoked seasonal meteorological conditions from his past.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_09",
+   "anchor": "The old photographs captured forgotten moments from decades past. They held time suspended within their faded frames.",
+   "more_creative": "The old photographs caught forgotten moments from decades past. They held time like amber, crystalline and preserved.",
+   "less_creative": "The aged pictures documented abandoned instances from prior eras. These images preserved temporal stasis within their rectangular boundaries.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_13",
+   "anchor": "Green leaves spread across the garden in dense profusion. New life was beginning its emergence into the world.",
+   "more_creative": "Green leaves unfolded across the garden in dense profusion. Life was writing itself in the language of growth.",
+   "less_creative": "Verdant foliage proliferated throughout the cultivated landscape quite abundantly. Novel biological processes were commencing their initiation throughout nature.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_04",
+   "anchor": "The old man walked slowly through the park this afternoon. He felt surprisingly at peace with himself.",
+   "more_creative": "Ambling the overgrown pathways with deliberate pauses, the weathered wanderer rediscovered the layered quiet of late-afternoon solitude.",
+   "less_creative": "The venerable individual ambulated in leisurely fashion via the recreational green expanse during the afternoon period. A sensation of tranquility was experienced by his consciousness in profound measure.",
+   "origin": "R1",
+   "trap": "Thesaurus-heavy substitution without conceptual depth"
   }
  ],
  "heldout": [
@@ -296,6 +352,30 @@
    "more_creative": "My grandmother tells the same three stories every holiday. Somehow we lean in every time.",
    "less_creative": "My grandmother reiterates identical narratives each festive occasion. We remain perpetually unwearied thereby.",
    "origin": "A2"
+  },
+  {
+   "pair_id": "HR1_10",
+   "anchor": "The storm approached the coast with dark urgency. Rain would soon flood and fill the narrow streets below.",
+   "more_creative": "The storm approached the coast with dark urgency. Rain would soon flood the streets like veins filling with blood.",
+   "less_creative": "Meteorological systems advanced toward the shoreline with considerable force. Precipitation would inundate and saturate the urban pathways thoroughly.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_16",
+   "anchor": "The music stopped playing abruptly in the concert hall. Silence filled the room and expanded throughout the space.",
+   "more_creative": "The music stopped playing abruptly in the concert hall. Silence spilled in like light through an open door.",
+   "less_creative": "Acoustic stimuli ceased propagating throughout the performance environment. The environmental space became devoid of all auditory phenomena and sensation.",
+   "origin": "R1",
+   "trap": "image_precision_through_minimal_edit"
+  },
+  {
+   "pair_id": "HR1_03",
+   "anchor": "The artist finished her painting after months of intensive work. It hung in the downtown gallery for several weeks.",
+   "more_creative": "After months of distillation, her brushwork crystallized into a meditation on form and impermanence that held gallery visitors transfixed.",
+   "less_creative": "A painting was completed by the artist in question after months of dedicated labor. The work was placed by staff members upon the gallery's walls and was observed by many patrons across several consecutive weeks.",
+   "origin": "R1",
+   "trap": "Passive cascade with elaboration filler"
   }
  ],
  "core_ids": [
@@ -308,22 +388,14 @@
  ],
  "population": [
   {
-   "id": "combinational_novelty",
-   "lineage": "seed",
-   "causal_node": "semantic_distance(collocational)",
-   "mechanism": "word n-gram TF-IDF divergence from anchor",
-   "gen": 0,
-   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
-   "metric_key": "combinational_novelty"
-  },
-  {
-   "id": "conjunctive_creativity",
-   "lineage": "seed",
-   "causal_node": "novelty*appropriateness",
-   "mechanism": "conjunctive product of the above",
-   "gen": 0,
-   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
-   "metric_key": "conjunctive_creativity"
+   "id": "S_g1_06_elaboration_vs_substitut",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail + metaphor_novelty",
+   "mechanism": "Elaboration-to-substitution ratio: prefers texts where NEW content is inserted relative to word-swaps, via token-level difflib alignment and ratio gating.",
+   "code": "\"\"\"\nScorer: Elaboration-to-Substitution Balance\nMechanism: Prefers elaboration (insertions) over pure substitution, via difflib alignment.\nCausal node: elaboration_detail (preferring additive development over word-swapping).\n\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef _find_changes(anchor_toks, text_toks):\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    blocks = matcher.get_matching_blocks()\n    anchor_matched = set()\n    text_matched = set()\n    for i, j, size in blocks:\n        for k in range(size):\n            anchor_matched.add(i + k)\n            text_matched.add(j + k)\n    anchor_unmatched = [i for i in range(len(anchor_toks)) if i not in anchor_matched]\n    text_unmatched = [j for j in range(len(text_toks)) if j not in text_matched]\n    substitutions = []\n    a_idx, t_idx = 0, 0\n    while a_idx < len(anchor_unmatched) and t_idx < len(text_unmatched):\n        a_pos, t_pos = anchor_unmatched[a_idx], text_unmatched[t_idx]\n        if abs(a_pos - t_pos) < 3:\n            substitutions.append((anchor_toks[a_pos], text_toks[t_pos]))\n            a_idx += 1\n            t_idx += 1\n        elif a_pos < t_pos:\n            a_idx += 1\n        else:\n            t_idx += 1\n    insertions = [text_toks[j] for j in text_unmatched]\n    return substitutions, insertions\n\ndef elaboration_vs_substitution_balance(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks:\n        return 0.5\n    substitutions, insertions = _find_changes(anchor_toks, text_toks)\n    if not insertions and not substitutions:\n        return 0.5\n    elab_count = len(insertions)\n    sub_count = len(substitutions)\n    ratio = (elab_count + 1.0) / (sub_count + 1.0)\n    norm_ratio = max(0.0, min(1.0, (ratio - 0.5) / 1.5))\n    if insertions:\n        ins_surp = [_word_surprisal(word) for word in insertions]\n        mean_ins_surp = statistics.mean(ins_surp)\n        novelty_gate = max(0.0, min(1.0, (mean_ins_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        novelty_gate = 0.5\n    return norm_ratio * novelty_gate\n\nMETRICS = {\"elaboration_vs_substitution_balance\": elaboration_vs_substitution_balance}\n",
+   "metric_key": "elaboration_vs_substitution_balance",
+   "novel": true
   },
   {
    "id": "appropriateness_gate",
@@ -335,6 +407,44 @@
    "metric_key": "appropriateness_gate"
   },
   {
+   "id": "S_g1_09_rare_word_dispersion",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "remote_association",
+   "mechanism": "Coefficient of variation (CV) of gaps between rare-word positions (citation: Mednick 1962 Remote Associates Test; spatial distribution as cognitive-effort marker in novelty research, Beaty et al. 2016 EEG of creativity)",
+   "code": "\"\"\"rare_word_dispersion \u2014 measure spatial clustering of rare (novel) words.\n\nMechanism: Creative remote associations distribute novel concepts (rare words)\nstrategically across the text. Pretentious verbosity CLUSTERS rare words densely\n(e.g., \"transcendent espresso symphony\" stacks three unusual words in one phrase).\nMeasured via coefficient of variation of gaps between rare-word positions:\nlow CV => even spacing => higher score; high CV => clustered => lower score.\n\nOrthogonal to incumbents: rarity metrics measure WHICH words are rare or HOW\nCOMMON they are (mean surprisal, frequency distribution). This measures WHERE\nrare words are positioned (spatial statistics). Two texts with identical rare-word\nsets but different positions will score differently here, yet identically on\nfrequency-based scorers.\n\nNovelty criterion maps to: remote_association (distant concepts strategically\ndistributed); appropriateness (dense rare-word clustering signals forced\nverbosity, failing coherence); elaboration_detail (paced concept introduction\nvs rushed vocabulary dump).\n\"\"\"\n\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\nSTOP = set(\n    \"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my \"\n    \"your his their our not no so do does did have has had will would can could should may \"\n    \"might must about into over under out up down off than too very just also\".split()\n)\n\n\ndef _toks(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\n\ndef _ref_mean_surprisal(n=50000):\n    \"\"\"Compute mean surprisal of wordfreq top-n lexicon (reference for identifying 'rare').\"\"\"\n    words = top_n_list(\"en\", n)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    return float((ps * sur).sum())\n\n\n_MEAN_SURPRISAL_REF = _ref_mean_surprisal()\n\n\ndef rare_word_dispersion(text, anchor):\n    \"\"\"Measure spatial distribution of rare words via coefficient of variation of inter-rare-word gaps.\n    High CV (large variance in gaps) => rare words clustered => lower score.\n    Low CV (uniform gaps) => rare words evenly distributed => higher score.\"\"\"\n\n    toks = _content(text)\n    if len(toks) < 3:\n        return 0.5\n\n    # Identify indices of rare words (surprisal > reference mean)\n    rare_indices = []\n    for i, w in enumerate(toks):\n        p = word_frequency(w, \"en\")\n        if p > 0:\n            sur = -math.log2(p)\n            if sur > _MEAN_SURPRISAL_REF:\n                rare_indices.append(i)\n\n    # Need at least 2 rare words to compute gaps\n    if len(rare_indices) < 2:\n        return 0.5\n\n    # Compute gaps between consecutive rare-word positions\n    gaps = [\n        rare_indices[i + 1] - rare_indices[i]\n        for i in range(len(rare_indices) - 1)\n    ]\n\n    if not gaps:\n        return 0.5\n\n    # Coefficient of variation: CV = SD / mean\n    mean_gap = np.mean(gaps)\n    if mean_gap < 1e-6:\n        return 0.0  # No gaps = maximal clustering\n\n    cv = np.std(gaps) / mean_gap\n\n    # Score: invert CV so low CV (uniform) => high score\n    # Use 1 / (1 + CV) to map [0, inf) to (0, 1]\n    dispersion_score = 1.0 / (1.0 + cv)\n\n    return float(max(0.0, min(1.0, dispersion_score)))\n\n\nMETRICS = {\"rare_word_dispersion\": rare_word_dispersion}",
+   "metric_key": "rare_word_dispersion",
+   "novel": true
+  },
+  {
+   "id": "conjunctive_creativity",
+   "lineage": "seed",
+   "causal_node": "novelty*appropriateness",
+   "mechanism": "conjunctive product of the above",
+   "gen": 0,
+   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
+   "metric_key": "conjunctive_creativity"
+  },
+  {
+   "id": "combinational_novelty",
+   "lineage": "seed",
+   "causal_node": "semantic_distance(collocational)",
+   "mechanism": "word n-gram TF-IDF divergence from anchor",
+   "gen": 0,
+   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
+   "metric_key": "combinational_novelty"
+  },
+  {
+   "id": "S_g1_07_surprisal_trend",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Spearman rank correlation of token position with per-token surprisal (citation: Nowak & Lewenstein 2002 on optimal complexity; temporal pacing in creativity theory per Csikszentmihalyi flow)",
+   "code": "\"\"\"surprisal_trend \u2014 measure temporal distribution of token rarity.\n\nMechanism: Pretentious verbose text clusters rare words (e.g., at the end\nafter piling adjectives). Real elaboration distributes novel concepts across\nthe text. Measured via Spearman rank correlation of token position with\nper-token surprisal: flat (near-zero rho) => balanced elaboration; strong\ntrend (|rho| > 0.5) => suspicious clustering.\n\nOrthogonal to incumbents: rarity metrics measure MEAN or DIVERGENCE of\nsurprisal; this measures TEMPORAL STRUCTURE (position-surprisal correlation).\nA text swapping rare synonyms keeps mean constant but flattens position trend.\n\nNovelty criterion maps to: elaboration_detail (real elaboration has balanced\npacing); appropriateness (verbose elaboration fails coherence by clustering).\n\"\"\"\n\nimport math\nimport re\nimport numpy as np\nfrom scipy.stats import spearmanr\nfrom wordfreq import word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\nSTOP = set(\n    \"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my \"\n    \"your his their our not no so do does did have has had will would can could should may \"\n    \"might must about into over under out up down off than too very just also\".split()\n)\n\n\ndef _toks(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\n\ndef _ref_mean_surprisal(n=50000):\n    \"\"\"Compute mean surprisal of wordfreq top-n lexicon (reference for calibration).\"\"\"\n    from wordfreq import top_n_list\n    words = top_n_list(\"en\", n)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    return float((ps * sur).sum())\n\n\n_MEAN_SURPRISAL_REF = _ref_mean_surprisal()\n\n\ndef surprisal_trend(text, anchor):\n    \"\"\"Measure temporal distribution of surprisal via position-surprisal correlation.\n    Low |rho| (flat) => evenly distributed concepts => higher score.\n    High |rho| (trend) => clustered rare words => lower score (suspicious verbosity).\"\"\"\n\n    toks = _content(text)\n    if len(toks) < 3:\n        return 0.5\n\n    # Compute surprisal for each token\n    surprisals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        if p > 0:\n            surprisals.append(-math.log2(p))\n        else:\n            surprisals.append(24.0)  # Cap unknown words\n\n    surprisals = np.array(surprisals)\n    positions = np.arange(len(surprisals))\n\n    # Spearman rank correlation of position with surprisal\n    if len(positions) < 3:\n        return 0.5\n\n    rho, _ = spearmanr(positions, surprisals)\n    if np.isnan(rho):\n        rho = 0.0\n\n    # Score: 1 - |rho| inverted via logistic (low |rho| => high score)\n    flat_score = 1.0 - abs(rho)\n    # Logistic squash to [0, 1]\n    score = 1.0 / (1.0 + math.exp(-10.0 * (flat_score - 0.5)))\n\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\"surprisal_trend\": surprisal_trend}",
+   "metric_key": "surprisal_trend",
+   "novel": true
+  },
+  {
    "id": "lex_rarity_norm",
    "lineage": "seed",
    "causal_node": "lexical_rarity/surprisal",
@@ -342,6 +452,16 @@
    "gen": 0,
    "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
    "metric_key": "lex_rarity_norm"
+  },
+  {
+   "id": "S_g1_08_compression_elaboration",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Token-sequence matching via difflib.SequenceMatcher (citation: Lempel-Ziv 1976 compression theory; applied to text elaboration novelty in DSI extensions, Beaty & Johnson 2021)",
+   "code": "\"\"\"compression_elaboration \u2014 measure structural novelty via token-sequence matching.\n\nMechanism: Real elaboration introduces NEW token sequences not present in the\nanchor. Verbose expansion recycles anchor's sequences with minor substitutions.\nMeasured via difflib.SequenceMatcher: ratio of text tokens NOT found in common\ncontiguous subsequences with anchor.\n\nOrthogonal to incumbents: TF-IDF measures surface bigram divergence (statistically).\nThis measures SEQUENCE-LEVEL structural novelty (whether new token patterns emerge).\nA synonym swap (same sequence structure, different tokens) has high TF-IDF divergence\nbut low compression novelty. An entirely new syntactic structure has low TF-IDF\nbut high compression novelty.\n\nNovelty criterion maps to: elaboration_detail (true elaboration adds syntactic\ndepth and new clause structures); semantic_distance (structural diversity =>\nconceptual distance).\n\"\"\"\n\nimport re\nimport difflib\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\nSTOP = set(\n    \"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my \"\n    \"your his their our not no so do does did have has had will would can could should may \"\n    \"might must about into over under out up down off than too very just also\".split()\n)\n\n\ndef _toks(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef compression_elaboration(text, anchor):\n    \"\"\"Measure structural novelty: ratio of text tokens NOT in common subsequences with anchor.\n    High score => new token patterns => genuine elaboration.\n    Low score => mostly repeats anchor's sequences => verbose expansion.\"\"\"\n\n    if not text or not anchor:\n        return 0.0\n\n    text_toks = _toks(text)\n    anchor_toks = _toks(anchor)\n\n    if not text_toks or not anchor_toks:\n        return 0.0\n\n    # Find longest common contiguous token sequences\n    matcher = difflib.SequenceMatcher(None, anchor_toks, text_toks)\n    matching_blocks = matcher.get_matching_blocks()\n\n    # Total tokens in text that are part of common sequences\n    total_matched = sum(block.size for block in matching_blocks)\n\n    # Novelty: fraction of text NOT in common sequences\n    novelty_ratio = 1.0 - (total_matched / len(text_toks)) if text_toks else 0.0\n\n    return float(max(0.0, min(1.0, novelty_ratio)))\n\n\nMETRICS = {\"compression_elaboration\": compression_elaboration}",
+   "metric_key": "compression_elaboration",
+   "novel": false
   }
  ],
  "history": [
@@ -381,10 +501,64 @@
      "SEP": -0.019
     }
    ]
+  },
+  {
+   "gen": 1,
+   "champion": "S_g1_06_elaboration_vs_substitut",
+   "champion_stats": {
+    "SEP": 0.0741,
+    "acc": 0.5833,
+    "mean_pos": 0.5552,
+    "sd_pos": 0.2268,
+    "mean_neg": 0.4812,
+    "sd_neg": 0.2151,
+    "effect_d": 0.335,
+    "worst_margin": -0.3589,
+    "sd_margin": 0.2241,
+    "heldout_SEP": 0.0981,
+    "core_SEP": 0.1346
+   },
+   "n_train": 36,
+   "n_heldout": 16,
+   "population": [
+    {
+     "id": "S_g1_06_elaboration_vs_substitut",
+     "SEP": 0.074
+    },
+    {
+     "id": "appropriateness_gate",
+     "SEP": 0.016
+    },
+    {
+     "id": "S_g1_09_rare_word_dispersion",
+     "SEP": 0.002
+    },
+    {
+     "id": "conjunctive_creativity",
+     "SEP": -0.005
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": -0.011
+    },
+    {
+     "id": "S_g1_07_surprisal_trend",
+     "SEP": -0.021
+    },
+    {
+     "id": "S_g1_08_compression_elaboration",
+     "SEP": -0.024
+    },
+    {
+     "id": "lex_rarity_norm",
+     "SEP": -0.029
+    }
+   ]
   }
  ],
  "trap_axes_used": [
   "cliche/idiom decoupling (adv-1)",
-  "purple prose: novelty without appropriateness (adv-2)"
+  "purple prose: novelty without appropriateness (adv-2)",
+  "image_precision_through_minimal_edit"
  ]
 }

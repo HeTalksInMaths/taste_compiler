@@ -1,0 +1,146 @@
+[
+ {
+  "pair_id": "HR1_01",
+  "trap": "Mechanical synonym & passivity substitution",
+  "anchor": "The committee met yesterday to discuss proposed budget cuts affecting departments. They reached no agreement despite extended debate.",
+  "more_creative": "Yesterday's heated budget meeting fractured the committee along ideological lines, with members bitterly divided over which departments to sacrifice.",
+  "less_creative": "A meeting was held by the committee yesterday regarding proposed budgetary allocations and cuts affecting divisions. No accord was reached by the assembled participants despite prolonged discourse.",
+  "design_note": "Passive voice (held by, was reached) + synonym chains (proposed\u2192proposed, cuts\u2192allocations and cuts, departments\u2192divisions, debate\u2192discourse) maximize n-gram divergence without semantic gain.",
+  "predicted_champion_behavior": "High TF-IDF divergence from passive auxiliaries and synonym bigrams; appropriateness_gate remains satisfied; champion ranks hollow rewrite highly."
+ },
+ {
+  "pair_id": "HR1_02",
+  "trap": "Clause reordering with synonym inflation",
+  "anchor": "Rain fell hard on the city streets this morning, causing flooding. The crowds hurried desperately to nearby shelter.",
+  "more_creative": "Torrential downpour hammered pavement, forcing urban dwellers to bolt beneath awnings and recessed doorways in scrambling exodus.",
+  "less_creative": "The streets of the city this morning experienced heavy precipitation with significant intensity. Rushing rapidly to attain protection, the assembled masses moved with hastened velocity into available sheltered locations.",
+  "design_note": "Reordered subject-verb structure (streets experienced / masses moved) + thesaurus swaps (fell\u2192experienced, hard\u2192heavy, city\u2192city) create trigram divergence without perspective.",
+  "predicted_champion_behavior": "Structural reordering breaks bigram matches; synonym multiplication increases divergence; appropriateness gate passes since vocabulary remains calibrated."
+ },
+ {
+  "pair_id": "HR1_03",
+  "trap": "Passive cascade with elaboration filler",
+  "anchor": "The artist finished her painting after months of intensive work. It hung in the downtown gallery for several weeks.",
+  "more_creative": "After months of distillation, her brushwork crystallized into a meditation on form and impermanence that held gallery visitors transfixed.",
+  "less_creative": "A painting was completed by the artist in question after months of dedicated labor. The work was placed by staff members upon the gallery's walls and was observed by many patrons across several consecutive weeks.",
+  "design_note": "Multiple passives (was completed by, was placed by, was observed by) + filler (in question, by staff members, across consecutive) maximize trigram shuffling while hollowing content.",
+  "predicted_champion_behavior": "Passive auxiliary chains (was placed, was observed) generate novel bigrams; gate passes because core words anchor surprisal; champion misfires."
+ },
+ {
+  "pair_id": "HR1_04",
+  "trap": "Thesaurus-heavy substitution without conceptual depth",
+  "anchor": "The old man walked slowly through the park this afternoon. He felt surprisingly at peace with himself.",
+  "more_creative": "Ambling the overgrown pathways with deliberate pauses, the weathered wanderer rediscovered the layered quiet of late-afternoon solitude.",
+  "less_creative": "The venerable individual ambulated in leisurely fashion via the recreational green expanse during the afternoon period. A sensation of tranquility was experienced by his consciousness in profound measure.",
+  "design_note": "Rare-synonym substitution (old\u2192venerable, walked\u2192ambulated, slowly\u2192leisurely, park\u2192green expanse, felt\u2192experienced by consciousness) inflates n-gram divergence without freshness.",
+  "predicted_champion_behavior": "Synonym multiplicity and passive construction (was experienced) increase bigram divergence; lex_rarity rises from rare words but stays within appropriateness gate; champion ranks high."
+ },
+ {
+  "pair_id": "HR1_05",
+  "trap": "Voice + tense shifting with semantic flattening",
+  "anchor": "The musician composed a new song last month after experimental sessions. Critics praised it widely and enthusiastically.",
+  "more_creative": "Last month's composition emerged from creative crisis, breaking the musician's previous constraints into something raw, unguarded, and visceral.",
+  "less_creative": "A novel musical composition was created by the musician during the preceding month following experimental endeavor. Widespread praise was extended to it by various critics and reviewers of considerable note.",
+  "design_note": "Passive voice (was created by, was extended to) + inversion (critics\u2192extended to it) + elaboration (of considerable note) maximize trigram dissimilarity without semantic richness.",
+  "predicted_champion_behavior": "Passive auxiliaries and inverted word order generate n-gram mismatches; rare-word insertion (extended, considerable note) boosts lex_rarity; gate open; champion ranks soulless version high."
+ },
+ {
+  "pair_id": "HR1_06",
+  "trap": "Fronting + lexical elaboration without insight",
+  "anchor": "The storm destroyed the century-old bridge in the valley. Nobody expected it to collapse so suddenly.",
+  "more_creative": "When the unprecedented deluge hit, the bridge's decades-old concrete failed catastrophically\u2014a sudden collapse nobody in the county had remotely predicted.",
+  "less_creative": "Destruction of the aged bridge in the valley was occasioned by the inclement storm system. The collapse was an occurrence that no individual had anticipated within such a compressed temporal window of deterioration.",
+  "design_note": "Fronted prepositional phrase (Destruction of) + passive (was occasioned) + abstraction (occurrence, temporal window) create bigram divergence while draining specificity.",
+  "predicted_champion_behavior": "Fronting and passivization disrupt bigram continuity; rare-word insertion (occasioned, temporal window) raises lex_rarity within gate; champion ranks hollow version high."
+ },
+ {
+  "pair_id": "HR1_07",
+  "trap": "Synonym clustering with passive voice nesting",
+  "anchor": "She wrote her inaugural book in complete isolation over five years. It captured her most guarded thoughts.",
+  "more_creative": "Sequestered five years, she birthed something raw and uncompromising\u2014a debut that channeled her most protected uncertainties into hard-won prose.",
+  "less_creative": "Her inaugural literary work was authored in seclusion by her own sustained efforts spanning five years of intensive labor. Embodiment of her most carefully guarded consciousness was achieved through the completion of this manuscript.",
+  "design_note": "Layered passives (was authored, was achieved) + synonyms (wrote\u2192authored, book\u2192literary work, five years\u2192spanning five years, captured\u2192embodiment achieved through) fragment bigrams without adding depth.",
+  "predicted_champion_behavior": "Nested passive structures (was authored by, was achieved through) and synonym chains maximize TF-IDF divergence; appropriateness gate open; champion assigns high false-positive score."
+ },
+ {
+  "pair_id": "HR1_08",
+  "trap": "Adjective-noun inversion + gerund elaboration",
+  "anchor": "The detective solved the complex case quickly despite skeptical colleagues. Everyone was surprised by her remarkable insight and determination.",
+  "more_creative": "Her sideways-thinking crack of the case\u2014arriving within days where partners stalled for months\u2014left the precinct quietly humbled and reassessing their methods.",
+  "less_creative": "Resolution of the complex case was accomplished by the detective in expeditious fashion despite considerable skepticism. Surprise was occasioned among all parties by the exhibition of her acuity and remarkable insight in such decisive manner.",
+  "design_note": "Inversion (resolution of / accomplished by) + gerund substitution (solved\u2192resolution / exhibition) + elaboration (in such manner, considerable skepticism) create trigram divergence without perspective shift.",
+  "predicted_champion_behavior": "Gerund nominalization (resolution, exhibition) + passivity (was accomplished, was occasioned) + adverbial elaboration boost bigram divergence; gate satisfied; champion misfires on soulless version."
+ },
+ {
+  "pair_id": "HR1_09",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "The old photographs captured forgotten moments from decades past. They held time suspended within their faded frames.",
+  "more_creative": "The old photographs caught forgotten moments from decades past. They held time like amber, crystalline and preserved.",
+  "less_creative": "The aged pictures documented abandoned instances from prior eras. These images preserved temporal stasis within their rectangular boundaries.",
+  "design_note": "Minimal substitution (caught for captured, like amber simile) creates precise compression; less_creative rewrites heavily with abstract terms (documented, temporal stasis, rectangular boundaries).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct bigrams/trigrams (aged/old, documented/captured, abandoned/forgotten, temporal/time, stasis/suspended)."
+ },
+ {
+  "pair_id": "HR1_10",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "The storm approached the coast with dark urgency. Rain would soon flood and fill the narrow streets below.",
+  "more_creative": "The storm approached the coast with dark urgency. Rain would soon flood the streets like veins filling with blood.",
+  "less_creative": "Meteorological systems advanced toward the shoreline with considerable force. Precipitation would inundate and saturate the urban pathways thoroughly.",
+  "design_note": "One vivid image appended (veins filling with blood); less_creative rewrites wholly with technical vocabulary (meteorological systems, inundate, saturate, pathways).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to TF-IDF divergence: meteorological/the, systems/storm, advanced/approached, shoreline/coast, inundate/flood, saturate/fill."
+ },
+ {
+  "pair_id": "HR1_11",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "She couldn't remember why she had arrived at that place. The reason had slipped away into some forgotten corner.",
+  "more_creative": "She couldn't remember why she had arrived at that place. The reason had evaporated like morning mist.",
+  "less_creative": "She lacked recollection of her arrival rationale or justification. Her motivational foundation had dissipated completely from her consciousness.",
+  "design_note": "One precise verb swap (evaporated for slipped) plus apt simile; less_creative restructures entirely with abstract terminology (lacked recollection, rationale, dissipated, consciousness).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to higher bigram/trigram divergence (lacked/couldn't, recollection/remember, justification/arrived, consciousness/place)."
+ },
+ {
+  "pair_id": "HR1_12",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "The coffee was cold and bitter in his mouth. It reminded him sharply of winter mornings long ago.",
+  "more_creative": "The coffee was cold and bitter in his mouth. It tasted like winter mornings, brittle and crystalline.",
+  "less_creative": "The caffeinated beverage possessed low thermal content with acerbic characteristics. The experience evoked seasonal meteorological conditions from his past.",
+  "design_note": "Minimal addition (brittle and crystalline); less_creative uses systematic technical substitution (caffeinated, thermal, acerbic, meteorological, evoked seasonal).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct ngrams (caffeinated/the, beverage/coffee, thermal/cold, acerbic/bitter, seasonal/winter)."
+ },
+ {
+  "pair_id": "HR1_13",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "Green leaves spread across the garden in dense profusion. New life was beginning its emergence into the world.",
+  "more_creative": "Green leaves unfolded across the garden in dense profusion. Life was writing itself in the language of growth.",
+  "less_creative": "Verdant foliage proliferated throughout the cultivated landscape quite abundantly. Novel biological processes were commencing their initiation throughout nature.",
+  "design_note": "Minimal verbs (unfolded, writing itself); less_creative uses technical botanical/biological language (verdant, proliferated, cultivated, commencing, initiation).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to higher TF-IDF divergence (verdant/green, foliage/leaves, proliferated/spread, commencing/beginning, initiation/emergence)."
+ },
+ {
+  "pair_id": "HR1_14",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "She walked through the crowded room with quiet purpose. People moved around her, creating small gaps in their formation.",
+  "more_creative": "She walked through the crowded room with quiet purpose. People flowed around her like water parting.",
+  "less_creative": "She navigated the densely populated interior space with measured steps. Individuals repositioned themselves peripherally relative to her established trajectory.",
+  "design_note": "One precise verb (flowed for moved) and apt simile; less_creative uses bureaucratic re-encoding (navigated, densely, repositioned, peripherally, trajectory).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct ngrams (navigated/she, densely/crowded, interior/the, repositioned/moved, peripherally/around)."
+ },
+ {
+  "pair_id": "HR1_15",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "His smile faded slowly from his exhausted face. The happiness disappeared from his features, replaced by something darker.",
+  "more_creative": "His smile faded slowly from his exhausted face. Happiness bled from his features, replaced by something darker.",
+  "less_creative": "His facial expression of positive affect diminished progressively throughout the scene. His emotional state transitioned from satisfaction toward dissatisfaction.",
+  "design_note": "One visceral verb (bled for disappeared); less_creative abstracts to psychological terminology (facial expression, positive affect, emotional state, transitioned).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to higher bigram divergence (facial/his, expression/smile, positive/the, affect/happiness, emotional/features)."
+ },
+ {
+  "pair_id": "HR1_16",
+  "trap": "image_precision_through_minimal_edit",
+  "anchor": "The music stopped playing abruptly in the concert hall. Silence filled the room and expanded throughout the space.",
+  "more_creative": "The music stopped playing abruptly in the concert hall. Silence spilled in like light through an open door.",
+  "less_creative": "Acoustic stimuli ceased propagating throughout the performance environment. The environmental space became devoid of all auditory phenomena and sensation.",
+  "design_note": "One vivid simile (spilled in like light); less_creative uses technical acoustic/spatial terminology (acoustic stimuli, propagating, auditory phenomena, sensation).",
+  "predicted_champion_behavior": "Champion ranks less_creative higher due to more distinct ngrams (acoustic/the, stimuli/music, propagating/playing, auditory/silence, phenomena/filled)."
+ }
+]

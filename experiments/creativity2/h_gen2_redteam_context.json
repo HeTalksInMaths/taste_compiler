@@ -1,0 +1,30 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "elaboration_detail + metaphor_novelty \u2014 Elaboration-to-substitution ratio: prefers texts where NEW content is inserted relative to word-swaps, via token-level difflib alignment and ratio gating.",
+  "code": "\"\"\"\nScorer: Elaboration-to-Substitution Balance\nMechanism: Prefers elaboration (insertions) over pure substitution, via difflib alignment.\nCausal node: elaboration_detail (preferring additive development over word-swapping).\n\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef _find_changes(anchor_toks, text_toks):\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    blocks = matcher.get_matching_blocks()\n    anchor_matched = set()\n    text_matched = set()\n    for i, j, size in blocks:\n        for k in range(size):\n            anchor_matched.add(i + k)\n            text_matched.add(j + k)\n    anchor_unmatched = [i for i in range(len(anchor_toks)) if i not in anchor_matched]\n    text_unmatched = [j for j in range(len(text_toks)) if j not in text_matched]\n    substitutions = []\n    a_idx, t_idx = 0, 0\n    while a_idx < len(anchor_unmatched) and t_idx < len(text_unmatched):\n        a_pos, t_pos = anchor_unmatched[a_idx], text_unmatched[t_idx]\n        if abs(a_pos - t_pos) < 3:\n            substitutions.append((anchor_toks[a_pos], text_toks[t_pos]))\n            a_idx += 1\n            t_idx += 1\n        elif a_pos < t_pos:\n            a_idx += 1\n        else:\n            t_idx += 1\n    insertions = [text_toks[j] for j in text_unmatched]\n    return substitutions, insertions\n\ndef elaboration_vs_substitution_balance(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks:\n        return 0.5\n    substitutions, insertions = _find_changes(anchor_toks, text_toks)\n    if not insertions and not substitutions:\n        return 0.5\n    elab_count = len(insertions)\n    sub_count = len(substitutions)\n    ratio = (elab_count + 1.0) / (sub_count + 1.0)\n    norm_ratio = max(0.0, min(1.0, (ratio - 0.5) / 1.5))\n    if insertions:\n        ins_surp = [_word_surprisal(word) for word in insertions]\n        mean_ins_surp = statistics.mean(ins_surp)\n        novelty_gate = max(0.0, min(1.0, (mean_ins_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        novelty_gate = 0.5\n    return norm_ratio * novelty_gate\n\nMETRICS = {\"elaboration_vs_substitution_balance\": elaboration_vs_substitution_balance}\n"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "image_precision_through_minimal_edit"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}
