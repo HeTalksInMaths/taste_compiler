@@ -1,5 +1,5 @@
 {
- "gen": 5,
+ "gen": 6,
  "train": [
   {
    "pair_id": "CR01",
@@ -475,6 +475,62 @@
    "less_creative": "Evaluative feedback mechanisms facilitate enhanced performance metrics through negative reinforcement paradigm instantiation and metacognitive error-correction processing deployment. Adversarial input modalities engender superior skill acquisition trajectories relative to unilateral affirmation-based learning structures.",
    "origin": "R5",
    "trap": "Jargon_substitution_without_perspective_shift"
+  },
+  {
+   "pair_id": "HR6_04",
+   "anchor": "The music that played was very beautiful and moving. People in the audience listened intently the whole time.",
+   "more_creative": "The beautiful music stopped us cold in our tracks. We couldn't stop listening at all.",
+   "less_creative": "Musical aesthetic qualities were considerable and manifest throughout the performance. Auditory engagement by the audience was sustained and characterized by attentiveness.",
+   "origin": "R6",
+   "trap": "Translation_Ease_Lacking_Voice"
+  },
+  {
+   "pair_id": "HR6_09",
+   "anchor": "The startup failed because investors withdrew support.",
+   "more_creative": "The startup hemorrhaged capital when venture firms pivoted\u2014a rapid exsanguination in the market's sudden mood.",
+   "less_creative": "The startup hemorrhaged capital in a drought of investor appetite\u2014parched funding suddenly evaporated upward into clouds.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_mixed_metaphor"
+  },
+  {
+   "pair_id": "HR6_11",
+   "anchor": "The novel explored themes of ambition and downfall.",
+   "more_creative": "Protagonists pirouetted from hubris to ruin\u2014their ascent a calculated arabesque, the collapse an abrupt deceleration into narrative freefall.",
+   "less_creative": "Protagonists pirouetted from hubris to ruin\u2014their ascent a calculated arabesque, the collapse crystallizing into brittle effervescence and melting silence.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_incoherent_tone"
+  },
+  {
+   "pair_id": "HR6_13",
+   "anchor": "The athlete trained obsessively for success.",
+   "more_creative": "His regimen became a liturgical obsession\u2014muscles reforged through ritualistic repetition, each contraction a devotional incantation toward transcendence.",
+   "less_creative": "His regimen became a liturgical obsession\u2014muscles reforged through ritualistic repetition, each contraction a confessional whisper evaporating into muscular amnesia.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_inappropriate_register"
+  },
+  {
+   "pair_id": "HR6_15",
+   "anchor": "The relationship dissolved due to incompatibility.",
+   "more_creative": "Their connection, once refractive, turned opaque\u2014divergent wavelengths no longer interfering constructively, instead diffracting into separate spectra.",
+   "less_creative": "Their connection, once refractive, turned opaque\u2014divergent wavelengths decomposing into thermal residue settling as crystalline nostalgia in dormant aquifers.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_domain_mismatch"
+  },
+  {
+   "pair_id": "HR6_16",
+   "anchor": "The technology disrupted traditional industries.",
+   "more_creative": "Legacy infrastructure fractured against novelty's velocity\u2014entrenched systems ossified into anachronism while emergent architectures proliferated through vacated niches.",
+   "less_creative": "Legacy infrastructure fractured against novelty's velocity\u2014entrenched systems fossilized into luminescent epics while emergent architectures hibernated through inverted seasonality.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_temporal_inversion"
+  },
+  {
+   "pair_id": "HR6_01",
+   "anchor": "The company started in 1995 with only five people working there. Today it has grown to employ two thousand people.",
+   "more_creative": "Founded in 1995 by a handful of founders, now two thousand strong and growing. Built entirely from scratch.",
+   "less_creative": "Company inception transpired in 1995. Employee aggregation subsequently reached two thousand units via organizational expansion mechanisms and operational growth.",
+   "origin": "R6",
+   "trap": "Latinate_Nominalization_Over_Agency"
   }
  ],
  "heldout": [
@@ -680,6 +736,30 @@
    "less_creative": "Mnemonic consolidation mechanisms undergo progressive deterioration via temporal succession, mediated through synaptic pruning phenomena and interference-induced reconsolidation cascades. Neurobiological encoding substrates demonstrate marked susceptibility to retroactive inhibition protocols.",
    "origin": "R5",
    "trap": "Jargon_substitution_without_perspective_shift"
+  },
+  {
+   "pair_id": "HR6_10",
+   "anchor": "The speaker captivated the audience with emotional honesty.",
+   "more_creative": "Her unvarnished vulnerability transfixed the room\u2014raw candor becomes a lodestone, drawing listeners into unexpected conspiratorial intimacy.",
+   "less_creative": "Her unvarnished vulnerability transfixed the room\u2014a frosted transparency revealing the skeletal acoustics beneath persuasion's facade.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_decorative_abstraction"
+  },
+  {
+   "pair_id": "HR6_14",
+   "anchor": "The policy aimed to reduce urban poverty.",
+   "more_creative": "Interventions targeted structural bottlenecks\u2014densified resources percolated through neglected capillaries of segregated neighborhoods, restoring circulatory equity.",
+   "less_creative": "Interventions targeted structural bottlenecks\u2014densified resources percolated through neglected capillaries like ethereal vapor spiraling into subterranean acoustic chambers.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_decorative_irrelevance"
+  },
+  {
+   "pair_id": "HR6_12",
+   "anchor": "The economic crisis deepened inequality.",
+   "more_creative": "Inequality metastasized through fractured supply chains\u2014scarcity hoarded upward, abundance siphoned downward into depleted peripheral zones.",
+   "less_creative": "Inequality metastasized through fractured supply chains\u2014scarcity congealed into crystalline abundance, trickling sideways through inverted gravity wells.",
+   "origin": "R6",
+   "trap": "semantic_aptness_via_physical_contradiction"
   }
  ],
  "core_ids": [
@@ -699,6 +779,16 @@
    "mechanism": "Varied alignment-block structure (entropy of difflib opcode block sizes) gated by mean surprisal of changed content tokens. Structural diversity alone is cheap (just reorder/replace); structural diversity with novel content signals real creative elaboration. Avoids word-length inversion by making signal structural, gate lexical.",
    "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef structural_diversity_content_gated(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_toks = _content(anchor)\n    text_toks = _content(text)\n    if not text_toks or not anchor_toks:\n        return 0.5\n    matcher = SequenceMatcher(None, anchor_toks, text_toks)\n    opcodes = matcher.get_opcodes()\n    if not opcodes:\n        return 0.5\n    block_sizes = []\n    changed_tokens = []\n    for op, a_start, a_end, b_start, b_end in opcodes:\n        block_size = b_end - b_start\n        if block_size > 0:\n            block_sizes.append(block_size)\n        if op in (\"replace\", \"insert\"):\n            changed_tokens.extend(text_toks[b_start:b_end])\n    if block_sizes:\n        block_arr = np.array(block_sizes, dtype=float)\n        block_probs = block_arr / block_arr.sum()\n        block_entropy = -np.sum(block_probs * np.log2(block_probs + 1e-10))\n        max_entropy = math.log2(len(block_sizes)) if len(block_sizes) > 1 else 1.0\n        structural_signal = max(0.0, min(1.0, block_entropy / (max_entropy + 0.1)))\n    else:\n        structural_signal = 0.5\n    if changed_tokens:\n        changed_surp = [_word_surprisal(w) for w in changed_tokens]\n        mean_changed_surp = statistics.mean(changed_surp)\n        content_gate = max(0.0, min(1.0, (mean_changed_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        content_gate = 0.0\n    return structural_signal * content_gate\n\nMETRICS = {\"structural_diversity_content_gated\": structural_diversity_content_gated}",
    "metric_key": "structural_diversity_content_gated",
+   "novel": false
+  },
+  {
+   "id": "S_g6_07_appropriateness_primary_",
+   "lineage": "llm_gen6",
+   "gen": 6,
+   "causal_node": "appropriateness + lexical_rarity (appropriateness primary, inverted-U)",
+   "mechanism": "Lexical overlap (unigram coherence) as PRIMARY signal with inverted-U: peak at 0.4-0.7 overlap (sweet spot between paraphrase and incoherence). Gate by mean surprisal of content tokens: only reward high-coherence rewrites that also contain rare words. Inverse of S_g5_01 which uses novelty as primary. Citation: Rastelli et al. 2022 (appropriateness gates novelty); Wundt curve (optimal at moderate levels).",
+   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _word_surprisal(word):\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef _ref_surprisal_stats():\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_SURP_MU, _SURP_SD = _ref_surprisal_stats()\n\ndef appropriateness_primary_novelty_gated(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    anchor_content = set(_content(anchor))\n    text_content = _content(text)\n    if not text_content or not anchor_content:\n        return 0.5\n    overlap_fraction = len([t for t in text_content if t in anchor_content]) / max(len(text_content), 1)\n    inverted_u = 1.0 - 4.0 * (overlap_fraction - 0.55) ** 2\n    appropriateness_signal = max(0.0, min(1.0, inverted_u))\n    if text_content:\n        surp_vals = [_word_surprisal(w) for w in text_content]\n        mean_surp = statistics.mean(surp_vals)\n        novelty_gate = max(0.0, min(1.0, (mean_surp - _SURP_MU) / (2.0 * _SURP_SD) + 0.5))\n    else:\n        novelty_gate = 0.0\n    return appropriateness_signal * novelty_gate\n\nMETRICS = {\"appropriateness_primary_novelty_gated\": appropriateness_primary_novelty_gated}",
+   "metric_key": "appropriateness_primary_novelty_gated",
    "novel": false
   },
   {
@@ -741,16 +831,6 @@
    "metric_key": "combinational_novelty"
   },
   {
-   "id": "S_g4_03_novel_figuration_antihed",
-   "lineage": "llm_gen4",
-   "gen": 4,
-   "causal_node": "metaphor_novelty \u00d7 anti-formulaicity",
-   "mechanism": "Surprisal of novel bigrams in text vs anchor (figurative/metaphorical signal) gated by absence of hedging markers (kind of, sort of, in a way, arguably, perhaps, seems, might be, somehow, possibly, allegedly, supposedly, more or less). Hedging language ruins appropriateness even with novel phrasing. Conjunctive: high novel-bigram surprisal \u00d7 low hedge-frequency.",
-   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nHEDGES = set((\"kind of\", \"sort of\", \"in a way\", \"somewhat\", \"arguably\", \"perhaps\", \n    \"seems\", \"seems to\", \"appears\", \"appears to\", \"supposedly\", \"allegedly\", \"might be\", \n    \"possibly\", \"maybe\", \"somehow\", \"more or less\", \"loosely\", \"presumably\", \"so to speak\", \"i guess\"))\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _bigrams(toks):\n    return list(zip(toks, toks[1:]))\n\ndef _word_surprisal(word):\n    from wordfreq import word_frequency\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef novel_figuration_antihedged(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    text_toks = _toks(text)\n    anchor_toks = _toks(anchor)\n    if len(text_toks) < 2 or len(anchor_toks) < 2:\n        return 0.5\n    text_bigrams = set(_bigrams(text_toks))\n    anchor_bigrams = set(_bigrams(anchor_toks))\n    novel_bigrams = text_bigrams - anchor_bigrams\n    if not novel_bigrams:\n        return 0.5\n    novel_bigram_list = list(novel_bigrams)\n    bigram_surps = []\n    for w1, w2 in novel_bigram_list:\n        s1 = _word_surprisal(w1)\n        s2 = _word_surprisal(w2)\n        bigram_surps.append((s1 + s2) / 2.0)\n    mean_bigram_surp = statistics.mean(bigram_surps)\n    figuration_signal = max(0.0, min(1.0, (mean_bigram_surp - 5.0) / 15.0))\n    text_lower = text.lower()\n    hedge_count = 0.0\n    for hedge_phrase in HEDGES:\n        hedge_count += text_lower.count(hedge_phrase)\n    hedge_penalty = 1.0 / (1.0 + hedge_count)\n    return figuration_signal * hedge_penalty\n\nMETRICS = {\"novel_figuration_antihedged\": novel_figuration_antihedged}",
-   "metric_key": "novel_figuration_antihedged",
-   "novel": false
-  },
-  {
    "id": "S_g2_02_lexical_continuity_coher",
    "lineage": "llm_gen2",
    "gen": 2,
@@ -771,23 +851,23 @@
    "novel": true
   },
   {
-   "id": "S_g3_09_alignment_block_entropy",
-   "lineage": "llm_gen3",
-   "gen": 3,
-   "causal_node": "elaboration_detail",
-   "mechanism": "Shannon entropy of alignment-block SIZES from difflib.SequenceMatcher opcodes. Creative revisions have varied edit-block structure (insert/delete/replace at different scales); formulaic rewrites have uniform blocks. Lempel-Ziv (1976) compression theory; structural novelty in semantic distance improves elaboration signal. Calibrated via self-normalized entropy [0,1].",
-   "code": "import re\nfrom difflib import SequenceMatcher\nfrom collections import Counter\nimport math\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n\ndef _tokenize(text):\n    return _WORDS.findall((text or \"\").lower())\n\ndef alignment_block_entropy(text, anchor):\n    text_tokens = _tokenize(text)\n    anchor_tokens = _tokenize(anchor)\n    \n    if not text_tokens or not anchor_tokens:\n        return 0.5\n    \n    matcher = SequenceMatcher(None, anchor_tokens, text_tokens)\n    opcodes = matcher.get_opcodes()\n    \n    if not opcodes:\n        return 0.5\n    \n    block_sizes = []\n    for op, i1, i2, j1, j2 in opcodes:\n        size = max(i2 - i1, j2 - j1)\n        if size > 0:\n            block_sizes.append(size)\n    \n    if len(block_sizes) < 2:\n        return 0.5\n    \n    block_freq = Counter(block_sizes)\n    total = sum(block_freq.values())\n    \n    entropy = 0.0\n    for count in block_freq.values():\n        p = count / total\n        if p > 0:\n            entropy -= p * math.log2(p)\n    \n    max_entropy = math.log2(len(block_freq)) if len(block_freq) > 1 else 1.0\n    if max_entropy > 0:\n        normalized_entropy = entropy / max_entropy\n    else:\n        normalized_entropy = 0.0\n    \n    return max(0.0, min(1.0, normalized_entropy))\n\nMETRICS = {\"alignment_block_entropy\": alignment_block_entropy}",
-   "metric_key": "alignment_block_entropy",
+   "id": "S_g6_01_formulaic_density_score",
+   "lineage": "llm_gen6",
+   "gen": 6,
+   "causal_node": "cliche_formulaicity",
+   "mechanism": "Formulaic Language Index via bigram frequency: ratio of high-frequency bigrams (both component words in top 10% frequency) penalizes clich\u00e9d co-occurrences. Score = 1 - (formulaic_bigrams / total_bigrams). Citation: Gablasova et al. 2017 (formulaic sequences); Wray (2002) phraseology.",
+   "code": "import re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\n_HIGH_FREQ_WORDS = set(top_n_list(\"en\", 3000)[:300])\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef formulaic_density_score(text, anchor):\n    if not text:\n        return 0.5\n    content_toks = _content(text)\n    if len(content_toks) < 2:\n        return 0.5\n    bigrams = [tuple(content_toks[i:i+2]) for i in range(len(content_toks)-1)]\n    if not bigrams:\n        return 0.5\n    formulaic_count = sum(1 for w1, w2 in bigrams if w1 in _HIGH_FREQ_WORDS and w2 in _HIGH_FREQ_WORDS)\n    formulaic_ratio = formulaic_count / len(bigrams)\n    return max(0.0, min(1.0, 1.0 - formulaic_ratio))\n\nMETRICS = {\"formulaic_density_score\": formulaic_density_score}",
+   "metric_key": "formulaic_density_score",
    "novel": true
   },
   {
-   "id": "S_g3_04_novelty_gated_coherence",
-   "lineage": "llm_gen3",
-   "gen": 3,
-   "causal_node": "novelty*appropriateness",
-   "mechanism": "Bigram divergence from anchor (novelty) gated by lexical overlap with anchor (coherence). Conjunctive scoring implements novelty\u00d7appropriateness interaction per Rastelli et al. 2022.",
-   "code": "import re\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n_STOPS = set((\"a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must\").split())\n\ndef _tokenize(text):\n    tokens = _WORDS.findall((text or \"\").lower())\n    return [t for t in tokens if t not in _STOPS]\n\ndef _bigrams(tokens):\n    return [\" \".join(tokens[i:i+2]) for i in range(len(tokens)-1)]\n\ndef novelty_gated_coherence(text, anchor):\n    text_tokens = _tokenize(text)\n    anchor_tokens = _tokenize(anchor)\n    if not text_tokens or not anchor_tokens:\n        return 0.5\n    text_bigrams = set(_bigrams(text_tokens))\n    anchor_bigrams = set(_bigrams(anchor_tokens))\n    if not text_bigrams or not anchor_bigrams:\n        novelty = 0.5\n    else:\n        overlap = len(text_bigrams & anchor_bigrams)\n        union = len(text_bigrams | anchor_bigrams)\n        novelty = 1.0 - (overlap / (union + 1e-6))\n    text_set = set(text_tokens)\n    anchor_set = set(anchor_tokens)\n    coherence = len(text_set & anchor_set) / len(anchor_set) if anchor_set else 0.5\n    score = novelty * coherence\n    return float(np.clip(score, 0.0, 1.0))\n\nMETRICS = {\"novelty_gated_coherence\": novelty_gated_coherence}",
-   "metric_key": "novelty_gated_coherence",
+   "id": "S_g4_03_novel_figuration_antihed",
+   "lineage": "llm_gen4",
+   "gen": 4,
+   "causal_node": "metaphor_novelty \u00d7 anti-formulaicity",
+   "mechanism": "Surprisal of novel bigrams in text vs anchor (figurative/metaphorical signal) gated by absence of hedging markers (kind of, sort of, in a way, arguably, perhaps, seems, might be, somehow, possibly, allegedly, supposedly, more or less). Hedging language ruins appropriateness even with novel phrasing. Conjunctive: high novel-bigram surprisal \u00d7 low hedge-frequency.",
+   "code": "import math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency\nfrom difflib import SequenceMatcher\nimport statistics\n\n_W = re.compile(r\"[a-zA-Z']+\")\nHEDGES = set((\"kind of\", \"sort of\", \"in a way\", \"somewhat\", \"arguably\", \"perhaps\", \n    \"seems\", \"seems to\", \"appears\", \"appears to\", \"supposedly\", \"allegedly\", \"might be\", \n    \"possibly\", \"maybe\", \"somehow\", \"more or less\", \"loosely\", \"presumably\", \"so to speak\", \"i guess\"))\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _bigrams(toks):\n    return list(zip(toks, toks[1:]))\n\ndef _word_surprisal(word):\n    from wordfreq import word_frequency\n    p = word_frequency(word, \"en\")\n    if p > 0:\n        return -math.log2(p)\n    return 24.0\n\ndef novel_figuration_antihedged(text, anchor):\n    if not (text and anchor):\n        return 0.5\n    text_toks = _toks(text)\n    anchor_toks = _toks(anchor)\n    if len(text_toks) < 2 or len(anchor_toks) < 2:\n        return 0.5\n    text_bigrams = set(_bigrams(text_toks))\n    anchor_bigrams = set(_bigrams(anchor_toks))\n    novel_bigrams = text_bigrams - anchor_bigrams\n    if not novel_bigrams:\n        return 0.5\n    novel_bigram_list = list(novel_bigrams)\n    bigram_surps = []\n    for w1, w2 in novel_bigram_list:\n        s1 = _word_surprisal(w1)\n        s2 = _word_surprisal(w2)\n        bigram_surps.append((s1 + s2) / 2.0)\n    mean_bigram_surp = statistics.mean(bigram_surps)\n    figuration_signal = max(0.0, min(1.0, (mean_bigram_surp - 5.0) / 15.0))\n    text_lower = text.lower()\n    hedge_count = 0.0\n    for hedge_phrase in HEDGES:\n        hedge_count += text_lower.count(hedge_phrase)\n    hedge_penalty = 1.0 / (1.0 + hedge_count)\n    return figuration_signal * hedge_penalty\n\nMETRICS = {\"novel_figuration_antihedged\": novel_figuration_antihedged}",
+   "metric_key": "novel_figuration_antihedged",
    "novel": false
   }
  ],
@@ -1165,6 +1245,75 @@
      "SEP": -0.032
     }
    ]
+  },
+  {
+   "gen": 6,
+   "champion": "S_g4_02_structural_diversity_con",
+   "champion_stats": {
+    "SEP": 0.1227,
+    "acc": 0.5286,
+    "mean_pos": 0.6137,
+    "sd_pos": 0.3072,
+    "mean_neg": 0.491,
+    "sd_neg": 0.3252,
+    "effect_d": 0.388,
+    "worst_margin": -0.8683,
+    "sd_margin": 0.4031,
+    "heldout_SEP": 0.169,
+    "core_SEP": 0.3591
+   },
+   "n_train": 70,
+   "n_heldout": 30,
+   "population": [
+    {
+     "id": "S_g4_02_structural_diversity_con",
+     "SEP": 0.123
+    },
+    {
+     "id": "S_g6_07_appropriateness_primary_",
+     "SEP": 0.077
+    },
+    {
+     "id": "S_g4_06_elaboration_without_extr",
+     "SEP": 0.058
+    },
+    {
+     "id": "S_g5_01_coherence_gated_lexical_",
+     "SEP": 0.054
+    },
+    {
+     "id": "S_g1_08_compression_elaboration",
+     "SEP": 0.035
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.031
+    },
+    {
+     "id": "S_g4_03_novel_figuration_antihed",
+     "SEP": 0.024
+    },
+    {
+     "id": "S_g6_01_formulaic_density_score",
+     "SEP": 0.016
+    },
+    {
+     "id": "S_g3_04_novelty_gated_coherence",
+     "SEP": 0.005
+    },
+    {
+     "id": "S_g2_02_lexical_continuity_coher",
+     "SEP": 0.005
+    },
+    {
+     "id": "S_g3_09_alignment_block_entropy",
+     "SEP": -0.009
+    },
+    {
+     "id": "S_g1_07_surprisal_trend",
+     "SEP": -0.01
+    }
+   ]
   }
  ],
  "trap_axes_used": [
@@ -1174,6 +1323,7 @@
   "vacuous_elaboration_via_epistemic_hedging",
   "sophistication_requires_complexity",
   "reordering-without-freshness",
-  "Jargon_substitution_without_perspective_shift"
+  "Jargon_substitution_without_perspective_shift",
+  "Translation_Ease_Lacking_Voice"
  ]
 }

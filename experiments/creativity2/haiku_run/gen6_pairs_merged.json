@@ -1,0 +1,146 @@
+[
+ {
+  "pair_id": "HR6_01",
+  "trap": "Latinate_Nominalization_Over_Agency",
+  "anchor": "The company started in 1995 with only five people working there. Today it has grown to employ two thousand people.",
+  "more_creative": "Founded in 1995 by a handful of founders, now two thousand strong and growing. Built entirely from scratch.",
+  "less_creative": "Company inception transpired in 1995. Employee aggregation subsequently reached two thousand units via organizational expansion mechanisms and operational growth.",
+  "design_note": "Less_creative inflates rarity (inception, transpired, aggregation, organizational, mechanisms) and block diversity through nominalization and passive voice while erasing the human effort. More_creative preserves facts but centers agency ('built from scratch') with simpler vocabulary.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare tokens + varied passive structures). LOW on more_creative (common active verbs, simpler blocks) despite its genuine voice and creative framing."
+ },
+ {
+  "pair_id": "HR6_02",
+  "trap": "Passive_Elaboration_Obscuring_Specificity",
+  "anchor": "The disease spread quickly through the region. Doctors worked hard to contain and stop it.",
+  "more_creative": "It spread fast through the community, but doctors fought hard against it daily. They won containment.",
+  "less_creative": "Disease dissemination transpired with accelerated velocity throughout affected regions. Medical practitioners engaged in comprehensive containment operations and interventions.",
+  "design_note": "Less_creative achieves rarity (dissemination, velocity, practitioners, comprehensive, interventions) and high block entropy through elaboration without added meaning. More_creative uses fragments and rhythm with common words to create narrative momentum.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare surprisal + complex nominalized compounds). LOW on more_creative (common short clauses) despite stronger narrative structure."
+ },
+ {
+  "pair_id": "HR6_03",
+  "trap": "Institutional_Formality_Erasing_Moment",
+  "anchor": "The student learned the material quickly and easily. Her teacher watched and felt impressed by her progress.",
+  "more_creative": "She learned so fast the teacher had to pause, watching her work carefully. Then smiled.",
+  "less_creative": "Cognitive acquisition was manifested at accelerated rates throughout pedagogical engagement. Observation by the instructor was characterized by manifest approval.",
+  "design_note": "Less_creative uses nominalizations (acquisition, pedagogical, observation, manifested, approval) to inflate rarity and structure while flattening emotion. More_creative captures a vivid moment with common vocabulary and active voice.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare tokens + high entropy from nominalized NP structure). LOW on more_creative (active verbs, common words) despite vivid emotional specificity."
+ },
+ {
+  "pair_id": "HR6_04",
+  "trap": "Translation_Ease_Lacking_Voice",
+  "anchor": "The music that played was very beautiful and moving. People in the audience listened intently the whole time.",
+  "more_creative": "The beautiful music stopped us cold in our tracks. We couldn't stop listening at all.",
+  "less_creative": "Musical aesthetic qualities were considerable and manifest throughout the performance. Auditory engagement by the audience was sustained and characterized by attentiveness.",
+  "design_note": "Less_creative achieves rarity (aesthetic, considerable, auditory, engagement, sustained, characterized) and structure through passive elaboration. More_creative shifts to active voice and causal logic ('stopped us cold') using simple words.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare tokens: aesthetic, considerable, auditory; high block entropy). LOW on more_creative (simple active vocabulary, simpler structure) despite genuine added insight."
+ },
+ {
+  "pair_id": "HR6_05",
+  "trap": "Botanical_Latinity_Over_Paradox",
+  "anchor": "The plant grew very well in our care. It needed water constantly and regularly every single day.",
+  "more_creative": "It thrived but thirsted terribly\u2014we poured water endlessly and it still wanted more each day.",
+  "less_creative": "Botanical proliferation occurred with propitious outcomes throughout the growing cycle. Hydration constituted a prerequisite for continued viability and sustained metabolic function.",
+  "design_note": "Less_creative uses Latinate terms (botanical, proliferation, propitious, hydration, viability, metabolic) and nominalization to inflate rarity and block diversity. More_creative creates paradox (thirsted despite water) with common vocabulary and active structure.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare surprisal: botanical, proliferation, hydration, viability; high structural entropy). LOW on more_creative (common words, active clauses) despite the poetic paradox."
+ },
+ {
+  "pair_id": "HR6_06",
+  "trap": "Archaic_Nominalization_Erasing_Collective_Will",
+  "anchor": "The problem we faced was difficult and complex. We worked together and eventually solved it.",
+  "more_creative": "Hard to solve, really hard. But we as a team worked together and turned it around.",
+  "less_creative": "Quandary of considerable magnitude was encountered by the group. Collaborative resolution mechanisms were instituted and culminated in efficacious closure.",
+  "design_note": "Less_creative inflates rarity (quandary, magnitude, collaborative, mechanisms, instituted, efficacious) and structure through passive voice and embedded clauses, erasing 'we'. More_creative restores human agency with common vocabulary and simpler structure.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare tokens + high block entropy from nominalized dependencies). LOW on more_creative (simple active verbs, direct 'we') despite the restored agency making it more creative."
+ },
+ {
+  "pair_id": "HR6_07",
+  "trap": "Critical_Hedging_Masquerading_as_Detail",
+  "anchor": "The film turned out to be excellent in every way. Critics unanimously praised it and loved it.",
+  "more_creative": "Excellent film, genuinely excellent. Critics loved it\u2014extraordinary, how they agreed without a single hedging word.",
+  "less_creative": "Cinematic artistry demonstrated manifest excellence and sophistication. Critical evaluation engendered responses of considerable approbation and universal endorsement.",
+  "design_note": "Less_creative achieves rarity (cinematic, artistry, manifest, approbation, endorsement) and structure through defensive nominalization. More_creative adds meta-insight ('extraordinary, how they agreed') making the claim more interesting, using active voice and common words.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare tokens + complex NP structures). LOW on more_creative (common vocabulary, simpler structure) despite the added layer of genuine insight."
+ },
+ {
+  "pair_id": "HR6_08",
+  "trap": "Meteorological_Formality_Versus_Immediacy",
+  "anchor": "The weather changed suddenly and noticeably. Everyone in the area noticed it immediately without exception.",
+  "more_creative": "The sky shifted right before our eyes. You felt it in your gut immediately\u2014couldn't look away.",
+  "less_creative": "Meteorological parameters underwent considerable modification with temporal acceleration and abruptness. Observational cognition on the part of the populace was nearly universal.",
+  "design_note": "Less_creative inflates rarity (meteorological, parameters, modification, observational, cognition, populace) and block diversity through institutional nominalization and passive voice. More_creative uses second-person directness and sensory immediacy with common words.",
+  "predicted_champion_behavior": "HIGH on less_creative (rare surprisal: meteorological, parameters, modification, cognition; high structural entropy). LOW on more_creative (common active vocabulary, simple structure) despite the immediacy and second-person address creating stronger creative effect."
+ },
+ {
+  "pair_id": "HR6_09",
+  "trap": "semantic_aptness_via_mixed_metaphor",
+  "anchor": "The startup failed because investors withdrew support.",
+  "more_creative": "The startup hemorrhaged capital when venture firms pivoted\u2014a rapid exsanguination in the market's sudden mood.",
+  "less_creative": "The startup hemorrhaged capital in a drought of investor appetite\u2014parched funding suddenly evaporated upward into clouds.",
+  "design_note": "Both use rare, structurally complex elaboration (hemorrhaged, exsanguination vs. drought, evaporated, parched). More_creative sustains coherent bleeding metaphor mapping to capital loss. Less_creative mixes drought with upward evaporation into clouds\u2014physically/semantically incoherent. Champion scores similarly on surprisal and block entropy; fails to penalize mixed-metaphor inaptness.",
+  "predicted_champion_behavior": "Scores both ~0.66\u20130.71 (high surprisal on changed tokens; moderate block entropy from elaboration). Ranks them equivalently despite semantic incoherence in less_creative."
+ },
+ {
+  "pair_id": "HR6_10",
+  "trap": "semantic_aptness_via_decorative_abstraction",
+  "anchor": "The speaker captivated the audience with emotional honesty.",
+  "more_creative": "Her unvarnished vulnerability transfixed the room\u2014raw candor becomes a lodestone, drawing listeners into unexpected conspiratorial intimacy.",
+  "less_creative": "Her unvarnished vulnerability transfixed the room\u2014a frosted transparency revealing the skeletal acoustics beneath persuasion's facade.",
+  "design_note": "Both use rare structural elaboration (transfixed, unvarnished vs. frosted, skeletal, acoustics). More_creative: apt metaphor (candor = magnetic attraction = audience intimacy). Less_creative: decorative abstractions (frosted transparency, skeletal acoustics) unmoored from emotional genuineness. Champion scores similarly; humans prefer apt version.",
+  "predicted_champion_behavior": "Scores both ~0.67\u20130.72 (high surprisal on changed tokens; similar block entropy). Cannot distinguish metaphor aptness from decorative obscurity."
+ },
+ {
+  "pair_id": "HR6_11",
+  "trap": "semantic_aptness_via_incoherent_tone",
+  "anchor": "The novel explored themes of ambition and downfall.",
+  "more_creative": "Protagonists pirouetted from hubris to ruin\u2014their ascent a calculated arabesque, the collapse an abrupt deceleration into narrative freefall.",
+  "less_creative": "Protagonists pirouetted from hubris to ruin\u2014their ascent a calculated arabesque, the collapse crystallizing into brittle effervescence and melting silence.",
+  "design_note": "Both use rare, structurally diverse elaboration (pirouetted, arabesque, deceleration, freefall vs. crystallizing, brittle, effervescence, melting). More_creative: coherent dance/velocity metaphors for rise and fall. Less_creative: crystallizing + melting contradict each other, tonally muddled for downfall narrative. Champion scores similarly; humans recognize inaptness.",
+  "predicted_champion_behavior": "Scores both ~0.68\u20130.73 (high surprisal; moderate block entropy). Fails to penalize semantic incoherence and tonal misalignment."
+ },
+ {
+  "pair_id": "HR6_12",
+  "trap": "semantic_aptness_via_physical_contradiction",
+  "anchor": "The economic crisis deepened inequality.",
+  "more_creative": "Inequality metastasized through fractured supply chains\u2014scarcity hoarded upward, abundance siphoned downward into depleted peripheral zones.",
+  "less_creative": "Inequality metastasized through fractured supply chains\u2014scarcity congealed into crystalline abundance, trickling sideways through inverted gravity wells.",
+  "design_note": "Both use rare, structurally complex elaboration (metastasized, hoarded, siphoned, depleted vs. congealed, crystalline, trickling, inverted). More_creative: apt power metaphor (upward hoarding, downward siphoning = economic asymmetry). Less_creative: scarcity becoming abundance contradicts itself; inverted gravity wells physically impossible. Champion scores similarly; humans catch contradiction.",
+  "predicted_champion_behavior": "Scores both ~0.69\u20130.74 (high surprisal on changed tokens; similar block entropy). Cannot detect semantic contradiction (scarcity\u2192abundance) or physical impossibility."
+ },
+ {
+  "pair_id": "HR6_13",
+  "trap": "semantic_aptness_via_inappropriate_register",
+  "anchor": "The athlete trained obsessively for success.",
+  "more_creative": "His regimen became a liturgical obsession\u2014muscles reforged through ritualistic repetition, each contraction a devotional incantation toward transcendence.",
+  "less_creative": "His regimen became a liturgical obsession\u2014muscles reforged through ritualistic repetition, each contraction a confessional whisper evaporating into muscular amnesia.",
+  "design_note": "Both use rare, structurally elaborate diction (liturgical, devotional, incantation, transcendence vs. confessional, whisper, evaporating, amnesia). More_creative: coherent sacred register (devotion, incantation, transcendence = spiritual discipline). Less_creative: confessional register (guilt, memory, whisper) tonally incongruous with athleticism. Champion scores similarly; humans sense register mismatch.",
+  "predicted_champion_behavior": "Scores both ~0.68\u20130.73 (high surprisal on changed tokens; moderate block entropy). Insensitive to register inappropriateness in less_creative."
+ },
+ {
+  "pair_id": "HR6_14",
+  "trap": "semantic_aptness_via_decorative_irrelevance",
+  "anchor": "The policy aimed to reduce urban poverty.",
+  "more_creative": "Interventions targeted structural bottlenecks\u2014densified resources percolated through neglected capillaries of segregated neighborhoods, restoring circulatory equity.",
+  "less_creative": "Interventions targeted structural bottlenecks\u2014densified resources percolated through neglected capillaries like ethereal vapor spiraling into subterranean acoustic chambers.",
+  "design_note": "Both use rare, structurally complex elaboration (circulatory, capillaries, equity vs. ethereal, spiraling, subterranean, acoustic). More_creative: coherent biological metaphor (city-as-organism, capillaries as neighborhood channels, equity as restored circulation). Less_creative: ethereal vapor and acoustic chambers are surreal, unmoored from poverty reduction mechanism. Champion scores similarly; humans prefer semantically purposeful version.",
+  "predicted_champion_behavior": "Scores both ~0.69\u20130.74 (high surprisal on changed tokens; similar block entropy). Cannot distinguish purposeful from merely decorative metaphor."
+ },
+ {
+  "pair_id": "HR6_15",
+  "trap": "semantic_aptness_via_domain_mismatch",
+  "anchor": "The relationship dissolved due to incompatibility.",
+  "more_creative": "Their connection, once refractive, turned opaque\u2014divergent wavelengths no longer interfering constructively, instead diffracting into separate spectra.",
+  "less_creative": "Their connection, once refractive, turned opaque\u2014divergent wavelengths decomposing into thermal residue settling as crystalline nostalgia in dormant aquifers.",
+  "design_note": "Both use rare, structurally elaborate optical/physical vocabulary (refractive, opaque, wavelengths, interfering, diffracting, spectra vs. thermal, residue, crystalline, nostalgia, aquifers). More_creative: sustained optical-physics metaphor (refraction\u2192opacity\u2192interference\u2192diffraction\u2192spectra). Less_creative: scatters across incongruous domains (thermal, geologic, nostalgia). Champion scores similarly; humans recognize metaphor coherence.",
+  "predicted_champion_behavior": "Scores both ~0.71\u20130.76 (high surprisal on changed tokens; similar block entropy). Fails to detect that more_creative maintains metaphor-domain coherence while less_creative fragments it."
+ },
+ {
+  "pair_id": "HR6_16",
+  "trap": "semantic_aptness_via_temporal_inversion",
+  "anchor": "The technology disrupted traditional industries.",
+  "more_creative": "Legacy infrastructure fractured against novelty's velocity\u2014entrenched systems ossified into anachronism while emergent architectures proliferated through vacated niches.",
+  "less_creative": "Legacy infrastructure fractured against novelty's velocity\u2014entrenched systems fossilized into luminescent epics while emergent architectures hibernated through inverted seasonality.",
+  "design_note": "Both use rare, structurally diverse elaboration (ossified, anachronism, proliferated, vacated vs. fossilized, luminescent, hibernated, inverted, seasonality). More_creative: coherent temporal metaphors (ossified/anachronism = becoming obsolete; proliferated/vacated = filling empty spaces). Less_creative: luminescent epics confuses light with obsolescence; hibernated through inverted seasonality inverts time backwards. Champion scores similarly; humans catch temporal incoherence.",
+  "predicted_champion_behavior": "Scores both ~0.70\u20130.75 (high surprisal on changed tokens; similar block entropy). Insensitive to temporal inversion and semantic incoherence in less_creative."
+ }
+]

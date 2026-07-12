@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR7_01",
+    "trap": "Rare-word substitution creates high block entropy without elaboration depth",
+    "anchor": "The design is elegant. It works effectively.",
+    "less_creative": "The design is perspicacious. It functions efficaciously.",
+    "more_creative": "The design balances simplicity with robust functionality. It works through thoughtful structural choices.",
+    "design_note": "Substitution at key tokens (perspicacious, efficacious) creates multiple size-1 blocks. Changed tokens all rare (surprisal >18) → high gate. Block entropy high from uniform small blocks. True elaboration uses common words (balances, through, thoughtful) diluting mean surprisal despite more structure.",
+    "predicted_champion_behavior": "Less creative: ~2 replacements (perspicacious, efficacious) form size-1 blocks; entropy ~log2(4)≈2.0, gate ~0.88. Score ~0.78. More creative: Added tokens (balances, through, thoughtful) are common; block mix is varied but mean surprisal diluted to ~8 bits; gate ~0.64, signal ~0.82, score ~0.52. Champion misses that jargon swap masks zero elaboration."
+  },
+  {
+    "pair_id": "HR7_02",
+    "trap": "Morphological sophistication without semantic depth exploits token-level rarity",
+    "anchor": "The team worked hard and achieved measurable results. Their effort was genuine.",
+    "less_creative": "The assemblage labored assiduously and attained quantifiable outcomes. Their exertion was authentic.",
+    "more_creative": "The team worked hard, collaborating across departments and refining approaches iteratively. They achieved results through sustained focus.",
+    "design_note": "Jargon substitutions (assemblage→team generalized, labored, assiduously, attained, outcomes, exertion) are systematic and rare. Block entropy from multiple small replace blocks. Changed words all sophisticated → high gate. True elaboration adds explanatory detail (collaborating, iteratively, sustained) with common words → lower gate despite better structure.",
+    "predicted_champion_behavior": "Less creative: ~4-5 replacements, most size-1; entropy ~1.8-2.0; changed words all rare (assemblag|e, assiduously, quantifiable); gate ~0.85; signal ~0.8; score ~0.68. More creative: longer blocks from additions; gate ~0.60 (common expanding words); signal ~0.80; score ~0.48. Scorer rewards vocabulary density over elaboration depth."
+  },
+  {
+    "pair_id": "HR7_03",
+    "trap": "Rare words concentrated in minimal edits mask lack of semantic novelty",
+    "anchor": "Learning is valuable. It helps people succeed.",
+    "less_creative": "Pedagogy is felicitous. It facilitates human advancement.",
+    "more_creative": "Learning opens possibilities, builds confidence, and equips people with unexpected capabilities to handle challenges.",
+    "design_note": "Minimal substitution (Pedagogy, felicitous, facilitates, advancement) but each token ultra-rare. Few blocks but all changed tokens extreme surprisal → high gate despite low structural signal. True elaboration has much higher structure (added clauses, conjunctions) but common words (opens, builds, equips, unexpected) dilute mean surprisal.",
+    "predicted_champion_behavior": "Less creative: 3-4 replacements, small blocks; entropy moderate ~1.5; mean surprisal ultra-high (~19); gate ~0.90; signal ~0.70; score ~0.63. More creative: 5+ blocks from elaboration; signal ~0.85; but gate ~0.55 (common words: opens, builds, equips); score ~0.47. Scorer penalizes common-word elaboration while rewarding rare-word density."
+  },
+  {
+    "pair_id": "HR7_04",
+    "trap": "Pseudo-paraphrasing with rare synonyms generates artificial structural entropy",
+    "anchor": "The solution was simple and worked. It surprised everyone.",
+    "less_creative": "The resolution was elementary and functioned. It astonished the assemblage.",
+    "more_creative": "The solution's simplicity proved deceptive; it worked because it leveraged hidden principles, surprising even experienced observers.",
+    "design_note": "Substitutions (resolution, elementary, functioned, astonished, assemblage) are systematic and rare. Each creates a block; high block count → high entropy. Mean surprisal of changed tokens very high. Genuine elaboration (deceptive, leveraged, hidden, principles, experienced) has fewer blocks and lower mean rarity due to common words (proved, because, even).",
+    "predicted_champion_behavior": "Less creative: 4-5 replacements, avg size 1-1.5; entropy ~1.8; mean surprisal ~17.5; gate ~0.87; signal ~0.78; score ~0.68. More creative: 3 major blocks from elaboration structure; signal ~0.80; gate ~0.60 (common: proved, because, leveraged); score ~0.48. Champion rewards substitution-density over semantic complexity."
+  },
+  {
+    "pair_id": "HR7_05",
+    "trap": "Expanded elaboration with simple vocabulary scores lower despite superior creativity",
+    "anchor": "The writer found a good idea.",
+    "more_creative": "The writer found an idea that worked, one that opened new directions and revealed unexpected connections across the project.",
+    "less_creative": "The scribe discovered a felicitous notion.",
+    "design_note": "More creative has extensive elaboration (found, worked, opened, revealed, unexpected, connections) but vocabulary largely common (that, new, directions, across, project). Low mean surprisal → low gate. Fewer blocks despite more content. Less creative: minimal substitution (scribe, felicitous, notion) but all rare → high gate, medium signal. Champion inverts quality ranking.",
+    "predicted_champion_behavior": "More creative: 6-7 content tokens added (worked, opened, revealed, connections, project, unexpected), mostly common-to-mid rarity; gate ~0.55; block structure moderate (3 blocks); signal ~0.75; score ~0.41. Less creative: 2-3 replacements, ultra-rare (scribe, felicitous, notion); gate ~0.88; signal ~0.65; score ~0.57. Champion rates pseudo-elaboration above genuine elaboration."
+  },
+  {
+    "pair_id": "HR7_06",
+    "trap": "Systematic lexical substitution mimics structural diversity through micro-edits",
+    "anchor": "The method worked fast and well. Success was clear.",
+    "less_creative": "The methodology functioned expeditiously and excellently. Triumph was manifest.",
+    "more_creative": "The method worked fast and well because it stripped away complexity. Success was visible to everyone involved.",
+    "design_note": "Systematic substitution (methodology, functioned, expeditiously, excellently, triumph, manifest) at clause-level slots creates multiple small blocks. All rare → high gate. Block entropy from uniformity of small replacements. True elaboration (stripped, away, complexity, involved) uses more common words; added detail; higher entropy from varied block sizes but lower surprisal.",
+    "predicted_champion_behavior": "Less creative: 5 replacements creating ~5 blocks of size 1; entropy ~2.3; mean surprisal ~18; gate ~0.89; signal ~0.85; score ~0.75. More creative: 3 major blocks from elaboration; signal ~0.82; but gate ~0.58 (common: stripped, complexity, involved); score ~0.48. Jargon density exploits the multiplication rule."
+  },
+  {
+    "pair_id": "HR7_07",
+    "trap": "Rare-word concentration in constrained positions defeats elaboration with mixed vocabulary",
+    "anchor": "Ideas spread quickly. Change happens.",
+    "less_creative": "Ideation propagates expeditiously. Metamorphosis transpires.",
+    "more_creative": "Ideas spread quickly through networks, carried by early adopters who recognize their value. Change follows naturally.",
+    "design_note": "Concentrated substitution (Ideation, propagates, expeditiously, Metamorphosis, transpires) in skeleton positions. Few large blocks but all changed tokens extremely rare. Elaboration adds connective detail (through, networks, carried, recognize) with common words; more blocks but lower mean surprisal from common connectors and verbs.",
+    "predicted_champion_behavior": "Less creative: 4 replacements; block structure: [1,1,1,1]; entropy ~2.0; mean surprisal ~19.2; gate ~0.91; signal ~0.82; score ~0.75. More creative: 5-6 blocks from elaboration; signal ~0.84; gate ~0.59 (common: through, carried, recognize, naturally); score ~0.50. Scorer systematically undervalues explanatory elaboration."
+  },
+  {
+    "pair_id": "HR7_08",
+    "trap": "Phrasal elaboration penalized for accessible vocabulary while pseudo-substitution rewarded",
+    "anchor": "The approach solved the problem. It was unexpected.",
+    "less_creative": "The methodology expeditiously ameliorated the exigency. It was remarkable.",
+    "more_creative": "The approach solved the problem by combining proven techniques in a novel way, which nobody had tried before.",
+    "design_note": "Rare substitution (methodology, expeditiously, ameliorated, exigency, remarkable) creates small blocks, all ultra-rare tokens. High gate despite zero elaboration. Genuine elaboration (combining, proven, techniques, novel, tried) mixes common and mid-rarity words; larger more-varied blocks; lower mean surprisal from common words and punctuation.",
+    "predicted_champion_behavior": "Less creative: 4 replacements; block entropy ~1.9; mean surprisal ~18.8; gate ~0.90; signal ~0.80; score ~0.72. More creative: 4-5 blocks from elaboration (by, combining, proven, techniques, tried); signal ~0.83; gate ~0.62 (common: by, which, had); score ~0.52. Multiplication rule punishes vocabulary-mixed genuine explanation."
+  }
+]

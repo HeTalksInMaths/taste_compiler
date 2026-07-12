@@ -57,7 +57,7 @@
     "pair_id": "HR6_07",
     "trap": "Critical_Hedging_Masquerading_as_Detail",
     "anchor": "The film turned out to be excellent in every way. Critics unanimously praised it and loved it.",
-    "more_creative": "Excellent film, genuinely. Critics loved it—extraordinary, how they agreed without a single hedging word.",
+    "more_creative": "Excellent film, genuinely excellent. Critics loved it—extraordinary, how they agreed without a single hedging word.",
     "less_creative": "Cinematic artistry demonstrated manifest excellence and sophistication. Critical evaluation engendered responses of considerable approbation and universal endorsement.",
     "design_note": "Less_creative achieves rarity (cinematic, artistry, manifest, approbation, endorsement) and structure through defensive nominalization. More_creative adds meta-insight ('extraordinary, how they agreed') making the claim more interesting, using active voice and common words.",
     "predicted_champion_behavior": "HIGH on less_creative (rare tokens + complex NP structures). LOW on more_creative (common vocabulary, simpler structure) despite the added layer of genuine insight."
@@ -66,7 +66,7 @@
     "pair_id": "HR6_08",
     "trap": "Meteorological_Formality_Versus_Immediacy",
     "anchor": "The weather changed suddenly and noticeably. Everyone in the area noticed it immediately without exception.",
-    "more_creative": "The sky shifted right before us. You felt it in your gut—couldn't look away.",
+    "more_creative": "The sky shifted right before our eyes. You felt it in your gut immediately—couldn't look away.",
     "less_creative": "Meteorological parameters underwent considerable modification with temporal acceleration and abruptness. Observational cognition on the part of the populace was nearly universal.",
     "design_note": "Less_creative inflates rarity (meteorological, parameters, modification, observational, cognition, populace) and block diversity through institutional nominalization and passive voice. More_creative uses second-person directness and sensory immediacy with common words.",
     "predicted_champion_behavior": "HIGH on less_creative (rare surprisal: meteorological, parameters, modification, cognition; high structural entropy). LOW on more_creative (common active vocabulary, simple structure) despite the immediacy and second-person address creating stronger creative effect."
