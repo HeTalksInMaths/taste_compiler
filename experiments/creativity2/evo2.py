@@ -27,7 +27,9 @@ sys.path.insert(0, HERE)
 
 from wordfreq import zipf_frequency, top_n_list, word_frequency  # noqa: E402
 
-STATE = os.path.join(HERE, "state.json")
+STATE = os.path.join(HERE, os.environ.get("EVO2_STATE", "state.json"))
+PREFIX = os.environ.get("EVO2_PREFIX", "")
+ADV_KEEP = int(os.environ.get("EVO2_ADV_KEEP", "6"))
 POP_MAX, N_FIT_KEEP, N_NOVEL_KEEP = 10, 6, 2
 NOVELTY_R_MAX = 0.6
 LEAK_ZIPF, LEAK_MAX_HITS, MAX_CONTENT_TOKENS = 3.5, 3, 40
@@ -356,7 +358,7 @@ def cmd_prepare():
         "causal_graph_nodes": [n["id"] for n in causal["nodes"]],
         "output_schema": '[{"pair_id": str, "trap": str, "anchor": str, "more_creative": str, "less_creative": str, "design_note": str, "predicted_champion_behavior": str}] x8',
     }
-    json.dump(red_ctx, open(os.path.join(HERE, f"gen{s['gen']+1}_redteam_context.json"), "w"), indent=1)
+    json.dump(red_ctx, open(os.path.join(HERE, f"{PREFIX}gen{s['gen']+1}_redteam_context.json"), "w"), indent=1)
 
     s["history"].append({"gen": s["gen"], "champion": champ["id"],
                          "champion_stats": {k: round(v, 4) for k, v in cst.items()},
@@ -365,7 +367,7 @@ def cmd_prepare():
     save_state(s)
     print(f"\nchampion: {champ['id']} SEP={cst['SEP']:.3f} heldout_SEP={cst['heldout_SEP']:.3f} core_SEP={cst['core_SEP']:.3f}")
     print(f"uncovered causal nodes: {uncovered}")
-    print(f"wrote gen{s['gen']+1}_engineer_context.json and gen{s['gen']+1}_redteam_context.json")
+    print(f"wrote {PREFIX}gen{s['gen']+1}_engineer_context.json and {PREFIX}gen{s['gen']+1}_redteam_context.json")
 
 
 def cmd_apply_scorers(path):
@@ -405,6 +407,7 @@ def cmd_apply_scorers(path):
         s["population"].append({"id": sid, "lineage": f"llm_gen{gen}", "gen": gen,
                                 "causal_node": p.get("causal_node", "?"), "mechanism": p.get("mechanism", "?"),
                                 "code": p["code"], "metric_key": key, "novel": bool(novel)})
+        incumbent_vecs.append(margin_vector(rows))
         print(f"  accept {sid}: SEP={st['SEP']:.3f} acc={st['acc']:.2f} pos={st['mean_pos']:.2f} neg={st['mean_neg']:.2f} [{tag}] ({why})")
     save_state(s)
 
@@ -424,7 +427,7 @@ def cmd_apply_pairs(path):
         m = fn(p["more_creative"], p["anchor"]) - fn(p["less_creative"], p["anchor"])
         scored.append((m, p))
     scored.sort(key=lambda x: x[0])
-    kept = scored[:6]
+    kept = scored[:ADV_KEEP]
     axis = kept[0][1].get("trap", "unknown") if kept else "none"
     for i, (m, p) in enumerate(kept):
         q = {"pair_id": p["pair_id"], "anchor": p["anchor"], "more_creative": p["more_creative"],
