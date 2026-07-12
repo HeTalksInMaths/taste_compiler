@@ -1,0 +1,31 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "concreteness_imageability \u2014 Mean word length as morphological complexity proxy (Brysbaert et al. Concreteness Norms; Morphological Complexity Hypothesis: base roots are short/concrete, affixations are long/abstract)",
+  "code": "import re\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_WORDS = re.compile(r\"\\b[a-z]+(?:'[a-z]+)?\\b\")\n_STOPS = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must\").split())\n\ndef _tokenize(text):\n    tokens = _WORDS.findall((text or \"\").lower())\n    return [t for t in tokens if t not in _STOPS]\n\ndef _content_tokens(text):\n    tokens = _tokenize(text)\n    return [t for t in tokens if len(t) >= 3]\n\ndef concreteness_word_length(text, anchor):\n    content = _content_tokens(text)\n    \n    if not content:\n        return 0.5\n    \n    lengths = np.array([len(t) for t in content])\n    mean_len = np.mean(lengths)\n    \n    # Calibration: typical concrete word ~5 chars, abstract ~9 chars\n    # Linear scale [0,1]: short words (5) -> 1.0, long words (12) -> 0.0\n    score = max(0.0, min(1.0, (9.0 - mean_len) / 4.0))\n    return score\n\nMETRICS = {\"concreteness_word_length\": concreteness_word_length}"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "image_precision_through_minimal_edit",
+  "vacuous_elaboration_via_epistemic_hedging"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}

@@ -1,0 +1,146 @@
+[
+ {
+  "pair_id": "HR2_01",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Stars emit light that travels vast distances across space. Ancient starlight shows us the past universe in detail.",
+  "more_creative": "Stellar radiation journeys billions of years through darkness. Our telescopes thus glimpse historical cosmic states and events.",
+  "less_creative": "Stars, quite certainly, emit light that travels vast distances across space. Ancient starlight, it appears, shows us the past universe.",
+  "design_note": "less_creative inserts filler qualifiers (quite, certainly, appears) that add no semantic depth but boost insertion count. more_creative substitutes terminology (radiation for light, glimpse for shows) and restructures for freshness, lowering insertion signals.",
+  "predicted_champion_behavior": "Difflib finds three insertions in less_creative (quite, certainly, appears) with moderate-to-high surprisal, yielding high norm_ratio and novelty_gate, thus higher score than more_creative's substitution-dominated approach."
+ },
+ {
+  "pair_id": "HR2_02",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Rainwater flows downhill through mountain channels across the landscape. Rivers eventually converge and reach the ocean.",
+  "more_creative": "Water cascades downward via gravitational force through terrain networks. Waterways funnel collectively toward the sea.",
+  "less_creative": "Rainwater, notably, flows downhill through mountain channels across landscape. Rivers, it appears, eventually reach the ocean.",
+  "design_note": "less_creative adds vacuous markers (notably, it appears) that weaken the original meaning without adding facts. more_creative employs lexical substitution (cascades, funnel) and compression, reducing insertion count.",
+  "predicted_champion_behavior": "Insertions (notably, appears) in less_creative generate elaboration signal despite near-identity. more_creative's synonym-replacement strategy lowers insertion-to-substitution ratio, producing lower score."
+ },
+ {
+  "pair_id": "HR2_03",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Music affects emotions through sound vibrations and frequencies that reach the ear. Rhythm patterns influence mood and behavior.",
+  "more_creative": "Acoustic waves trigger emotional neural responses by modulating brain state. Temporal structure remodels psychological disposition and mood.",
+  "less_creative": "Music, quite significantly, affects emotions through sound vibrations and frequencies. Rhythm patterns, it may be said, influence mood and behavior.",
+  "design_note": "less_creative injects hedging intensifiers (quite, significantly, it may be said) that hedge conviction without adding content. more_creative's nominal and verbal substitution (trigger, remodels, disposition) prioritizes novelty via restructuring rather than elaboration.",
+  "predicted_champion_behavior": "Inserted qualifiers in less_creative (quite, significantly) yield insertion vector with moderate surprisal. more_creative's aggressive substitution minimizes insertions while maximizing freshness, causing champion to favor less_creative."
+ },
+ {
+  "pair_id": "HR2_04",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Dogs have a superior sense of smell compared to humans. They use this ability to track prey effectively.",
+  "more_creative": "Canine olfactory acuity surpasses human capability by magnitudes. Scent-tracking enables pursuit and effective capture of quarry.",
+  "less_creative": "Dogs, in fact, have a superior sense of smell compared to humans and other animals. They clearly use this ability to track prey.",
+  "design_note": "less_creative adds empty epistemic markers (in fact, clearly) that do not alter factual content. more_creative substitutes technical terms (canine, olfactory acuity, surpasses) that sound fresher but rely on substitution rather than elaboration.",
+  "predicted_champion_behavior": "Insertions in less_creative (fact, clearly) contribute elaboration signal. more_creative's technical vocabulary substitutions reduce insertion count, producing lower champion score despite greater stylistic novelty."
+ },
+ {
+  "pair_id": "HR2_05",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Cities expand outward when populations increase significantly over time. Buildings gradually replace agricultural land and farmland.",
+  "more_creative": "Urban sprawl follows demographic swells as concrete consumes field and landscape. Development pressures reconfigure terrain permanently.",
+  "less_creative": "Cities, somewhat remarkably, expand outward when populations increase continuously. Buildings, in certain cases, replace agricultural land and farmland.",
+  "design_note": "less_creative adds empty intensifiers (somewhat, remarkably, in certain cases) that suggest nuance without providing it. more_creative recasts via participial phrases and abstract verbs (consumes, pressures, reconfigure), relying on restructuring rather than insertion.",
+  "predicted_champion_behavior": "Inserted filler words in less_creative (somewhat, remarkably, certain) yield elaboration signal with moderate-high surprisal. more_creative's conceptual reframing minimizes insertions, causing champion to score less_creative higher."
+ },
+ {
+  "pair_id": "HR2_06",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Plants require water for survival and growth processes. Photosynthesis depends on sunlight and the presence of chlorophyll.",
+  "more_creative": "Vegetal vitality hinges upon hydration and luminous energy flux. Synthesis-processes leverage solar input for growth.",
+  "less_creative": "Plants, arguably, require water for survival and growth. Photosynthesis, perhaps, depends on sunlight and the presence of chlorophyll.",
+  "design_note": "less_creative injects modal hedges (arguably, perhaps) that weaken conviction without adding knowledge. more_creative employs abstract lexical substitution (vegetal, vitality, synthesis-processes, leverage) prioritizing stylistic novelty via synonym chains rather than inserted qualifiers.",
+  "predicted_champion_behavior": "Hedging words in less_creative (arguably, perhaps) contribute insertions with moderate-high surprisal. more_creative's noun/verb substitution-heavy approach avoids elaboration signals, yielding lower champion score."
+ },
+ {
+  "pair_id": "HR2_07",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Fire consumes oxygen during combustion reactions at high temperature. Heat releases energy from chemical transformations.",
+  "more_creative": "Oxidation rapidly converts fuel via exothermic process at high heat. Energy liberation drives flame perpetuation continuously.",
+  "less_creative": "Fire, in various ways, consumes oxygen during combustion reactions. Heat, quite notably, releases energy from chemical transformations.",
+  "design_note": "less_creative adds meaningless qualification (in various ways, quite, notably) that obscures rather than clarifies. more_creative substitutes technical terminology (oxidation, exothermic, liberation) that sounds fresher but relies on lexical replacement rather than elaborative insertion.",
+  "predicted_champion_behavior": "Generic qualifiers in less_creative create insertion signal despite semantic emptiness. more_creative's technical substitution vocabulary lowers insertion-to-substitution ratio, producing lower champion score."
+ },
+ {
+  "pair_id": "HR2_08",
+  "trap": "vacuous_elaboration_via_epistemic_hedging",
+  "anchor": "Memory stores experiences within the brain's neural structures. Recall involves retrieving and reconstructing stored information.",
+  "more_creative": "Neural networks encode events into synaptic patterns via binding. Consciousness retrieves archived states through associative mechanisms.",
+  "less_creative": "Memory, one might argue, stores experiences in the brain. Recall, arguably, involves retrieving stored information.",
+  "design_note": "less_creative adds epistemic distance-markers (one, might, argue, arguably) that hedge commitment without altering facts. more_creative recasts via technical substitution (neural networks, synaptic patterns, associative mechanisms) that sounds fresher but maintains low insertion-elaboration signal.",
+  "predicted_champion_behavior": "Inserted hedge phrases in less_creative generate elaboration signal with moderate surprisal. more_creative's technical vocabulary substitutions minimize insertions, producing lower champion score despite greater conceptual sophistication."
+ },
+ {
+  "pair_id": "HR2_09",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "The musician played with passion. The notes rang out clearly.",
+  "more_creative": "The musician blazed through the piece. The notes shattered the air.",
+  "less_creative": "The musician played with deep passion and intense emotion. The notes rang out clearly and resoundingly throughout the space.",
+  "design_note": "Substitutions (blazed, shattered) replace abstract anchor with concrete sensory verbs. Less creative pads anchor with redundant elaborations (deep, intense emotion, resoundingly, throughout).",
+  "predicted_champion_behavior": "Champion scores less_creative higher: insertions (deep, intense, emotion, resoundingly, throughout, space) outweigh substitutions. More_creative has only substitutions (blazed\u2192passion, shattered\u2192rang), so lower ratio and low score."
+ },
+ {
+  "pair_id": "HR2_10",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "The crowd moved slowly down the street. Everyone was tired.",
+  "more_creative": "The crowd shuffled down the street. Everyone dragged.",
+  "less_creative": "The crowd moved slowly and deliberately down the street with heavy steps. Everyone was tired and utterly exhausted by the journey.",
+  "design_note": "More creative substitutes (shuffled, dragged) with precise, concrete verbs. Less creative inserts abstract elaborations (deliberately, heavy, utterly, by the journey).",
+  "predicted_champion_behavior": "Champion favors less_creative: high insertion count (deliberately, heavy, utterly, exhausted, by, journey) vs. low substitution. More_creative's tight substitutions yield low insertion ratio."
+ },
+ {
+  "pair_id": "HR2_11",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "She looked at the old photograph. It made her feel sad.",
+  "more_creative": "She studied the worn photograph. It gutted her.",
+  "less_creative": "She looked carefully at the old, faded photograph with great attention. It made her feel deeply sad and profoundly melancholic inside.",
+  "design_note": "More creative uses precise substitutions (studied, worn, gutted). Less creative inserts redundant elaborations (carefully, faded, great, attention, deeply, profoundly, inside).",
+  "predicted_champion_behavior": "Champion scores less_creative higher: insertions (carefully, faded, great, attention, deeply, profoundly, inside) dominate. More_creative's substitution-only approach yields low elaboration ratio."
+ },
+ {
+  "pair_id": "HR2_12",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "The rain fell for a long time. Eventually it stopped.",
+  "more_creative": "The rain hammered for hours. Then silence.",
+  "less_creative": "The rain fell continuously and persistently for a long time with great intensity. Eventually it stopped and ceased completely and utterly.",
+  "design_note": "More creative substitutes (hammered, hours, silence) for tighter, more vivid phrasing. Less creative pads with abstract redundancy (continuously, persistently, great, intensity, ceased, completely, utterly).",
+  "predicted_champion_behavior": "Champion prefers less_creative: many insertions (continuously, persistently, great, intensity, ceased, completely, utterly) vs. few substitutions. More_creative's minimal-edit strategy yields low insertion count."
+ },
+ {
+  "pair_id": "HR2_13",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "The coffee was very hot. It had a strong taste.",
+  "more_creative": "The coffee burned the tongue. It bit back.",
+  "less_creative": "The coffee was very hot and steaming with intense heat. It had a strong, powerful, and robust taste that was quite distinctive.",
+  "design_note": "More creative substitutes (burned, bite) with concrete, embodied sensations. Less creative inserts abstract qualifiers (steaming, intense, powerful, robust, distinctive, quite).",
+  "predicted_champion_behavior": "Champion scores less_creative higher: insertions (steaming, intense, powerful, robust, distinctive, quite) exceed substitutions. More_creative's sensory substitutions alone yield low elaboration ratio and low score."
+ },
+ {
+  "pair_id": "HR2_14",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "He entered the room and looked around. The space was empty and silent.",
+  "more_creative": "He stepped into darkness. Nothing breathed.",
+  "less_creative": "He entered the room carefully and looked around with great attention. The space was empty and utterly silent and devoid of sound.",
+  "design_note": "More creative compresses to concrete, direct sensations (darkness, breathed). Less creative elaborates with abstract modifiers (carefully, great, attention, utterly, devoid, of sound).",
+  "predicted_champion_behavior": "Champion favors less_creative: insertions (carefully, great, attention, utterly, devoid, sound) far outweigh substitutions. More_creative's substitution-compression approach creates low insertion count, low score."
+ },
+ {
+  "pair_id": "HR2_15",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "The building was old and made of brick. It looked neglected.",
+  "more_creative": "The brick building crumbled. It ached.",
+  "less_creative": "The building was old and made of rough, weathered brick material. It looked neglected, abandoned, and left behind by time.",
+  "design_note": "More creative substitutes (crumbled, ached) with precise, animate verbs. Less creative inserts elaborations (rough, weathered, abandoned, left, behind, by, time).",
+  "predicted_champion_behavior": "Champion scores less_creative higher: many insertions (rough, weathered, abandoned, left, behind, by, time) vs. two substitutions. More_creative's minimal substitution strategy yields low ratio."
+ },
+ {
+  "pair_id": "HR2_16",
+  "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+  "anchor": "The day grew darker as evening came. People closed their doors.",
+  "more_creative": "Darkness swallowed the day. People barricaded themselves away.",
+  "less_creative": "The day grew darker and increasingly dim as evening came gradually and slowly. People closed their doors firmly and securely and carefully behind them.",
+  "design_note": "More creative substitutes (swallowed, barricaded) with vivid, active verbs. Less creative inflates anchor with abstract elaborations (increasingly, dim, gradually, firmly, securely, carefully, behind, them).",
+  "predicted_champion_behavior": "Champion prefers less_creative: high insertion count (increasingly, dim, gradually, firmly, securely, carefully, behind) swamps low substitution. More_creative's precise substitutions alone yield low elaboration-to-substitution ratio."
+ }
+]
