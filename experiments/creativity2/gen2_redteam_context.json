@@ -1,0 +1,30 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "elaboration_detail \u2014 Hunt 1965 T-unit subordination; Ortega 2003 complexity indices",
+  "code": "\"\"\"syntactic_elaboration_delta \u2014 elaboration_detail via subordination growth.\n\nMechanism: Hunt (1965) T-unit/subordination index; Ortega (2003, Applied\nLinguistics) \u2014 subordinator/preposition density as the standard parse-free\nproxy for syntactic elaboration; TTCT \"elaboration\" subscale (added\ncircumstantial/qualifying detail around the core proposition).\n\nConstruct: density of a CLOSED grammatical class \u2014 prepositions +\nsubordinating conjunctions + relative pronouns (surface markers of PP and\nsubordinate/relative clauses) \u2014 per token; scored as the GROWTH from anchor to\nrewrite, logistic-squashed with scale = aggregate wordfreq probability mass of\nthe marker class itself (import-time reference, never eval-fit).\n\nOrthogonal to incumbents: no content-word frequency lookup at all \u2014 identical-\nrarity rewrites differ here only by added phrase/clause structure.\n\nFailure mode: purely lexical elaboration (one vivid adjective, no new phrase)\nis invisible; creative COMPRESSION scores negative by design.\n\"\"\"\n\nimport math\nimport re\n\nfrom wordfreq import word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\n\n# Closed class: core English prepositions (Quirk et al. 1985 inventory).\n_PREPOSITIONS = frozenset(\n    \"aboard about above across after against along amid among around at before behind \"\n    \"below beneath beside besides between beyond but by concerning despite down during \"\n    \"except for from in inside into like near of off on onto out outside over past \"\n    \"since through throughout till to toward towards under underneath until unto up \"\n    \"upon with within without\".split()\n)\n\n# Closed class: subordinating conjunctions + relative pronouns (Quirk et al. 1985).\n_SUBORDINATORS = frozenset(\n    \"after although as because before if since so than that though unless until when \"\n    \"whenever where whereas wherever while whether which who whom whose\".split()\n)\n\n_MARKERS = _PREPOSITIONS | _SUBORDINATORS\n\n\ndef _tokens(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _marker_density(s):\n    toks = _tokens(s)\n    if not toks:\n        return 0.0\n    return sum(1 for t in toks if t in _MARKERS) / len(toks)\n\n\ndef _ref_marker_mass():\n    \"\"\"Aggregate corpus probability mass of the marker class (wordfreq),\n    computed once at import \u2014 the natural unit of marker-density variation.\"\"\"\n    total = 0.0\n    for w in _MARKERS:\n        p = word_frequency(w, \"en\")\n        if p > 0:\n            total += p\n    return total\n\n\n_P_REF = _ref_marker_mass()\n_SCALE = _P_REF if _P_REF > 1e-6 else 0.15\n\n\ndef syntactic_elaboration_delta(text, anchor):\n    if not text:\n        return 0.0\n    d = _marker_density(text) - _marker_density(anchor or \"\")\n    score = 1.0 / (1.0 + math.exp(-d / _SCALE))\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\n    \"syntactic_elaboration_delta\": syntactic_elaboration_delta,\n}\n"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "synonym-churn confound"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}

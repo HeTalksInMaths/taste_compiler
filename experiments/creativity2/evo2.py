@@ -189,10 +189,20 @@ def leakage_check(code, train_pairs):
     train_text = " ".join(t.lower() for p in train_pairs
                           for t in (p["anchor"], p["more_creative"], p["less_creative"]))
     train_words = set(re.findall(r"[a-z']+", train_text))
+    # Only scan literals that can encode WORD LISTS: elements of list/set/tuple
+    # displays and strings that are the receiver of .split(). Docstrings, regex
+    # patterns, and message strings are not word lists and are exempt.
     literals = []
     for node in ast.walk(ast.parse(code)):
-        if isinstance(node, ast.Constant) and isinstance(node.value, str):
-            literals.append(node.value)
+        if isinstance(node, (ast.List, ast.Set, ast.Tuple)):
+            for e in node.elts:
+                if isinstance(e, ast.Constant) and isinstance(e.value, str):
+                    literals.append(e.value)
+        elif (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+              and node.func.attr == "split"
+              and isinstance(node.func.value, ast.Constant)
+              and isinstance(node.func.value.value, str)):
+            literals.append(node.func.value.value)
     tokens = set()
     for s in literals:
         tokens |= {t for t in re.findall(r"[a-zA-Z']{3,}", s.lower())}

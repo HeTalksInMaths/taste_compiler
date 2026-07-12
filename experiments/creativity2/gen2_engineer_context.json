@@ -1,0 +1,416 @@
+{
+ "goal": "Score creativity of a 2-sentence rewrite vs its anchor. scorer(text, anchor) -> float in [0,1]. Correct on a pair when score(more_creative) > score(less_creative).",
+ "fitness": "SEP = mean(score over positives) - mean(score over negatives) on train; both distributions reported; selection (SEP, acc, -sd_margin).",
+ "contract": "Complete importable Python module exposing METRICS={name:fn}. Deterministic, values ALWAYS in [0,1] via principled squashing calibrated on REFERENCE stats (e.g. wordfreq lexicon), never on eval pairs. Allowed imports: wordfreq, numpy, scipy, sklearn, re, math, collections, statistics. Downloads BLOCKED. NO hand-typed content word lists (max 40 content tokens in literals; >=3 rare train-text tokens = auto-reject).",
+ "novelty_criteria": "Accepted as NOVEL only if: (1) |pearson r| of per-pair margin vector vs EVERY incumbent < 0.6; (2) it measures an uncovered/weakly-covered causal node with a real named mechanism; (3) leakage-clean.",
+ "causal_graph": {
+  "nodes": [
+   {
+    "id": "judged_creativity",
+    "definition": "Human judgment of how creative a text is (Consensual Assessment Technique / Likert)."
+   },
+   {
+    "id": "novelty",
+    "definition": "Originality / statistical rarity of the idea or expression relative to a reference population."
+   },
+   {
+    "id": "appropriateness",
+    "definition": "Effectiveness / fit: coherent, relevant, satisfying task constraints. Second necessary criterion."
+   },
+   {
+    "id": "semantic_distance",
+    "definition": "Embedding-space distance between concepts co-present in the text (SemDis; DSI = mean pairwise distance over all words)."
+   },
+   {
+    "id": "surprisal",
+    "definition": "Negative log probability of words given context under a language model; inverse of contextual predictability."
+   },
+   {
+    "id": "metaphor_novelty",
+    "definition": "Freshness of figurative expressions vs conventional/dead metaphor; aptness is the paired appropriateness condition."
+   },
+   {
+    "id": "cliche_formulaicity",
+    "definition": "Proportion of text built from high-frequency collocations, formulaic sequences, stock phrases."
+   },
+   {
+    "id": "lexical_rarity",
+    "definition": "Use of low-corpus-frequency words relative to norms."
+   },
+   {
+    "id": "concreteness_imageability",
+    "definition": "Tangibility / mental-image evocation of the words used (norm-based)."
+   },
+   {
+    "id": "elaboration_detail",
+    "definition": "Amount of descriptive development added to the core idea (TTCT elaboration)."
+   },
+   {
+    "id": "coherence",
+    "definition": "Internal consistency and topical unity; global coherence matters more than local transitions."
+   },
+   {
+    "id": "lexical_diversity_ttr",
+    "definition": "Type-token ratio. Weak and possibly INVERSE relation to judged creative quality; unreliable on 2-sentence texts."
+   },
+   {
+    "id": "remote_association",
+    "definition": "Capacity to connect distant concepts (Mednick flat associative hierarchies); observable footprint IS semantic_distance."
+   },
+   {
+    "id": "word_frequency_confound",
+    "definition": "Word frequency confounds surprisal-based novelty estimates: rarity inflates surprisal without conceptual novelty."
+   }
+  ],
+  "edges": [
+   {
+    "from": "novelty",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "One of two necessary criteria in the standard definition.",
+    "source": "Runco & Jaeger 2012"
+   },
+   {
+    "from": "novelty",
+    "to": "judged_creativity",
+    "sign": "inverted_U",
+    "confidence": "medium",
+    "evidence": "Wundt curve: preference and judged creativity peak at moderate novelty; maximal surprise reads as bizarre.",
+    "source": "Berlyne; Frontiers Hum Neurosci 2016"
+   },
+   {
+    "from": "appropriateness",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Novelty without appropriateness is judged bizarre, not creative (random condition: high novelty, low creativity).",
+    "source": "Rastelli et al. 2022 PNAS Nexus"
+   },
+   {
+    "from": "novelty*appropriateness",
+    "to": "judged_creativity",
+    "sign": "conjunctive",
+    "confidence": "high",
+    "evidence": "Creativity requires BOTH; appropriateness moderates the effect of novelty (adding appropriateness to unoriginal ideas can even lower ratings).",
+    "source": "Diedrich et al.; Rastelli et al. 2022"
+   },
+   {
+    "from": "semantic_distance",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "SemDis distances predict human originality ratings; DAT pairwise distance correlates with creativity batteries.",
+    "source": "Beaty & Johnson 2021; Olson et al. 2021"
+   },
+   {
+    "from": "semantic_distance",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "BERT-based DSI explains up to 72% of variance in human creativity ratings of short narratives.",
+    "source": "Johnson et al. 2022"
+   },
+   {
+    "from": "surprisal",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "medium",
+    "evidence": "LM surprisal moderately correlates with human novelty judgments of metaphors.",
+    "source": "surprisal/metaphor-novelty arXiv study"
+   },
+   {
+    "from": "word_frequency_confound",
+    "to": "surprisal",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Frequency is a stronger, partly independent predictor: surprisal partly re-encodes lexical rarity.",
+    "source": "frequency-confound arXiv study"
+   },
+   {
+    "from": "cliche_formulaicity",
+    "to": "novelty",
+    "sign": "-",
+    "confidence": "high",
+    "evidence": "Formulaic sequences are by definition high-frequency conventional co-occurrences.",
+    "source": "Gablasova et al. 2017"
+   },
+   {
+    "from": "cliche_formulaicity",
+    "to": "judged_creativity",
+    "sign": "-",
+    "confidence": "medium",
+    "evidence": "High predictability from clich\u00e9d constructions associates with lower quality/creativity scores.",
+    "source": "arXiv 2602.16162 cross-reference"
+   },
+   {
+    "from": "metaphor_novelty",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Novel metaphors require online meaning construction (N400/LPC evidence) \u2014 the signature of new conceptual combination.",
+    "source": "novel-metaphor ERP literature"
+   },
+   {
+    "from": "metaphor_novelty",
+    "to": "judged_creativity",
+    "sign": "+ (requires aptness)",
+    "confidence": "medium",
+    "evidence": "Aptness, not novelty alone, predicts positive quality ratings \u2014 mirrors novelty\u00d7appropriateness.",
+    "source": "PMC4251318; Frontiers 2018"
+   },
+   {
+    "from": "lexical_rarity",
+    "to": "novelty",
+    "sign": "+",
+    "confidence": "medium",
+    "evidence": "Rarer words associate with more original responses/higher-scored essays.",
+    "source": "cue-frequency literature"
+   },
+   {
+    "from": "lexical_rarity",
+    "to": "judged_creativity",
+    "sign": "weak/0",
+    "confidence": "medium",
+    "evidence": "Rarity signals uncommon phrasing, not conceptual novelty \u2014 unreliable alone.",
+    "source": "arXiv 2508.05470"
+   },
+   {
+    "from": "concreteness_imageability",
+    "to": "judged_creativity",
+    "sign": "mixed",
+    "confidence": "low",
+    "evidence": "Some studies favor abstract sophistication, others vivid imagery; direction context-dependent.",
+    "source": "imageability/writing-quality search findings"
+   },
+   {
+    "from": "elaboration_detail",
+    "to": "judged_creativity",
+    "sign": "+",
+    "confidence": "medium",
+    "evidence": "TTCT scores elaboration; added detail raises expert quality judgments.",
+    "source": "TTCT; Olinghouse"
+   },
+   {
+    "from": "coherence",
+    "to": "appropriateness",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Incoherent text fails the appropriateness criterion regardless of novelty.",
+    "source": "Rastelli et al. 2022 (derived); TAACO quality studies"
+   },
+   {
+    "from": "remote_association",
+    "to": "semantic_distance",
+    "sign": "+",
+    "confidence": "high",
+    "evidence": "Flat associative hierarchies produce remote associates; the textual footprint is distant concepts co-occurring.",
+    "source": "Mednick 1962; RAT review 2020"
+   },
+   {
+    "from": "lexical_diversity_ttr",
+    "to": "judged_creativity",
+    "sign": "- (weak)",
+    "confidence": "low",
+    "evidence": "One study found inverse TTR-creativity correlation; treat as caution against rewarding vocabulary spread per se.",
+    "source": "TTR search finding"
+   }
+  ],
+  "load_bearing_paths": [
+   "semantic_distance -> novelty -> judged_creativity (strongest measured path; DSI explains up to 72% variance)",
+   "cliche_formulaicity -> novelty(-) AND predictability -> judged_creativity(-) (the anti-creativity signal)",
+   "coherence -> appropriateness -> judged_creativity (the constraint side: novelty only counts when this holds)",
+   "novelty x appropriateness -> judged_creativity is CONJUNCTIVE: scorers should combine the two sides multiplicatively or with a gate, not additively",
+   "surprisal/lexical_rarity -> novelty are CONFOUNDED with each other via word frequency: a scorer should not double-count rarity and surprise as independent evidence"
+  ]
+ },
+ "node_coverage": {
+  "covered_by_population": [
+   "appropriateness(inverted-U)",
+   "elaboration_detail",
+   "lexical_rarity/surprisal",
+   "novelty*appropriateness",
+   "semantic_distance(collocational)"
+  ],
+  "uncovered_text_observable": [
+   "metaphor_novelty",
+   "cliche_formulaicity",
+   "concreteness_imageability",
+   "coherence",
+   "lexical_diversity_ttr",
+   "word_frequency_confound"
+  ]
+ },
+ "population_stats": [
+  {
+   "id": "S_g1_02_syntactic_elaboration_de",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Hunt 1965 T-unit subordination; Ortega 2003 complexity indices",
+   "SEP": 0.032,
+   "acc": 0.515,
+   "mean_pos": 0.509,
+   "sd_pos": 0.093,
+   "mean_neg": 0.477,
+   "sd_neg": 0.108,
+   "effect_d": 0.321,
+   "worst_margin": -0.085,
+   "sd_margin": 0.096,
+   "heldout_SEP": 0.018,
+   "core_SEP": -0.003
+  },
+  {
+   "id": "appropriateness_gate",
+   "gen": 0,
+   "causal_node": "appropriateness(inverted-U)",
+   "mechanism": "Wundt-curve overshoot decay",
+   "SEP": 0.031,
+   "acc": 0.091,
+   "mean_pos": 1.0,
+   "sd_pos": 0.0,
+   "mean_neg": 0.969,
+   "sd_neg": 0.125,
+   "effect_d": 0.349,
+   "worst_margin": 0.0,
+   "sd_margin": 0.125,
+   "heldout_SEP": 0.06,
+   "core_SEP": 0.0
+  },
+  {
+   "id": "conjunctive_creativity",
+   "gen": 0,
+   "causal_node": "novelty*appropriateness",
+   "mechanism": "conjunctive product of the above",
+   "SEP": 0.012,
+   "acc": 0.667,
+   "mean_pos": 0.757,
+   "sd_pos": 0.098,
+   "mean_neg": 0.745,
+   "sd_neg": 0.133,
+   "effect_d": 0.102,
+   "worst_margin": -0.367,
+   "sd_margin": 0.171,
+   "heldout_SEP": 0.036,
+   "core_SEP": 0.131
+  },
+  {
+   "id": "combinational_novelty",
+   "gen": 0,
+   "causal_node": "semantic_distance(collocational)",
+   "mechanism": "word n-gram TF-IDF divergence from anchor",
+   "SEP": -0.011,
+   "acc": 0.576,
+   "mean_pos": 0.807,
+   "sd_pos": 0.193,
+   "mean_neg": 0.818,
+   "sd_neg": 0.182,
+   "effect_d": -0.058,
+   "worst_margin": -0.682,
+   "sd_margin": 0.265,
+   "heldout_SEP": -0.024,
+   "core_SEP": 0.212
+  },
+  {
+   "id": "lex_rarity_norm",
+   "gen": 0,
+   "causal_node": "lexical_rarity/surprisal",
+   "mechanism": "token surprisal vs lexicon reference (logistic)",
+   "SEP": -0.023,
+   "acc": 0.576,
+   "mean_pos": 0.707,
+   "sd_pos": 0.052,
+   "mean_neg": 0.729,
+   "sd_neg": 0.076,
+   "effect_d": -0.345,
+   "worst_margin": -0.222,
+   "sd_margin": 0.082,
+   "heldout_SEP": -0.015,
+   "core_SEP": 0.05
+  }
+ ],
+ "margin_correlations": {
+  "S_g1_02_syntactic_elaboration_de|appropriateness_gate": 0.25,
+  "S_g1_02_syntactic_elaboration_de|conjunctive_creativity": 0.05,
+  "S_g1_02_syntactic_elaboration_de|combinational_novelty": -0.03,
+  "S_g1_02_syntactic_elaboration_de|lex_rarity_norm": -0.41,
+  "appropriateness_gate|conjunctive_creativity": 0.47,
+  "appropriateness_gate|combinational_novelty": -0.1,
+  "appropriateness_gate|lex_rarity_norm": -0.54,
+  "conjunctive_creativity|combinational_novelty": 0.81,
+  "conjunctive_creativity|lex_rarity_norm": 0.2,
+  "combinational_novelty|lex_rarity_norm": 0.43
+ },
+ "champion": {
+  "id": "S_g1_02_syntactic_elaboration_de",
+  "code": "\"\"\"syntactic_elaboration_delta \u2014 elaboration_detail via subordination growth.\n\nMechanism: Hunt (1965) T-unit/subordination index; Ortega (2003, Applied\nLinguistics) \u2014 subordinator/preposition density as the standard parse-free\nproxy for syntactic elaboration; TTCT \"elaboration\" subscale (added\ncircumstantial/qualifying detail around the core proposition).\n\nConstruct: density of a CLOSED grammatical class \u2014 prepositions +\nsubordinating conjunctions + relative pronouns (surface markers of PP and\nsubordinate/relative clauses) \u2014 per token; scored as the GROWTH from anchor to\nrewrite, logistic-squashed with scale = aggregate wordfreq probability mass of\nthe marker class itself (import-time reference, never eval-fit).\n\nOrthogonal to incumbents: no content-word frequency lookup at all \u2014 identical-\nrarity rewrites differ here only by added phrase/clause structure.\n\nFailure mode: purely lexical elaboration (one vivid adjective, no new phrase)\nis invisible; creative COMPRESSION scores negative by design.\n\"\"\"\n\nimport math\nimport re\n\nfrom wordfreq import word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\n\n# Closed class: core English prepositions (Quirk et al. 1985 inventory).\n_PREPOSITIONS = frozenset(\n    \"aboard about above across after against along amid among around at before behind \"\n    \"below beneath beside besides between beyond but by concerning despite down during \"\n    \"except for from in inside into like near of off on onto out outside over past \"\n    \"since through throughout till to toward towards under underneath until unto up \"\n    \"upon with within without\".split()\n)\n\n# Closed class: subordinating conjunctions + relative pronouns (Quirk et al. 1985).\n_SUBORDINATORS = frozenset(\n    \"after although as because before if since so than that though unless until when \"\n    \"whenever where whereas wherever while whether which who whom whose\".split()\n)\n\n_MARKERS = _PREPOSITIONS | _SUBORDINATORS\n\n\ndef _tokens(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _marker_density(s):\n    toks = _tokens(s)\n    if not toks:\n        return 0.0\n    return sum(1 for t in toks if t in _MARKERS) / len(toks)\n\n\ndef _ref_marker_mass():\n    \"\"\"Aggregate corpus probability mass of the marker class (wordfreq),\n    computed once at import \u2014 the natural unit of marker-density variation.\"\"\"\n    total = 0.0\n    for w in _MARKERS:\n        p = word_frequency(w, \"en\")\n        if p > 0:\n            total += p\n    return total\n\n\n_P_REF = _ref_marker_mass()\n_SCALE = _P_REF if _P_REF > 1e-6 else 0.15\n\n\ndef syntactic_elaboration_delta(text, anchor):\n    if not text:\n        return 0.0\n    d = _marker_density(text) - _marker_density(anchor or \"\")\n    score = 1.0 / (1.0 + math.exp(-d / _SCALE))\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\n    \"syntactic_elaboration_delta\": syntactic_elaboration_delta,\n}\n",
+  "metric_key": "syntactic_elaboration_delta",
+  "train_failures": [
+   {
+    "pair_id": "CR01",
+    "anchor": "Unlike vertebrates, octopus arms have their own neurons, so they do not require input from the central brain to function. An individual octopus has about 500 million neurons in its body, a number roughly comparable to a dog's.",
+    "more_creative": "Unlike vertebrates, an octopus's arms carry their own neurons, so each one can think and act without waiting on orders from the brain. All told, the animal wires up about 500 million neurons, a headcount not far off a dog's.",
+    "less_creative": "Unlike vertebrates, octopus arms have their own nerve cells, so they do not need signals from the brain to work. An octopus has about 500 million neurons in its body, which is a similar amount to a dog.",
+    "champion_scored_more": 0.525,
+    "champion_scored_less": 0.539
+   },
+   {
+    "pair_id": "CR08",
+    "anchor": "Fushimi Inari Taisha in Kyoto is famous for its thousands of vermilion torii gates, known collectively as the Senbon Torii, that wind up the wooded slopes of Mount Inari. The shrine is dedicated to Inari, the Shinto god of rice and business, and receives millions of visitors each year.",
+    "more_creative": "Fushimi Inari Taisha climbs Kyoto's wooded Mount Inari behind a river of thousands of vermilion torii gates, the famous Senbon Torii. The shrine honors Inari, Shinto's guardian of rice and commerce, and draws millions of pilgrims and sightseers every year.",
+    "less_creative": "Fushimi Inari Taisha in Kyoto has thousands of red torii gates, called the Senbon Torii, going up the slopes of Mount Inari. The shrine is for Inari, the god of rice and business in the Shinto religion, and gets millions of visitors every year.",
+    "champion_scored_more": 0.387,
+    "champion_scored_less": 0.468
+   },
+   {
+    "pair_id": "CR10",
+    "anchor": "A five-year study of more than 130,000 adults with chronic insomnia linked long-term melatonin use to a roughly 90% higher risk of developing heart failure. Melatonin users in the study were also more likely to be hospitalized for heart failure or to die from any cause during the follow-up period.",
+    "more_creative": "A five-year study tracking more than 130,000 adults with chronic insomnia found that long-term melatonin use was tied to a roughly 90% higher risk of heart failure. Those taking melatonin regularly were also more likely to land in the hospital for heart failure or to die from any cause during the follow-up years.",
+    "less_creative": "A five-year study of more than 130,000 adults with chronic insomnia found that long-term melatonin use was linked to about a 90% higher risk of getting heart failure. People who took melatonin were also more likely to be hospitalized for heart failure or to die from any cause during the study period.",
+    "champion_scored_more": 0.481,
+    "champion_scored_less": 0.521
+   },
+   {
+    "pair_id": "CR11",
+    "anchor": "The iPhone 17 Pro Max was a real workhorse in testing, easily lasting from 6 a.m. to midnight with at least 20% battery left in the tank. Thanks to the spread of silicon-carbon batteries, many of the latest smartphones can now go noticeably longer between charges.",
+    "more_creative": "The iPhone 17 Pro Max proved a real workhorse on our tests, cruising from 6 a.m. to midnight and still coasting in with at least 20% battery to spare. Thanks to the spread of silicon-carbon batteries, many of today's phones now stretch noticeably further between charges.",
+    "less_creative": "The iPhone 17 Pro Max worked well in testing, lasting from 6 a.m. to midnight with at least 20% battery remaining. Because of the spread of silicon-carbon batteries, many current smartphones can now last longer between charges.",
+    "champion_scored_more": 0.532,
+    "champion_scored_less": 0.54
+   },
+   {
+    "pair_id": "CR13",
+    "anchor": "The bark of a mature coast redwood can grow up to 12 inches thick, insulating the tree and helping it survive wildfires. This fire resistance, combined with roots that can spread 100 feet wide and intertwine with neighboring trees, lets redwood groves endure for centuries.",
+    "more_creative": "A mature coast redwood wraps itself in bark up to 12 inches thick, a natural coat that shields the tree and helps it shrug off wildfires. That resistance, paired with roots spreading 100 feet wide and knitting together with neighboring trees, lets whole redwood groves outlast centuries of fire and storm.",
+    "less_creative": "The bark of a mature coast redwood can grow up to 12 inches thick, which protects the tree and helps it survive wildfires. This fire resistance, along with roots that can spread 100 feet wide and connect with nearby trees, allows redwood groves to last for centuries.",
+    "champion_scored_more": 0.53,
+    "champion_scored_less": 0.585
+   },
+   {
+    "pair_id": "CR17",
+    "anchor": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in far worse shape than previously realized. Bleaching occurs when heat-stressed corals expel the symbiotic algae living in their tissues, the same algae that provide them with food and their vivid color.",
+    "more_creative": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in far shakier shape than anyone had realized. Bleaching sets in when heat-stressed corals evict the symbiotic algae living in their tissues, the very algae that feed them and paint them their vivid color.",
+    "less_creative": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in much worse condition than people thought. Bleaching happens when heat-stressed corals push out the symbiotic algae living in their tissues, the same algae that give them food and color.",
+    "champion_scored_more": 0.49,
+    "champion_scored_less": 0.511
+   },
+   {
+    "pair_id": "CR19",
+    "anchor": "The veined octopus collects discarded coconut shell halves and carries them around before assembling them into a shelter, a rare example of tool use in an invertebrate. Octopuses have also been observed at play, repeatedly jetting water at a floating bottle to push it around their tank.",
+    "more_creative": "The veined octopus scavenges discarded coconut shell halves, hauls them along beneath its body, and later snaps them together into a portable shelter, a rare flash of tool use in an invertebrate. Octopuses have also been caught at play, jetting water again and again to send a floating bottle skittering around their tank.",
+    "less_creative": "The veined octopus collects discarded coconut shell halves and carries them around before putting them together into a shelter, which is a rare example of tool use in an invertebrate. Octopuses have also been seen playing, repeatedly squirting water at a floating bottle to move it around their tank.",
+    "champion_scored_more": 0.441,
+    "champion_scored_less": 0.489
+   },
+   {
+    "pair_id": "CR20",
+    "anchor": "People with extroverted personalities tend to feel especially uneasy with the loneliness of working from home, since the job confines them to a room with just a laptop and no colleagues around. Getting involved with local clubs, volunteering, or church groups was suggested as one way to rebuild some of that missing social contact.",
+    "more_creative": "Extroverts tend to chafe hardest against the loneliness of working from home, boxed into a room with nothing but a laptop and no colleagues in sight. Joining a local club, volunteering, or a church group was offered as one way to rebuild the social contact the job had quietly taken away.",
+    "less_creative": "People with extroverted personalities tend to feel especially uncomfortable with the loneliness of working from home, since the job keeps them in a room with just a laptop and no colleagues around. Joining local clubs, volunteering, or church groups was suggested as one way to get back some of that missing social contact.",
+    "champion_scored_more": 0.409,
+    "champion_scored_less": 0.48
+   }
+  ]
+ },
+ "n_scorers_wanted": 3,
+ "output_schema": "[{\"name\": str, \"causal_node\": str, \"mechanism\": \"named theory/paper\", \"reasoning\": str, \"code\": \"full module source\"}] x3"
+}

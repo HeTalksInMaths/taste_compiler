@@ -1,5 +1,5 @@
 {
- "gen": 0,
+ "gen": 1,
  "train": [
   {
    "pair_id": "CR01",
@@ -203,6 +203,38 @@
    "more_creative": "The startup burned through the last of its cash and closed the doors. The founders scattered to new jobs.",
    "less_creative": "The fledgling enterprise exhausted its pecuniary reserves and ceased operations. The progenitors migrated to alternative vocations.",
    "origin": "A2"
+  },
+  {
+   "pair_id": "R3_05",
+   "anchor": "By August the tomato plants had gone brown and brittle, and she stopped watering them altogether. The garden sat there, done with itself, until the first frost took the rest.",
+   "more_creative": "By August the tomato plants had gone brown and brittle, and she stopped watering them altogether, the way you stop calling someone who's already gone. The garden sat there, done with itself, until the first frost took the rest, tidying up what she couldn't.",
+   "less_creative": "The tomato vines had turned dry and brown by the eighth month, prompting her to cease all irrigation. The plot remained abandoned in its own resignation before the initial freeze finished the job.",
+   "origin": "R1",
+   "trap": "synonym-churn confound"
+  },
+  {
+   "pair_id": "R3_02",
+   "anchor": "The rain hit the window in steady sheets while she watched the street lights blur into halos. She hadn't moved from the couch in an hour.",
+   "more_creative": "The rain hit the window in steady sheets, like a drummer who'd forgotten how to stop, while she watched the street lights blur into halos. She hadn't moved from the couch in an hour, only inward.",
+   "less_creative": "Steady sheets of precipitation struck the glass as the streetlamps' glow smeared into rings before her eyes. For sixty minutes she remained fixed on the sofa without shifting position.",
+   "origin": "R1",
+   "trap": "synonym-churn confound"
+  },
+  {
+   "pair_id": "R3_03",
+   "anchor": "After thirty years in the classroom, Mr. Alvarez cleaned out his desk and took one last look at the empty rows of chairs. He locked the door behind him without looking back.",
+   "more_creative": "After thirty years in the classroom, Mr. Alvarez cleaned out his desk and took one last look at the empty rows of chairs, each one still holding the shape of a kid who'd left. He locked the door behind him without looking back, just a small change in the building's pulse.",
+   "less_creative": "Following three decades of teaching, the desk was emptied out by Mr. Alvarez, who gazed briefly at the vacant seating before departing the room. He shut the door on his way out and did not glance backward.",
+   "origin": "R1",
+   "trap": "synonym-churn confound"
+  },
+  {
+   "pair_id": "R3_04",
+   "anchor": "Traffic crawled to a stop on the bridge, and horns started up in scattered bursts. Somewhere ahead, a driver leaned out of his window to see what was wrong.",
+   "more_creative": "Traffic crawled to a stop on the bridge, and horns started up in scattered bursts, like a choir warming up for a performance nobody wanted. Somewhere ahead, a driver leaned out of his window to read the holdup like weather.",
+   "less_creative": "Vehicles came to a halt on the overpass as intermittent honking broke out among the stalled cars. Up front, one motorist stuck his head out to determine the source of the delay.",
+   "origin": "R1",
+   "trap": "synonym-churn confound"
   }
  ],
  "heldout": [
@@ -296,6 +328,22 @@
    "more_creative": "My grandmother tells the same three stories every holiday. Somehow we lean in every time.",
    "less_creative": "My grandmother reiterates identical narratives each festive occasion. We remain perpetually unwearied thereby.",
    "origin": "A2"
+  },
+  {
+   "pair_id": "R3_08",
+   "anchor": "He crossed the finish line and immediately sat down on the pavement, too exhausted to celebrate. The crowd cheered anyway, and someone draped a foil blanket over his shoulders.",
+   "more_creative": "He crossed the finish line and immediately sat down on the pavement, too exhausted to celebrate, his legs finally handing in their resignation. The crowd cheered anyway, and someone draped a foil blanket over his shoulders like a small, silver apology.",
+   "less_creative": "Upon reaching the finish, he lowered himself onto the ground at once, lacking the energy for any celebration. Despite this, onlookers applauded, and a foil covering was placed around him by a bystander.",
+   "origin": "R1",
+   "trap": "synonym-churn confound"
+  },
+  {
+   "pair_id": "R3_07",
+   "anchor": "She found the photograph tucked inside an old book, faded but still recognizable after all these years. Her grandmother's smile looked exactly the same as she remembered it.",
+   "more_creative": "She found the photograph tucked inside an old book, faded but still recognizable, like a voice you'd know even through a wall. Her grandmother's smile looked exactly the same as she remembered it, stubbornly unaged by all the years between them.",
+   "less_creative": "Inside a dated book she came across the picture, worn yet identifiable despite the passage of time. The grin on her grandmother's face matched precisely the way she recalled it.",
+   "origin": "R1",
+   "trap": "synonym-churn confound"
   }
  ],
  "core_ids": [
@@ -308,13 +356,23 @@
  ],
  "population": [
   {
-   "id": "combinational_novelty",
+   "id": "S_g1_02_syntactic_elaboration_de",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Hunt 1965 T-unit subordination; Ortega 2003 complexity indices",
+   "code": "\"\"\"syntactic_elaboration_delta \u2014 elaboration_detail via subordination growth.\n\nMechanism: Hunt (1965) T-unit/subordination index; Ortega (2003, Applied\nLinguistics) \u2014 subordinator/preposition density as the standard parse-free\nproxy for syntactic elaboration; TTCT \"elaboration\" subscale (added\ncircumstantial/qualifying detail around the core proposition).\n\nConstruct: density of a CLOSED grammatical class \u2014 prepositions +\nsubordinating conjunctions + relative pronouns (surface markers of PP and\nsubordinate/relative clauses) \u2014 per token; scored as the GROWTH from anchor to\nrewrite, logistic-squashed with scale = aggregate wordfreq probability mass of\nthe marker class itself (import-time reference, never eval-fit).\n\nOrthogonal to incumbents: no content-word frequency lookup at all \u2014 identical-\nrarity rewrites differ here only by added phrase/clause structure.\n\nFailure mode: purely lexical elaboration (one vivid adjective, no new phrase)\nis invisible; creative COMPRESSION scores negative by design.\n\"\"\"\n\nimport math\nimport re\n\nfrom wordfreq import word_frequency\n\n_WORD = re.compile(r\"[a-zA-Z']+\")\n\n# Closed class: core English prepositions (Quirk et al. 1985 inventory).\n_PREPOSITIONS = frozenset(\n    \"aboard about above across after against along amid among around at before behind \"\n    \"below beneath beside besides between beyond but by concerning despite down during \"\n    \"except for from in inside into like near of off on onto out outside over past \"\n    \"since through throughout till to toward towards under underneath until unto up \"\n    \"upon with within without\".split()\n)\n\n# Closed class: subordinating conjunctions + relative pronouns (Quirk et al. 1985).\n_SUBORDINATORS = frozenset(\n    \"after although as because before if since so than that though unless until when \"\n    \"whenever where whereas wherever while whether which who whom whose\".split()\n)\n\n_MARKERS = _PREPOSITIONS | _SUBORDINATORS\n\n\ndef _tokens(s):\n    return _WORD.findall((s or \"\").lower())\n\n\ndef _marker_density(s):\n    toks = _tokens(s)\n    if not toks:\n        return 0.0\n    return sum(1 for t in toks if t in _MARKERS) / len(toks)\n\n\ndef _ref_marker_mass():\n    \"\"\"Aggregate corpus probability mass of the marker class (wordfreq),\n    computed once at import \u2014 the natural unit of marker-density variation.\"\"\"\n    total = 0.0\n    for w in _MARKERS:\n        p = word_frequency(w, \"en\")\n        if p > 0:\n            total += p\n    return total\n\n\n_P_REF = _ref_marker_mass()\n_SCALE = _P_REF if _P_REF > 1e-6 else 0.15\n\n\ndef syntactic_elaboration_delta(text, anchor):\n    if not text:\n        return 0.0\n    d = _marker_density(text) - _marker_density(anchor or \"\")\n    score = 1.0 / (1.0 + math.exp(-d / _SCALE))\n    return float(max(0.0, min(1.0, score)))\n\n\nMETRICS = {\n    \"syntactic_elaboration_delta\": syntactic_elaboration_delta,\n}\n",
+   "metric_key": "syntactic_elaboration_delta",
+   "novel": true
+  },
+  {
+   "id": "appropriateness_gate",
    "lineage": "seed",
-   "causal_node": "semantic_distance(collocational)",
-   "mechanism": "word n-gram TF-IDF divergence from anchor",
+   "causal_node": "appropriateness(inverted-U)",
+   "mechanism": "Wundt-curve overshoot decay",
    "gen": 0,
    "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
-   "metric_key": "combinational_novelty"
+   "metric_key": "appropriateness_gate"
   },
   {
    "id": "conjunctive_creativity",
@@ -326,13 +384,13 @@
    "metric_key": "conjunctive_creativity"
   },
   {
-   "id": "appropriateness_gate",
+   "id": "combinational_novelty",
    "lineage": "seed",
-   "causal_node": "appropriateness(inverted-U)",
-   "mechanism": "Wundt-curve overshoot decay",
+   "causal_node": "semantic_distance(collocational)",
+   "mechanism": "word n-gram TF-IDF divergence from anchor",
    "gen": 0,
    "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
-   "metric_key": "appropriateness_gate"
+   "metric_key": "combinational_novelty"
   },
   {
    "id": "lex_rarity_norm",
@@ -381,10 +439,52 @@
      "SEP": -0.019
     }
    ]
+  },
+  {
+   "gen": 1,
+   "champion": "S_g1_02_syntactic_elaboration_de",
+   "champion_stats": {
+    "SEP": 0.0323,
+    "acc": 0.5152,
+    "mean_pos": 0.5089,
+    "sd_pos": 0.0926,
+    "mean_neg": 0.4766,
+    "sd_neg": 0.1082,
+    "effect_d": 0.3212,
+    "worst_margin": -0.0853,
+    "sd_margin": 0.0963,
+    "heldout_SEP": 0.0179,
+    "core_SEP": -0.0028
+   },
+   "n_train": 33,
+   "n_heldout": 15,
+   "population": [
+    {
+     "id": "S_g1_02_syntactic_elaboration_de",
+     "SEP": 0.032
+    },
+    {
+     "id": "appropriateness_gate",
+     "SEP": 0.031
+    },
+    {
+     "id": "conjunctive_creativity",
+     "SEP": 0.012
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": -0.011
+    },
+    {
+     "id": "lex_rarity_norm",
+     "SEP": -0.023
+    }
+   ]
   }
  ],
  "trap_axes_used": [
   "cliche/idiom decoupling (adv-1)",
-  "purple prose: novelty without appropriateness (adv-2)"
+  "purple prose: novelty without appropriateness (adv-2)",
+  "synonym-churn confound"
  ]
 }
