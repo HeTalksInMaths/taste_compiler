@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "HR2_09",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "The musician played with passion. The notes rang out clearly.",
+    "more_creative": "The musician blazed through the piece. The notes shattered the air.",
+    "less_creative": "The musician played with deep passion and intense emotion. The notes rang out clearly and resoundingly throughout the space.",
+    "design_note": "Substitutions (blazed, shattered) replace abstract anchor with concrete sensory verbs. Less creative pads anchor with redundant elaborations (deep, intense emotion, resoundingly, throughout).",
+    "predicted_champion_behavior": "Champion scores less_creative higher: insertions (deep, intense, emotion, resoundingly, throughout, space) outweigh substitutions. More_creative has only substitutions (blazed→passion, shattered→rang), so lower ratio and low score."
+  },
+  {
+    "pair_id": "HR2_10",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "The crowd moved slowly down the street. Everyone was tired.",
+    "more_creative": "The crowd shuffled down the street. Everyone dragged.",
+    "less_creative": "The crowd moved slowly and deliberately down the street with heavy steps. Everyone was tired and utterly exhausted by the journey.",
+    "design_note": "More creative substitutes (shuffled, dragged) with precise, concrete verbs. Less creative inserts abstract elaborations (deliberately, heavy, utterly, by the journey).",
+    "predicted_champion_behavior": "Champion favors less_creative: high insertion count (deliberately, heavy, utterly, exhausted, by, journey) vs. low substitution. More_creative's tight substitutions yield low insertion ratio."
+  },
+  {
+    "pair_id": "HR2_11",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "She looked at the old photograph. It made her feel sad.",
+    "more_creative": "She studied the worn photograph. It gutted her.",
+    "less_creative": "She looked carefully at the old, faded photograph with great attention. It made her feel deeply sad and profoundly melancholic inside.",
+    "design_note": "More creative uses precise substitutions (studied, worn, gutted). Less creative inserts redundant elaborations (carefully, faded, great, attention, deeply, profoundly, inside).",
+    "predicted_champion_behavior": "Champion scores less_creative higher: insertions (carefully, faded, great, attention, deeply, profoundly, inside) dominate. More_creative's substitution-only approach yields low elaboration ratio."
+  },
+  {
+    "pair_id": "HR2_12",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "The rain fell for a long time. Eventually it stopped.",
+    "more_creative": "The rain hammered for hours. Then silence.",
+    "less_creative": "The rain fell continuously and persistently for a long time with great intensity. Eventually it stopped and ceased completely and utterly.",
+    "design_note": "More creative substitutes (hammered, hours, silence) for tighter, more vivid phrasing. Less creative pads with abstract redundancy (continuously, persistently, great, intensity, ceased, completely, utterly).",
+    "predicted_champion_behavior": "Champion prefers less_creative: many insertions (continuously, persistently, great, intensity, ceased, completely, utterly) vs. few substitutions. More_creative's minimal-edit strategy yields low insertion count."
+  },
+  {
+    "pair_id": "HR2_13",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "The coffee was very hot. It had a strong taste.",
+    "more_creative": "The coffee burned the tongue. It bit back.",
+    "less_creative": "The coffee was very hot and steaming with intense heat. It had a strong, powerful, and robust taste that was quite distinctive.",
+    "design_note": "More creative substitutes (burned, bite) with concrete, embodied sensations. Less creative inserts abstract qualifiers (steaming, intense, powerful, robust, distinctive, quite).",
+    "predicted_champion_behavior": "Champion scores less_creative higher: insertions (steaming, intense, powerful, robust, distinctive, quite) exceed substitutions. More_creative's sensory substitutions alone yield low elaboration ratio and low score."
+  },
+  {
+    "pair_id": "HR2_14",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "He entered the room and looked around. The space was empty and silent.",
+    "more_creative": "He stepped into darkness. Nothing breathed.",
+    "less_creative": "He entered the room carefully and looked around with great attention. The space was empty and utterly silent and devoid of sound.",
+    "design_note": "More creative compresses to concrete, direct sensations (darkness, breathed). Less creative elaborates with abstract modifiers (carefully, great, attention, utterly, devoid, of sound).",
+    "predicted_champion_behavior": "Champion favors less_creative: insertions (carefully, great, attention, utterly, devoid, sound) far outweigh substitutions. More_creative's substitution-compression approach creates low insertion count, low score."
+  },
+  {
+    "pair_id": "HR2_15",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "The building was old and made of brick. It looked neglected.",
+    "more_creative": "The brick building crumbled. It ached.",
+    "less_creative": "The building was old and made of rough, weathered brick material. It looked neglected, abandoned, and left behind by time.",
+    "design_note": "More creative substitutes (crumbled, ached) with precise, animate verbs. Less creative inserts elaborations (rough, weathered, abandoned, left, behind, by, time).",
+    "predicted_champion_behavior": "Champion scores less_creative higher: many insertions (rough, weathered, abandoned, left, behind, by, time) vs. two substitutions. More_creative's minimal substitution strategy yields low ratio."
+  },
+  {
+    "pair_id": "HR2_16",
+    "trap": "Concreteness-through-substitution vs. abstract-elaboration-bloat",
+    "anchor": "The day grew darker as evening came. People closed their doors.",
+    "more_creative": "Darkness swallowed the day. People barricaded themselves away.",
+    "less_creative": "The day grew darker and increasingly dim as evening came gradually and slowly. People closed their doors firmly and securely and carefully behind them.",
+    "design_note": "More creative substitutes (swallowed, barricaded) with vivid, active verbs. Less creative inflates anchor with abstract elaborations (increasingly, dim, gradually, firmly, securely, carefully, behind, them).",
+    "predicted_champion_behavior": "Champion prefers less_creative: high insertion count (increasingly, dim, gradually, firmly, securely, carefully, behind) swamps low substitution. More_creative's precise substitutions alone yield low elaboration-to-substitution ratio."
+  }
+]
