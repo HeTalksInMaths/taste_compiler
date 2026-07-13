@@ -133,3 +133,46 @@ Human ratings on a representative subset (the essential validation), an
 equalized-compute arm isolating model size from volume/generations, an expanded
 stationary core, and seed replicates of the full agent arms. All are budgeted
 designs, not open problems.
+
+## Part 3 — Follow-up experiments (previously "beyond this session")
+
+**E7. Equalized-compute Arm C (reviewer: "volume and generations are confounded
+with model size").** Haiku run at Arm A's EXACT budget: 3 proposals + 6 kept
+pairs per generation, 3 agent generations, identical harness/seeds/gates.
+Result: seed champion dethroned in one generation; two champion turnovers; the
+final champion is again conjunctive (novelty gated by rarity-coherence). On the
+expanded 26-pair stationary core:
+
+| arm | model / budget | acc | SEP | 95% CI |
+|---|---|---|---|---|
+| A | larger, 3x3 | 0.92 | 0.222 | [0.152, 0.294] |
+| B | smaller, 9x7 | 1.00 | 0.241 | [0.185, 0.299] |
+| C | smaller, 3x3 (matched to A) | 0.85 | 0.300 | [0.195, 0.402] |
+
+All CIs overlap substantially: with volume and generations CONTROLLED, no
+model-size effect is detectable at this scale. The "selection over
+sophistication" conclusion survives its confound. Three-for-three: every arm's
+final champion is a conjunctive (gated two-factor) scorer.
+
+**E8. Expanded stationary core (reviewer: "six cases is too small").** Added 20
+fresh internet-grounded pairs (7 source types, real quoted excerpts with URLs,
+built blind to all scorers, never entering training) -> 26-pair core. Arm B's
+champion scores 1.00 accuracy on all 26 (CI [0.185, 0.299]); every key scorer's
+CI now excludes zero. This also reframes the earlier lyrics failure (0/6) as
+domain shift, not overfitting: on unseen ordinary prose the evolved champions
+generalize cleanly.
+
+**E9. Independent blind judge panel (proxy for human validation).** Three
+differently-prompted raters (freshness rubric, editor rubric, reader rubric;
+two model tiers), each judging all 33 heldout pairs with randomized A/B and no
+provenance: unanimous with each other on 33/33 and agreeing with the
+LLM-authored labels on 30/33 (91%). The 3 unanimous disagreements are best
+read as label errors. Caveat stated plainly: unanimity among model raters can
+reflect shared bias — this validates label consistency across independent
+model raters, not human ground truth. A human blind-rating instrument (15
+pairs, randomized, including the full old core) has been delivered to the
+experimenter; their ratings will provide the first human datapoint.
+
+Label-free check: agreement with the judge majority is 0.70 for the blind
+discovery D6 vs 0.61 for the Arm-B champion — the non-intuitive scorer tracks
+independent raters best.

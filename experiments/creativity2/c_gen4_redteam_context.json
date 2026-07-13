@@ -1,0 +1,32 @@
+{
+ "goal": "Write adversarial pairs (anchor + more_creative + less_creative, 2 sentences each, same factual content) that DECOUPLE the champion scorer's measured axis from true creativity.",
+ "champion": {
+  "axis": "appropriateness \u2014 Novel vocabulary gated by rarity coherence threshold",
+  "code": "import re\nimport math\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef novel_rarity_gate(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if not anchor_toks or not text_toks:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    novel_toks = text_set - anchor_set\n    if not novel_toks:\n        return 0.5\n    novel_freqs = [word_frequency(w, 'en') or 1e-10 for w in novel_toks]\n    mean_novel_freq = np.mean(novel_freqs)\n    text_freqs = [word_frequency(w, 'en') or 1e-10 for w in text_toks]\n    mean_text_freq = np.mean(text_freqs)\n    rarity_penalty = mean_novel_freq / mean_text_freq if mean_text_freq > 0 else 1.0\n    novelty_ratio = len(novel_toks) / len(text_set) if len(text_set) > 0 else 0\n    novelty_score = min(novelty_ratio / 0.5, 1.0)\n    coherence_score = min(rarity_penalty / 0.35, 1.0)\n    score = novelty_score * coherence_score\n    return max(0.0, min(1.0, score))\n\nMETRICS = {'novel_rarity_gate': novel_rarity_gate}"
+ },
+ "trap_axes_already_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "Technical vocabulary and architectural jargon",
+  "Synonymous reconfiguration vs. conceptual reframing \u2014 champion rewards paraphrase-heavy text that preserves word overlap while penalizing genuine conceptual shifts",
+  "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
+ ],
+ "requirement": "Pick a NEW decoupling axis not in trap_axes_already_used. Include BOTH directions: champion-signal-high-but-genuinely-less-creative negatives AND champion-signal-low-but-genuinely-more-creative positives. Subtle, natural English; a thoughtful human must still rank more_creative > less_creative on freshness. 8 candidates; ids R3_01..R3_08.",
+ "causal_graph_nodes": [
+  "judged_creativity",
+  "novelty",
+  "appropriateness",
+  "semantic_distance",
+  "surprisal",
+  "metaphor_novelty",
+  "cliche_formulaicity",
+  "lexical_rarity",
+  "concreteness_imageability",
+  "elaboration_detail",
+  "coherence",
+  "lexical_diversity_ttr",
+  "remote_association",
+  "word_frequency_confound"
+ ],
+ "output_schema": "[{\"pair_id\": str, \"trap\": str, \"anchor\": str, \"more_creative\": str, \"less_creative\": str, \"design_note\": str, \"predicted_champion_behavior\": str}] x8"
+}

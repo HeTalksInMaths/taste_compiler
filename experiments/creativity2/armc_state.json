@@ -1,5 +1,5 @@
 {
- "gen": 2,
+ "gen": 3,
  "train": [
   {
    "pair_id": "CR01",
@@ -267,6 +267,38 @@
    "less_creative": "Children acquire language via exposure to words and regular practice. Young learners develop communication skills through consistent word repetition.",
    "origin": "R2",
    "trap": "Synonymous reconfiguration vs. conceptual reframing"
+  },
+  {
+   "pair_id": "CR3_06",
+   "anchor": "Technology changes how humans work and communicate.",
+   "more_creative": "Tools reshape the speed and texture of human thought before we understand their cost.",
+   "less_creative": "Technology changes work and communication and how technology changes human communication and work.",
+   "origin": "R3",
+   "trap": "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
+  },
+  {
+   "pair_id": "CR3_05",
+   "anchor": "Diversity in teams leads to better decision-making.",
+   "more_creative": "Friction between perspectives\u2014when productively channeled\u2014forces teams to interrogate assumptions and reach robust conclusions.",
+   "less_creative": "Diversity leads to better team decisions and decisions made by diverse teams are better and diversity improves decisions.",
+   "origin": "R3",
+   "trap": "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
+  },
+  {
+   "pair_id": "CR3_03",
+   "anchor": "Exercise improves both physical and mental well-being.",
+   "more_creative": "Movement rewires stress pathways and restores the nervous system's capacity for calm.",
+   "less_creative": "Exercise improves physical improvement and mental improvement and well-being through physical and mental exercise.",
+   "origin": "R3",
+   "trap": "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
+  },
+  {
+   "pair_id": "CR3_04",
+   "anchor": "Innovation requires taking risks and experimentation.",
+   "more_creative": "Breakthroughs demand tolerance for failure\u2014iterating until the novel becomes inevitable.",
+   "less_creative": "Innovation requires risk-taking and experimental risk and trying experimentation and taking experimental risks.",
+   "origin": "R3",
+   "trap": "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
   }
  ],
  "heldout": [
@@ -392,6 +424,22 @@
    "less_creative": "Microorganisms in soil assist plants in absorbing nutrients and decomposing organic material. Bacteria aid nutrient uptake and substance breakdown.",
    "origin": "R2",
    "trap": "Synonymous reconfiguration vs. conceptual reframing"
+  },
+  {
+   "pair_id": "CR3_02",
+   "anchor": "Social media connects people across geographic boundaries.",
+   "more_creative": "Instant connection paradoxically erodes the friction that forges lasting bonds.",
+   "less_creative": "Social media connects people and creates connections across boundaries of geography and boundaries.",
+   "origin": "R3",
+   "trap": "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
+  },
+  {
+   "pair_id": "CR3_08",
+   "anchor": "Reading builds vocabulary and comprehension skills.",
+   "more_creative": "Exposure to varied syntax and rare words gradually rewires how we process meaning itself.",
+   "less_creative": "Reading builds comprehension and vocabulary skills and skill building through reading vocabulary and comprehension.",
+   "origin": "R3",
+   "trap": "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
   }
  ],
  "core_ids": [
@@ -404,16 +452,6 @@
  ],
  "population": [
   {
-   "id": "S_g1_03_semantic_topic_coherence",
-   "lineage": "llm_gen1",
-   "gen": 1,
-   "causal_node": "coherence",
-   "mechanism": "Jaccard word overlap with inverted-U penalty for semantic drift (TAACO/global coherence)",
-   "code": "import re\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef semantic_topic_coherence(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if not anchor_toks or not text_toks:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    overlap = len(text_set & anchor_set)\n    union_size = len(text_set | anchor_set)\n    if union_size == 0:\n        return 0.5\n    jaccard = overlap / union_size\n    ideal_overlap = 0.45\n    deviation = abs(jaccard - ideal_overlap)\n    score = 1.0 - 1.8 * deviation\n    return max(0.0, min(1.0, score))\n\nMETRICS = {'semantic_topic_coherence': semantic_topic_coherence}\n",
-   "metric_key": "semantic_topic_coherence",
-   "novel": false
-  },
-  {
    "id": "S_g2_01_novel_rarity_gate",
    "lineage": "llm_gen2",
    "gen": 2,
@@ -421,6 +459,16 @@
    "mechanism": "Novel vocabulary gated by rarity coherence threshold",
    "code": "import re\nimport math\nimport numpy as np\nfrom wordfreq import word_frequency\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef novel_rarity_gate(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if not anchor_toks or not text_toks:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    novel_toks = text_set - anchor_set\n    if not novel_toks:\n        return 0.5\n    novel_freqs = [word_frequency(w, 'en') or 1e-10 for w in novel_toks]\n    mean_novel_freq = np.mean(novel_freqs)\n    text_freqs = [word_frequency(w, 'en') or 1e-10 for w in text_toks]\n    mean_text_freq = np.mean(text_freqs)\n    rarity_penalty = mean_novel_freq / mean_text_freq if mean_text_freq > 0 else 1.0\n    novelty_ratio = len(novel_toks) / len(text_set) if len(text_set) > 0 else 0\n    novelty_score = min(novelty_ratio / 0.5, 1.0)\n    coherence_score = min(rarity_penalty / 0.35, 1.0)\n    score = novelty_score * coherence_score\n    return max(0.0, min(1.0, score))\n\nMETRICS = {'novel_rarity_gate': novel_rarity_gate}",
    "metric_key": "novel_rarity_gate",
+   "novel": false
+  },
+  {
+   "id": "S_g1_02_elaboration_expansion_ra",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Novel concept token ratio (TTCT elaboration operationalization)",
+   "code": "import re\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef elaboration_expansion_ratio(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if len(anchor_toks) == 0:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    novel_toks = len(text_set - anchor_set)\n    if len(text_set) == 0:\n        return 0.5\n    elaboration_ratio = novel_toks / len(text_set)\n    length_increase = len(text_toks) / len(anchor_toks) if len(anchor_toks) > 0 else 1.0\n    combined = elaboration_ratio * min(1.5, length_increase)\n    score = min(1.0, combined)\n    return max(0.0, score)\n\nMETRICS = {'elaboration_expansion_ratio': elaboration_expansion_ratio}\n",
+   "metric_key": "elaboration_expansion_ratio",
    "novel": false
   },
   {
@@ -442,16 +490,6 @@
    "metric_key": "conjunctive_creativity"
   },
   {
-   "id": "S_g1_02_elaboration_expansion_ra",
-   "lineage": "llm_gen1",
-   "gen": 1,
-   "causal_node": "elaboration_detail",
-   "mechanism": "Novel concept token ratio (TTCT elaboration operationalization)",
-   "code": "import re\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef elaboration_expansion_ratio(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if len(anchor_toks) == 0:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    novel_toks = len(text_set - anchor_set)\n    if len(text_set) == 0:\n        return 0.5\n    elaboration_ratio = novel_toks / len(text_set)\n    length_increase = len(text_toks) / len(anchor_toks) if len(anchor_toks) > 0 else 1.0\n    combined = elaboration_ratio * min(1.5, length_increase)\n    score = min(1.0, combined)\n    return max(0.0, score)\n\nMETRICS = {'elaboration_expansion_ratio': elaboration_expansion_ratio}\n",
-   "metric_key": "elaboration_expansion_ratio",
-   "novel": false
-  },
-  {
    "id": "appropriateness_gate",
    "lineage": "seed",
    "causal_node": "appropriateness(inverted-U)",
@@ -459,6 +497,16 @@
    "gen": 0,
    "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
    "metric_key": "appropriateness_gate"
+  },
+  {
+   "id": "S_g1_03_semantic_topic_coherence",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "coherence",
+   "mechanism": "Jaccard word overlap with inverted-U penalty for semantic drift (TAACO/global coherence)",
+   "code": "import re\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef semantic_topic_coherence(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if not anchor_toks or not text_toks:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    overlap = len(text_set & anchor_set)\n    union_size = len(text_set | anchor_set)\n    if union_size == 0:\n        return 0.5\n    jaccard = overlap / union_size\n    ideal_overlap = 0.45\n    deviation = abs(jaccard - ideal_overlap)\n    score = 1.0 - 1.8 * deviation\n    return max(0.0, min(1.0, score))\n\nMETRICS = {'semantic_topic_coherence': semantic_topic_coherence}\n",
+   "metric_key": "semantic_topic_coherence",
+   "novel": false
   },
   {
    "id": "lex_rarity_norm",
@@ -601,12 +649,62 @@
      "SEP": -0.023
     }
    ]
+  },
+  {
+   "gen": 3,
+   "champion": "S_g2_01_novel_rarity_gate",
+   "champion_stats": {
+    "SEP": 0.0891,
+    "acc": 0.3659,
+    "mean_pos": 0.8941,
+    "sd_pos": 0.1898,
+    "mean_neg": 0.805,
+    "sd_neg": 0.2608,
+    "effect_d": 0.3905,
+    "worst_margin": -0.6837,
+    "sd_margin": 0.2652,
+    "heldout_SEP": 0.1487,
+    "core_SEP": 0.3955
+   },
+   "n_train": 41,
+   "n_heldout": 19,
+   "population": [
+    {
+     "id": "S_g2_01_novel_rarity_gate",
+     "SEP": 0.089
+    },
+    {
+     "id": "S_g1_02_elaboration_expansion_ra",
+     "SEP": 0.07
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.047
+    },
+    {
+     "id": "conjunctive_creativity",
+     "SEP": 0.041
+    },
+    {
+     "id": "appropriateness_gate",
+     "SEP": 0.025
+    },
+    {
+     "id": "S_g1_03_semantic_topic_coherence",
+     "SEP": 0.017
+    },
+    {
+     "id": "lex_rarity_norm",
+     "SEP": -0.011
+    }
+   ]
   }
  ],
  "trap_axes_used": [
   "cliche/idiom decoupling (adv-1)",
   "purple prose: novelty without appropriateness (adv-2)",
   "Technical vocabulary and architectural jargon",
-  "Synonymous reconfiguration vs. conceptual reframing \u2014 champion rewards paraphrase-heavy text that preserves word overlap while penalizing genuine conceptual shifts"
+  "Synonymous reconfiguration vs. conceptual reframing \u2014 champion rewards paraphrase-heavy text that preserves word overlap while penalizing genuine conceptual shifts",
+  "Rhetorical elaboration vs semantic depth\u2014surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure"
  ]
 }
