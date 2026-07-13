@@ -536,7 +536,11 @@ story.append(P(
     "for correction. We state the caveat plainly: unanimity among model raters can reflect "
     "shared bias, so this validates label consistency across independent model raters, not "
     "human ground truth. A label-free check is possible too: agreement with the judge "
-    "majority ranks the edit-placement scorer first (0.70), ahead of every evolved champion.", "bodyni"))
+    "majority ranks the edit-placement scorer first (0.70), ahead of every evolved champion. "
+    "Beyond this session, the validation path is concrete: LitBench's pairwise human "
+    "preferences (Sec. 7) match our scorers' input format exactly, and the DSI corpus "
+    "provides continuous human ratings at scale — correlating the discovered scorers "
+    "against both is the designed next experiment.", "bodyni"))
 
 story.append(P("5.6&nbsp;&nbsp;The Ceiling", "h2"))
 story.append(P(
@@ -727,6 +731,22 @@ story.append(P(
 # ── 7 Related work ────────────────────────────────────────────────────
 story.append(P("7&nbsp;&nbsp;Related Work", "h1"))
 story.append(P(
+    "<b>Human-grounded creativity benchmarks.</b> Several recent resources provide exactly "
+    "the external validation this work still needs, and we identify them as our correlation "
+    "targets. LitBench (Fein et al. 2025) is the closest construct match: thousands of "
+    "pairwise human preferences between stories written to the same prompt — our scorers "
+    "consume precisely such pairs and can be correlated against it directly. The DSI "
+    "narratives corpus (Johnson et al. 2022) offers over 3,500 short narratives with "
+    "continuous human creativity ratings. TTCW (Chakrabarty et al. 2024) contributes "
+    "expert-level rubric judgments whose fourteen items could themselves be operationalized "
+    "as scorer sub-features. CreativityPrism (Hou et al. 2025) audits LLM creativity across "
+    "many metrics and, consistent with our findings, emphasizes that novelty measures are "
+    "unstable in isolation; our conjunctive, gated scorers are an interpretable programmatic "
+    "response to that instability. Checklist-based judging frameworks such as CheckEval "
+    "(Lee et al. 2024) are complementary rather than competing: checklist items are natural "
+    "candidates for the sanity-gate factor in our two-factor designs, and human-anchored "
+    "checklists are a principled way to validate discovered gates.", "bodyni"))
+story.append(P(
     "Our loop belongs to the family of LLM-guided evolutionary search over programs, most "
     "prominently FunSearch (Romera-Paredes et al. 2024), which pairs an LLM proposer with a "
     "programmatic evaluator; we add an adversarial data-growth role and honesty gates "
@@ -787,6 +807,14 @@ story.append(P(
 # ── References ────────────────────────────────────────────────────────
 story.append(P("References", "h1"))
 refs = [
+    "Chakrabarty, T.; Laban, P.; Agarwal, D.; Muresan, S.; and Wu, C.-S. 2024. Art or "
+    "Artifice? Large Language Models and the False Promise of Creativity. In <i>Proc. CHI</i>.",
+    "Fein, D.; Russo, S.; Xiang, V.; Jolly, K.; Rafailov, R.; and Haber, N. 2025. LitBench: "
+    "A Benchmark and Dataset for Reliable Evaluation of Creative Writing. arXiv:2507.00769.",
+    "Hou, Z. J.; Zhang, B. A.; Lu, Y.; et al. 2025. CreativityPrism: A Holistic Benchmark "
+    "for Large Language Model Creativity. arXiv:2510.20091.",
+    "Lee, Y.; Kim, J.; Kim, J.; Cho, H.; Kang, J.; Kang, P.; and Kim, N. 2024. CheckEval: "
+    "A Reliable LLM-as-a-Judge Framework via Checklist Evaluation. arXiv:2403.18771.",
     "Beaty, R. E., and Johnson, D. R. 2021. Automating creativity assessment with SemDis. "
     "<i>Behavior Research Methods</i> 53:757–780.",
     "Berlyne, D. E. 1971. <i>Aesthetics and Psychobiology</i>. Appleton-Century-Crofts.",
@@ -806,7 +834,7 @@ refs = [
     "Runco, M. A., and Jaeger, G. J. 2012. The standard definition of creativity. "
     "<i>Creativity Research Journal</i> 24(1):92–96.",
 ]
-for r in refs:
+for r in sorted(refs):
     story.append(P(r, "ref"))
 
 # ── Document assembly: page 1 = title band + two columns; rest = two columns ──

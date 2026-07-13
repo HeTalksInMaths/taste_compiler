@@ -1,0 +1,158 @@
+{
+  "benchmarks": [
+    {
+      "name": "CreativityPrism",
+      "year": 2025,
+      "authors": "Zhaoyi Joey Hou, Bowei Alvin Zhang, Yining Lu, Bhiman Kumar Baghel, Anneliese Brei, Ximing Lu, Meng Jiang, Faeze Brahman, Snigdha Chaturvedi, Haw-Shiuan Chang, Daniel Khashabi, Xiang Lorraine Li",
+      "contents": "Holistic LLM-creativity benchmark aggregating 9 tasks across 3 domains (divergent thinking: AUT, DAT, TTCT; creative writing: TTCW, Creative Short Story, Creativity Index, CS4; logical reasoning tasks) with 20 evaluation metrics scoring quality, novelty, and diversity. It is a meta-benchmark/framework that wraps and re-scores existing datasets (TTCW, CS4, DAT, etc.) rather than collecting a wholly new human-rated corpus of its own; underlying human-rating signal comes from the component benchmarks it incorporates.",
+      "access": "arXiv preprint + project site (joeyhou.github.io/CreativityPrism); code/eval harness on GitHub linked from project page. Not a single downloadable rating corpus — access is via running the harness over constituent datasets.",
+      "construct_match": "LOW-MEDIUM for 'which of two rewrites is more creative.' It is a multi-metric evaluation suite, not a pairwise human-preference dataset. Useful as an umbrella/consistency check (novelty vs. quality vs. diversity often anti-correlate) but not a direct correlation target for a pairwise scorer.",
+      "citation": "Hou, Z.J., Zhang, B.A., Lu, Y., Baghel, B.K., Brei, A., Lu, X., Jiang, M., Brahman, F., Chaturvedi, S., Chang, H.-S., Khashabi, D., & Li, X.L. (2025). CreativityPrism: A Holistic Benchmark for Large Language Model Creativity. arXiv:2510.20091."
+    },
+    {
+      "name": "TTCW / \"Art or Artifice?\"",
+      "year": 2024,
+      "authors": "Tuhin Chakrabarty, Philippe Laban, Divyansh Agarwal, Smaranda Muresan, Chien-Sheng Wu",
+      "contents": "Torrance Test of Creative Writing (TTCW): 14 binary (pass/fail) tests organized under Fluency, Flexibility, Originality, Elaboration, applied via Consensual Assessment Technique. 48 short stories (human professional authors vs. multiple LLMs, same prompts), evaluated by 10 professional creative writers (MFA/literary-agent level), yielding >2,000 binary creativity annotations. Key finding: LLM stories pass TTCW items 3-10x less often than human stories.",
+      "access": "Paper: ACM DL (CHI 2024, doi 10.1145/3613904.3642731) / arXiv. Stories + annotations released by authors (Salesforce AI Research); check paper's data/code links (GitHub under Chakrabarty or SalesforceAIResearch org) for the 48-story set and rubric.",
+      "construct_match": "HIGH construct validity for creative-writing quality generally (expert judgment, structured rubric), but it is NOT pairwise 'which rewrite is more creative' — it's per-story binary pass/fail on 14 criteria, human vs. AI authorship comparison, small N (48 stories). Rubric items (esp. Originality/Elaboration) are directly reusable as scorer sub-features even though the dataset itself is small for training/calibration.",
+      "citation": "Chakrabarty, T., Laban, P., Agarwal, D., Muresan, S., & Wu, C.-S. (2024). Art or Artifice? Large Language Models and the False Promise of Creativity. Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems (CHI '24). ACM. doi:10.1145/3613904.3642731."
+    },
+    {
+      "name": "DSI Narratives Corpus (Divergent Semantic Integration)",
+      "year": 2022,
+      "authors": "Dan R. Johnson, James C. Kaufman, Brendan S. Baker, John D. Patterson, Baptiste Barbot, Adam E. Green, Janet van Hell, Alexander Kennedy, Grace F. Sullivan, Christa L. Taylor, Thomas B. Ward, Roger E. Beaty",
+      "contents": "Across 9 studies / 27 narrative prompts, >3,500 short human-written narratives, each with human creativity ratings; DSI (a BERT-based distributional-semantic-distance metric over narrative text) predicts human creativity ratings, explaining up to 72% of variance. Generalizes across ethnicity/L2 speakers. Large N, continuous human ratings — one of the largest human-rated short-narrative creativity corpora available.",
+      "access": "Open Science Framework: osf.io/ath2s (preprint + data/code/analysis scripts); free web app for scoring new text with DSI. Published in Behavior Research Methods (Springer), also on PMC (PMC10615993) and NSF PAR (par.nsf.gov/biblio/10435678).",
+      "construct_match": "HIGH — this is the strongest available large-N, human-rated, continuous-score corpus for narrative-level creativity, and DSI itself is a deterministic, reproducible NLP metric (no LLM judge needed) already validated against human ratings. Directly usable both as (a) a correlation target (raw human ratings) and (b) a reusable off-the-shelf scorer/feature (DSI score) for a pairwise 'more creative rewrite' classifier.",
+      "citation": "Johnson, D.R., Kaufman, J.C., Baker, B.S., Patterson, J.D., Barbot, B., Green, A.E., van Hell, J., Kennedy, A., Sullivan, G.F., Taylor, C.L., Ward, T.B., & Beaty, R.E. (2022). Divergent semantic integration (DSI): Extracting creativity from narratives with distributional semantic modeling. Behavior Research Methods. doi:10.3758/s13428-022-01986-2."
+    },
+    {
+      "name": "CheckEval",
+      "year": 2024,
+      "authors": "Yukyung Lee, JoongHoon Kim, Jaehee Kim, Hyowon Cho, Jaewook Kang, Pilsung Kang, Najoung Kim",
+      "contents": "General-purpose LLM-as-a-judge framework using auto-generated yes/no checklists (not creativity-specific): 3 stages — define evaluation dimensions, generate checklist items (with diversification/elaboration augmentation), then have an LLM answer the checklist. Tested across 12 evaluator models on standard NLG datasets (coherence, groundedness, engagingness, etc.), improving human-judgment correlation and reducing variance vs. plain Likert LLM-judging.",
+      "access": "arXiv:2403.18771 (also EMNLP 2025 camera-ready, ACL Anthology 2025.emnlp-main.796); code at github.com/yukyunglee/CheckEval.",
+      "construct_match": "LOW for creativity specifically — CheckEval is a general checklist-based judging METHOD, not a creativity dataset/benchmark. It is directly applicable as a TECHNIQUE (build a creativity-specific checklist, e.g. from TTCW's 14 items) but contributes no creativity-specific human-rated data of its own.",
+      "citation": "Lee, Y., Kim, J., Kim, J., Cho, H., Kang, J., Kang, P., & Kim, N. (2024/2025). CheckEval: A Reliable LLM-as-a-Judge Framework for Evaluating Text Generation Using Checklists. arXiv:2403.18771; EMNLP 2025."
+    },
+    {
+      "name": "CS4 (Creative Short Story via Story-writing Constraint Specificity)",
+      "year": 2024,
+      "authors": "Anirudh Atmakuru, Jatin Nainani, Rohith Siddhartha Reddy Bheemreddy, Anirudh Lakkaraju, Zonghai Yao, Hamed Zamani, Haw-Shiuan Chang",
+      "contents": "Automatic (no human ratings required) creativity proxy: generates story-writing prompts with an increasing, controlled number of synthesized constraints; measures how well/creatively models satisfy many simultaneous constraints as a proxy for creativity, reasoning that high constraint-satisfaction under specificity reduces the chance of regurgitating memorized text. Evaluated on LLaMA, Gemma, Mistral, etc.",
+      "access": "arXiv:2410.04197; code/data likely on GitHub linked from paper (check authors' repos).",
+      "construct_match": "MEDIUM — it is fully automatic/deterministic (constraint-satisfaction scoring), which fits a 'deterministic scorer' use case, but it approximates creativity via constraint-following rather than direct human judgment, so it is NOT itself a human-grounded correlation target; best used as an auxiliary automatic signal, not a validation target.",
+      "citation": "Atmakuru, A., Nainani, J., Bheemreddy, R.S.R., Lakkaraju, A., Yao, Z., Zamani, H., & Chang, H.-S. (2024). CS4: Measuring the Creativity of Large Language Models Automatically by Controlling the Number of Story-Writing Constraints. arXiv:2410.04197."
+    },
+    {
+      "name": "NeoCoder",
+      "year": 2024,
+      "authors": "(JHU-CLSP team; NAACL 2025) — see arXiv:2407.09007",
+      "contents": "Code-generation creativity benchmark: 199 recent Codeforces problems + 30 human solutions per problem; uses 'Denial Prompting' (incrementally forbidding prior solution strategies) and a 'NeoGauge' metric quantifying convergent + divergent thinking. Domain is CODE, not text/prose creativity.",
+      "access": "arXiv:2407.09007; GitHub: JHU-CLSP/NeoCoder.",
+      "construct_match": "LOW for text creativity — wrong modality (code, not prose). Relevant only as a methodological analog (denial-prompting / constraint-escalation as a creativity-elicitation technique) not as a rating source.",
+      "citation": "Benchmarking Language Model Creativity: A Case Study on Code Generation. NAACL 2025 (arXiv:2407.09007). GitHub: JHU-CLSP/NeoCoder."
+    },
+    {
+      "name": "DAT (Divergent Association Task) human norming data",
+      "year": 2021,
+      "authors": "Jay Olson, Johnny Nahas, Dan Chmoulevitch, Simon J. Cropper, Margaret E. Webb",
+      "contents": "Simple word-based creativity test: give 10 nouns as unrelated as possible; score = mean pairwise semantic distance. Validated on a preregistered international sample of 8,572+ participants (98 countries; >8,900 total incl. earlier study), correlating with other creativity measures (r≈0.16-0.4 range across validations).",
+      "access": "Try-it site: datcreativity.com. Scoring code: github.com/jayolson/divergent-association-task. Paper: PNAS 118(25), 2021. Raw individual-level dataset not bundled in the GitHub repo (scoring code only) — full dataset access likely via PNAS supplementary materials or by request.",
+      "construct_match": "LOW-MEDIUM for prose creativity — DAT measures a narrow divergent-thinking construct (semantic distance of word associations), not narrative/text quality, and has no 'which text is more creative' pairwise structure. Its main value is as a component of composite frameworks (e.g., CreativityPrism uses it) and as a cheap, fully deterministic embedding-distance metric pattern that generalizes (this is essentially the same math as DSI, applied to word lists instead of narratives).",
+      "citation": "Olson, J.A., Nahas, J., Chmoulevitch, D., Cropper, S.J., & Webb, M.E. (2021). Naming unrelated words predicts creativity. Proceedings of the National Academy of Sciences, 118(25), e2022340118."
+    },
+    {
+      "name": "WritingPrompts (+ upvote-based creativity proxy)",
+      "year": 2018,
+      "authors": "Angela Fan, Mike Lewis, Yann Dauphin",
+      "contents": "303,358 (prompt, story) pairs scraped from Reddit r/WritingPrompts (mean story 734.5 words); originally built for neural story generation, not creativity rating per se. Reddit upvote counts have since been reused by follow-on work (e.g., LitBench) as a noisy human-preference proxy.",
+      "access": "Original release via ParlAI / fairseq examples (Facebook AI Research); also mirrored on Hugging Face by various users.",
+      "construct_match": "LOW on its own (upvotes conflate humor, relatability, brevity, meme-ability with literary creativity; heavy popularity/exposure bias) but it is the RAW MATERIAL underlying the best pairwise-comparison benchmark available (LitBench) once properly debiased (upvote-differential thresholds, time-order controls).",
+      "citation": "Fan, A., Lewis, M., & Dauphin, Y. (2018). Hierarchical Neural Story Generation. Proceedings of ACL 2018."
+    },
+    {
+      "name": "LitBench",
+      "year": 2025,
+      "authors": "Daniel Fein, Sebastian Russo, Violet Xiang, Kabir Jolly, Rafael Rafailov, Nick Haber",
+      "contents": "First standardized PAIRWISE creative-writing preference benchmark: 2,480 debiased, human-labeled story-pair comparisons (test set, 3,543 unique stories, avg 550 words) + 43,827-pair training corpus (50,309 unique stories), all sourced from post-2023 r/WritingPrompts (avoids LLM pretraining overlap). Preference label = higher-upvote story in a pair, filtered for upvote count >=10, upvote differential >=25%, and later-posted-must-win to control exposure/time bias. Includes an online human study validating trained reward models (Bradley-Terry / generative RM, 78% agreement) against zero-shot LLM judges (best: Claude 3.7 Sonnet, 73%).",
+      "access": "arXiv:2507.00769; Hugging Face dataset (built on euclaise/WritingPrompts_preferences; related rewardsignal/reddit_writing_prompts); trained reward model checkpoint: ConicCat/Litbench-Creative-Writing-RM-3B on Hugging Face.",
+      "construct_match": "VERY HIGH — this is the single closest existing public dataset to the exact target construct ('which of two texts is more creative/preferred'), with real pairwise comparisons, explicit debiasing, and a validated downstream reward model. Directly usable as a training/held-out correlation target for a pairwise creativity scorer.",
+      "citation": "Fein, D., Russo, S., Xiang, V., Jolly, K., Rafailov, R., & Haber, N. (2025). LitBench: A Benchmark and Dataset for Reliable Evaluation of Creative Writing. arXiv:2507.00769."
+    },
+    {
+      "name": "HANNA",
+      "year": 2022,
+      "authors": "Cyril Chhun, Pierre Colombo, Fabian M. Suchanek, Chloé Clavel",
+      "contents": "1,056 stories generated from 96 WritingPrompts-derived prompts by 10 story-generation systems + 1 human, each annotated by 3 MTurk Master-qualified raters on 6 criteria (relevance, coherence, empathy, surprise, engagement, complexity) — 19,008 annotations total. Used to benchmark correlation of 72 automatic metrics against human criteria.",
+      "access": "GitHub: dig-team/hanna-benchmark-asg (data + code); mirrored on Hugging Face (e.g., bay-calibration-llm-evaluators/hanna-annotated-latest). Paper: arXiv:2208.11646.",
+      "construct_match": "MEDIUM-HIGH — not framed as pairwise 'more creative' but has per-story continuous human ratings on 'surprise' and 'complexity' (creativity-adjacent dimensions) at reasonably large scale (1,056 stories x 3 raters), making it usable as a secondary correlation target after converting ratings to pairwise comparisons within the same prompt.",
+      "citation": "Chhun, C., Colombo, P., Suchanek, F.M., & Clavel, C. (2022). Of Human Criteria and Automatic Metrics: A Benchmark of the Evaluation of Story Generation. Proceedings of COLING 2022 (arXiv:2208.11646)."
+    },
+    {
+      "name": "POEMetric",
+      "year": 2025,
+      "authors": "(see OpenReview submission; exact author list not independently confirmed in this survey)",
+      "contents": "203 human-written English poems (7 fixed forms) annotated for meter/rhyme/theme, plus 6,090 LLM-generated poems, evaluated on instruction-following, creativity/lexical-diversity/idiosyncrasy, emotional resonance, imagery/literary devices, and overall quality.",
+      "access": "OpenReview submission (id 9VkJ058cTa); dataset availability beyond OpenReview not confirmed.",
+      "construct_match": "MEDIUM — poetry-specific, decent scale for LLM outputs, but the human-poem N (203) is modest and this survey could not independently verify whether raw human ratings (vs. only LLM-vs-LLM comparisons) are included; treat as a lead requiring direct verification before relying on it.",
+      "citation": "POEMetric: The Last Stanza of Humanity. OpenReview, 2025 (forum id 9VkJ058cTa) — NOT independently verified beyond the OpenReview listing found via search; authors/venue unconfirmed."
+    },
+    {
+      "name": "EEG/Behavioral Dataset on Aesthetic and Creative Judgments of Brief Structured Poetry",
+      "year": 2025,
+      "authors": "(Scientific Data / Nature, 2025 — full author list not captured in this survey)",
+      "contents": "51 participants read/rated 210 short texts (70 Haiku, 70 Senryu, 70 non-poetic controls) on 5 dimensions (aesthetic appeal, vivid imagery, emotional impact, originality, creativity) on 7-point scales, plus EEG recordings.",
+      "access": "Nature Scientific Data (doi via nature.com/articles/s41597-025-06189-w); also PMC12675506.",
+      "construct_match": "MEDIUM — genuine human creativity/originality ratings on short creative texts, small stimulus set (210) but each with dense multi-dimensional Likert ratings; good for validating a scorer's alignment with human originality judgments on short-form text, not for pairwise rewrite comparison directly.",
+      "citation": "An EEG Dataset on Aesthetic and Creative Judgments of Brief Structured Poetry. Scientific Data (Nature), 2025. doi:10.1038/s41597-025-06189-w."
+    },
+    {
+      "name": "Creativity Index (n-gram novelty metric)",
+      "year": 2024,
+      "authors": "Ximing Lu et al. (per search snippets; full list not independently confirmed here)",
+      "contents": "Not a human-rated dataset but a deterministic METRIC: quantifies textual originality as inverse of n-gram/fragment overlap against a massive web reference corpus (via a 'DJ Search' matching algorithm). Purely automatic, no human labels required at inference time, though presumably validated against some human judgments in the original paper.",
+      "access": "arXiv (see also follow-on critique papers, e.g. arXiv:2508.05470 'Rethinking Creativity Evaluation', which cautions that n-gram novelty alone correlates poorly with expert judgments of creativity).",
+      "construct_match": "LOW-MEDIUM as a validated human-correlation target, but HIGH value as a deterministic, fully automatic FEATURE for a scorer (novelty component). Caution: multiple follow-up papers explicitly find n-gram novelty does NOT match expert creativity ratings well, so it should be one feature among several, not a sole proxy.",
+      "citation": "Lu, X. et al. Creativity Index / measuring novelty via n-gram non-overlap. Referenced in and critiqued by Rethinking Creativity Evaluation: A Critical Analysis of Existing Creativity Evaluations (arXiv:2508.05470) — original Creativity Index paper's exact arXiv ID not independently confirmed in this survey; treat citation as approximate pending direct verification."
+    },
+    {
+      "name": "Evaluating Creative Short Story Generation in Humans and LLMs",
+      "year": 2024,
+      "authors": "Mete Ismayilzada, Claire Stevenson, Lonneke van der Plas",
+      "contents": "60 LLMs and 60 humans each write 5-sentence cue-word-based short stories; stories scored with automatic metrics (novelty, surprise, diversity, linguistic complexity) AND human creativity ratings + Turing-test classifications from both non-expert and expert raters, plus LLM raters. Finding: LLM stories score lower than humans on automatic novelty/surprise/diversity, but non-experts and LLMs rate LLM stories as MORE creative than human stories (rating validity concern).",
+      "access": "arXiv:2411.02316 (ICCC 2025); code/data: github.com/mismayil/creative-story-gen.",
+      "construct_match": "HIGH — directly comparable design (creativity ratings from real human raters, expert + non-expert, on matched short-form outputs) with both human and automatic scores released together, enabling direct correlation analysis between a deterministic scorer and human ratings; smaller N (60 stimuli x conditions) but high methodological transparency and open code.",
+      "citation": "Ismayilzada, M., Stevenson, C., & van der Plas, L. (2024). Evaluating Creative Short Story Generation in Humans and Large Language Models. arXiv:2411.02316; ICCC 2025."
+    },
+    {
+      "name": "LiteraryTaste",
+      "year": 2025,
+      "authors": "(see arXiv:2511.09310; full author list not independently captured in this survey)",
+      "contents": "Preference dataset comparing human-written vs. LLM-generated texts (same and different topics/contents) for creative-writing personalization; captures reader preference over human vs. LLM writing style.",
+      "access": "arXiv:2511.09310.",
+      "construct_match": "MEDIUM — pairwise preference structure fits the target use case, but framed around human-vs-LLM authorship preference/personalization rather than a general 'more creative' judgment; needs closer reading to confirm whether 'creativity' vs. general 'preference/taste' is the labeled construct.",
+      "citation": "LiteraryTaste: A Preference Dataset for Creative Writing Personalization. arXiv:2511.09310 (2025)."
+    },
+    {
+      "name": "WritingPreferenceBench",
+      "year": 2025,
+      "authors": "(not independently confirmed in this survey)",
+      "contents": "263 human-validated preference pairs across 8 creative-writing domains (fictional narrative, non-fiction, poetry, etc.), for cross-cultural subjective writing-preference evaluation.",
+      "access": "Referenced in search results (emergentmind.com summary); original paper/arXiv ID not directly confirmed — needs direct verification.",
+      "construct_match": "MEDIUM-HIGH construct match (pairwise preference across creative domains) but small N (263 pairs) and unverified citation — flagged as a lead, not confirmed.",
+      "citation": "WritingPreferenceBench (2025) — exact venue/arXiv ID NOT independently verified in this survey; treat as unconfirmed lead."
+    }
+  ],
+  "best_candidates": [
+    "LitBench (Fein et al. 2025, arXiv:2507.00769) — the closest direct match: real pairwise human-preference labels on same-prompt story pairs, at meaningful scale (2,480 test pairs / 43,827 train pairs), with debiasing methodology and an already-validated reward model to benchmark against.",
+    "DSI Narratives Corpus (Johnson et al. 2022, Behavior Research Methods, osf.io/ath2s) — largest (>3,500) human-rated narrative corpus with continuous creativity ratings, plus a deterministic, reproducible embedding-based metric (DSI) already shown to explain up to 72% of rating variance; can serve both as ground truth and as a reusable scorer component.",
+    "TTCW / Art or Artifice (Chakrabarty et al., CHI 2024) — expert (MFA/literary-agent-level) rubric-based judgments; smaller N (48 stories) but highest annotator expertise and a reusable 14-item rubric (Fluency/Flexibility/Originality/Elaboration) that can be operationalized as scorer sub-features even without the original data."
+  ],
+  "verified_citations": {
+    "CreativityPrism": "Hou, Z.J., Zhang, B.A., Lu, Y., Baghel, B.K., Brei, A., Lu, X., Jiang, M., Brahman, F., Chaturvedi, S., Chang, H.-S., Khashabi, D., & Li, X.L. (2025). CreativityPrism: A Holistic Benchmark for Large Language Model Creativity. arXiv:2510.20091. VERIFIED — real paper, confirmed via arXiv abstract page (arxiv.org/abs/2510.20091), Semantic Scholar, and project site joeyhou.github.io/CreativityPrism. It is a multi-task evaluation FRAMEWORK (9 tasks / 3 domains / 20 metrics) that wraps existing sub-benchmarks (TTCW, CS4, DAT, etc.); it is not itself a novel large human-rated pairwise corpus.",
+    "CheckEval": "Lee, Y., Kim, J., Kim, J., Cho, H., Kang, J., Kang, P., & Kim, N. CheckEval: A Reliable LLM-as-a-Judge Framework for Evaluating Text Generation Using Checklists. arXiv:2403.18771; also published EMNLP 2025 (ACL Anthology 2025.emnlp-main.796). VERIFIED — real paper, confirmed via arXiv, ACL Anthology, and GitHub (yukyunglee/CheckEval). NOTE: it is a general checklist-based LLM-judging METHOD, not a creativity-specific dataset/benchmark — no creativity-specific human ratings are packaged with it."
+  },
+  "proxy_recommendation": "Best fully-public-web-text-only proxy: combine (1) a LitBench-style debiased Reddit r/WritingPrompts upvote-differential pairwise signal (same-prompt story pairs, upvotes >=10, differential >=25%, later-post-wins control) as the large-scale weak-supervision preference source, filtered/re-weighted using (2) a deterministic DSI-style embedding-divergence score (BERT-based semantic distance across a sliding window of the narrative, per Johnson et al. 2022's open-sourced method at osf.io/ath2s) as a content-agnostic, non-gameable creativity feature, and (3) an n-gram/fragment novelty check against a large web corpus (Creativity-Index-style, e.g. via a local n-gram index or public web search snippet overlap) as an originality/anti-regurgitation feature. This three-part proxy (upvote preference + DSI semantic-divergence + n-gram novelty) requires no paid human annotation, is fully reproducible from public web text (Reddit dumps/API + open embedding models), and each component has independent published validation against real human creativity ratings (LitBench validated against human study and trained RMs; DSI validated against explicit human creativity ratings explaining up to 72% of variance; n-gram novelty validated, with the caveat from critique papers that it alone correlates weakly with expert judgment — hence using it only as one of three signals, not standalone)."
+}
