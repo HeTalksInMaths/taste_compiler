@@ -1,0 +1,122 @@
+[
+ {
+  "program": "ratio(mean(changed, \u0394anchor), mean(wlen, \u0394anchor))",
+  "tree": "('comb', 'ratio', ('leaf', 'changed', 'none', 'mean', True), ('leaf', 'wlen', 'none', 'mean', True))",
+  "train": {
+   "SEP_raw": 0.46697984766342515,
+   "SEP_std": 0.7247050125380275,
+   "acc": 0.7402597402597403
+  },
+  "heldout": {
+   "SEP_raw": 0.2328989723414142,
+   "SEP_std": 0.424364263112738,
+   "acc": 0.7272727272727273
+  },
+  "core": {
+   "SEP_raw": 0.39591872952788054,
+   "SEP_std": 1.4876928243149683,
+   "acc": 1.0
+  },
+  "max_corr_incumbents": 0.417
+ },
+ {
+  "program": "absdiff(std(wlen[sent], \u0394anchor), absdiff(lag1(pos[sent], text), mean(sent, \u0394anchor)))",
+  "tree": "('comb', 'absdiff', ('leaf', 'wlen', 'sent', 'std', True), ('comb', 'absdiff', ('leaf', 'pos', 'sent', 'lag1', False), ('leaf', 'sent', 'none', 'mean', True)))",
+  "train": {
+   "SEP_raw": 0.5081123113700722,
+   "SEP_std": 0.7130144601165704,
+   "acc": 0.6493506493506493
+  },
+  "heldout": {
+   "SEP_raw": 0.5563148597350864,
+   "SEP_std": 0.677879852271111,
+   "acc": 0.6060606060606061
+  },
+  "core": {
+   "SEP_raw": -0.22833231774455798,
+   "SEP_std": -0.6538878505051032,
+   "acc": 0.3333333333333333
+  },
+  "max_corr_incumbents": 0.474
+ },
+ {
+  "program": "sub(absdiff(gini(content[changed], text), mean(sent, \u0394anchor)), sub(std(pos[changed], text), frac_hi(wlen[changed], \u0394anchor)))",
+  "tree": "('comb', 'sub', ('comb', 'absdiff', ('leaf', 'content', 'changed', 'gini', False), ('leaf', 'sent', 'none', 'mean', True)), ('comb', 'sub', ('leaf', 'pos', 'changed', 'std', False), ('leaf', 'wlen', 'changed', 'frac_hi', True)))",
+  "train": {
+   "SEP_raw": 0.13690055668548365,
+   "SEP_std": 0.7022695384742931,
+   "acc": 0.7662337662337663
+  },
+  "heldout": {
+   "SEP_raw": 0.11899596067914453,
+   "SEP_std": 0.5345965152959079,
+   "acc": 0.6363636363636364
+  },
+  "core": {
+   "SEP_raw": -0.14195047596703134,
+   "SEP_std": -0.5866033554233152,
+   "acc": 0.0
+  },
+  "max_corr_incumbents": 0.283
+ },
+ {
+  "program": "ratio(ratio(gini(zipf, text), std(changed[changed], text)), absdiff(frac_hi(changed[content], \u0394anchor), mean(sur[content], \u0394anchor)))",
+  "tree": "('comb', 'ratio', ('comb', 'ratio', ('leaf', 'zipf', 'none', 'gini', False), ('leaf', 'changed', 'changed', 'std', False)), ('comb', 'absdiff', ('leaf', 'changed', 'content', 'frac_hi', True), ('leaf', 'sur', 'content', 'mean', True)))",
+  "train": {
+   "SEP_raw": 0.2744727141455232,
+   "SEP_std": 0.632059713393283,
+   "acc": 0.7792207792207793
+  },
+  "heldout": {
+   "SEP_raw": 0.17565406036858272,
+   "SEP_std": 0.3743075661779552,
+   "acc": 0.6666666666666666
+  },
+  "core": {
+   "SEP_raw": 0.3325548027113797,
+   "SEP_std": 0.6481662816449304,
+   "acc": 0.6666666666666666
+  },
+  "max_corr_incumbents": 0.478
+ },
+ {
+  "program": "prod(max_share(zipf[sent], text), ratio(mean(changed[content], \u0394anchor), mean(zipf, \u0394anchor)))",
+  "tree": "('comb', 'prod', ('leaf', 'zipf', 'sent', 'max_share', False), ('comb', 'ratio', ('leaf', 'changed', 'content', 'mean', True), ('leaf', 'zipf', 'none', 'mean', True)))",
+  "train": {
+   "SEP_raw": 0.09225439935610366,
+   "SEP_std": 0.612163096606069,
+   "acc": 0.6493506493506493
+  },
+  "heldout": {
+   "SEP_raw": 0.04801291289623838,
+   "SEP_std": 0.33815888702084274,
+   "acc": 0.6363636363636364
+  },
+  "core": {
+   "SEP_raw": 0.04571743079234168,
+   "SEP_std": 1.5424694219716677,
+   "acc": 1.0
+  },
+  "max_corr_incumbents": 0.383
+ },
+ {
+  "program": "ratio(ratio(gini(wlen, text), slope(content[changed], text)), absdiff(mean(changed[content], \u0394anchor), mean(sur[content], \u0394anchor)))",
+  "tree": "('comb', 'ratio', ('comb', 'ratio', ('leaf', 'wlen', 'none', 'gini', False), ('leaf', 'content', 'changed', 'slope', False)), ('comb', 'absdiff', ('leaf', 'changed', 'content', 'mean', True), ('leaf', 'sur', 'content', 'mean', True)))",
+  "train": {
+   "SEP_raw": 0.3999895484357898,
+   "SEP_std": 0.5938551529652107,
+   "acc": 0.7532467532467533
+  },
+  "heldout": {
+   "SEP_raw": 0.09817403705672356,
+   "SEP_std": 0.177713038054372,
+   "acc": 0.696969696969697
+  },
+  "core": {
+   "SEP_raw": 0.16288855855937834,
+   "SEP_std": 0.34624755992421147,
+   "acc": 0.6666666666666666
+  },
+  "max_corr_incumbents": 0.464
+ }
+]
