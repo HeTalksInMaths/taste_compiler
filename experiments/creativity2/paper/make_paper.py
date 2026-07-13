@@ -49,6 +49,38 @@ plt.tight_layout()
 plt.savefig(FIG)
 plt.close()
 
+# ── Figure 2: co-evolution loop diagram ───────────────────────────────
+FIG2 = os.path.join(HERE, "coevolution.png")
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+
+fig2, ax = plt.subplots(figsize=(4.9, 2.75), dpi=200)
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 6)
+ax.axis("off")
+
+def box(x, y, w, h, text, fc):
+    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.12",
+                                fc=fc, ec="#333333", lw=0.9))
+    ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=6.4)
+
+def arrow(x1, y1, x2, y2, text, tx, ty, style="-|>"):
+    ax.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle=style,
+                                 mutation_scale=9, lw=1.0, color="#333333"))
+    ax.text(tx, ty, text, ha="center", va="center", fontsize=5.6,
+            style="italic", color="#333333")
+
+box(0.3, 3.6, 3.4, 1.9, "GENERATOR\npolicy under RL fine-tuning\nor evolutionary search", "#dbe7f6")
+box(6.3, 3.6, 3.4, 1.9, "REWARD\nhardened scorer ensemble\n(+ frozen held-out reward)", "#e4f0dc")
+box(6.3, 0.4, 3.4, 1.9, "HACK MINER\njudge labels top-reward\noutputs: genuine or hacked?", "#fdeeda")
+box(0.3, 0.4, 3.4, 1.9, "SCORER EVOLUTION\nengineer + four gates\n(+ red-team agents)", "#f6dbdb")
+arrow(3.7, 4.55, 6.3, 4.55, "candidate rewrites, scored densely", 5.0, 4.9)
+arrow(8.0, 3.6, 8.0, 2.3, "highest-reward samples", 8.05, 2.95, "-|>")
+arrow(6.3, 1.35, 3.7, 1.35, "confirmed hacks become\nnew adversarial test pairs", 5.0, 0.85)
+arrow(2.0, 2.3, 2.0, 3.6, "updated, re-hardened reward", 1.95, 2.95)
+plt.tight_layout()
+plt.savefig(FIG2)
+plt.close()
+
 # ── Styles (AAAI-like: Times, two columns, 10pt) ──────────────────────
 S = {}
 S["title"] = ParagraphStyle("title", fontName="Times-Bold", fontSize=15.5,
@@ -392,8 +424,148 @@ story.append(P(
     "is, we think, the clearest empirical statement of where interpretable text metrics end "
     "and meaning-aware models must begin.", "bodyni"))
 
-# ── 6 Related work ────────────────────────────────────────────────────
-story.append(P("6&nbsp;&nbsp;Related Work", "h1"))
+# ── 6 Research agenda ─────────────────────────────────────────────────
+story.append(P("6&nbsp;&nbsp;From Measuring Creativity to Improving It: "
+               "a Research Agenda", "h1"))
+story.append(P(
+    "So far the scorers have been judges. But the original reason to want cheap, "
+    "deterministic, inspectable judges is what they unlock: a function that runs in "
+    "microseconds can be called millions of times inside a <i>training</i> loop — as the "
+    "reward for reinforcement-learning fine-tuning (RLFT) of a text generator, or as the "
+    "fitness function of an evolutionary search over generating programs. Seen from that "
+    "angle, everything we learned about how scorers fail is really a lesson about how "
+    "rewards get <b>hacked</b>, learned cheaply before any expensive training run. This "
+    "section turns each empirical lesson into a concrete proposal.", "bodyni"))
+
+story.append(P("6.1&nbsp;&nbsp;Harden the Reward Before Training, Not During", "h2"))
+story.append(P(
+    "A policy trained to maximize a naive creativity reward will discover, within hours, "
+    "exactly the exploits our adversary found in minutes: flood a rarity reward with ornate "
+    "vocabulary (our purple-prose attack), flood a change-based reward with meaning-"
+    "preserving shuffles (synonym churn), flood an elaboration reward with empty "
+    "qualifiers (padding). Each adversarial axis in our runs is a <i>preview of a reward-"
+    "hacking failure mode</i>, obtained at the cost of a few agent calls rather than a "
+    "training run. We therefore propose treating our loop as a standard <b>pre-flight "
+    "procedure for reward functions</b>: before optimizing against any subjective-quality "
+    "reward, run agent red teams against it and report its <b>decouplability</b> — how "
+    "easily an attacker produces high-reward, low-quality text — with the same rigor as "
+    "its agreement with human judgment. Our margin statistics give decouplability a "
+    "number.", "bodyni"))
+story.append(P(
+    "The runs also say <i>which reward shapes survive</i>. Additive rewards are decouplable "
+    "by maximizing their strongest term. Multiplicative, gated rewards force an attacker to "
+    "satisfy every factor simultaneously — which is precisely why both arms converged on "
+    "products. Two structural rules follow for creativity rewards: <b>(i)</b> compose them "
+    "as a novelty term times one or more sanity gates (appropriateness, coherence), never "
+    "as a weighted sum; <b>(ii)</b> shape the novelty term as an inverted U — reward "
+    "<i>moderate</i> novelty relative to the source and penalize overshoot — so that "
+    "“more is always better” never holds along any single axis. The century-old "
+    "observation that people prefer moderate novelty (Berlyne 1971) here becomes a "
+    "practical reward-shaping principle: the peak of the U is exactly where a reward "
+    "stops being gameable by exaggeration."))
+
+story.append(P("6.2&nbsp;&nbsp;Reward the Edit, Not the Text", "h2"))
+story.append(P(
+    "The single most portable design element our loop discovered is <b>relational "
+    "scoring</b>: every strong scorer measured the rewrite <i>against its own source</i> — "
+    "what was kept, what was inserted, how far the change went — rather than measuring the "
+    "text in isolation. For RLFT this matters twice. First, an anchor-relative reward "
+    "cannot be satisfied by collapsing to one high-scoring house style, because each prompt "
+    "carries its own baseline and reward is only available by improving <i>this</i> text; "
+    "style collapse is the classic failure of absolute style rewards. Second, distribution-"
+    "level separation gives <i>dense</i> credit: a policy earns partial reward for partial "
+    "improvement, where accuracy-style rewards are all-or-nothing.", "bodyni"))
+story.append(P(
+    "Two refinements from late generations are directly usable as training objectives. "
+    "<b>Novelty-per-edit</b> — dividing novelty gained by the size of the edit — makes one "
+    "perfect inserted image outrank a wholesale rewrite, encoding an editor's economy as "
+    "an optimizable quantity. And <b>concentration of change</b> — whether the novelty is "
+    "localized in one or two spans or smeared across the text — distinguishes a landed "
+    "image from churn using only alignment statistics. Both are cheap, deterministic, and "
+    "were invented by the agents under adversarial pressure."))
+story.append(P(
+    "Finally, our ceiling result dictates a <b>two-tier reward</b>: the deterministic "
+    "scorer as the dense, every-sample signal, and an expensive meaning-aware check "
+    "(embedding similarity, an LLM judge, or a human) applied <i>sparsely</i>, only to "
+    "candidates the cheap tier already rates highly. The boundary we located — word "
+    "statistics certify freshness but cannot certify fit — is exactly the boundary where "
+    "the budget should shift tiers."))
+
+story.append(P("6.3&nbsp;&nbsp;Close the Loop: the Generator Is the Strongest "
+               "Red Team", "h2"))
+story.append(P(
+    "Our adversary writes attacks by reasoning about the champion's code. A policy under "
+    "optimization does something stronger: it <i>searches</i> the reward landscape directly "
+    "and finds exploits no reasoner anticipates. The natural next system therefore closes "
+    "the loop (Figure 2): train or evolve a generator against the current hardened scorer "
+    "ensemble; mine its highest-reward outputs; have a judge (human or meaning-aware model) "
+    "label which are genuinely creative and which merely score well; and feed the "
+    "high-reward-but-hollow ones back as new adversarial test cases — the best test cases "
+    "obtainable, because they are the reward's <i>actual</i> failure modes. The scorer side "
+    "then evolves as in this paper, and the improved reward retrains the generator. This is "
+    "generative-adversarial in spirit, with two differences that matter for science: the "
+    "discriminator stays <i>interpretable</i> (its updates are code diffs with named "
+    "mechanisms, not weight updates), and every escalation leaves an audit trail.", "bodyni"))
+story.append(Image(FIG2, width=3.15 * inch, height=1.77 * inch))
+story.append(P(
+    "<b>Figure 2:</b> The proposed co-evolution loop. The right half is standard reward-"
+    "driven generation; the left half is this paper's scorer-evolution harness. The "
+    "generator's own high-reward failures become the adversarial test cases that re-harden "
+    "the reward.", "caption"))
+story.append(P(
+    "Our failure catalog supplies the guardrails this loop needs. Keep a <b>frozen "
+    "held-out reward</b> — an ensemble never used during training — and monitor the gap "
+    "between training reward and held-out reward as a live hacking meter (our stationary "
+    "core, generalized). Require kept test cases to actually <i>defeat</i> the current "
+    "reward, or the eval dilutes and measured skill inflates (our backfired keep-rule). "
+    "And keep the reward ensemble behaviorally diverse using fingerprint decorrelation, so "
+    "the policy cannot satisfy a single signal family and call it creativity."))
+
+story.append(P("6.4&nbsp;&nbsp;What a Scorer Can Teach Us About Creativity "
+               "Itself", "h2"))
+story.append(P(
+    "The same machinery is an instrument for the science of creativity, not just its "
+    "engineering. Four directions look most promising.", "bodyni"))
+story.append(P(
+    "<b>An empirical factor structure.</b> The behavioral-novelty gate does something no "
+    "hand-built battery does: it discovers axes of textual creativity that are "
+    "<i>behaviorally independent by construction</i> — in our runs, word-level novelty, "
+    "combination-level novelty, structural variety, insertion locality, and appropriateness "
+    "gates. Regressing human creativity ratings onto these axes would yield a data-driven, "
+    "fully interpretable decomposition of what readers mean by “creative” — which "
+    "axes carry weight, which are redundant, and whether the weights differ across genres "
+    "and readers. Every discovered scorer is a falsifiable hypothesis; human ratings are "
+    "the experiment."))
+story.append(P(
+    "<b>Domain transfer as a universality probe.</b> In a side study scoring acclaimed "
+    "song lyrics against generic ones, word-rarity <i>inverted</i> — plain-diction masters "
+    "score low on rarity — while combination-level novelty transferred cleanly, preferring "
+    "every acclaimed original over its flattened paraphrase. This suggests a testable "
+    "hypothesis: <i>unusual combinations of ordinary words are the domain-general core of "
+    "textual creativity, while rare vocabulary is a domain-specific costume.</i> The "
+    "harness makes such cross-domain tests nearly free."))
+story.append(P(
+    "<b>A measurement-complexity ladder.</b> Our runs empirically locate which facets of "
+    "creativity are measurable with which resources: word-frequency statistics suffice for "
+    "freshness; co-occurrence statistics for combinational surprise; embeddings are needed "
+    "for semantic distance and topical fit; and judging whether a sustained image is "
+    "<i>earned</i> plausibly requires a full language model. The adversary tells you when a "
+    "rung is exhausted: attacks from within the level stop working, and the only effective "
+    "attacks come from the level above (our statistically-identical, semantically-opposed "
+    "pairs). Charting this ladder — the minimum machinery required for each judgment — "
+    "would give creativity measurement the kind of resource-complexity map that "
+    "computational linguistics has for syntax and semantics."))
+story.append(P(
+    "<b>Open questions the harness can answer cheaply.</b> Is the peak of the "
+    "inverted U stable across genres and readers, or a moving target? Do humans actually "
+    "prefer minimal-edit brilliance (high concentration of change), or is that an "
+    "editor's aesthetic? Does appropriateness act as a hard gate in human judgment "
+    "(a conjunctive product, as our survivors assume) or as a soft trade-off? Each "
+    "question reduces to one scorer-versus-human-ratings experiment on a few hundred "
+    "pairs."))
+
+# ── 7 Related work ────────────────────────────────────────────────────
+story.append(P("7&nbsp;&nbsp;Related Work", "h1"))
 story.append(P(
     "Our loop belongs to the family of LLM-guided evolutionary search over programs, most "
     "prominently FunSearch (Romera-Paredes et al. 2024), which pairs an LLM proposer with a "
@@ -410,7 +582,7 @@ story.append(P(
     "ablation isolating how much the proposing model matters.", "bodyni"))
 
 # ── 7 Limitations ─────────────────────────────────────────────────────
-story.append(P("7&nbsp;&nbsp;Limitations", "h1"))
+story.append(P("8&nbsp;&nbsp;Limitations", "h1"))
 story.append(P(
     "The “more/less creative” labels were authored by LLMs, not humans; human "
     "ratings are the essential next validation. Each arm was run once — trajectory details "
@@ -425,7 +597,7 @@ story.append(P(
     "statistics ceiling unavoidable rather than chosen.", "bodyni"))
 
 # ── 8 Conclusion ──────────────────────────────────────────────────────
-story.append(P("8&nbsp;&nbsp;Conclusion", "h1"))
+story.append(P("9&nbsp;&nbsp;Conclusion", "h1"))
 story.append(P(
     "A small agent ensemble — one role writing scoring code, one role writing counter-"
     "examples, and a deterministic referee enforcing validity, non-memorization, behavioral "
