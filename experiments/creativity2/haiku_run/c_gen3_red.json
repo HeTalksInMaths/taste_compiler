@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "CR3_01",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Learning requires sustained effort and deliberate practice.",
+    "more_creative": "Mastery demands the discomfort of repeated failure until the skill becomes unconscious.",
+    "less_creative": "Learning requires effort and practice and sustained deliberate learning through practicing effort.",
+    "design_note": "Less creative hits ~50% word overlap through repetition (learning, requires, effort, practice, sustained, deliberate); more_creative breaks from anchoring vocabulary to convey deeper mechanism (failure, mastery, unconscious)—genuinely more insightful but lower overlap.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.9+ (Jaccard near 0.45); scores more_creative at ~0.4 (Jaccard ~0.25), despite more_creative being semantically richer."
+  },
+  {
+    "pair_id": "CR3_02",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Social media connects people across geographic boundaries.",
+    "more_creative": "Instant connection paradoxically erodes the friction that forges lasting bonds.",
+    "less_creative": "Social media connects people and creates connections across boundaries of geography and boundaries.",
+    "design_note": "Less creative achieves high overlap through structural repetition (social, media, connects, people, boundaries, geographic); more_creative trades specificity for paradox and insight—lower overlap but deeper claim.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.85 (Jaccard ~0.48); scores more_creative at ~0.45 (Jaccard ~0.28), reversing actual creativity ranking."
+  },
+  {
+    "pair_id": "CR3_03",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Exercise improves both physical and mental well-being.",
+    "more_creative": "Movement rewires stress pathways and restores the nervous system's capacity for calm.",
+    "less_creative": "Exercise improves physical improvement and mental improvement and well-being through physical and mental exercise.",
+    "design_note": "Less creative inflates overlap via structural parallelism (exercise, physical, mental, improvement, well-being); more_creative introduces mechanistic specificity (pathways, nervous system, calm) that requires lower lexical overlap.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.88 (Jaccard ~0.52); scores more_creative at ~0.42 (Jaccard ~0.30), penalizing the more informative passage."
+  },
+  {
+    "pair_id": "CR3_04",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Innovation requires taking risks and experimentation.",
+    "more_creative": "Breakthroughs demand tolerance for failure—iterating until the novel becomes inevitable.",
+    "less_creative": "Innovation requires risk-taking and experimental risk and trying experimentation and taking experimental risks.",
+    "design_note": "Less creative reaches 0.45 Jaccard through synonym variations (innovation, requires, risk, experimentation, taking, trying); more_creative shifts frame entirely to failure and iteration—novel language, lower overlap, deeper claim.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.9 (Jaccard ~0.46); scores more_creative at ~0.46 (Jaccard ~0.24), incorrectly penalizing semantic novelty."
+  },
+  {
+    "pair_id": "CR3_05",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Diversity in teams leads to better decision-making.",
+    "more_creative": "Friction between perspectives—when productively channeled—forces teams to interrogate assumptions and reach robust conclusions.",
+    "less_creative": "Diversity leads to better team decisions and decisions made by diverse teams are better and diversity improves decisions.",
+    "design_note": "Less creative inflates overlap via lexical circularity (diversity, teams, decisions, better, leads); more_creative reframes causation (friction, assumptions, robust) with substantially different vocabulary.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.87 (Jaccard ~0.50); scores more_creative at ~0.44 (Jaccard ~0.26), despite more_creative providing genuine causal insight."
+  },
+  {
+    "pair_id": "CR3_06",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Technology changes how humans work and communicate.",
+    "more_creative": "Tools reshape the speed and texture of human thought before we understand their cost.",
+    "less_creative": "Technology changes work and communication and how technology changes human communication and work.",
+    "design_note": "Less creative hits target overlap via recursive structure (technology, changes, work, communication, human); more_creative inverts framing (speed, texture, cost, thought) with novel semantic frame and lower overlap.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.89 (Jaccard ~0.48); scores more_creative at ~0.43 (Jaccard ~0.27), penalizing the more nuanced claim."
+  },
+  {
+    "pair_id": "CR3_07",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Climate change threatens species with extinction.",
+    "more_creative": "Warming oceans collapse food webs faster than creatures can migrate or adapt.",
+    "less_creative": "Climate change threatens extinction of species and species face extinction threats from climate change.",
+    "design_note": "Less creative achieves overlap through antonym/synonym loops (climate, change, threatens, extinction, species); more_creative pivots to mechanism (oceans, food webs, migrate, adapt) with lower but more informative overlap.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.91 (Jaccard ~0.49); scores more_creative at ~0.45 (Jaccard ~0.29), reversing informativeness ranking."
+  },
+  {
+    "pair_id": "CR3_08",
+    "trap": "Rhetorical elaboration vs semantic depth—surface-level rephrasing achieves target cohesion through synonym cycling while adding no insight; genuine depth requires semantic departure",
+    "anchor": "Reading builds vocabulary and comprehension skills.",
+    "more_creative": "Exposure to varied syntax and rare words gradually rewires how we process meaning itself.",
+    "less_creative": "Reading builds comprehension and vocabulary skills and skill building through reading vocabulary and comprehension.",
+    "design_note": "Less creative inflates overlap via structural repetition (reading, builds, vocabulary, comprehension, skills); more_creative moves to mechanism (syntax, rewires, process, meaning) with lower overlap but deeper claim.",
+    "predicted_champion_behavior": "Champion scores less_creative at ~0.88 (Jaccard ~0.51); scores more_creative at ~0.44 (Jaccard ~0.28), penalizing the more mechanistically creative response."
+  }
+]
