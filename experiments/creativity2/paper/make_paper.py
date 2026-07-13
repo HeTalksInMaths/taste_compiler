@@ -412,7 +412,7 @@ t2 = Table([
     ["champion turnovers", "2", "4", "2"],
     ["final champion form", "conjunctive", "conjunctive", "conjunctive"],
     ["26-core accuracy", "0.92", "1.00", "0.85"],
-    ["26-core SEP", "0.222", "0.241", "0.300"],
+    ["26-core separation", "0.222", "0.241", "0.300"],
     ["95% CI", "[.15,.29]", "[.19,.30]", "[.20,.40]"],
 ], colWidths=[1.28 * inch, 0.66 * inch, 0.66 * inch, 0.66 * inch])
 t2.setStyle(TSTYLE)
@@ -480,17 +480,20 @@ story.append(P(
     "scorer's mechanism can be found in a linguistics or creativity textbook. To search "
     "beyond intuition we ran the blind mode: 20,000 machine-generated compositions of "
     "agent-built primitives, judged by the same four gates with decorrelation as a hard "
-    "requirement, then the explanation gate. Six programs survived. The strongest, which we "
-    "call <b>D6</b>, is:", "bodyni"))
+    "requirement, then the explanation gate. Six programs survived. The strongest — we will "
+    "call it the <b>edit-placement scorer</b> — combines two statistics that no one had "
+    "thought to put together: the sparsity of the edit set (how few changes the rewrite "
+    "makes), and the mismatch between two concentration profiles — where in the text the "
+    "changes sit, versus where in the text the information sits (word-by-word "
+    "surprisingness, from public corpus frequencies). In one line: "
+    "<i>score = edit sparsity − |concentration of changes − concentration of "
+    "information|</i>.", "bodyni"))
 story.append(P(
-    '<font face="Courier" size="8">score = max_share(edit_ops over changed tokens) − '
-    '|gini(edit positions among content words) − gini(per-token surprisal)|</font>', "bodyni"))
-story.append(P(
-    "whose validated reading is: <b>prefer rewrites with FEW edits whose spatial "
-    "concentration matches the concentration of information in the text</b> — creative "
-    "editing places its few changes where the information lives. No agent, no hand-coder, "
-    "and no earlier phase of this project proposed measuring the alignment of two "
-    "concentration profiles.", "bodyni"))
+    "Its validated reading: <b>prefer rewrites that make FEW changes, placed where the "
+    "text's information lives.</b> A skilled edit does not scatter novelty everywhere; it "
+    "spends one or two changes exactly where the passage carries its meaning. No agent, no "
+    "hand-coder, and no earlier phase of this project proposed measuring the alignment of "
+    "those two profiles.", "bodyni"))
 story.append(P(
     "We defend its novelty and explainability on five grounds. <b>(1) Behavioral:</b> its "
     "per-case fingerprint correlates at most 0.23 with every incumbent — the most "
@@ -503,7 +506,7 @@ story.append(P(
     "wrote twelve fresh probe cases — six designed to falsify its own reading. All 12/12 "
     "held on independent verification. <b>(4) External transfer:</b> on six acclaimed "
     "human lyric lines (Cohen, Dylan, Radiohead, Mitchell, Waits) versus flattened "
-    "paraphrases — critical consensus, not LLM labels — D6 picks the masterwork 5/6 while "
+    "paraphrases — critical consensus, not LLM labels — the edit-placement scorer picks the masterwork 5/6 while "
     "BOTH evolved champions score 0/6; it also agrees best with the independent judge "
     "majority (0.70 vs the champion's 0.61). <b>(5) Reproducible family:</b> a seed-repeat "
     "of the search finds different programs from the same family — concentration "
@@ -511,7 +514,7 @@ story.append(P(
     "variant.", "bodyni"))
 story.append(P(
     "Explainability here includes knowing when it fails: the validated interpretation "
-    "exposes that D6 is blind to function-word edits (a rhetorical repetition device "
+    "exposes that the edit-placement scorer is blind to edits made of grammatical filler words (a rhetorical repetition device "
     "collapses its score) and that a bland inserted adjective can outrank two genuine "
     "replacements. These are documented, testable failure modes — the difference between "
     "an interpretable metric and a plausible-sounding one.", "bodyni"))
@@ -533,7 +536,7 @@ story.append(P(
     "for correction. We state the caveat plainly: unanimity among model raters can reflect "
     "shared bias, so this validates label consistency across independent model raters, not "
     "human ground truth. A label-free check is possible too: agreement with the judge "
-    "majority ranks D6 first (0.70), ahead of every evolved champion.", "bodyni"))
+    "majority ranks the edit-placement scorer first (0.70), ahead of every evolved champion.", "bodyni"))
 
 story.append(P("5.6&nbsp;&nbsp;The Ceiling", "h2"))
 story.append(P(
@@ -555,16 +558,46 @@ story.append(P(
 story.append(P("6&nbsp;&nbsp;From Measuring Creativity to Improving It: "
                "a Research Agenda", "h1"))
 story.append(P(
-    "So far the scorers have been judges. But the original reason to want cheap, "
-    "deterministic, inspectable judges is what they unlock: a function that runs in "
-    "microseconds can be called millions of times inside a <i>training</i> loop — as the "
-    "reward for reinforcement-learning fine-tuning (RLFT) of a text generator, or as the "
-    "fitness function of an evolutionary search over generating programs. Seen from that "
-    "angle, everything we learned about how scorers fail is really a lesson about how "
-    "rewards get <b>hacked</b>, learned cheaply before any expensive training run. This "
-    "section turns each empirical lesson into a concrete proposal.", "bodyni"))
+    "So far the scorers have been judges. But a function that runs in microseconds and "
+    "can be read line-by-line unlocks four distinct uses: an <b>evaluation and comparison "
+    "tool</b> (A/B tests between models or prompts, regression tests when a system "
+    "changes, leaderboards that anyone can audit); a <b>fitness function</b> for "
+    "evolutionary search over generating programs or prompts, where its determinism and "
+    "speed matter most; a <b>reward</b> for reinforcement-learning fine-tuning (RLFT) of a "
+    "generator; and a <b>scientific instrument</b> that turns a vague quality into "
+    "falsifiable hypotheses. Seen from the training angle, everything we learned about how "
+    "scorers fail is a lesson about how rewards get <b>hacked</b>, learned cheaply before "
+    "any expensive run. This section states the general recipe, then turns each empirical "
+    "lesson into a concrete proposal.", "bodyni"))
 
-story.append(P("6.1&nbsp;&nbsp;Harden the Reward Before Training, Not During", "h2"))
+story.append(P("6.1&nbsp;&nbsp;The Recipe Is Not About Creativity", "h2"))
+story.append(P(
+    "Nothing in the pipeline is specific to creativity except its content. The full "
+    "recipe, stated generally, is: <b>(1)</b> research agents read the literature on the "
+    "target quality and distill it into a causal map — what the quality rewards, what it "
+    "punishes, and what it requires (for creativity: novelty, moderated by fit; for other "
+    "qualities, other structures); <b>(2)</b> measurement agents ground each node of that "
+    "map in computable signals from real reference data, honestly recording which nodes "
+    "the available resources can and cannot reach; <b>(3)</b> the adversarial loop of this "
+    "paper — proposer, attacker, and referee with honesty gates — evolves interpretable "
+    "scorers against a test set that grows wherever the current best scorer is blind; and "
+    "<b>(4)</b> when theory-guided proposing plateaus, a blind compositional search over "
+    "the accumulated primitives, judged by the same gates plus a falsification-tested "
+    "explanation step, extends the search beyond what anyone would think to write.", "bodyni"))
+story.append(P(
+    "Any hard-to-measure abstract quality fits this template — trustworthiness of a "
+    "product description, persuasiveness of an argument, tactfulness of a refusal, "
+    "pedagogical clarity, adherence to a house style — provided two things exist: paired "
+    "comparisons that manipulate the quality while holding content fixed, and measurement "
+    "primitives at the right rung of the resource ladder. The claim is not speculative: "
+    "the same engine, earlier in this research program, evolved scorers for the "
+    "persuasiveness of marketing copy and for a distinctive songwriting style, and "
+    "exhibited the same dynamics reported here — single-signal champions destroyed by "
+    "targeted counterexamples, conjunctive designs surviving. The pipeline is a general "
+    "procedure for converting a folk concept into a hardened, auditable measurement — and "
+    "then using that measurement to drive models toward the concept.", "bodyni"))
+
+story.append(P("6.2&nbsp;&nbsp;Harden the Reward Before Training, Not During", "h2"))
 story.append(P(
     "A policy trained to maximize a naive creativity reward will discover, within hours, "
     "exactly the exploits our adversary found in minutes: flood a rarity reward with ornate "
@@ -591,7 +624,7 @@ story.append(P(
     "practical reward-shaping principle: the peak of the U is exactly where a reward "
     "stops being gameable by exaggeration."))
 
-story.append(P("6.2&nbsp;&nbsp;Reward the Edit, Not the Text", "h2"))
+story.append(P("6.3&nbsp;&nbsp;Reward the Edit, Not the Text", "h2"))
 story.append(P(
     "The single most portable design element our loop discovered is <b>relational "
     "scoring</b>: every strong scorer measured the rewrite <i>against its own source</i> — "
@@ -618,7 +651,7 @@ story.append(P(
     "statistics certify freshness but cannot certify fit — is exactly the boundary where "
     "the budget should shift tiers."))
 
-story.append(P("6.3&nbsp;&nbsp;Close the Loop: the Generator Is the Strongest "
+story.append(P("6.4&nbsp;&nbsp;Close the Loop: the Generator Is the Strongest "
                "Red Team", "h2"))
 story.append(P(
     "Our adversary writes attacks by reasoning about the champion's code. A policy under "
@@ -648,7 +681,7 @@ story.append(P(
     "And keep the reward ensemble behaviorally diverse using fingerprint decorrelation, so "
     "the policy cannot satisfy a single signal family and call it creativity."))
 
-story.append(P("6.4&nbsp;&nbsp;What a Scorer Can Teach Us About Creativity "
+story.append(P("6.5&nbsp;&nbsp;What a Scorer Can Teach Us About Creativity "
                "Itself", "h2"))
 story.append(P(
     "The same machinery is an instrument for the science of creativity, not just its "
@@ -727,7 +760,10 @@ story.append(P(
     "measured skill. Finally, pre-trained semantic resources were unavailable in our "
     "sandbox, making the frequency-statistics ceiling unavoidable rather than chosen — and "
     "the anti-memorization gate's ban on inline lexicons contributes to that ceiling; a "
-    "registered-resource mechanism would relax it safely.", "bodyni"))
+    "registered-resource mechanism would relax it safely. For reproducibility we release "
+    "the full harness, every scorer's code with per-case behavioral fingerprints, the "
+    "primitive library and search configuration, all test tiers with provenance, and the "
+    "exact word-frequency resource and normalization pipeline.", "bodyni"))
 
 # ── 8 Conclusion ──────────────────────────────────────────────────────
 story.append(P("9&nbsp;&nbsp;Conclusion", "h1"))
