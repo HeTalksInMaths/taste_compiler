@@ -1,0 +1,120 @@
+{
+ "program_2": {
+  "mechanics": "ratio(gate(max_share(content[content], text), mean(sur, Δanchor)), mean(wlen, Δanchor)). Step 1 - Leaf 'max_share(content[content], text)': the series is the 0/1 content-word mask itself, and it is ALSO used as its own mask (content>0). Selecting content=1 positions out of the content series just returns an all-ones array whose length equals the number of content words in the TEXT (the rewrite, rel=False so the anchor is irrelevant here). max_share(v)=max(v)/sum(v) on an all-ones vector of length k is exactly 1/k. So this leaf is NOT a 'concentration' statistic at all in any meaningful sense - it degenerates to the reciprocal of the rewrite's own content-word count, i.e. a hidden inverse-length / brevity bonus. Step 2 - Leaf 'mean(sur, Δanchor)': mean corpus-surprisal (−log2 word-frequency, capped at 24 bits) over EVERY token (content and function words alike) of the text, minus the same quantity computed on the anchor alone. Positive iff the rewrite's average word is rarer/less predictable than the anchor's. Step 3 - gate(x,y)=x*sigmoid(4y): multiplies the inverse-content-count leaf by a soft switch driven by whether mean surprisal rose. The switch saturates near 1 for any solid surprisal increase and near 0 for any surprisal decrease; it is asymmetric/one-sided - it can only suppress the brevity bonus, never invert or amplify it beyond 1x. Step 4 - Leaf 'mean(wlen, Δanchor)': mean character length of every token in the text minus the same for the anchor - positive if the rewrite's words got longer on average, negative if shorter. Step 5 - ratio(gate,y)=gate/(|y|+0.25): divides the gated brevity*freshness score by the ABSOLUTE deviation of mean word length from the anchor. Because it is |.|, lengthening (purple/polysyllabic diction) and shortening (clipped/telegraphic diction) are punished by exactly the same amount for the same magnitude of deviation.",
+  "interpretation": "Read naively this program looks like 'reward freshness concentrated among content words, penalized by word-length inflation' - i.e. an anti-purple-prose freshness detector. What it actually computes is: (1/number-of-content-words-in-the-rewrite) * [switch that is ~1 if the rewrite is on average more surprising than the anchor, ~0 otherwise], all divided by |how much the rewrite's average word length drifted from the anchor's|. Three things are non-intuitive and would not have been proposed by a hand designer: (a) the 'max_share' term, which reads like a distributional-concentration statistic, is actually just inverse content-word count in disguise - the program has a built-in, unconditional preference for LEXICALLY SPARSE rewrites, independent of what those content words are; (b) the surprisal gate only ever fires or doesn't fire (sigmoid saturates fast), so it can't distinguish 'slightly more surprising' from 'wildly more surprising', and it never penalizes surprisal DECREASES beyond zeroing the numerator - there's no symmetric punishment for blandness the way there is for word-length drift; (c) the denominator is not specifically 'anti-purple' (anti-inflation) as the surface reading suggests - it is anti-DEVIATION in either direction, so a rewrite that clips/shortens its words as much as another rewrite lengthens them is punished identically, even though only inflation is normally considered a creativity vice.",
+  "predictions": [
+   "On pairs where the two rewrites raise mean surprisal (relative to the anchor) by a similar amount and shift mean word length by a similar amount, program 2 will score the rewrite with FEWER distinct content words higher than the rewrite with more content words, even when the wordier rewrite reads as richer/more elaborated to a human, because the leaf term is exactly 1/(content-word count of the text).",
+   "On pairs with the SAME content-word count in both rewrites (so the brevity term is neutralized), program 2 will prefer whichever rewrite has the higher mean per-token corpus rarity, even when the lower-rarity rewrite achieves its novelty through an unusual COMBINATION of ordinary, common words (e.g. a fresh metaphor built entirely from everyday vocabulary) - because the gate only reads average per-word frequency, with no notion of combinatorial/semantic novelty.",
+   "On pairs where one rewrite's mean word length stays close to the anchor's while another rewrite's mean word length diverges by a similar magnitude but in the SHORTENING (terser/more clipped) direction rather than the lengthening (pompous/polysyllabic) direction, program 2 will penalize both rewrites by comparable amounts, i.e. it will treat deliberate telegraphic compression exactly as harshly as purple-prose inflation, contrary to the intuitive assumption that only inflation should be punished."
+  ],
+  "probe_pairs": [
+   {
+    "pair_id": "PR2_1",
+    "tests_prediction": 1,
+    "expected": "program prefers more_creative",
+    "anchor": "The dog ran across the yard. It barked at the mailman.",
+    "more_creative": "The dog streaked across the yard. It snarled at the mailman.",
+    "less_creative": "The scruffy little dog streaked quickly across the wide green yard. It snarled loudly and fiercely at the startled mailman."
+   },
+   {
+    "pair_id": "PR2_2",
+    "tests_prediction": 1,
+    "expected": "program prefers less_creative (falsification bait)",
+    "anchor": "The garden was full of flowers. The bees moved between them.",
+    "more_creative": "The garden brimmed with tulips, marigolds, and trembling foxgloves. The bees careened drunkenly between them, dusted gold with pollen.",
+    "less_creative": "The garden held blooms. The bees zigzagged between them."
+   },
+   {
+    "pair_id": "PR2_3",
+    "tests_prediction": 2,
+    "expected": "program prefers more_creative",
+    "anchor": "The man crossed the street. He waved at his friend.",
+    "more_creative": "The man loped across the street. He waved at his friend.",
+    "less_creative": "The man walked across the street. He waved at his friend."
+   },
+   {
+    "pair_id": "PR2_4",
+    "tests_prediction": 2,
+    "expected": "program prefers less_creative (falsification bait)",
+    "anchor": "The sky was cloudy. The wind was cold.",
+    "more_creative": "The sky was a bruise. The wind was a blade.",
+    "less_creative": "The sky was overcast. The wind was frigid."
+   },
+   {
+    "pair_id": "PR2_5",
+    "tests_prediction": 3,
+    "expected": "program prefers more_creative",
+    "anchor": "The teacher explained the lesson. The students listened quietly.",
+    "more_creative": "The teacher illuminated the lesson. The students listened raptly.",
+    "less_creative": "The teacher elucidated the multifaceted lesson methodically. The students listened attentively and appreciatively."
+   },
+   {
+    "pair_id": "PR2_6",
+    "tests_prediction": 3,
+    "expected": "program prefers less_creative (falsification bait)",
+    "anchor": "The teacher explained the lesson. The students listened quietly.",
+    "more_creative": "The teacher nailed the lesson. The rapt kids hushed.",
+    "less_creative": "The teacher illuminated the lesson. The students listened raptly."
+   }
+  ]
+ },
+ "program_6": {
+  "mechanics": "sub(max_share(op[changed], text), absdiff(gini(changed[content], text), gini(sur, text))). Step 1 - Leaf A 'max_share(op[changed], text)': 'op' is the per-token difflib edit opcode versus the anchor (0=kept, 1=replaced, 2=inserted). Masking by changed=op>0 keeps only edited tokens, each holding value 1 or 2. max_share=max(v)/sum(v). If all k edited tokens are the same type (all replace or all insert) this degenerates to 1/k - a second hidden inverse-edit-count statistic, structurally identical to program 2's brevity leaf but computed over EDIT COUNT rather than content-word count. It is not purely 1/k though: for k edits with m of them insertions (value 2) and k-m replacements (value 1), max_share = 2/(m+k) when m≥1. This is maximized, for fixed k>1, by having exactly ONE insertion among otherwise-replacements - a pure arithmetic artifact of encoding insert=2/replace=1, with no connection to whether insertion vs. replacement is more creative. Step 2 - Leaf B1 'gini(changed[content], text)': the 0/1 changed-indicator, restricted to positions that are CONTENT words in the resulting text (function-word positions are dropped from the array entirely, not zeroed - they don't even count toward N). Gini of this binary vector measures how CONCENTRATED edits are among content words: near 1 when only a small fraction of content words were touched, exactly 0 when none were touched OR when literally every content word was touched (both extremes read as 'no inequality'). Step 3 - Leaf B2 'gini(sur, text)': Gini of the raw surprisal series over ALL tokens (content and function words) - how spiky (one or two standout rare words) vs. flat (uniformly common or uniformly rare) the sentence's lexical-rarity profile is. Step 4 - absdiff(B1,B2): this is a match between two independent SCALAR magnitudes, not a positional/spatial check - gini values carry no information about WHICH token is which, so this only asks whether 'how lopsided is the edit pattern' numerically resembles 'how lopsided is the surprisal profile', never whether the edited word IS the rare word. Final score = LeafA − |B1−B2|: reward for a small, concentrated set of edits, reduced by a penalty whenever the edit-sparsity magnitude and the surprisal-spikiness magnitude don't numerically line up.",
+  "interpretation": "Surface reading: 'reward surgical, well-targeted edits that land on the rare/interesting word.' What the code actually computes is: (roughly 1/number-of-edited-tokens) minus |concentration-of-edits-among-content-words − concentration-of-surprisal-across-the-sentence|, where 'concentration' in both cases is a content-blind, position-blind scalar (Gini). Three things are non-intuitive: (a) the program cannot verify that an edit actually landed on a surprising word - it only compares two unrelated aggregate inequality numbers, so a coincidental magnitude match between 'few edits' and 'flat surprisal' can score as well as a genuine hit; (b) function-word edits (inserting an intensifier, swapping a determiner, adding a connective for rhythm) count toward the denominator that shrinks Leaf A (more edited tokens = smaller max_share) but are structurally INVISIBLE to B1 (the content mask excludes them entirely), so any purely function-word creative device is pure cost with zero possible offsetting benefit; (c) because Leaf A decays roughly as 1/k, the marginal cost of a SECOND edit is enormous (k=1→A=1.0, k=2→A=0.5 for pure replacements, or A=0.667 if one of the two edits happens to be an insertion) - the program's implicit preference is for a single, maximally 'perfect' word swap over any rewrite that touches more than one or two tokens, however good those additional edits are.",
+  "predictions": [
+   "On pairs where one rewrite makes a single, well-chosen word substitution and the other rewrite substitutes or reimagines many words throughout the sentence, program 6 will prefer the single-substitution rewrite - regardless of how vivid or thorough the multi-word rewrite is - because its sparsity term falls roughly as 1/(number of edited tokens).",
+   "On pairs where the number of edited tokens is held fixed at two, program 6 will score a rewrite that pairs one INSERTED word with one REPLACED word higher than a rewrite that performs two REPLACEMENTS of comparable creative quality, because mixing op-value 2 (insert) with op-value 1 (replace) inflates the max/sum sparsity ratio above what two uniform edits give at the same edit count - an artifact of the 1/2 opcode encoding, unrelated to whether insertion or substitution is the more creative move.",
+   "On pairs where one rewrite adds a purely function-word edit (an inserted intensifier, connective, or repeated determiner/conjunction) on top of an otherwise-identical content-word edit, program 6 will score the version WITHOUT the extra function-word edit higher, because function-word edits inflate the edit-count denominator of the sparsity term while being completely invisible to the content-word-restricted Gini term that is supposed to reward matched edits - making them pure cost with no possible offsetting benefit, even when the function-word device is a deliberate, well-regarded rhetorical technique (e.g. emphatic repetition)."
+  ],
+  "probe_pairs": [
+   {
+    "pair_id": "PR6_1",
+    "tests_prediction": 1,
+    "expected": "program prefers more_creative",
+    "anchor": "The car drove down the street. The engine was loud.",
+    "more_creative": "The car careened down the street. The engine was loud.",
+    "less_creative": "The vehicle traveled along the road. The motor was noisy."
+   },
+   {
+    "pair_id": "PR6_2",
+    "tests_prediction": 1,
+    "expected": "program prefers less_creative (falsification bait)",
+    "anchor": "The car drove down the street. The engine was loud.",
+    "more_creative": "The rusted car careened down the narrow street. The engine snarled like a wounded animal.",
+    "less_creative": "The car rolled down the street. The engine was loud."
+   },
+   {
+    "pair_id": "PR6_3",
+    "tests_prediction": 2,
+    "expected": "program prefers more_creative",
+    "anchor": "The car drove down the street. The engine was loud.",
+    "more_creative": "The car careened down the flooded street. The engine was loud.",
+    "less_creative": "The car careened down the street. The engine was deafening."
+   },
+   {
+    "pair_id": "PR6_4",
+    "tests_prediction": 2,
+    "expected": "program prefers less_creative (falsification bait)",
+    "anchor": "The car drove down the street. The engine was loud.",
+    "more_creative": "The car careened down the street. The engine was deafening.",
+    "less_creative": "The car careened down the narrow street. The engine was loud."
+   },
+   {
+    "pair_id": "PR6_5",
+    "tests_prediction": 3,
+    "expected": "program prefers more_creative",
+    "anchor": "The car drove down the street. The engine was loud.",
+    "more_creative": "The car careened down the street. The engine was loud.",
+    "less_creative": "The car just careened down the street. The engine was loud."
+   },
+   {
+    "pair_id": "PR6_6",
+    "tests_prediction": 3,
+    "expected": "program prefers less_creative (falsification bait)",
+    "anchor": "The car drove down the street. The engine was loud.",
+    "more_creative": "The car careened down the street. The engine was so loud the windows shook.",
+    "less_creative": "The car careened down the street. The engine was loud."
+   }
+  ]
+ }
+}
