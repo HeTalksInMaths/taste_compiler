@@ -1,0 +1,52 @@
+{
+ "Arm A champ (larger model)": {
+  "overall": "19/36",
+  "acc": 0.528,
+  "p_binom": 0.434,
+  "by_category": {
+   "aphorism": "4/8",
+   "novel": "5/8",
+   "poetry": "10/20"
+  }
+ },
+ "Arm B champ (smaller, 3x vol)": {
+  "overall": "20/36",
+  "acc": 0.556,
+  "p_binom": 0.3089,
+  "by_category": {
+   "aphorism": "5/8",
+   "novel": "4/8",
+   "poetry": "11/20"
+  }
+ },
+ "Arm C champ (smaller, matched)": {
+  "overall": "5/36",
+  "acc": 0.139,
+  "p_binom": 1.0,
+  "by_category": {
+   "aphorism": "2/8",
+   "novel": "0/8",
+   "poetry": "3/20"
+  }
+ },
+ "combinational-novelty (blind D2)": {
+  "overall": "16/36",
+  "acc": 0.444,
+  "p_binom": 0.7975,
+  "by_category": {
+   "aphorism": "3/8",
+   "novel": "2/8",
+   "poetry": "11/20"
+  }
+ },
+ "edit-placement (blind D6)": {
+  "overall": "15/36",
+  "acc": 0.417,
+  "p_binom": 0.8785,
+  "by_category": {
+   "aphorism": "4/8",
+   "novel": "3/8",
+   "poetry": "8/20"
+  }
+ }
+}

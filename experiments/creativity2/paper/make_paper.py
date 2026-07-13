@@ -157,8 +157,11 @@ story.append(P(
     "non-intuitive scorer — <i>creative edits are few and placed where the text's information "
     "concentrates</i> — that is behaviorally decorrelated from every incumbent (max |r|=0.23), "
     "passes a falsifiable explanation gate (12/12 predictions, including designed "
-    "falsification bait), and transfers to acclaimed human writing where every evolved "
-    "champion fails (5/6 vs 0/6). Three independent blind judge agents reproduce 91% of the "
+    "falsification bait). A larger external test sharpens rather than confirms the "
+    "transfer story: on 36 canonical literary lines versus flat paraphrases, NO scorer "
+    "beats chance — because a paraphrase preserves a line's word-rarity profile while "
+    "removing its artistry, leaving surface statistics nothing to read. Three independent "
+    "blind judge agents reproduce 91% of the in-distribution "
     "test labels unanimously. We conclude that selection pressure and honest evaluation "
     "machinery, not proposer sophistication, drive metric discovery — and that freeing the "
     "hypothesis space matters more than strengthening the proposer.",
@@ -206,8 +209,11 @@ story.append(P(
     "the matched-budget arm is statistically indistinguishable from the larger model's arm, "
     "and all three arms converged on the same design shape; and yes to Q3 — the blind "
     "search discovered a scorer no agent proposed in nine theory-first generations, whose "
-    "validated interpretation is that <i>creative edits are few and placed where the "
-    "text's information concentrates</i>."))
+    "validated interpretation — <i>creative edits are few and placed where the text's "
+    "information concentrates</i> — predicts its own behavior on twelve fresh cases, six "
+    "built to falsify it. That same honesty machinery also delivered a sobering "
+    "large-sample negative: no surface-statistic scorer distinguishes canonical literary "
+    "greatness from a flat paraphrase, marking exactly where interpretable metrics end."))
 
 # ── 2 The task in plain terms ─────────────────────────────────────────
 story.append(P("2&nbsp;&nbsp;The Task, in Plain Terms", "h1"))
@@ -504,14 +510,15 @@ story.append(P(
     "never landed it. <b>(3) Explainable with predictive force:</b> an independent "
     "interpreter agent derived its mechanics, staked three falsifiable predictions, and "
     "wrote twelve fresh probe cases — six designed to falsify its own reading. All 12/12 "
-    "held on independent verification. <b>(4) External transfer:</b> on six acclaimed "
-    "human lyric lines (Cohen, Dylan, Radiohead, Mitchell, Waits) versus flattened "
-    "paraphrases — critical consensus, not LLM labels — the edit-placement scorer picks the masterwork 5/6 while "
-    "BOTH evolved champions score 0/6; it also agrees best with the independent judge "
-    "majority (0.70 vs the champion's 0.61). <b>(5) Reproducible family:</b> a seed-repeat "
-    "of the search finds different programs from the same family — concentration "
-    "statistics composed with anchor-relative ratios — including another perfect-core "
-    "variant.", "bodyni"))
+    "held on independent verification. <b>(4) Best in-distribution external agreement:</b> "
+    "among all scorers, the edit-placement scorer agrees most with the independent "
+    "three-judge majority (0.70 vs the leading champion's 0.61). We deliberately do NOT "
+    "claim transfer to human masterworks: a preliminary six-item lyric probe favored this "
+    "scorer, but scaling to 36 canonical literary lines dissolved the effect entirely "
+    "(Sec. 5.6), and honesty requires reporting that. <b>(5) Reproducible family:</b> a "
+    "seed-repeat of the search finds different programs from the same family — "
+    "concentration statistics composed with anchor-relative ratios — including another "
+    "perfect-core variant.", "bodyni"))
 story.append(P(
     "Explainability here includes knowing when it fails: the validated interpretation "
     "exposes that the edit-placement scorer is blind to edits made of grammatical filler words (a rhetorical repetition device "
@@ -537,12 +544,47 @@ story.append(P(
     "shared bias, so this validates label consistency across independent model raters, not "
     "human ground truth. A label-free check is possible too: agreement with the judge "
     "majority ranks the edit-placement scorer first (0.70), ahead of every evolved champion. "
-    "Beyond this session, the validation path is concrete: LitBench's pairwise human "
-    "preferences (Sec. 7) match our scorers' input format exactly, and the DSI corpus "
-    "provides continuous human ratings at scale — correlating the discovered scorers "
-    "against both is the designed next experiment.", "bodyni"))
+    "But agreement among model raters is not human ground truth, and our own scaled-up "
+    "external test (next section) is a cautionary result. The concrete validation path is "
+    "therefore a priority, not a footnote: LitBench's pairwise human preferences (Sec. 8) "
+    "match our scorers' input format exactly, and the DSI corpus provides continuous human "
+    "ratings at scale — correlating the discovered scorers against both is the designed "
+    "next experiment.", "bodyni"))
 
-story.append(P("5.6&nbsp;&nbsp;The Ceiling", "h2"))
+story.append(P("5.6&nbsp;&nbsp;The Ceiling: a Large-Sample Negative Result", "h2"))
+story.append(P(
+    "The reviewer of an earlier draft rightly warned that a six-item transfer test is too "
+    "small to generalize. We built a larger one: 36 lines from the public-domain literary "
+    "canon — novel openings, celebrated poetry, famous aphorisms, each a passage whose "
+    "creativity is certified by a century of consensus — each paired with a flat paraphrase "
+    "we wrote that keeps the meaning and removes the art. The result is a clean negative "
+    "(Table 3): <b>no scorer beats chance</b>, and the earlier lyric win does not "
+    "replicate.", "bodyni"))
+t3 = Table([
+    ["scorer", "picks masterwork", "p"],
+    ["Arm A champion", "20/36", "0.31"],
+    ["Arm B champion", "19/36", "0.43"],
+    ["Arm C champion", "5/36", "1.00"],
+    ["combinational novelty", "16/36", "0.80"],
+    ["edit-placement", "15/36", "0.88"],
+], colWidths=[1.55 * inch, 1.0 * inch, 0.6 * inch])
+t3.setStyle(TSTYLE)
+story.append(KeepTogether([t3,
+    P("<b>Table 3:</b> On 36 canonical literary lines vs. flat paraphrases, every "
+      "deterministic scorer is at chance (binomial p, one-sided).", "caption")]))
+story.append(P(
+    "The reason is exact and, we think, the paper's sharpest scientific point. Across the "
+    "36 pairs the canonical line and its flat paraphrase have <b>identical</b> mean "
+    "word-commonness (5.91 vs 5.91 on the standard log-frequency scale; paired t-test "
+    "p = 0.93) and near-identical length. The paraphrase preserves the words' rarity "
+    "profile while stripping the antithesis of “best of times / worst of times,” the "
+    "compression of “Call me Ishmael,” the sound and allusion of a line of verse. "
+    "Surface-frequency statistics are at chance here not because the scorers are weak but "
+    "because the signal is genuinely absent: canonical literary greatness lives in "
+    "structure, sound, meaning, and context — dimensions word statistics cannot see. This "
+    "is the strongest form of our freshness-versus-fit boundary, now stated as a "
+    "large-sample negative rather than a small-sample win.", "bodyni"))
+story.append(P("5.7&nbsp;&nbsp;Where the Boundary Falls", "h2"))
 story.append(P(
     "The loop eventually converged by <i>adversary exhaustion</i>: in Arm B's final "
     "generation, neither of two fresh attack angles produced a single case the champion "
@@ -797,9 +839,14 @@ story.append(P(
     "budget — changed the journey but not the destination: comparable acceptance rates, "
     "statistically indistinguishable final champions, the same convergent design. And when "
     "we freed the hypothesis space while keeping the gates, the system delivered what "
-    "theory-first proposing never did: a non-intuitive, externally transferring, "
+    "theory-first proposing never did: a non-intuitive, "
     "falsification-tested scorer whose reading — creative edits are few and land where the "
-    "information lives — is a genuine, checkable hypothesis about creativity itself. The practical recipe we take away is that when searching for "
+    "information lives — is a genuine, checkable hypothesis about creativity itself. That "
+    "same honesty machinery produced our sharpest scientific result by refusing to flatter "
+    "us: at scale, no surface-statistic scorer tells canonical literary greatness from a "
+    "flat paraphrase, because the two share an identical word-rarity profile — a clean "
+    "boundary for where interpretable metrics end and meaning-aware models must begin. "
+    "The practical recipe we take away is that when searching for "
     "evaluation metrics with LLMs, <b>invest in the referee and the adversary before "
     "investing in a bigger proposer</b> — and always keep one test set the process is never "
     "allowed to touch.", "bodyni"))

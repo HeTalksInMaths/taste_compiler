@@ -1,0 +1,362 @@
+[
+ {
+  "item_id": "MW01",
+  "category": "novel",
+  "author": "Austen",
+  "work": "Pride and Prejudice",
+  "source_url": "canonical:Pride and Prejudice",
+  "context": "a wealthy single man is assumed to want a wife",
+  "masterwork": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+  "plain": "Everyone agrees that a rich unmarried man probably wants to find a wife."
+ },
+ {
+  "item_id": "MW02",
+  "category": "novel",
+  "author": "Dickens",
+  "work": "A Tale of Two Cities",
+  "source_url": "canonical:A Tale of Two Cities",
+  "context": "the era was simultaneously good and bad",
+  "masterwork": "It was the best of times, it was the worst of times.",
+  "plain": "The period was both very good and very bad at once."
+ },
+ {
+  "item_id": "MW03",
+  "category": "novel",
+  "author": "Melville",
+  "work": "Moby-Dick",
+  "source_url": "canonical:Moby-Dick",
+  "context": "the true place cannot be found on any map",
+  "masterwork": "It is not down in any map; true places never are.",
+  "plain": "You won't find it on a map, because real places never appear on maps."
+ },
+ {
+  "item_id": "MW04",
+  "category": "novel",
+  "author": "Tolstoy",
+  "work": "Anna Karenina",
+  "source_url": "canonical:Anna Karenina",
+  "context": "happy families are alike while unhappy ones differ",
+  "masterwork": "Happy families are all alike; every unhappy family is unhappy in its own way.",
+  "plain": "All happy families are similar, but each unhappy family is unhappy differently."
+ },
+ {
+  "item_id": "MW05",
+  "category": "novel",
+  "author": "Kafka",
+  "work": "The Metamorphosis",
+  "source_url": "canonical:The Metamorphosis",
+  "context": "a man wakes to find he has become a giant insect",
+  "masterwork": "As Gregor Samsa awoke one morning from uneasy dreams he found himself transformed in his bed into a gigantic insect.",
+  "plain": "One morning Gregor Samsa woke from bad dreams and found he had turned into a huge insect in his bed."
+ },
+ {
+  "item_id": "MW06",
+  "category": "novel",
+  "author": "Thoreau",
+  "work": "Walden",
+  "source_url": "canonical:Walden",
+  "context": "he moved to the woods to live deliberately",
+  "masterwork": "I went to the woods because I wished to live deliberately, to front only the essential facts of life.",
+  "plain": "I moved to the forest because I wanted to live on purpose and face only what mattered."
+ },
+ {
+  "item_id": "MW07",
+  "category": "novel",
+  "author": "Dickens",
+  "work": "David Copperfield",
+  "source_url": "canonical:David Copperfield",
+  "context": "the book will reveal who the hero of his life is",
+  "masterwork": "Whether I shall turn out to be the hero of my own life, or whether that station will be held by anybody else, these pages must show.",
+  "plain": "Whether I become the main figure of my own life or someone else does, this book will show."
+ },
+ {
+  "item_id": "MW08",
+  "category": "novel",
+  "author": "Melville",
+  "work": "Moby-Dick",
+  "source_url": "canonical:Moby-Dick",
+  "context": "the narrator gives his name as Ishmael",
+  "masterwork": "Call me Ishmael.",
+  "plain": "You can call me Ishmael."
+ },
+ {
+  "item_id": "MW09",
+  "category": "poetry",
+  "author": "Dickinson",
+  "work": "Because I could not stop for Death",
+  "source_url": "canonical:Because I could not stop for Death",
+  "context": "death waited for the speaker who had no time",
+  "masterwork": "Because I could not stop for Death, He kindly stopped for me.",
+  "plain": "Since I had no time to stop for death, it politely stopped for me."
+ },
+ {
+  "item_id": "MW10",
+  "category": "poetry",
+  "author": "Dickinson",
+  "work": "Hope is the thing with feathers",
+  "source_url": "canonical:Hope is the thing with feathers",
+  "context": "hope is like a bird living in the soul",
+  "masterwork": "Hope is the thing with feathers that perches in the soul.",
+  "plain": "Hope is like a bird that sits inside the spirit."
+ },
+ {
+  "item_id": "MW11",
+  "category": "poetry",
+  "author": "Frost",
+  "work": "The Road Not Taken",
+  "source_url": "canonical:The Road Not Taken",
+  "context": "he chose the less-traveled of two paths",
+  "masterwork": "Two roads diverged in a wood, and I took the one less traveled by.",
+  "plain": "Two paths split in the forest, and I chose the less-used one."
+ },
+ {
+  "item_id": "MW12",
+  "category": "poetry",
+  "author": "Frost",
+  "work": "Stopping by Woods",
+  "source_url": "canonical:Stopping by Woods",
+  "context": "the woods are lovely but he has duties",
+  "masterwork": "The woods are lovely, dark and deep, but I have promises to keep.",
+  "plain": "The forest is beautiful and dark, but I have obligations to fulfill."
+ },
+ {
+  "item_id": "MW13",
+  "category": "poetry",
+  "author": "Whitman",
+  "work": "Song of Myself",
+  "source_url": "canonical:Song of Myself",
+  "context": "the speaker cries out loudly over the world",
+  "masterwork": "I sound my barbaric yawp over the roofs of the world.",
+  "plain": "I shout loudly and wildly out across the whole world."
+ },
+ {
+  "item_id": "MW14",
+  "category": "poetry",
+  "author": "Blake",
+  "work": "Auguries of Innocence",
+  "source_url": "canonical:Auguries of Innocence",
+  "context": "seeing the world in a grain of sand, heaven in a flower",
+  "masterwork": "To see a World in a Grain of Sand and a Heaven in a Wild Flower.",
+  "plain": "To find the whole world in one grain of sand and heaven in a wildflower."
+ },
+ {
+  "item_id": "MW15",
+  "category": "poetry",
+  "author": "Keats",
+  "work": "Endymion",
+  "source_url": "canonical:Endymion",
+  "context": "beautiful things bring lasting joy",
+  "masterwork": "A thing of beauty is a joy for ever.",
+  "plain": "A beautiful thing brings happiness that lasts forever."
+ },
+ {
+  "item_id": "MW16",
+  "category": "poetry",
+  "author": "Shelley",
+  "work": "Ozymandias",
+  "source_url": "canonical:Ozymandias",
+  "context": "the powerful should look at his works and despair",
+  "masterwork": "Look on my Works, ye Mighty, and despair!",
+  "plain": "Powerful people, look at what I built and lose hope."
+ },
+ {
+  "item_id": "MW17",
+  "category": "poetry",
+  "author": "Tennyson",
+  "work": "In Memoriam",
+  "source_url": "canonical:In Memoriam",
+  "context": "loving and losing beats never loving",
+  "masterwork": "'Tis better to have loved and lost than never to have loved at all.",
+  "plain": "It is better to have loved and lost someone than to never have loved."
+ },
+ {
+  "item_id": "MW18",
+  "category": "poetry",
+  "author": "Hopkins",
+  "work": "God's Grandeur",
+  "source_url": "canonical:God's Grandeur",
+  "context": "the world is filled with divine grandeur",
+  "masterwork": "The world is charged with the grandeur of God.",
+  "plain": "The world is full of God's greatness."
+ },
+ {
+  "item_id": "MW19",
+  "category": "poetry",
+  "author": "Coleridge",
+  "work": "The Rime of the Ancient Mariner",
+  "source_url": "canonical:The Rime of the Ancient Mariner",
+  "context": "surrounded by water, yet none is drinkable",
+  "masterwork": "Water, water, every where, nor any drop to drink.",
+  "plain": "There was water all around, but none of it could be drunk."
+ },
+ {
+  "item_id": "MW20",
+  "category": "poetry",
+  "author": "Shakespeare",
+  "work": "Sonnet 18",
+  "source_url": "canonical:Sonnet 18",
+  "context": "comparing the beloved favorably to a summer day",
+  "masterwork": "Shall I compare thee to a summer's day? Thou art more lovely and more temperate.",
+  "plain": "Should I compare you to a summer day? You are lovelier and milder."
+ },
+ {
+  "item_id": "MW21",
+  "category": "poetry",
+  "author": "Shakespeare",
+  "work": "Macbeth",
+  "source_url": "canonical:Macbeth",
+  "context": "life is a brief, poor performance on a stage",
+  "masterwork": "Life's but a walking shadow, a poor player that struts and frets his hour upon the stage.",
+  "plain": "Life is only a moving shadow, a bad actor who nervously performs his brief time on stage."
+ },
+ {
+  "item_id": "MW22",
+  "category": "poetry",
+  "author": "Dickinson",
+  "work": "I'm Nobody",
+  "source_url": "canonical:I'm Nobody",
+  "context": "a nobody asks whether the reader is also a nobody",
+  "masterwork": "I'm Nobody! Who are you? Are you Nobody too?",
+  "plain": "I am unimportant. Who are you? Are you unimportant as well?"
+ },
+ {
+  "item_id": "MW23",
+  "category": "poetry",
+  "author": "Donne",
+  "work": "Meditation XVII",
+  "source_url": "canonical:Meditation XVII",
+  "context": "no one exists in total isolation",
+  "masterwork": "No man is an island, entire of itself.",
+  "plain": "No person is completely separate and self-sufficient."
+ },
+ {
+  "item_id": "MW24",
+  "category": "poetry",
+  "author": "Marvell",
+  "work": "To His Coy Mistress",
+  "source_url": "canonical:To His Coy Mistress",
+  "context": "if there were sufficient time and space",
+  "masterwork": "Had we but world enough, and time.",
+  "plain": "If only we had enough space and time."
+ },
+ {
+  "item_id": "MW25",
+  "category": "poetry",
+  "author": "Wordsworth",
+  "work": "Daffodils",
+  "source_url": "canonical:Daffodils",
+  "context": "the speaker wandered alone like a cloud",
+  "masterwork": "I wandered lonely as a cloud that floats on high o'er vales and hills.",
+  "plain": "I walked around by myself like a cloud drifting over valleys and hills."
+ },
+ {
+  "item_id": "MW26",
+  "category": "poetry",
+  "author": "Poe",
+  "work": "The Raven",
+  "source_url": "canonical:The Raven",
+  "context": "late at night the tired speaker sat thinking",
+  "masterwork": "Once upon a midnight dreary, while I pondered, weak and weary.",
+  "plain": "Late one gloomy night, while I was thinking, tired and worn out."
+ },
+ {
+  "item_id": "MW27",
+  "category": "poetry",
+  "author": "Yeats",
+  "work": "The Second Coming",
+  "source_url": "canonical:The Second Coming",
+  "context": "things disintegrate and cannot hold together",
+  "masterwork": "Things fall apart; the centre cannot hold.",
+  "plain": "Everything breaks down; the middle can't stay together."
+ },
+ {
+  "item_id": "MW28",
+  "category": "poetry",
+  "author": "Eliot",
+  "work": "Prufrock",
+  "source_url": "canonical:Prufrock",
+  "context": "he has parceled his life into tiny measures",
+  "masterwork": "I have measured out my life with coffee spoons.",
+  "plain": "I have counted out my life in small dull routines."
+ },
+ {
+  "item_id": "MW29",
+  "category": "aphorism",
+  "author": "Wilde",
+  "work": "Lady Windermere's Fan",
+  "source_url": "canonical:Lady Windermere's Fan",
+  "context": "all are low, but some still look upward",
+  "masterwork": "We are all in the gutter, but some of us are looking at the stars.",
+  "plain": "We are all in a low situation, but some of us stay hopeful."
+ },
+ {
+  "item_id": "MW30",
+  "category": "aphorism",
+  "author": "Wilde",
+  "work": "Lady Windermere's Fan",
+  "source_url": "canonical:Lady Windermere's Fan",
+  "context": "the speaker resists all but temptation",
+  "masterwork": "I can resist everything except temptation.",
+  "plain": "I can resist anything except things that tempt me."
+ },
+ {
+  "item_id": "MW31",
+  "category": "aphorism",
+  "author": "Twain",
+  "work": "attributed",
+  "source_url": "canonical:attributed",
+  "context": "rumors of his death were overstated",
+  "masterwork": "The reports of my death have been greatly exaggerated.",
+  "plain": "The news that I had died was very inaccurate."
+ },
+ {
+  "item_id": "MW32",
+  "category": "aphorism",
+  "author": "Thoreau",
+  "work": "Walden",
+  "source_url": "canonical:Walden",
+  "context": "most people live in quiet despair",
+  "masterwork": "The mass of men lead lives of quiet desperation.",
+  "plain": "Most people live lives of silent unhappiness."
+ },
+ {
+  "item_id": "MW33",
+  "category": "aphorism",
+  "author": "Emerson",
+  "work": "Self-Reliance",
+  "source_url": "canonical:Self-Reliance",
+  "context": "greatness brings being misunderstood",
+  "masterwork": "To be great is to be misunderstood.",
+  "plain": "Being great means that people will not understand you."
+ },
+ {
+  "item_id": "MW34",
+  "category": "aphorism",
+  "author": "Franklin",
+  "work": "letter",
+  "source_url": "canonical:letter",
+  "context": "only death and taxes are certain",
+  "masterwork": "In this world nothing can be said to be certain, except death and taxes.",
+  "plain": "The only certain things in life are dying and paying taxes."
+ },
+ {
+  "item_id": "MW35",
+  "category": "aphorism",
+  "author": "Bacon",
+  "work": "Of Studies",
+  "source_url": "canonical:Of Studies",
+  "context": "books deserve different depths of reading",
+  "masterwork": "Some books are to be tasted, others to be swallowed, and some few to be chewed and digested.",
+  "plain": "Some books you sample, some you read quickly, and a few you study carefully."
+ },
+ {
+  "item_id": "MW36",
+  "category": "aphorism",
+  "author": "Shakespeare",
+  "work": "Hamlet",
+  "source_url": "canonical:Hamlet",
+  "context": "the question of whether to live or die",
+  "masterwork": "To be, or not to be, that is the question.",
+  "plain": "Whether to keep living or to die is the question."
+ }
+]
