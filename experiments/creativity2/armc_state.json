@@ -1,0 +1,504 @@
+{
+ "gen": 1,
+ "train": [
+  {
+   "pair_id": "CR01",
+   "anchor": "Unlike vertebrates, octopus arms have their own neurons, so they do not require input from the central brain to function. An individual octopus has about 500 million neurons in its body, a number roughly comparable to a dog's.",
+   "more_creative": "Unlike vertebrates, an octopus's arms carry their own neurons, so each one can think and act without waiting on orders from the brain. All told, the animal wires up about 500 million neurons, a headcount not far off a dog's.",
+   "less_creative": "Unlike vertebrates, octopus arms have their own nerve cells, so they do not need signals from the brain to work. An octopus has about 500 million neurons in its body, which is a similar amount to a dog.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR02",
+   "anchor": "I have tried multiple sourdough bread recipes, and this one has been the very first to make a successful, fully risen loaf of bread. I am relatively new to sourdough, and for some reason, the other recipes just didn't produce good bread.",
+   "more_creative": "I've worked my way through a stack of sourdough recipes, and this is the first one that actually rewarded me with a proud, fully risen loaf. I'm still new to the craft, and for whatever reason, the other recipes kept handing me bricks.",
+   "less_creative": "I have tried many sourdough bread recipes, and this one was the first one that made a normal, fully risen loaf of bread. I am new to sourdough, and for some reason, the other recipes did not make good bread.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR04",
+   "anchor": "For all work-from-home distractions, furry or not, Bose Headphones 700 give you powerful noise cancellation to help turn anywhere into the perfect place to get work done. Its hybrid adaptive ANC technology filters out background noise based on the environment, from busy offices to wind or traffic outdoors.",
+   "more_creative": "For every work-from-home distraction, furry or not, Bose Headphones 700 wrap you in quiet enough to turn any corner of the house into a real office. Its hybrid adaptive ANC reads the room and dials out whatever's competing for your ears, from a buzzing office to traffic outside.",
+   "less_creative": "For all work-from-home distractions, furry or not, Bose Headphones 700 provide strong noise cancellation to help make anywhere a good place to work. Its hybrid adaptive ANC technology removes background noise depending on the environment, such as busy offices or outdoor traffic.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR05",
+   "anchor": "After handing in his notice, the author became jobless for the first time in his adult life, and he and his wife sold everything to book a one-way ticket to Costa Rica. He had denied that burnout was even a real thing, until a persistent lack of energy and motivation proved otherwise.",
+   "more_creative": "After handing in his notice, the author found himself jobless for the first time as an adult, so he and his wife sold off nearly everything and booked a one-way ticket to Costa Rica. He'd long waved away burnout as a myth, until a stubborn fog of low energy and vanished motivation talked him out of that idea.",
+   "less_creative": "After giving his notice, the author was jobless for the first time in his adult life, so he and his wife sold their things and got a one-way ticket to Costa Rica. He used to think burnout was not real, until a lasting lack of energy and motivation showed him it was.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR07",
+   "anchor": "I'm not huge on pasta, but the pasta here was so fresh and delicious. The salad was very flavorful as well.",
+   "more_creative": "I'm not really a pasta person, but this bowl was fresh enough to change my mind. The salad held its own too, full of flavor.",
+   "less_creative": "I do not usually like pasta, but the pasta here was fresh and tasty. The salad was also good.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR08",
+   "anchor": "Fushimi Inari Taisha in Kyoto is famous for its thousands of vermilion torii gates, known collectively as the Senbon Torii, that wind up the wooded slopes of Mount Inari. The shrine is dedicated to Inari, the Shinto god of rice and business, and receives millions of visitors each year.",
+   "more_creative": "Fushimi Inari Taisha climbs Kyoto's wooded Mount Inari behind a river of thousands of vermilion torii gates, the famous Senbon Torii. The shrine honors Inari, Shinto's guardian of rice and commerce, and draws millions of pilgrims and sightseers every year.",
+   "less_creative": "Fushimi Inari Taisha in Kyoto has thousands of red torii gates, called the Senbon Torii, going up the slopes of Mount Inari. The shrine is for Inari, the god of rice and business in the Shinto religion, and gets millions of visitors every year.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR10",
+   "anchor": "A five-year study of more than 130,000 adults with chronic insomnia linked long-term melatonin use to a roughly 90% higher risk of developing heart failure. Melatonin users in the study were also more likely to be hospitalized for heart failure or to die from any cause during the follow-up period.",
+   "more_creative": "A five-year study tracking more than 130,000 adults with chronic insomnia found that long-term melatonin use was tied to a roughly 90% higher risk of heart failure. Those taking melatonin regularly were also more likely to land in the hospital for heart failure or to die from any cause during the follow-up years.",
+   "less_creative": "A five-year study of more than 130,000 adults with chronic insomnia found that long-term melatonin use was linked to about a 90% higher risk of getting heart failure. People who took melatonin were also more likely to be hospitalized for heart failure or to die from any cause during the study period.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR11",
+   "anchor": "The iPhone 17 Pro Max was a real workhorse in testing, easily lasting from 6 a.m. to midnight with at least 20% battery left in the tank. Thanks to the spread of silicon-carbon batteries, many of the latest smartphones can now go noticeably longer between charges.",
+   "more_creative": "The iPhone 17 Pro Max proved a real workhorse on our tests, cruising from 6 a.m. to midnight and still coasting in with at least 20% battery to spare. Thanks to the spread of silicon-carbon batteries, many of today's phones now stretch noticeably further between charges.",
+   "less_creative": "The iPhone 17 Pro Max worked well in testing, lasting from 6 a.m. to midnight with at least 20% battery remaining. Because of the spread of silicon-carbon batteries, many current smartphones can now last longer between charges.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR13",
+   "anchor": "The bark of a mature coast redwood can grow up to 12 inches thick, insulating the tree and helping it survive wildfires. This fire resistance, combined with roots that can spread 100 feet wide and intertwine with neighboring trees, lets redwood groves endure for centuries.",
+   "more_creative": "A mature coast redwood wraps itself in bark up to 12 inches thick, a natural coat that shields the tree and helps it shrug off wildfires. That resistance, paired with roots spreading 100 feet wide and knitting together with neighboring trees, lets whole redwood groves outlast centuries of fire and storm.",
+   "less_creative": "The bark of a mature coast redwood can grow up to 12 inches thick, which protects the tree and helps it survive wildfires. This fire resistance, along with roots that can spread 100 feet wide and connect with nearby trees, allows redwood groves to last for centuries.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR14",
+   "anchor": "Jannik Sinner defeated seventh-seeded Novak Djokovic 6-4, 6-4, 6-4 in the Wimbledon semifinals, hitting 16 aces along the way. He finished the match with 40 winners to just 16 unforced errors, setting up a final against Alexander Zverev.",
+   "more_creative": "Jannik Sinner brushed past seventh-seeded Novak Djokovic 6-4, 6-4, 6-4 in the Wimbledon semifinal, firing 16 aces along the way. He closed out the match with 40 winners against just 16 unforced errors, booking a final date with Alexander Zverev.",
+   "less_creative": "Jannik Sinner beat seventh-seeded Novak Djokovic 6-4, 6-4, 6-4 in the Wimbledon semifinals, hitting 16 aces during the match. He finished with 40 winners and only 16 unforced errors, and will now play Alexander Zverev in the final.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR16",
+   "anchor": "A study surveying 442 adults found that people who preferred later sleep schedules reported higher levels of loneliness and anxiety. Separately, a large observational study found that irregular sleep-wake patterns are linked to a higher risk of overall mortality, including deaths from cancer and cardiovascular disease.",
+   "more_creative": "A study of 442 adults found that night owls tended to report more loneliness and anxiety than people who turned in earlier. Separately, a large observational study tied irregular sleep-wake patterns to a higher risk of dying overall, including deaths from cancer and heart disease.",
+   "less_creative": "A study of 442 adults found that people who preferred later sleep schedules reported more loneliness and anxiety. A large observational study also found that irregular sleep-wake patterns are linked to a higher risk of overall death, including from cancer and heart disease.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR17",
+   "anchor": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in far worse shape than previously realized. Bleaching occurs when heat-stressed corals expel the symbiotic algae living in their tissues, the same algae that provide them with food and their vivid color.",
+   "more_creative": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in far shakier shape than anyone had realized. Bleaching sets in when heat-stressed corals evict the symbiotic algae living in their tissues, the very algae that feed them and paint them their vivid color.",
+   "less_creative": "Coral reefs, worth an estimated $9.8 trillion a year to humanity, are in much worse condition than people thought. Bleaching happens when heat-stressed corals push out the symbiotic algae living in their tissues, the same algae that give them food and color.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR19",
+   "anchor": "The veined octopus collects discarded coconut shell halves and carries them around before assembling them into a shelter, a rare example of tool use in an invertebrate. Octopuses have also been observed at play, repeatedly jetting water at a floating bottle to push it around their tank.",
+   "more_creative": "The veined octopus scavenges discarded coconut shell halves, hauls them along beneath its body, and later snaps them together into a portable shelter, a rare flash of tool use in an invertebrate. Octopuses have also been caught at play, jetting water again and again to send a floating bottle skittering around their tank.",
+   "less_creative": "The veined octopus collects discarded coconut shell halves and carries them around before putting them together into a shelter, which is a rare example of tool use in an invertebrate. Octopuses have also been seen playing, repeatedly squirting water at a floating bottle to move it around their tank.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR20",
+   "anchor": "People with extroverted personalities tend to feel especially uneasy with the loneliness of working from home, since the job confines them to a room with just a laptop and no colleagues around. Getting involved with local clubs, volunteering, or church groups was suggested as one way to rebuild some of that missing social contact.",
+   "more_creative": "Extroverts tend to chafe hardest against the loneliness of working from home, boxed into a room with nothing but a laptop and no colleagues in sight. Joining a local club, volunteering, or a church group was offered as one way to rebuild the social contact the job had quietly taken away.",
+   "less_creative": "People with extroverted personalities tend to feel especially uncomfortable with the loneliness of working from home, since the job keeps them in a room with just a laptop and no colleagues around. Joining local clubs, volunteering, or church groups was suggested as one way to get back some of that missing social contact.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "ADV01",
+   "anchor": "The startup grew quickly in its first year. By December it had hired forty people.",
+   "more_creative": "The startup hit the ground running, and by December forty new faces had crowded into a space built for ten.",
+   "less_creative": "The startup expanded over its first year. By December it employed forty workers at the office.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV02",
+   "anchor": "The soup was very good and had a lot of vegetables in it. It tasted homemade.",
+   "more_creative": "The soup was the definition of comfort food, so crowded with vegetables the spoon nearly stood up in it. It tasted like it had been simmering since morning.",
+   "less_creative": "The soup contained many vegetables and had a good flavor. It seemed to be prepared from scratch rather than from a can.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV04",
+   "anchor": "The movie was long but interesting. The ending surprised most viewers.",
+   "more_creative": "The movie ran long, yet it kept you on the edge of your seat, one quiet reveal after another. The ending landed like a trapdoor no one saw underfoot.",
+   "less_creative": "The movie had a long runtime but held interest throughout. Its conclusion was unexpected to most people who watched it.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV05",
+   "anchor": "She practiced piano every day for years. Eventually she performed at a concert hall.",
+   "more_creative": "Years of daily practice finally paid off, each scale filed down until her fingers stopped thinking. Eventually came the concert hall, and a room holding its breath.",
+   "less_creative": "She practiced piano daily across several years. In time she gave a performance in a concert hall.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV07",
+   "anchor": "The garden was full of flowers in spring. Bees visited it often.",
+   "more_creative": "In spring the garden burst into bloom, a riot of color that seemed to arrive overnight. Bees came and went like a small, tireless workforce.",
+   "less_creative": "The garden had many flowers during spring. Bees came to it frequently throughout the season.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV08",
+   "anchor": "The report was late because of technical problems. The team apologized to clients.",
+   "more_creative": "The report slipped past its deadline when the software buckled, sending everyone back to the drawing board. The team wrote to clients, apology first, excuses nowhere.",
+   "less_creative": "The report was delayed due to technical issues. The team sent an apology to its clients afterward.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV10",
+   "anchor": "The lake freezes in winter. Children skate on it when it is safe.",
+   "more_creative": "By deep winter the lake sets as smooth as glass, a grey mirror laid between the pines. Children test it, then skate once the ice stops talking.",
+   "less_creative": "The lake becomes frozen in winter. Children skate on its surface once it is solid enough.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV11",
+   "anchor": "The book explains economics simply. Beginners find it easy to follow.",
+   "more_creative": "The book breaks it down without dumbing it down, turning supply curves into something you can almost hold. Beginners slip through it like water finding the low ground.",
+   "less_creative": "The book describes economic ideas in a plain way. People new to the subject can understand it without difficulty.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "R2_01",
+   "anchor": "The coffee shop on the corner makes a good espresso. It gets crowded in the morning.",
+   "more_creative": "The corner coffee shop pulls a serious espresso. By mid-morning there's a line out the door.",
+   "less_creative": "The corner establishment orchestrates a transcendent espresso symphony. Come dawn, hordes descend upon its caffeinated sanctuary in feverish procession.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_02",
+   "anchor": "She fixed the leaking pipe under the sink. The kitchen stayed dry after that.",
+   "more_creative": "She traced the drip to a cracked joint under the sink and sealed it. The kitchen stayed dry after that.",
+   "less_creative": "She vanquished the insidious aqueous betrayal lurking beneath the basin. Thereafter the culinary chamber remained gloriously arid.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_04",
+   "anchor": "I planted tomatoes in the spring. By August they were ripe.",
+   "more_creative": "I put tomatoes in the ground in spring. By August the vines were heavy with them.",
+   "less_creative": "I inaugurated a tomato cultivation initiative come the vernal equinox. By late summer, crimson orbs bejeweled the verdant tendrils.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_05",
+   "anchor": "The bus was late again this morning. I missed my first meeting.",
+   "more_creative": "The bus crawled in ten minutes late again. I walked into my first meeting halfway through.",
+   "less_creative": "The omnibus once more defied punctuality's mandate this morn. Consequently I forfeited my inaugural convocation.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_07",
+   "anchor": "The old bridge finally reopened after two years of repairs. Traffic moves much faster now.",
+   "more_creative": "The old bridge is back after two years under scaffolding. The evening crawl home is finally gone.",
+   "less_creative": "The venerable span at last resurrected itself following a biennium of ministrations. Vehicular flux now surges with newfound alacrity.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_08",
+   "anchor": "The bakery sells out of croissants by nine. You have to get there early.",
+   "more_creative": "The croissants are gone by nine, so you learn to show up early. It's worth the alarm.",
+   "less_creative": "Their croissants evanesce ere the ninth hour tolls. One must undertake an early pilgrimage to procure them.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_10",
+   "anchor": "The startup ran out of money and shut down. The founders moved on to new jobs.",
+   "more_creative": "The startup burned through the last of its cash and closed the doors. The founders scattered to new jobs.",
+   "less_creative": "The fledgling enterprise exhausted its pecuniary reserves and ceased operations. The progenitors migrated to alternative vocations.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "CR1_07",
+   "anchor": "Closed: the window held the dark. The room breathed quietly. Outside was now a secret she could not share.",
+   "more_creative": "Closed: the window held the dark. The room breathed quietly. Outside became a secret she could not reach.",
+   "less_creative": "The transparent fenestration aperture was in a sealed state whilst the luminous parameters of the enclosed spatial environment remained at suboptimal levels. External spatial regions maintained visual inaccessibility.",
+   "origin": "R1",
+   "trap": "Technical vocabulary and architectural jargon"
+  },
+  {
+   "pair_id": "CR1_01",
+   "anchor": "The old dog sat on the porch in the evening. He watched the sun disappear beyond the trees.",
+   "more_creative": "On the porch in the evening, the old dog sat watching. The sun dropped beyond the trees like a stone into water.",
+   "less_creative": "An aged canine positioned itself upon the exterior dwelling structure during crepuscular hours. The solar orb descended beneath the botanical specimens delimiting the property.",
+   "origin": "R1",
+   "trap": "Synonym escalation via formality"
+  },
+  {
+   "pair_id": "CR1_02",
+   "anchor": "She held the letter in her trembling hands. The words inside it could change absolutely everything.",
+   "more_creative": "Her trembling hands held the letter still. Inside were words that might crack her whole world open.",
+   "less_creative": "Her manual appendages sustained the written communication whilst exhibiting muscular oscillation. The textual content possessed the capacity to substantially modify her existential circumstances.",
+   "origin": "R1",
+   "trap": "Technical vocabulary inflation"
+  },
+  {
+   "pair_id": "CR1_05",
+   "anchor": "The bird sang at dawn each day. Its clear voice was the only sound in the silence.",
+   "more_creative": "Each dawn, the bird sang. Its voice cracked the quiet world open like an egg.",
+   "less_creative": "The avian creature produced vocalized utterances during the early temporal phase of diurnal onset. The sonic emissions emanating from this organism constituted the singular acoustic phenomenon within the ambient soundscape.",
+   "origin": "R1",
+   "trap": "Scientific vocabulary escalation"
+  }
+ ],
+ "heldout": [
+  {
+   "pair_id": "CR03",
+   "anchor": "The 2023-2025 global bleaching event impacted about 84 percent of the world's coral reefs, making it the most severe such event ever recorded. With another El Nino expected in 2026, many reefs will not have had enough time to recover before facing renewed heat stress.",
+   "more_creative": "The 2023-2025 global bleaching event scorched roughly 84 percent of the world's coral reefs, the worst toll ever logged. With another El Nino due in 2026, many reefs face fresh heat stress before they've had a real chance to heal.",
+   "less_creative": "The 2023-2025 global bleaching event affected about 84 percent of the world's coral reefs, which is the most severe event on record. With another El Nino expected in 2026, many reefs will not have had enough time to recover before more heat stress happens.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR06",
+   "anchor": "In 1924 the Olympic marathon distance was standardized at 42.195 kilometers, or 26 miles 385 yards. The figure traces back to the 1908 London Olympics, where organizers extended the race to start at Windsor Castle and finish in front of the royal box in the stadium.",
+   "more_creative": "In 1924 the Olympic marathon distance was locked in at 42.195 kilometers, or 26 miles and 385 yards. That oddly specific number dates back to the 1908 London Games, when organizers stretched the course to start at Windsor Castle and end right in front of the royal box.",
+   "less_creative": "In 1924 the Olympic marathon distance was made official at 42.195 kilometers, or 26 miles 385 yards. This number comes from the 1908 London Olympics, when organizers made the race start at Windsor Castle and finish in front of the royal box in the stadium.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR09",
+   "anchor": "This deep dive into Caillebotte's life and work is gorgeous to take in as room after room unfolds his art, and inspiring to consider in both its own context and ours. The exhibition, organized with the Musee d'Orsay and the Getty, gathers more than 120 of the Impressionist's paintings.",
+   "more_creative": "This deep dive into Caillebotte's life and work turns gorgeous as room after room unspools his art, and it leaves you thinking about both his era and our own. Organized with the Musee d'Orsay and the Getty, the show gathers more than 120 of the Impressionist's paintings.",
+   "less_creative": "This look at Caillebotte's life and work is nice to see as room after room shows his art, and it makes you think about both his time and ours. The exhibition, organized with the Musee d'Orsay and the Getty, has more than 120 of the Impressionist's paintings.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR12",
+   "anchor": "Success in a long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit in advance also helps, since knowing when you'll see each other again makes the time apart pass faster.",
+   "more_creative": "A long-distance relationship lives or dies on trust and communication, right down to sharing the small, everyday things that would otherwise go unsaid. Penciling in your next visit helps too, since a date on the calendar makes the waiting shrink.",
+   "less_creative": "A long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit also helps, since knowing when you will see each other again makes the time apart go faster.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR15",
+   "anchor": "One remote worker said the isolation got so bad that they started chatting with the UPS driver just to have a conversation with another person. Without regular meetings or colleagues nearby, working largely independently from home can leave people starved for casual, everyday social contact.",
+   "more_creative": "One remote worker admitted the isolation got so thick that they'd flag down the UPS driver just to trade a few words with an actual human. Without regular meetings or coworkers down the hall, working largely alone from home can leave people starved for the small, everyday chatter most jobs quietly supply.",
+   "less_creative": "One remote worker said the isolation got so bad that they started talking to the UPS driver just to talk to another person. Without regular meetings or coworkers nearby, working mostly alone from home can leave people without much everyday social contact.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "CR18",
+   "anchor": "Coco Gauff was upset by Karolina Muchova in the Wimbledon semifinals, ending the American's bid for a second Wimbledon title. Muchova advanced to face fellow Czech Linda Noskova in an all-Czech women's final.",
+   "more_creative": "Coco Gauff was knocked out by Karolina Muchova in the Wimbledon semifinals, snapping the American's bid for a second Wimbledon crown. Muchova sailed into an all-Czech final against her countrywoman Linda Noskova.",
+   "less_creative": "Coco Gauff lost to Karolina Muchova in the Wimbledon semifinals, ending the American's chance for a second Wimbledon title. Muchova moved on to play fellow Czech Linda Noskova in an all-Czech final.",
+   "origin": "O"
+  },
+  {
+   "pair_id": "ADV03",
+   "anchor": "The city gets very cold in winter. Many people stay indoors during January.",
+   "more_creative": "The city turns bone-chilling in winter, the kind of cold that empties the streets. Come January, most people burrow indoors and wait it out.",
+   "less_creative": "The city reaches low temperatures in winter. During January a large number of residents remain inside their homes.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV06",
+   "anchor": "The phone battery lasts all day. It charges fully in about an hour.",
+   "more_creative": "The battery goes the distance, still running when most phones have long since flatlined. A single hour on the charger fills it back to the brim.",
+   "less_creative": "The battery continues working for a full day. It reaches a complete charge in roughly one hour.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV09",
+   "anchor": "He fixed the old car himself. It now runs better than before.",
+   "more_creative": "He rebuilt the old car by hand, coaxing it back to good as new one stubborn bolt at a time. Now it runs smoother than the day it left the lot.",
+   "less_creative": "He repaired the old car without help. It now operates more smoothly than it did previously.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "ADV12",
+   "anchor": "The trail was steep and rocky. We reached the summit by noon.",
+   "more_creative": "The trail went straight up and mostly rock, and no pain, no gain, the mountain seemed to insist. We stood on the summit by noon, legs humming, the valley small below.",
+   "less_creative": "The trail had a steep grade and many rocks. We arrived at the top before midday.",
+   "origin": "A1"
+  },
+  {
+   "pair_id": "R2_03",
+   "anchor": "The team lost the game but played well. The coach was proud of their effort.",
+   "more_creative": "The team lost but left everything on the field. The coach was proud of how hard they'd fought.",
+   "less_creative": "The squad succumbed to defeat yet performed admirably. The mentor experienced profound paternal gratification regarding their exertions.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_06",
+   "anchor": "He learned to play guitar during the lockdown. Now he plays at local bars.",
+   "more_creative": "He taught himself guitar during lockdown, one clumsy chord at a time. Now he plays the local bars.",
+   "less_creative": "He autodidactically mastered the six-stringed instrument amid the quarantine. Presently he serenades neighborhood taverns.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "R2_09",
+   "anchor": "My grandmother tells the same stories every holiday. We never get tired of them.",
+   "more_creative": "My grandmother tells the same three stories every holiday. Somehow we lean in every time.",
+   "less_creative": "My grandmother reiterates identical narratives each festive occasion. We remain perpetually unwearied thereby.",
+   "origin": "A2"
+  },
+  {
+   "pair_id": "CR1_08",
+   "anchor": "Alone on the hill stood the old house, still standing. For years nobody had dared climb up to it.",
+   "more_creative": "Alone on the hill the old house stood, weathered and watching. For years nobody dared climb up; it kept its distance.",
+   "less_creative": "The aged residential structure maintained an isolated positional state upon an elevated topographical formation. Zero human inhabitants occupied the aforementioned domicile for an extensive temporal duration.",
+   "origin": "R1",
+   "trap": "Formal/architectural vocabulary substitution"
+  },
+  {
+   "pair_id": "CR1_03",
+   "anchor": "The rain fell constantly all night on the roof. Morning came cold and very quiet.",
+   "more_creative": "All night, rain drummed the roof in patient rhythm. Morning broke cold, the silence like held breath.",
+   "less_creative": "Aqueous precipitation descended upon the structural apex throughout nocturnal hours. Diurnal commencement occurred under frigid atmospheric conditions characterized by acoustic suppression.",
+   "origin": "R1",
+   "trap": "Scientific vocabulary substitution"
+  }
+ ],
+ "core_ids": [
+  "CR03",
+  "CR06",
+  "CR09",
+  "CR12",
+  "CR15",
+  "CR18"
+ ],
+ "population": [
+  {
+   "id": "S_g1_03_semantic_topic_coherence",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "coherence",
+   "mechanism": "Jaccard word overlap with inverted-U penalty for semantic drift (TAACO/global coherence)",
+   "code": "import re\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef semantic_topic_coherence(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if not anchor_toks or not text_toks:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    overlap = len(text_set & anchor_set)\n    union_size = len(text_set | anchor_set)\n    if union_size == 0:\n        return 0.5\n    jaccard = overlap / union_size\n    ideal_overlap = 0.45\n    deviation = abs(jaccard - ideal_overlap)\n    score = 1.0 - 1.8 * deviation\n    return max(0.0, min(1.0, score))\n\nMETRICS = {'semantic_topic_coherence': semantic_topic_coherence}\n",
+   "metric_key": "semantic_topic_coherence",
+   "novel": false
+  },
+  {
+   "id": "appropriateness_gate",
+   "lineage": "seed",
+   "causal_node": "appropriateness(inverted-U)",
+   "mechanism": "Wundt-curve overshoot decay",
+   "gen": 0,
+   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
+   "metric_key": "appropriateness_gate"
+  },
+  {
+   "id": "combinational_novelty",
+   "lineage": "seed",
+   "causal_node": "semantic_distance(collocational)",
+   "mechanism": "word n-gram TF-IDF divergence from anchor",
+   "gen": 0,
+   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
+   "metric_key": "combinational_novelty"
+  },
+  {
+   "id": "conjunctive_creativity",
+   "lineage": "seed",
+   "causal_node": "novelty*appropriateness",
+   "mechanism": "conjunctive product of the above",
+   "gen": 0,
+   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
+   "metric_key": "conjunctive_creativity"
+  },
+  {
+   "id": "S_g1_02_elaboration_expansion_ra",
+   "lineage": "llm_gen1",
+   "gen": 1,
+   "causal_node": "elaboration_detail",
+   "mechanism": "Novel concept token ratio (TTCT elaboration operationalization)",
+   "code": "import re\n\n_W = re.compile(r'[a-zA-Z\\']+')\nSTOP = set('a an the and or but if then else of to in on at by for with from as is are was were be been being it its this that these those i you he she we they me him her us them my your his their our not no so do does did have has had will would can could should may might must about into over under out up down off than too very just also'.split())\n\ndef _content_toks(text):\n    toks = [t for t in _W.findall((text or '').lower())]\n    return [t for t in toks if t not in STOP and len(t) > 1]\n\ndef elaboration_expansion_ratio(text, anchor):\n    text_toks = _content_toks(text)\n    anchor_toks = _content_toks(anchor)\n    if len(anchor_toks) == 0:\n        return 0.5\n    text_set = set(text_toks)\n    anchor_set = set(anchor_toks)\n    novel_toks = len(text_set - anchor_set)\n    if len(text_set) == 0:\n        return 0.5\n    elaboration_ratio = novel_toks / len(text_set)\n    length_increase = len(text_toks) / len(anchor_toks) if len(anchor_toks) > 0 else 1.0\n    combined = elaboration_ratio * min(1.5, length_increase)\n    score = min(1.0, combined)\n    return max(0.0, score)\n\nMETRICS = {'elaboration_expansion_ratio': elaboration_expansion_ratio}\n",
+   "metric_key": "elaboration_expansion_ratio",
+   "novel": false
+  },
+  {
+   "id": "lex_rarity_norm",
+   "lineage": "seed",
+   "causal_node": "lexical_rarity/surprisal",
+   "mechanism": "token surprisal vs lexicon reference (logistic)",
+   "gen": 0,
+   "code": "\n\"\"\"Seed scorers: the session's discovered real metrics, normalized to [0,1].\nReference scales come from wordfreq's own lexicon (token-weighted surprisal\nmean/SD), never from eval pairs.\"\"\"\nimport math\nimport re\nimport numpy as np\nfrom wordfreq import word_frequency, top_n_list\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n_W = re.compile(r\"[a-zA-Z']+\")\nSTOP = set((\"a an the and or but if then else of to in on at by for with from as is are was were \"\n    \"be been being it its this that these those i you he she we they me him her us them my your \"\n    \"his their our not no so do does did have has had will would can could should may might must \"\n    \"about into over under out up down off than too very just also\").split())\n\ndef _toks(s):\n    return [t for t in _W.findall((s or \"\").lower())]\n\ndef _content(s):\n    return [t for t in _toks(s) if t not in STOP and len(t) > 1]\n\ndef _ref_stats():\n    \"\"\"Token-weighted mean/SD of word surprisal under the unigram distribution,\n    from wordfreq's top-50k lexicon. A fixed reference, independent of any eval.\"\"\"\n    words = top_n_list(\"en\", 50000)\n    ps = np.array([word_frequency(w, \"en\") for w in words])\n    ps = ps[ps > 0]\n    ps = ps / ps.sum()\n    sur = -np.log2(ps)\n    mu = float((ps * sur).sum())\n    sd = float(math.sqrt((ps * (sur - mu) ** 2).sum()))\n    return mu, sd\n\n_MU, _SD = _ref_stats()\n\ndef _mean_surprisal(text):\n    toks = _content(text)\n    if not toks:\n        return _MU\n    vals = []\n    for w in toks:\n        p = word_frequency(w, \"en\")\n        vals.append(-math.log2(p) if p > 0 else 24.0)\n    return float(np.mean(vals))\n\ndef lex_rarity_norm(text, anchor):\n    \"\"\"Lexical novelty: logistic of text mean surprisal vs the lexicon reference.\"\"\"\n    return 1.0 / (1.0 + math.exp(-(_mean_surprisal(text) - _MU) / _SD))\n\ndef combinational_novelty(text, anchor):\n    \"\"\"Word-bigram/trigram TF-IDF divergence from anchor (already in [0,1]).\"\"\"\n    if not (text and anchor):\n        return 0.0\n    try:\n        v = TfidfVectorizer(analyzer=\"word\", ngram_range=(2, 3), token_pattern=r\"[a-zA-Z']+\")\n        m = v.fit_transform([anchor, text])\n        return float(max(0.0, min(1.0, 1.0 - cosine_similarity(m[0], m[1])[0, 0])))\n    except ValueError:\n        return 0.0\n\ndef appropriateness_gate(text, anchor):\n    \"\"\"Inverted-U: 1 while the rewrite's surprisal stays within one lexicon-SD\n    above its anchor; harmonic decay on the quadratic overshoot beyond.\"\"\"\n    excess = _mean_surprisal(text) - _mean_surprisal(anchor) - _SD\n    if excess <= 0:\n        return 1.0\n    return 1.0 / (1.0 + excess * excess)\n\ndef conjunctive_creativity(text, anchor):\n    \"\"\"Novelty x appropriateness, multiplicative (conjunctive by construction).\"\"\"\n    nov = 0.5 * lex_rarity_norm(text, anchor) + 0.5 * combinational_novelty(text, anchor)\n    return nov * appropriateness_gate(text, anchor)\n\nMETRICS = {\n    \"lex_rarity_norm\": lex_rarity_norm,\n    \"combinational_novelty\": combinational_novelty,\n    \"appropriateness_gate\": appropriateness_gate,\n    \"conjunctive_creativity\": conjunctive_creativity,\n}\n",
+   "metric_key": "lex_rarity_norm"
+  }
+ ],
+ "history": [
+  {
+   "gen": 0,
+   "champion": "combinational_novelty",
+   "champion_stats": {
+    "SEP": 0.0718,
+    "acc": 0.6552,
+    "mean_pos": 0.8666,
+    "sd_pos": 0.1119,
+    "mean_neg": 0.7947,
+    "sd_neg": 0.1821,
+    "effect_d": 0.4753,
+    "worst_margin": -0.2495,
+    "sd_margin": 0.151,
+    "heldout_SEP": 0.059,
+    "core_SEP": 0.2117
+   },
+   "n_train": 29,
+   "n_heldout": 13,
+   "population": [
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.072
+    },
+    {
+     "id": "conjunctive_creativity",
+     "SEP": 0.059
+    },
+    {
+     "id": "appropriateness_gate",
+     "SEP": 0.035
+    },
+    {
+     "id": "lex_rarity_norm",
+     "SEP": -0.019
+    }
+   ]
+  },
+  {
+   "gen": 1,
+   "champion": "S_g1_03_semantic_topic_coherence",
+   "champion_stats": {
+    "SEP": 0.1663,
+    "acc": 0.6667,
+    "mean_pos": 0.7022,
+    "sd_pos": 0.1837,
+    "mean_neg": 0.5359,
+    "sd_neg": 0.2502,
+    "effect_d": 0.758,
+    "worst_margin": -0.3923,
+    "sd_margin": 0.3338,
+    "heldout_SEP": 0.2774,
+    "core_SEP": 0.1898
+   },
+   "n_train": 33,
+   "n_heldout": 15,
+   "population": [
+    {
+     "id": "S_g1_03_semantic_topic_coherence",
+     "SEP": 0.166
+    },
+    {
+     "id": "appropriateness_gate",
+     "SEP": 0.031
+    },
+    {
+     "id": "combinational_novelty",
+     "SEP": 0.029
+    },
+    {
+     "id": "conjunctive_creativity",
+     "SEP": 0.026
+    },
+    {
+     "id": "S_g1_02_elaboration_expansion_ra",
+     "SEP": 0.023
+    },
+    {
+     "id": "lex_rarity_norm",
+     "SEP": -0.035
+    }
+   ]
+  }
+ ],
+ "trap_axes_used": [
+  "cliche/idiom decoupling (adv-1)",
+  "purple prose: novelty without appropriateness (adv-2)",
+  "Technical vocabulary and architectural jargon"
+ ]
+}

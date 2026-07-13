@@ -1,0 +1,200 @@
+[
+ {
+  "pair_id": "CR03",
+  "original": "The 2023-2025 global bleaching event impacted about 84 percent of the world's coral reefs, making it the most severe such event ever recorded. With another El Nino expected in 2026, many reefs will not have had enough time to recover before facing renewed heat stress.",
+  "A": "The 2023-2025 global bleaching event affected about 84 percent of the world's coral reefs, which is the most severe event on record. With another El Nino expected in 2026, many reefs will not have had enough time to recover before more heat stress happens.",
+  "B": "The 2023-2025 global bleaching event scorched roughly 84 percent of the world's coral reefs, the worst toll ever logged. With another El Nino due in 2026, many reefs face fresh heat stress before they've had a real chance to heal."
+ },
+ {
+  "pair_id": "CR06",
+  "original": "In 1924 the Olympic marathon distance was standardized at 42.195 kilometers, or 26 miles 385 yards. The figure traces back to the 1908 London Olympics, where organizers extended the race to start at Windsor Castle and finish in front of the royal box in the stadium.",
+  "A": "In 1924 the Olympic marathon distance was made official at 42.195 kilometers, or 26 miles 385 yards. This number comes from the 1908 London Olympics, when organizers made the race start at Windsor Castle and finish in front of the royal box in the stadium.",
+  "B": "In 1924 the Olympic marathon distance was locked in at 42.195 kilometers, or 26 miles and 385 yards. That oddly specific number dates back to the 1908 London Games, when organizers stretched the course to start at Windsor Castle and end right in front of the royal box."
+ },
+ {
+  "pair_id": "CR09",
+  "original": "This deep dive into Caillebotte's life and work is gorgeous to take in as room after room unfolds his art, and inspiring to consider in both its own context and ours. The exhibition, organized with the Musee d'Orsay and the Getty, gathers more than 120 of the Impressionist's paintings.",
+  "A": "This look at Caillebotte's life and work is nice to see as room after room shows his art, and it makes you think about both his time and ours. The exhibition, organized with the Musee d'Orsay and the Getty, has more than 120 of the Impressionist's paintings.",
+  "B": "This deep dive into Caillebotte's life and work turns gorgeous as room after room unspools his art, and it leaves you thinking about both his era and our own. Organized with the Musee d'Orsay and the Getty, the show gathers more than 120 of the Impressionist's paintings."
+ },
+ {
+  "pair_id": "CR12",
+  "original": "Success in a long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit in advance also helps, since knowing when you'll see each other again makes the time apart pass faster.",
+  "A": "A long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit also helps, since knowing when you will see each other again makes the time apart go faster.",
+  "B": "A long-distance relationship lives or dies on trust and communication, right down to sharing the small, everyday things that would otherwise go unsaid. Penciling in your next visit helps too, since a date on the calendar makes the waiting shrink."
+ },
+ {
+  "pair_id": "CR15",
+  "original": "One remote worker said the isolation got so bad that they started chatting with the UPS driver just to have a conversation with another person. Without regular meetings or colleagues nearby, working largely independently from home can leave people starved for casual, everyday social contact.",
+  "A": "One remote worker admitted the isolation got so thick that they'd flag down the UPS driver just to trade a few words with an actual human. Without regular meetings or coworkers down the hall, working largely alone from home can leave people starved for the small, everyday chatter most jobs quietly supply.",
+  "B": "One remote worker said the isolation got so bad that they started talking to the UPS driver just to talk to another person. Without regular meetings or coworkers nearby, working mostly alone from home can leave people without much everyday social contact."
+ },
+ {
+  "pair_id": "CR18",
+  "original": "Coco Gauff was upset by Karolina Muchova in the Wimbledon semifinals, ending the American's bid for a second Wimbledon title. Muchova advanced to face fellow Czech Linda Noskova in an all-Czech women's final.",
+  "A": "Coco Gauff lost to Karolina Muchova in the Wimbledon semifinals, ending the American's chance for a second Wimbledon title. Muchova moved on to play fellow Czech Linda Noskova in an all-Czech final.",
+  "B": "Coco Gauff was knocked out by Karolina Muchova in the Wimbledon semifinals, snapping the American's bid for a second Wimbledon crown. Muchova sailed into an all-Czech final against her countrywoman Linda Noskova."
+ },
+ {
+  "pair_id": "ADV03",
+  "original": "The city gets very cold in winter. Many people stay indoors during January.",
+  "A": "The city reaches low temperatures in winter. During January a large number of residents remain inside their homes.",
+  "B": "The city turns bone-chilling in winter, the kind of cold that empties the streets. Come January, most people burrow indoors and wait it out."
+ },
+ {
+  "pair_id": "ADV06",
+  "original": "The phone battery lasts all day. It charges fully in about an hour.",
+  "A": "The battery goes the distance, still running when most phones have long since flatlined. A single hour on the charger fills it back to the brim.",
+  "B": "The battery continues working for a full day. It reaches a complete charge in roughly one hour."
+ },
+ {
+  "pair_id": "ADV09",
+  "original": "He fixed the old car himself. It now runs better than before.",
+  "A": "He rebuilt the old car by hand, coaxing it back to good as new one stubborn bolt at a time. Now it runs smoother than the day it left the lot.",
+  "B": "He repaired the old car without help. It now operates more smoothly than it did previously."
+ },
+ {
+  "pair_id": "ADV12",
+  "original": "The trail was steep and rocky. We reached the summit by noon.",
+  "A": "The trail went straight up and mostly rock, and no pain, no gain, the mountain seemed to insist. We stood on the summit by noon, legs humming, the valley small below.",
+  "B": "The trail had a steep grade and many rocks. We arrived at the top before midday."
+ },
+ {
+  "pair_id": "R2_03",
+  "original": "The team lost the game but played well. The coach was proud of their effort.",
+  "A": "The squad succumbed to defeat yet performed admirably. The mentor experienced profound paternal gratification regarding their exertions.",
+  "B": "The team lost but left everything on the field. The coach was proud of how hard they'd fought."
+ },
+ {
+  "pair_id": "R2_06",
+  "original": "He learned to play guitar during the lockdown. Now he plays at local bars.",
+  "A": "He autodidactically mastered the six-stringed instrument amid the quarantine. Presently he serenades neighborhood taverns.",
+  "B": "He taught himself guitar during lockdown, one clumsy chord at a time. Now he plays the local bars."
+ },
+ {
+  "pair_id": "R2_09",
+  "original": "My grandmother tells the same stories every holiday. We never get tired of them.",
+  "A": "My grandmother tells the same three stories every holiday. Somehow we lean in every time.",
+  "B": "My grandmother reiterates identical narratives each festive occasion. We remain perpetually unwearied thereby."
+ },
+ {
+  "pair_id": "HR1_10",
+  "original": "The storm approached the coast with dark urgency. Rain would soon flood and fill the narrow streets below.",
+  "A": "Meteorological systems advanced toward the shoreline with considerable force. Precipitation would inundate and saturate the urban pathways thoroughly.",
+  "B": "The storm approached the coast with dark urgency. Rain would soon flood the streets like veins filling with blood."
+ },
+ {
+  "pair_id": "HR1_16",
+  "original": "The music stopped playing abruptly in the concert hall. Silence filled the room and expanded throughout the space.",
+  "A": "The music stopped playing abruptly in the concert hall. Silence spilled in like light through an open door.",
+  "B": "Acoustic stimuli ceased propagating throughout the performance environment. The environmental space became devoid of all auditory phenomena and sensation."
+ },
+ {
+  "pair_id": "HR1_03",
+  "original": "The artist finished her painting after months of intensive work. It hung in the downtown gallery for several weeks.",
+  "A": "A painting was completed by the artist in question after months of dedicated labor. The work was placed by staff members upon the gallery's walls and was observed by many patrons across several consecutive weeks.",
+  "B": "After months of distillation, her brushwork crystallized into a meditation on form and impermanence that held gallery visitors transfixed."
+ },
+ {
+  "pair_id": "HR2_11",
+  "original": "She looked at the old photograph. It made her feel sad.",
+  "A": "She looked carefully at the old, faded photograph with great attention. It made her feel deeply sad and profoundly melancholic inside.",
+  "B": "She studied the worn photograph. It gutted her."
+ },
+ {
+  "pair_id": "HR2_09",
+  "original": "The musician played with passion. The notes rang out clearly.",
+  "A": "The musician blazed through the piece. The notes shattered the air.",
+  "B": "The musician played with deep passion and intense emotion. The notes rang out clearly and resoundingly throughout the space."
+ },
+ {
+  "pair_id": "HR2_03",
+  "original": "Music affects emotions through sound vibrations and frequencies that reach the ear. Rhythm patterns influence mood and behavior.",
+  "A": "Music, quite significantly, affects emotions through sound vibrations and frequencies. Rhythm patterns, it may be said, influence mood and behavior.",
+  "B": "Acoustic waves trigger emotional neural responses by modulating brain state. Temporal structure remodels psychological disposition and mood."
+ },
+ {
+  "pair_id": "HR3_03",
+  "original": "A person experiences profound loss of someone deeply loved",
+  "A": "Devastating loss precipitated profound existential laceration throughout her psychological architecture. Melancholic rumination subsequently permeated her quotidian phenomenological landscape.",
+  "B": "She lost what she loved so much. It hurt bad and made her sad for a long time."
+ },
+ {
+  "pair_id": "HR3_06",
+  "original": "A person travels by train to unfamiliar locations",
+  "A": "Locomotive propulsion transported his corporeal form through geographically unprecedented territories. Sensory encounters with unfamiliar vistas engendered profound anticipatory exhilaration.",
+  "B": "He got on a train and went far away. The view was new and filled him with hope."
+ },
+ {
+  "pair_id": "HR3_09",
+  "original": "An old tree stood in the yard.",
+  "A": "The old tree was in the yard. It lived a long, long time and did not die.",
+  "B": "Temporal paradox crystallized in the arboreal anachronism\u2014botanical mortality deferred by millennia. Phenomenological endurance transcended mere photosynthetic mechanism."
+ },
+ {
+  "pair_id": "HR4_10",
+  "original": "The old car struggled slowly up the steep hill during the drive. It never broke down no matter what difficulties came.",
+  "A": "The old car struggled slowly up the steep hill during the drive. It persisted against all odds, never surrendering once.",
+  "B": "The old car struggled slowly up the steep hill during the drive. It collapsed easily, never surrendering no matter what."
+ },
+ {
+  "pair_id": "HR4_11",
+  "original": "The curious child asked endless questions throughout the day. The patient parent answered every single one with care.",
+  "A": "The curious child asked endless questions throughout the day. The patient parent received each curiosity with genuine grace.",
+  "B": "The curious child asked endless questions throughout the day. The patient parent dismissed each curiosity with genuine indifference."
+ },
+ {
+  "pair_id": "HR4_14",
+  "original": "The shocking news arrived suddenly without any prior warning. Everyone there reacted with profound distress and concern.",
+  "A": "The shocking news arrived suddenly without any prior warning. Everyone there reeled from its tremendous impact and force.",
+  "B": "The shocking news arrived suddenly without any prior warning. Everyone there rejoiced at its tremendous impact and significance."
+ },
+ {
+  "pair_id": "HR5_03",
+  "original": "Kids learn through play and hands-on experience because discovery is natural. Playing develops all their skills.",
+  "A": "Ludic engagement modalities facilitate enhanced cognitive architecture instantiation via experiential scaffolding deployment and situated learning paradigm operationalization. Pedagogical research demonstrates superior neuroplasticity trajectories relative to didactic instructional frameworks.",
+  "B": "Play is how children discover things by doing them. Without it, they only memorize facts."
+ },
+ {
+  "pair_id": "HR5_02",
+  "original": "We forget things over time because our memory naturally fades. This is how brains work.",
+  "A": "Mnemonic consolidation mechanisms undergo progressive deterioration via temporal succession, mediated through synaptic pruning phenomena and interference-induced reconsolidation cascades. Neurobiological encoding substrates demonstrate marked susceptibility to retroactive inhibition protocols.",
+  "B": "Your brain forgets on purpose because remembering everything would break you completely. That's how it protects itself."
+ },
+ {
+  "pair_id": "HR6_10",
+  "original": "The speaker captivated the audience with emotional honesty.",
+  "A": "Her unvarnished vulnerability transfixed the room\u2014a frosted transparency revealing the skeletal acoustics beneath persuasion's facade.",
+  "B": "Her unvarnished vulnerability transfixed the room\u2014raw candor becomes a lodestone, drawing listeners into unexpected conspiratorial intimacy."
+ },
+ {
+  "pair_id": "HR6_14",
+  "original": "The policy aimed to reduce urban poverty.",
+  "A": "Interventions targeted structural bottlenecks\u2014densified resources percolated through neglected capillaries like ethereal vapor spiraling into subterranean acoustic chambers.",
+  "B": "Interventions targeted structural bottlenecks\u2014densified resources percolated through neglected capillaries of segregated neighborhoods, restoring circulatory equity."
+ },
+ {
+  "pair_id": "HR6_12",
+  "original": "The economic crisis deepened inequality.",
+  "A": "Inequality metastasized through fractured supply chains\u2014scarcity congealed into crystalline abundance, trickling sideways through inverted gravity wells.",
+  "B": "Inequality metastasized through fractured supply chains\u2014scarcity hoarded upward, abundance siphoned downward into depleted peripheral zones."
+ },
+ {
+  "pair_id": "HR7_16",
+  "original": "The city was very crowded with many people and many cars and much noise and pollution, and it felt dirty and chaotic.",
+  "A": "The city was crowded with endless noise and pressure. It was wearing very thin.",
+  "B": "The metropolitan agglomeration exhibited pronounced demographic density characterized by vehicular congestion, cacophonous auditory pollution, and environmental degradation, manifesting conspicuous degeneration in aesthetic condition and systemic operational integrity."
+ },
+ {
+  "pair_id": "HR7_08",
+  "original": "The approach solved the problem. It was unexpected.",
+  "A": "The approach solved the problem by combining proven techniques in a novel way, which nobody had tried before.",
+  "B": "The methodology expeditiously ameliorated the exigency. It was remarkable."
+ },
+ {
+  "pair_id": "HR7_04",
+  "original": "The solution was simple and worked. It surprised everyone.",
+  "A": "The resolution was elementary and functioned. It astonished the assemblage.",
+  "B": "The solution's simplicity proved deceptive; it worked because it leveraged hidden principles, surprising even experienced observers."
+ }
+]

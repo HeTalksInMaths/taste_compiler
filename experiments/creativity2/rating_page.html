@@ -1,0 +1,110 @@
+<title>Blind Creativity Ratings</title>
+<style>
+:root{
+  --ground:#F2F3F1; --surface:#FBFCFA; --ink:#21262B; --muted:#6B7570;
+  --line:#DDE2DE; --accent:#146B5D; --accent-ink:#0E4A41; --tint:#E3EEE9;
+}
+@media (prefers-color-scheme: dark){:root{
+  --ground:#171A19; --surface:#1F2422; --ink:#E6E9E7; --muted:#93A09A;
+  --line:#333B37; --accent:#57B8A5; --accent-ink:#7BCDBD; --tint:#22322D;
+}}
+:root[data-theme="dark"]{
+  --ground:#171A19; --surface:#1F2422; --ink:#E6E9E7; --muted:#93A09A;
+  --line:#333B37; --accent:#57B8A5; --accent-ink:#7BCDBD; --tint:#22322D;
+}
+:root[data-theme="light"]{
+  --ground:#F2F3F1; --surface:#FBFCFA; --ink:#21262B; --muted:#6B7570;
+  --line:#DDE2DE; --accent:#146B5D; --accent-ink:#0E4A41; --tint:#E3EEE9;
+}
+html,body{margin:0;padding:0;background:var(--ground);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:40px 20px 80px}
+header{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:28px}
+h1{font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin:0}
+.prog{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rubric{font-size:13.5px;line-height:1.55;color:var(--muted);margin:0 0 26px}
+.rubric strong{color:var(--ink);font-weight:600}
+.olabel,.plabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 6px}
+.original{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:15.5px;line-height:1.55;color:var(--muted);font-style:italic;
+  border-left:2px solid var(--line);padding-left:14px;margin:0 0 24px}
+.opt{display:block;width:100%;text-align:left;background:var(--surface);
+  border:1px solid var(--line);border-radius:6px;padding:16px 18px;margin:0 0 14px;
+  cursor:pointer;color:var(--ink);transition:border-color .12s ease}
+.opt:hover{border-color:var(--accent)}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt .plabel{color:var(--accent-ink)}
+.opt p{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px;line-height:1.55;margin:0}
+.hint{font-size:12px;color:var(--muted);margin-top:18px}
+.dots{display:flex;gap:5px;margin-top:26px;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dot.done{background:var(--accent)}
+.undo{background:none;border:none;color:var(--muted);font-size:12.5px;
+  cursor:pointer;padding:0;margin-top:14px;text-decoration:underline}
+.result h2{font-size:17px;font-weight:600;margin:0 0 10px}
+.result p{font-size:14px;line-height:1.55;color:var(--muted)}
+.code{background:var(--surface);border:1px solid var(--line);border-radius:6px;
+  padding:14px 16px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
+  word-break:break-all;overflow-x:auto;margin:16px 0}
+.copy{background:var(--accent);color:var(--ground);border:none;border-radius:6px;
+  padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer}
+.copy:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){
+  .card{animation:fade .18s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+}
+</style>
+<div class="wrap">
+<header><h1>Blind creativity ratings</h1><div class="prog" id="prog"></div></header>
+<div id="stage"></div>
+</div>
+<script>
+const PAIRS = [{"id": "HR2_03", "orig": "Music affects emotions through sound vibrations and frequencies that reach the ear. Rhythm patterns influence mood and behavior.", "A": "Music, quite significantly, affects emotions through sound vibrations and frequencies. Rhythm patterns, it may be said, influence mood and behavior.", "B": "Acoustic waves trigger emotional neural responses by modulating brain state. Temporal structure remodels psychological disposition and mood."}, {"id": "HR1_03", "orig": "The artist finished her painting after months of intensive work. It hung in the downtown gallery for several weeks.", "A": "A painting was completed by the artist in question after months of dedicated labor. The work was placed by staff members upon the gallery's walls and was observed by many patrons across several consecutive weeks.", "B": "After months of distillation, her brushwork crystallized into a meditation on form and impermanence that held gallery visitors transfixed."}, {"id": "CR12", "orig": "Success in a long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit in advance also helps, since knowing when you'll see each other again makes the time apart pass faster.", "A": "A long-distance relationship depends a lot on trust and communication, including sharing the small, everyday things that happen in daily life. Planning your next visit also helps, since knowing when you will see each other again makes the time apart go faster.", "B": "A long-distance relationship lives or dies on trust and communication, right down to sharing the small, everyday things that would otherwise go unsaid. Penciling in your next visit helps too, since a date on the calendar makes the waiting shrink."}, {"id": "R2_09", "orig": "My grandmother tells the same stories every holiday. We never get tired of them.", "A": "My grandmother tells the same three stories every holiday. Somehow we lean in every time.", "B": "My grandmother reiterates identical narratives each festive occasion. We remain perpetually unwearied thereby."}, {"id": "HR5_03", "orig": "Kids learn through play and hands-on experience because discovery is natural. Playing develops all their skills.", "A": "Ludic engagement modalities facilitate enhanced cognitive architecture instantiation via experiential scaffolding deployment and situated learning paradigm operationalization. Pedagogical research demonstrates superior neuroplasticity trajectories relative to didactic instructional frameworks.", "B": "Play is how children discover things by doing them. Without it, they only memorize facts."}, {"id": "HR3_09", "orig": "An old tree stood in the yard.", "A": "The old tree was in the yard. It lived a long, long time and did not die.", "B": "Temporal paradox crystallized in the arboreal anachronism\u2014botanical mortality deferred by millennia. Phenomenological endurance transcended mere photosynthetic mechanism."}, {"id": "CR06", "orig": "In 1924 the Olympic marathon distance was standardized at 42.195 kilometers, or 26 miles 385 yards. The figure traces back to the 1908 London Olympics, where organizers extended the race to start at Windsor Castle and finish in front of the royal box in the stadium.", "A": "In 1924 the Olympic marathon distance was made official at 42.195 kilometers, or 26 miles 385 yards. This number comes from the 1908 London Olympics, when organizers made the race start at Windsor Castle and finish in front of the royal box in the stadium.", "B": "In 1924 the Olympic marathon distance was locked in at 42.195 kilometers, or 26 miles and 385 yards. That oddly specific number dates back to the 1908 London Games, when organizers stretched the course to start at Windsor Castle and end right in front of the royal box."}, {"id": "HR2_11", "orig": "She looked at the old photograph. It made her feel sad.", "A": "She looked carefully at the old, faded photograph with great attention. It made her feel deeply sad and profoundly melancholic inside.", "B": "She studied the worn photograph. It gutted her."}, {"id": "CR18", "orig": "Coco Gauff was upset by Karolina Muchova in the Wimbledon semifinals, ending the American's bid for a second Wimbledon title. Muchova advanced to face fellow Czech Linda Noskova in an all-Czech women's final.", "A": "Coco Gauff lost to Karolina Muchova in the Wimbledon semifinals, ending the American's chance for a second Wimbledon title. Muchova moved on to play fellow Czech Linda Noskova in an all-Czech final.", "B": "Coco Gauff was knocked out by Karolina Muchova in the Wimbledon semifinals, snapping the American's bid for a second Wimbledon crown. Muchova sailed into an all-Czech final against her countrywoman Linda Noskova."}, {"id": "HR4_10", "orig": "The old car struggled slowly up the steep hill during the drive. It never broke down no matter what difficulties came.", "A": "The old car struggled slowly up the steep hill during the drive. It persisted against all odds, never surrendering once.", "B": "The old car struggled slowly up the steep hill during the drive. It collapsed easily, never surrendering no matter what."}, {"id": "CR09", "orig": "This deep dive into Caillebotte's life and work is gorgeous to take in as room after room unfolds his art, and inspiring to consider in both its own context and ours. The exhibition, organized with the Musee d'Orsay and the Getty, gathers more than 120 of the Impressionist's paintings.", "A": "This look at Caillebotte's life and work is nice to see as room after room shows his art, and it makes you think about both his time and ours. The exhibition, organized with the Musee d'Orsay and the Getty, has more than 120 of the Impressionist's paintings.", "B": "This deep dive into Caillebotte's life and work turns gorgeous as room after room unspools his art, and it leaves you thinking about both his era and our own. Organized with the Musee d'Orsay and the Getty, the show gathers more than 120 of the Impressionist's paintings."}, {"id": "CR03", "orig": "The 2023-2025 global bleaching event impacted about 84 percent of the world's coral reefs, making it the most severe such event ever recorded. With another El Nino expected in 2026, many reefs will not have had enough time to recover before facing renewed heat stress.", "A": "The 2023-2025 global bleaching event affected about 84 percent of the world's coral reefs, which is the most severe event on record. With another El Nino expected in 2026, many reefs will not have had enough time to recover before more heat stress happens.", "B": "The 2023-2025 global bleaching event scorched roughly 84 percent of the world's coral reefs, the worst toll ever logged. With another El Nino due in 2026, many reefs face fresh heat stress before they've had a real chance to heal."}, {"id": "R2_06", "orig": "He learned to play guitar during the lockdown. Now he plays at local bars.", "A": "He autodidactically mastered the six-stringed instrument amid the quarantine. Presently he serenades neighborhood taverns.", "B": "He taught himself guitar during lockdown, one clumsy chord at a time. Now he plays the local bars."}, {"id": "CR15", "orig": "One remote worker said the isolation got so bad that they started chatting with the UPS driver just to have a conversation with another person. Without regular meetings or colleagues nearby, working largely independently from home can leave people starved for casual, everyday social contact.", "A": "One remote worker admitted the isolation got so thick that they'd flag down the UPS driver just to trade a few words with an actual human. Without regular meetings or coworkers down the hall, working largely alone from home can leave people starved for the small, everyday chatter most jobs quietly supply.", "B": "One remote worker said the isolation got so bad that they started talking to the UPS driver just to talk to another person. Without regular meetings or coworkers nearby, working mostly alone from home can leave people without much everyday social contact."}, {"id": "HR7_04", "orig": "The solution was simple and worked. It surprised everyone.", "A": "The resolution was elementary and functioned. It astonished the assemblage.", "B": "The solution's simplicity proved deceptive; it worked because it leveraged hidden principles, surprising even experienced observers."}];
+let idx = 0; const votes = [];
+const stage = document.getElementById('stage');
+const prog = document.getElementById('prog');
+function render(){
+  prog.textContent = idx < PAIRS.length ? (idx+1)+' of '+PAIRS.length : 'done';
+  if(idx >= PAIRS.length){ return renderDone(); }
+  const p = PAIRS[idx];
+  stage.innerHTML = `<div class="card">
+    ${idx===0?'<p class="rubric">For each item you\u2019ll see an <strong>original</strong> passage and two rewrites. Pick the rewrite that reads as <strong>more creative</strong> \u2014 fresher, more alive \u2014 while still meaning the same thing. Trust your instinct; there are no right answers shown.</p>':''}
+    <p class="olabel">Original</p>
+    <p class="original">${esc(p.orig)}</p>
+    <button class="opt" data-c="A"><p class="plabel">Rewrite A</p><p>${esc(p.A)}</p></button>
+    <button class="opt" data-c="B"><p class="plabel">Rewrite B</p><p>${esc(p.B)}</p></button>
+    <p class="hint">Click one, or press <b>A</b> / <b>B</b>.</p>
+    ${idx>0?'<button class="undo" id="undo">\u2190 change previous answer</button>':''}
+    <div class="dots">${PAIRS.map((_,i)=>`<span class="dot ${i<idx?'done':''}"></span>`).join('')}</div>
+  </div>`;
+  stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(b.dataset.c));
+  const u = document.getElementById('undo'); if(u) u.onclick = ()=>{ idx--; votes.pop(); render(); };
+}
+function choose(c){ votes.push(c); idx++; render(); }
+function renderDone(){
+  const code = 'RATINGS.v1 ' + PAIRS.map((p,i)=>p.id+'='+votes[i]).join(',');
+  stage.innerHTML = `<div class="card result">
+    <h2>All ${PAIRS.length} rated \u2014 thank you</h2>
+    <p>Copy the code below and paste it back into the chat. It records only your A/B choices.</p>
+    <div class="code" id="code">${esc(code)}</div>
+    <button class="copy" id="copy">Copy code</button>
+    <button class="undo" id="undo2" style="display:block">\u2190 change previous answer</button>
+  </div>`;
+  document.getElementById('copy').onclick = async (e)=>{
+    try{ await navigator.clipboard.writeText(code); e.target.textContent='Copied'; }
+    catch(_){ const r=document.createRange(); r.selectNodeContents(document.getElementById('code'));
+      const s=getSelection(); s.removeAllRanges(); s.addRange(r); e.target.textContent='Select + copy manually'; }
+  };
+  document.getElementById('undo2').onclick = ()=>{ idx--; votes.pop(); render(); };
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+document.addEventListener('keydown',e=>{
+  if(idx>=PAIRS.length) return;
+  if(e.key==='a'||e.key==='A') choose('A');
+  if(e.key==='b'||e.key==='B') choose('B');
+});
+render();
+</script>

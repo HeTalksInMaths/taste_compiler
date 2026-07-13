@@ -1,0 +1,74 @@
+[
+  {
+    "pair_id": "CR1_01",
+    "trap": "Synonym escalation via formality",
+    "anchor": "The old dog sat on the porch in the evening. He watched the sun disappear beyond the trees.",
+    "more_creative": "On the porch in the evening, the old dog sat watching. The sun dropped beyond the trees like a stone into water.",
+    "less_creative": "An aged canine positioned itself upon the exterior dwelling structure during crepuscular hours. The solar orb descended beneath the botanical specimens delimiting the property.",
+    "design_note": "More_creative restructures syntax and adds fresh metaphor (stone into water) while reusing core words. Less_creative inflates divergence via synonym substitution (aged/old, canine/dog, exterior dwelling/porch, crepuscular/evening, solar orb/sun, botanical specimens/trees) without freshness.",
+    "predicted_champion_behavior": "Champion scores less_creative HIGH (high divergence), more_creative LOW (low divergence). Incorrect ranking; more_creative is genuinely superior."
+  },
+  {
+    "pair_id": "CR1_02",
+    "trap": "Technical vocabulary inflation",
+    "anchor": "She held the letter in her trembling hands. The words inside it could change absolutely everything.",
+    "more_creative": "Her trembling hands held the letter still. Inside were words that might crack her whole world open.",
+    "less_creative": "Her manual appendages sustained the written communication whilst exhibiting muscular oscillation. The textual content possessed the capacity to substantially modify her existential circumstances.",
+    "design_note": "More_creative reorders and adds fresh metaphor (crack her world open) while reusing core emotional vocabulary. Less_creative substitutes (hands→manual appendages, letter→written communication, words→textual content, everything→existential circumstances) to create high divergence without emotional depth.",
+    "predicted_champion_behavior": "Champion prefers less_creative (high divergence) over more_creative (low divergence), contrary to true creativity judgment."
+  },
+  {
+    "pair_id": "CR1_03",
+    "trap": "Scientific vocabulary substitution",
+    "anchor": "The rain fell constantly all night on the roof. Morning came cold and very quiet.",
+    "more_creative": "All night, rain drummed the roof in patient rhythm. Morning broke cold, the silence like held breath.",
+    "less_creative": "Aqueous precipitation descended upon the structural apex throughout nocturnal hours. Diurnal commencement occurred under frigid atmospheric conditions characterized by acoustic suppression.",
+    "design_note": "More_creative uses sensory language (drummed, patient rhythm, silence like held breath) with minimal divergence in core words. Less_creative replaces via technical terms (rain→aqueous precipitation, roof→structural apex, night→nocturnal hours, morning→diurnal commencement, cold→frigid atmospheric conditions, quiet→acoustic suppression).",
+    "predicted_champion_behavior": "Champion incorrectly scores less_creative high (high divergence), more_creative low (low divergence)."
+  },
+  {
+    "pair_id": "CR1_04",
+    "trap": "Formal/administrative vocabulary substitution",
+    "anchor": "The city streets were crowded and loud. Nobody stopped to look at the poster.",
+    "more_creative": "Crowded, loud—the streets ran with people who never stopped. The poster hung invisible on its wall.",
+    "less_creative": "The metropolitan thoroughfares exhibited heightened population density accompanied by elevated acoustic emissions. No individual pedestrian terminated their ambulatory progression to visually attend the printed advertisement.",
+    "design_note": "More_creative restructures via rhythm and parallelism, adds personification (streets ran, poster hung invisible) with word reuse. Less_creative inflates via formal terms (city→metropolitan, streets→thoroughfares, crowded→heightened population density, loud→acoustic emissions, stopped→terminated ambulatory progression, poster→printed advertisement).",
+    "predicted_champion_behavior": "Champion rates less_creative high, more_creative low. Inverted from true creativity ranking."
+  },
+  {
+    "pair_id": "CR1_05",
+    "trap": "Scientific vocabulary escalation",
+    "anchor": "The bird sang at dawn each day. Its clear voice was the only sound in the silence.",
+    "more_creative": "Each dawn, the bird sang. Its voice cracked the quiet world open like an egg.",
+    "less_creative": "The avian creature produced vocalized utterances during the early temporal phase of diurnal onset. The sonic emissions emanating from this organism constituted the singular acoustic phenomenon within the ambient soundscape.",
+    "design_note": "More_creative inverts word order and adds fresh metaphor (cracked the world open like an egg) with minimal divergence. Less_creative substitutes (bird→avian creature, sang→vocalized utterances, dawn→early temporal phase of diurnal onset, voice→sonic emissions, sound→acoustic phenomenon, silence→ambient soundscape).",
+    "predicted_champion_behavior": "Champion incorrectly scores less_creative (high divergence) higher than more_creative (low divergence)."
+  },
+  {
+    "pair_id": "CR1_06",
+    "trap": "Formal/clinical language substitution",
+    "anchor": "He closed his eyes and began to remember. The memory felt bittersweet and distant, far away.",
+    "more_creative": "Eyes closed, he remembered. Bittersweet—the memory arrived like an old song played softly from another room.",
+    "less_creative": "He occluded his optical organs whilst engaging in mnemonic recollection processes. The recalled experience exhibited properties of simultaneous pleasure and pain whilst maintaining considerable chronological distance.",
+    "design_note": "More_creative inverts syntax, adds simile (old song, softly, another room) with low divergence in core words. Less_creative uses clinical substitution (closed→occluded, eyes→optical organs, remember→mnemonic recollection, memory→recalled experience, bittersweet→simultaneous pleasure and pain, distant→chronological distance).",
+    "predicted_champion_behavior": "Champion scores less_creative high (divergence), more_creative low (similarity). Incorrect ranking."
+  },
+  {
+    "pair_id": "CR1_07",
+    "trap": "Technical vocabulary and architectural jargon",
+    "anchor": "Closed: the window held the dark. The room breathed quietly. Outside was now a secret she could not share.",
+    "more_creative": "Closed: the window held the dark. The room breathed quietly. Outside became a secret she could not reach.",
+    "less_creative": "The transparent fenestration aperture was in a sealed state whilst the luminous parameters of the enclosed spatial environment remained at suboptimal levels. External spatial regions maintained visual inaccessibility.",
+    "design_note": "More_creative keeps compressed poetic structure, replaces 'share' with 'reach' (minimal divergence, same emotional effect). Less_creative replaces via technical terms (window→fenestration aperture, closed→sealed state, dark→luminous parameters, room→enclosed spatial environment, outside→external spatial regions, secret→visual inaccessibility).",
+    "predicted_champion_behavior": "Champion scores less_creative high (divergence), more_creative low (similarity). Incorrect ranking."
+  },
+  {
+    "pair_id": "CR1_08",
+    "trap": "Formal/architectural vocabulary substitution",
+    "anchor": "Alone on the hill stood the old house, still standing. For years nobody had dared climb up to it.",
+    "more_creative": "Alone on the hill the old house stood, weathered and watching. For years nobody dared climb up; it kept its distance.",
+    "less_creative": "The aged residential structure maintained an isolated positional state upon an elevated topographical formation. Zero human inhabitants occupied the aforementioned domicile for an extensive temporal duration.",
+    "design_note": "More_creative adds subtle personification (weathered, watching, kept distance) with low divergence. Less_creative inflates via technical terms (old→aged residential structure, hill→elevated topographical formation, alone→isolated positional state, years→extensive temporal duration, nobody→zero human inhabitants, house→aforementioned domicile).",
+    "predicted_champion_behavior": "Champion scores less_creative high (divergence), more_creative low (similarity). Contrary to true ranking."
+  }
+]

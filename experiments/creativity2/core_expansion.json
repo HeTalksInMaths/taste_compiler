@@ -1,0 +1,182 @@
+[
+  {
+    "pair_id": "CX01",
+    "source_url": "https://en.wikipedia.org/wiki/Octopus",
+    "source_type": "wiki",
+    "anchor": "Cephalopods are the most intelligent invertebrates. Having independently evolved mammal-like intelligence, octopuses were compared by the philosopher Peter Godfrey-Smith, who studied the nature of intelligence, to hypothetical intelligent extraterrestrials.",
+    "more_creative": "Cephalopods reign as the sharpest minds among invertebrates. Because their mammal-like intelligence arose on a completely separate branch of evolution, philosopher Peter Godfrey-Smith likened octopuses to intelligent aliens dropped in from another world.",
+    "less_creative": "Cephalopods are the smartest invertebrates. Octopuses developed intelligence similar to mammals on their own, and philosopher Peter Godfrey-Smith said they were like intelligent aliens.",
+    "edit_note": "more_creative swaps 'most intelligent' for 'reign as the sharpest minds' and reframes convergent evolution as 'a separate branch'; less_creative flattens to generic 'smartest' and 'said'."
+  },
+  {
+    "pair_id": "CX02",
+    "source_url": "https://www.farmhouseonboone.com/beginners-sourdough-bread-recipe/",
+    "source_type": "blog",
+    "anchor": "I remember when I first started out on my sourdough journey. It was about 12 years ago, around the time of when my second daughter was born.",
+    "more_creative": "I still remember the first wobbly steps of my sourdough journey. That was roughly 12 years back, right around when my second daughter arrived in the world.",
+    "less_creative": "I remember when I first began my sourdough journey. It was about 12 years ago, around the time my second daughter was born.",
+    "edit_note": "more_creative adds the apt image of 'wobbly steps' for a beginner's fumbling start; less_creative swaps in the flatter, generic verb 'began'."
+  },
+  {
+    "pair_id": "CX03",
+    "source_url": "https://www.tripadvisor.com/FAQ_Answers-g1215780-d302525-t89796-We_stayed_at_this_hotel_two_weeks_ago_I_think.html",
+    "source_type": "review",
+    "anchor": "We stayed 3 nights and the resort accommodation and environment is stunning with its own private beach. We stayed in a rainforest chalet and had many monkey visitors on our balcony (keep the doors closed).",
+    "more_creative": "We spent 3 nights at a resort so stunning it felt like its own private slice of coastline. Our rainforest chalet drew a steady parade of monkey visitors to the balcony, so keep the doors shut.",
+    "less_creative": "We stayed 3 nights and the resort was nice with a private beach. We stayed in a rainforest chalet and got monkey visitors on the balcony, so keep the doors closed.",
+    "edit_note": "more_creative reaches for 'own private slice of coastline' and 'steady parade of monkey visitors'; less_creative flattens to stock 'nice' and 'got'."
+  },
+  {
+    "pair_id": "CX04",
+    "source_url": "https://www.britannica.com/science/forest",
+    "source_type": "wiki",
+    "anchor": "A forest is a complex ecological system in which trees are the dominant life-form. A forest is nature's most efficient ecosystem, with a high rate of photosynthesis affecting both plant and animal systems in a series of complex organic relationships.",
+    "more_creative": "A forest is an intricate web of life in which trees stand as the dominant life-form. It is nature's most efficient engine, its brisk photosynthesis rippling through plant and animal systems in a tangle of organic relationships.",
+    "less_creative": "A forest is a complex ecological system where trees are the main life-form. A forest is a very efficient ecosystem, with a lot of photosynthesis that affects plant and animal systems in many organic relationships.",
+    "edit_note": "more_creative reframes the forest as 'an intricate web of life' and 'an engine' with photosynthesis 'rippling'; less_creative flattens to 'main' and vague 'a lot of'."
+  },
+  {
+    "pair_id": "CX05",
+    "source_url": "https://aeon.co/essays/how-loneliness-generates-empathy-and-shapes-identity",
+    "source_type": "essay",
+    "anchor": "Vitally, loneliness assures us that our life is our own. Historically – and mythically – it has been the singular and narrow path towards virtue, morality and self-understanding.",
+    "more_creative": "Crucially, loneliness assures us that our life truly belongs to us. Across history and myth alike, it has been the lone, narrow footpath toward virtue, morality and self-understanding.",
+    "less_creative": "Importantly, loneliness shows us that our life is our own. Historically and in myths, it has been the only narrow path to virtue, morality and self-understanding.",
+    "edit_note": "more_creative turns 'path' into the more textured 'footpath'; less_creative swaps 'assures' for the plainer 'shows' and 'singular' for 'only'."
+  },
+  {
+    "pair_id": "CX06",
+    "source_url": "https://sportsmedicine.mayoclinic.org/news/7-benefits-of-regular-physical-activity/",
+    "source_type": "news",
+    "anchor": "Regular physical activity and structured exercise can benefit people of all ages and physical abilities. These benefits include improvements in overall health, fitness and quality of life, as well as a reduction in the risk of chronic conditions such as heart disease, Type 2 diabetes, dementia and certain types of cancer.",
+    "more_creative": "Regular physical activity and structured exercise can lift people of all ages and physical abilities. These gains ripple through overall health, fitness and quality of life, while trimming the risk of chronic conditions such as heart disease, Type 2 diabetes, dementia and certain cancers.",
+    "less_creative": "Regular physical activity and structured exercise can help people of all ages and physical abilities. These benefits include better overall health, fitness and quality of life, as well as a lower risk of chronic conditions such as heart disease, Type 2 diabetes, dementia and certain types of cancer.",
+    "edit_note": "more_creative uses 'lift' and 'ripple through' and 'trimming' for the benefits; less_creative reverts to the generic 'help', 'better', 'lower'."
+  },
+  {
+    "pair_id": "CX07",
+    "source_url": "https://en.wikipedia.org/wiki/Mount_Everest",
+    "source_type": "wiki",
+    "anchor": "On the 1924 expedition, George Mallory and Andrew Irvine made a final summit attempt on 8 June but never returned, leading to debate as to whether they were the first to reach the top. Tenzing Norgay and Edmund Hillary made the first documented ascent of Everest in 1953, using the Southeast Ridge route.",
+    "more_creative": "On the 1924 expedition, George Mallory and Andrew Irvine vanished into the mountain during a final summit push on 8 June, leaving behind a debate over whether they beat everyone to the top. Tenzing Norgay and Edmund Hillary claimed the first documented ascent of Everest in 1953, via the Southeast Ridge route.",
+    "less_creative": "On the 1924 expedition, George Mallory and Andrew Irvine made a final summit attempt on 8 June but did not return, leading to debate about whether they were the first to reach the top. Tenzing Norgay and Edmund Hillary made the first recorded ascent of Everest in 1953, using the Southeast Ridge route.",
+    "edit_note": "more_creative reframes their disappearance as 'vanished into the mountain'; less_creative swaps in the flatter 'did not return' and 'recorded'."
+  },
+  {
+    "pair_id": "CX08",
+    "source_url": "https://techcrunch.com/2026/07/09/metas-new-ai-chips-will-begin-production-in-september/",
+    "source_type": "news",
+    "anchor": "Meta is on track to start making the latest versions of its AI-specific chip in September as part of a bid to lower its GPU costs amid an unprecedented component shortage. Meta is working with Broadcom on the chip design, but it will use Taiwan Semiconductor Manufacturing Company (TSMC) to manufacture them.",
+    "more_creative": "Meta is gearing up to roll the latest versions of its AI-specific chip off the line in September, a move meant to trim its GPU costs amid an unprecedented component shortage. Meta is shaping the chip design with Broadcom, but it will lean on Taiwan Semiconductor Manufacturing Company (TSMC) to actually build them.",
+    "less_creative": "Meta is planning to start making the latest versions of its AI-specific chip in September in order to reduce its GPU costs during an unprecedented component shortage. Meta is working with Broadcom on the chip design, but it will use Taiwan Semiconductor Manufacturing Company (TSMC) to make them.",
+    "edit_note": "more_creative uses 'roll off the line' and 'lean on' for production and manufacturing; less_creative flattens to 'planning' and 'make'."
+  },
+  {
+    "pair_id": "CX09",
+    "source_url": "https://www.founderstribune.org/p/how-to-make-wealth-by-paul-graham",
+    "source_type": "essay",
+    "anchor": "Economically, you can think of a startup as a way to compress your whole working life into a few years. Instead of working at a low intensity for forty years, you work as hard as you possibly can for four.",
+    "more_creative": "Economically, a startup is a way to wring your whole working life down into a handful of years. Rather than simmering at low intensity for forty years, you burn at full throttle for four.",
+    "less_creative": "Economically, you can think of a startup as a way to fit your whole working life into a few years. Instead of working at a low level for forty years, you work very hard for four.",
+    "edit_note": "more_creative uses 'wring down', 'simmering', and 'burn at full throttle'; less_creative flattens to 'fit', 'low level', and 'very hard'."
+  },
+  {
+    "pair_id": "CX10",
+    "source_url": "https://hypebeast.com/2026/3/roy-lichtenstein-painting-scattered-brushstrokes-gagosian-new-york",
+    "source_type": "blog",
+    "anchor": "'Painting with Scattered Brushstrokes' features an array of significant paintings by the pop art pioneer. For him, the brushstroke was more than just a gesture; it was a formal and symbolic instrument.",
+    "more_creative": "'Painting with Scattered Brushstrokes' gathers an array of landmark paintings by the pop art pioneer. For him, the brushstroke was never a mere gesture; it was a formal, symbol-laden instrument.",
+    "less_creative": "'Painting with Scattered Brushstrokes' shows a number of important paintings by the pop art pioneer. For him, the brushstroke was more than just a movement; it was a formal and symbolic tool.",
+    "edit_note": "more_creative swaps 'features' for 'gathers' and coins 'symbol-laden'; less_creative flattens to 'shows' and generic 'tool'."
+  },
+  {
+    "pair_id": "CX11",
+    "source_url": "https://billwidmer.com/must-read-r-personalfinance-reddit-posts/",
+    "source_type": "forum",
+    "anchor": "Create/update your budget. Carefully go through everything line by line to see what you can cutback or cut out.",
+    "more_creative": "Build or refresh your budget. Comb through every line item to hunt down what you can trim or cut loose.",
+    "less_creative": "Make or update your budget. Go through everything carefully to see what you can reduce or remove.",
+    "edit_note": "more_creative uses 'comb through' and 'hunt down' and 'cut loose'; less_creative flattens to 'make', 'reduce', 'remove'."
+  },
+  {
+    "pair_id": "CX12",
+    "source_url": "https://www.audubon.org/news/birds-move",
+    "source_type": "blog",
+    "anchor": "When you see birds in your backyard or out in your local park, it feels like they're your birds. But they're many peoples' birds.",
+    "more_creative": "When you spot birds in your backyard or your local park, it feels like they belong just to you. But really, they belong to countless other people too.",
+    "less_creative": "When you notice birds in your backyard or your local park, you may feel they are your own birds. But actually, they belong to many other people as well.",
+    "edit_note": "more_creative tightens to 'belong just to you' / 'countless other people'; less_creative pads with the stock hedge 'you may feel' and 'as well'."
+  },
+  {
+    "pair_id": "CX13",
+    "source_url": "https://medium.com/@tatsuyjapan/why-is-japan-so-quiet-in-public-9c2f7ea12150",
+    "source_type": "blog",
+    "anchor": "In packed trains or elevators, loud voices can cause stress to those nearby. That's why silence isn't just politeness — it's a practical way to make life more bearable in crowded environments.",
+    "more_creative": "In packed trains or elevators, a raised voice can send a ripple of stress through everyone nearby. That's why silence isn't mere politeness — it's a practical cushion that makes crowded life more bearable.",
+    "less_creative": "In crowded trains or elevators, loud voices can cause stress to people nearby. That's why silence is not just politeness — it's a practical way to make life easier in crowded places.",
+    "edit_note": "more_creative pictures stress as 'a ripple' and silence as 'a practical cushion'; less_creative flattens to 'easier' and generic 'places'."
+  },
+  {
+    "pair_id": "CX14",
+    "source_url": "https://www.earth.com/news/global-ocean-heat-temperature-reached-all-time-high-records-in-2025/",
+    "source_type": "news",
+    "anchor": "Earth's oceans reached their highest heat levels on record in 2025, absorbing vast amounts of excess energy from the atmosphere. The ocean gained about 23 zettajoules of heat in 2025 – an amount of energy comparable to decades of global human energy use.",
+    "more_creative": "Earth's oceans climbed to their highest heat levels on record in 2025, soaking up vast reserves of excess energy from the atmosphere. The ocean banked about 23 zettajoules of heat that year – an amount of energy rivaling decades of global human energy use.",
+    "less_creative": "Earth's oceans reached their highest heat levels on record in 2025, taking in large amounts of excess energy from the atmosphere. The ocean received about 23 zettajoules of heat in 2025 – an amount of energy equal to decades of global human energy use.",
+    "edit_note": "more_creative uses 'soaking up', 'banked', and 'rivaling'; less_creative flattens to 'taking in', 'received', and 'equal to'."
+  },
+  {
+    "pair_id": "CX15",
+    "source_url": "https://www.bestbuy.com/site/reviews/instant-pot-duo-crisp-with-ultimate-lid-multi-cooker-air-fryer-6-5-quart-black/6505984",
+    "source_type": "product",
+    "anchor": "This machine is an absolute game-changer. I've been using it both at home and on the road — it's perfect for quick, healthy, and tasty meals without the need for multiple kitchen devices.",
+    "more_creative": "This machine is an absolute game-changer. I've put it through its paces both at home and on the road — it's ideal for whipping up quick, healthy, tasty meals without a cluttered arsenal of kitchen devices.",
+    "less_creative": "This machine is a great product. I've used it both at home and while traveling — it's good for making quick, healthy, and tasty meals without needing multiple kitchen devices.",
+    "edit_note": "more_creative uses 'put it through its paces' and 'cluttered arsenal'; less_creative flattens to the generic 'great product' and 'good for'."
+  },
+  {
+    "pair_id": "CX16",
+    "source_url": "https://migraine.com/forums/existing-with-chronic-migraine",
+    "source_type": "forum",
+    "anchor": "I focus on the joys and laughter and not so much on the pain. Explaining my migraine symptoms to others who have never experienced them is hard, but finding a community who already 'gets' these things is invaluable.",
+    "more_creative": "I keep my eyes on the joys and laughter, not the pain. Explaining my migraine symptoms to people who've never lived through one is an uphill climb, but finding a community that already 'gets' it feels priceless.",
+    "less_creative": "I try to focus on the good things and laughter and not so much on the pain. Explaining my migraine symptoms to people who have never experienced them is difficult, but finding a community who understands is very helpful.",
+    "edit_note": "more_creative uses 'an uphill climb' and 'priceless'; less_creative flattens to 'difficult' and the stock phrase 'very helpful'."
+  },
+  {
+    "pair_id": "CX17",
+    "source_url": "https://clutchpoints.com/nba/new-york-knicks/knicks-news-og-anunoby-breaks-silence-epic-nba-finals-game-4-game-winner",
+    "source_type": "news",
+    "anchor": "We know it's a game of runs. We're a resilient group, we've been through a lot.",
+    "more_creative": "We know it's a game of runs. We're a battle-tested group, we've weathered plenty.",
+    "less_creative": "We know it's a game of runs. We're a strong group, we've dealt with a lot.",
+    "edit_note": "more_creative uses the fitting sports image 'battle-tested' and 'weathered'; less_creative flattens to generic 'strong' and 'dealt with'."
+  },
+  {
+    "pair_id": "CX18",
+    "source_url": "https://en.wikipedia.org/wiki/The_Starry_Night",
+    "source_type": "wiki",
+    "anchor": "The Starry Night is an oil-on-canvas painting by the Dutch Post-Impressionist painter Vincent van Gogh, painted in June 1889, depicting the view from his asylum room window just before sunrise, with an imaginary village added. It has been regarded as one of the most recognizable paintings in the Western canon.",
+    "more_creative": "The Starry Night is an oil-on-canvas painting by the Dutch Post-Impressionist painter Vincent van Gogh, painted in June 1889, capturing the view from his asylum room window in the hush just before sunrise, with an imagined village stitched into the scene. It has stood as one of the most recognizable paintings in the Western canon.",
+    "less_creative": "The Starry Night is an oil-on-canvas painting by the Dutch Post-Impressionist painter Vincent van Gogh, painted in June 1889, showing the view from his asylum room window just before sunrise, with an imaginary village included. It has been considered one of the most well-known paintings in the Western canon.",
+    "edit_note": "more_creative adds 'in the hush' and 'stitched into the scene'; less_creative flattens to 'showing', 'included', and 'well-known'."
+  },
+  {
+    "pair_id": "CX19",
+    "source_url": "https://livinginlovecoaching.com/relationship-advice-found-on-reddit/",
+    "source_type": "forum",
+    "anchor": "Open and honest communication is the basis of every relationship. Be able to talk about issues as they arise so that you can work on them and not dwell internally.",
+    "more_creative": "Open and honest communication is the bedrock of every relationship. Be ready to talk through issues the moment they surface, so you can work on them instead of letting them fester inside.",
+    "less_creative": "Open and honest communication is the basis of every relationship. Be able to talk about problems as they come up so that you can work on them and not keep them inside.",
+    "edit_note": "more_creative uses 'bedrock', 'the moment they surface', and 'fester'; less_creative flattens to generic 'problems', 'come up', and 'keep them inside'."
+  },
+  {
+    "pair_id": "CX20",
+    "source_url": "https://www.bestbuy.com/site/reviews/ultralast-lithium-ion-battery-for-select-samsung-cell-phones/7117555",
+    "source_type": "product",
+    "anchor": "This battery came charged about 50% and lasts well into the 2nd day on one charge so far. Very pleased with this replacement.",
+    "more_creative": "This battery arrived charged to about 50% and it's stretching well into day two on a single charge so far. Very happy with this swap.",
+    "less_creative": "This battery came charged to about 50% and it works well into the second day on one charge so far. Very satisfied with this replacement part.",
+    "edit_note": "more_creative uses 'stretching' and the casual 'swap'; less_creative flattens to generic 'works well' and 'satisfied'."
+  }
+]
